@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}LyraProject - Dashboard{% endblock %}
+{% load static %}
+{% block content %}
+
+    <!-- Right side column. Contains the navbar and content of the page -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Test History
+                <small>all test cases</small>
+            </h1>
+            <!--
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+            -->
+        </section>
+        <section class="content">
+            <!-- first statistical boxes line -->
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3 id="h_box1">...</h3>
+                            <p>Total Process</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-fork-repo"></i>
+                        </div>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3 id="h_box2">...</h3>
+                            <p>Warnings</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3 id="h_box3">...</h3>
+                            <p>Pass average</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3 id="h_box4">...</h3>
+                            <p>Fail average</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                    </div>
+                </div><!-- ./col -->
+            </div>
+            <!-- end statistical boxes -->
+
+            <!-- Start historical table -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">History Jobs</h3>
+                            <div class="box-tools">
+                                <div class="input-group">
+                                    <input type="text" name="table_search"
+                                           class="form-control input-sm pull-right"
+                                           style="width: 150px;" placeholder="Search" id="txthis">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-default" onclick="filterHis(txthis.value)"><i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody id="h_tab">
+                                <!--<tr>
+                                    <th style="width: 10px">Col1</th>
+                                    <th>Col2</th>
+                                    <th>Col3</th>
+                                    <th style="width: 40px">Col4</th>
+                                    <th>Col5</th>
+                                    <th>Col6</th>
+                                    <th>Col7</th>
+                                    <th>Col8</th>
+                                    <th>Col9</th>
+                                    <th>Col10</th>
+                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right" id="ul_group">
+                                <!-- Ajax DOM generated in history_comp -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end historical table -->
+            <!-- TIMELINE -->
+            <!-- row -->
+            <div class="row" id="tline" style="visibility: hidden">
+                <!-- Box on head of timeline -->
+                <div class="pad margin no-print">
+                    <div class="box box-success">
+                        <div class="box-header" id="tl_tit">
+                            <h3 class="box-title" id="tl_h4"></h3>
+                            <div class="box-tools pull-right">
+                                <div class="btn-group" data-toggle="btn-toggle" id="btngrp">
+                                    <!--Ajax creation -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body" id="t_box1">
+                            Com class: <code>.data-toggle</code>
+                            <!--
+                            <p>
+                                amber, microbrewery abbey hydrometer, brewpub ale lauter tun saccharification oxidized
+                                barrel.
+                                berliner weisse wort chiller adjunct hydrometer alcohol aau!
+                                sour/acidic sour/acidic chocolate malt ipa ipa hydrometer.
+                            </p>
+                            -->
+                        </div><!-- /.box-body -->
+                    </div>
+                </div>
+                <div class="col-md-12" id="divtl">
+                    <!-- The time line -->
+                    <ul class="timeline" id="ultl">
+                        <!-- AJAX Dynamic in getTline (home_comp.js) -->
+                    </ul>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </section>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <!-- jQuery 2.1.3 -->
+    <script src="{% static "plugins/jQuery/jQuery-2.1.3.min.js" %}"></script>
+    <!-- My js for ajax automatic template render -->
+    <script src="{% static "js/history_comp.js" %}" type="text/javascript"></script>
+    <script>
+        document.body.onload = function () {
+            refHistory();
+        };
+    </script>
+{% endblock %}
+        

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180517 18:27:54.397" generator="Robot 3.0.2 (Python 2.7.13 on win32)">
+<suite source="C:\Users\marco.clerici\dev\lyra-api-175\core\frontend\static\out\106804392\106804392_TC.html" id="s1" name="106804392 TC">
+<test id="s1-t1" name="Test case 1 temp 1">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>ciaone</arg>
+</arguments>
+<status status="PASS" endtime="20180517 18:27:54.513" starttime="20180517 18:27:54.513"></status>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<doc>Opens a new browser instance to the given ``url``.</doc>
+<arguments>
+<arg>http://www.google.it</arg>
+<arg>gc</arg>
+</arguments>
+<status status="PASS" endtime="20180517 18:28:01.838" starttime="20180517 18:27:54.514"></status>
+</kw>
+<kw name="Close Browser" library="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" endtime="20180517 18:28:05.070" starttime="20180517 18:28:01.839"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Loggone numero 2</arg>
+</arguments>
+<status status="PASS" endtime="20180517 18:28:05.071" starttime="20180517 18:28:05.070"></status>
+</kw>
+<kw name="pers one">
+<msg timestamp="20180517 18:28:05.074" level="FAIL">No keyword with name 'pers one' found.</msg>
+<status status="FAIL" endtime="20180517 18:28:05.074" starttime="20180517 18:28:05.074"></status>
+</kw>
+<status status="FAIL" endtime="20180517 18:28:05.075" critical="yes" starttime="20180517 18:27:54.512">No keyword with name 'pers one' found.</status>
+</test>
+<status status="FAIL" endtime="20180517 18:28:05.076" starttime="20180517 18:27:54.400"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="1" id="s1" name="106804392 TC" pass="0">106804392 TC</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
