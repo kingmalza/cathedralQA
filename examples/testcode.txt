@@ -1,0 +1,120 @@
+from rsthtml.rst import PrepareRst as pr
+from rsthtml.rst import MakeRst as mr
+from rsthtml.rst import MakeHtml as mh
+
+
+#Automatic mode
+table1 = pr(2,"TC")
+table2 = pr(1,”TK")
+
+#Manual mode
+table1 = [["Setting","Value"],["Library","../robolib/robokey.py"]]
+table2 = [["Keyword","Action","Argument"],["Example keyword","log","hello world"]]
+table3 = [["Test Case","","Item"],["Example of calling...","Call keyword","Example keyword"]]
+
+mrr1 = mr(table1.rst)
+mrr2 = mr(table2)
+mrr3 = mr(table3)
+mh1 = mh(mrr3,mrr2,mrr1)
+
+#Example in code
+>>> from rsthtml.rst import PrepareRst as pr
+>>> from rsthtml.rst import MakeRst as mr
+>>> from rsthtml.rst import MakeHtml as mh
+>>> table1 = pr(1,"TS")
+>>> table2 = pr(1,"TV")
+>>> table3 = pr(1,"TC")
+>>> table4 = pr(1,"TK")
+>>> mrr1 = mr(table1.rst)
+>>> mrr2 = mr(table2.rst)
+>>> mrr3 = mr(table3.rst)
+>>> mrr4 = mr(table4.rst)
+>>> mh1 = mh(mrr1,mrr2,mrr3,mrr4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+****************************************************************************************************
+****************************************************************************************************
+from django.db.models import Count
+
+tab_var = temp_variables.objects.filter(main_id = 2)
+tab_lib = temp_library.objects.filter(main_id = 2)
+
+
+#Test Case
+"""
+For complex table query
+Test Case
+1.Create a query for determining hiter number of parameters
+2.Create firse list line with "Test Case" and then "" for n parameters found
+"""
+maxpar = temp_test_keywords.objects.filter(main_id = 2).values('key_id').annotate(total=Count('variable_id')).order_by('-total').first()
+totpar = maxpar['total']
+#Part1 list creation
+count = 0
+ltouple = ()
+l1 = ["Test Case"]
+while (count < maxnum):
+	l1.append("")
+	count += 1
+ltouple += (l1,)
+#Query for extract keywords, values
+kv = temp_test_keywords.select_related()
+for r in kv:
+	l = []
+	l.append(r.test_id)
+	l.append(r.key_id)
+	l.append(r.variable_id)
+	ltouple += (l,)
+
+tclist = [x for x in ltouple]
+
+<<<<<<< HEAD
+
+#Test Keywords
+=======
+#Test Keywords
+maxper = tpk.objects.filter(Q(main_id = 1) & Q(pers_id__isnull = False)).values('pers_id').annotate(total=Count('variable_id')).order_by('-total').first()
+
+maxstd = tpk.objects.filter(Q(main_id = 1) & Q(standard_id__isnull = False)).values('standard_id').annotate(total=Count('variable_id')).order_by('-total').first()
+
+maxP = maxper[‘total’]
+maxS = maxstd[‘total’]
+maxMax = maxP
+if maxS > maxP: maxMax = maxS
+
+count = 0
+ltouple = ()
+l1 = [“Keywords”]
+while count < maxMax:
+	l1.append(“”)
+	count += 1
+ltouple += (l1,)
+
+#Part 2 the key and data
+kt = temp_pers_keywords.objects.filter(main_id = test_id).select_related()
+vkey=“”
+l=[]
+for r in kt.iterator():
+	if key != str(r.pers_id):
+		if l : ltouple += (l,)
+		l =[]
+		l.append(str(r.pers_id))
+		l.append(str(r.variable_id))
+	else:
+		l.append(str(variable_id))
+	
+	vkey = str(r.pers_id)
+
+>>>>>>> 436149de195d4ffa133a50e4001b097870544b12

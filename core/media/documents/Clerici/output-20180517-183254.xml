@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180517 18:32:54.854" generator="Robot 3.0.2 (Python 2.7.13 on win32)">
+<suite source="C:\Users\marco.clerici\dev\lyra-api-175\core\frontend\static\out\106804392\106804392_TC.html" id="s1" name="106804392 TC">
+<test id="s1-t1" name="Test case 1 temp 1">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>ciaone</arg>
+</arguments>
+<msg timestamp="20180517 18:32:55.013" level="INFO">ciaone</msg>
+<status status="PASS" endtime="20180517 18:32:55.013" starttime="20180517 18:32:55.013"></status>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<doc>Opens a new browser instance to the given ``url``.</doc>
+<arguments>
+<arg>http://www.google.it</arg>
+<arg>gc</arg>
+</arguments>
+<msg timestamp="20180517 18:32:55.013" level="INFO">Opening browser 'gc' to base url 'http://www.google.it'.</msg>
+<status status="PASS" endtime="20180517 18:33:02.779" starttime="20180517 18:32:55.013"></status>
+</kw>
+<kw name="Close Browser" library="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" endtime="20180517 18:33:06.056" starttime="20180517 18:33:02.779"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Loggone numero 2</arg>
+</arguments>
+<msg timestamp="20180517 18:33:06.056" level="INFO">Loggone numero 2</msg>
+<status status="PASS" endtime="20180517 18:33:06.056" starttime="20180517 18:33:06.056"></status>
+</kw>
+<kw name="pers one">
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${noData}</arg>
+<arg>${noData}</arg>
+</arguments>
+<status status="PASS" endtime="20180517 18:33:06.058" starttime="20180517 18:33:06.057"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${noData}</arg>
+</arguments>
+<msg timestamp="20180517 18:33:06.058" level="INFO">noVal</msg>
+<status status="PASS" endtime="20180517 18:33:06.058" starttime="20180517 18:33:06.058"></status>
+</kw>
+<status status="PASS" endtime="20180517 18:33:06.058" starttime="20180517 18:33:06.057"></status>
+</kw>
+<kw name="pers two">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>noData</arg>
+</arguments>
+<msg timestamp="20180517 18:33:06.059" level="INFO">noData</msg>
+<status status="PASS" endtime="20180517 18:33:06.059" starttime="20180517 18:33:06.059"></status>
+</kw>
+<status status="PASS" endtime="20180517 18:33:06.059" starttime="20180517 18:33:06.059"></status>
+</kw>
+<status status="PASS" endtime="20180517 18:33:06.060" critical="yes" starttime="20180517 18:32:55.012"></status>
+</test>
+<status status="PASS" endtime="20180517 18:33:06.061" starttime="20180517 18:32:54.859"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="106804392 TC" pass="1">106804392 TC</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

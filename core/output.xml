@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180605 18:02:53.118" generator="Robot 3.0.4 (Python 2.7.10 on darwin)">
+<suite source="/Volumes/BIGDATA/Project/lyra/core/frontend/static/out/4575101136/4575101136_TC.html" id="s1" name="4575101136 TC">
+<test id="s1-t1" name="case1">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Log number 1</arg>
+</arguments>
+<msg timestamp="20180605 18:02:53.193" level="INFO">Log number 1</msg>
+<status status="PASS" endtime="20180605 18:02:53.193" starttime="20180605 18:02:53.193"></status>
+</kw>
+<kw type="for" name="${INDEX} IN [ 3 | 7 ]">
+<kw type="foritem" name="${INDEX} = 3">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${INDEX}</arg>
+</arguments>
+<msg timestamp="20180605 18:02:53.195" level="INFO">3</msg>
+<status status="PASS" endtime="20180605 18:02:53.195" starttime="20180605 18:02:53.195"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>warn 23</arg>
+</arguments>
+<msg timestamp="20180605 18:02:53.196" level="INFO">warn 23</msg>
+<status status="PASS" endtime="20180605 18:02:53.196" starttime="20180605 18:02:53.195"></status>
+</kw>
+<status status="PASS" endtime="20180605 18:02:53.196" starttime="20180605 18:02:53.194"></status>
+</kw>
+<kw type="foritem" name="${INDEX} = 7">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${INDEX}</arg>
+</arguments>
+<msg timestamp="20180605 18:02:53.196" level="INFO">7</msg>
+<status status="PASS" endtime="20180605 18:02:53.196" starttime="20180605 18:02:53.196"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>warn 23</arg>
+</arguments>
+<msg timestamp="20180605 18:02:53.197" level="INFO">warn 23</msg>
+<status status="PASS" endtime="20180605 18:02:53.197" starttime="20180605 18:02:53.197"></status>
+</kw>
+<status status="PASS" endtime="20180605 18:02:53.197" starttime="20180605 18:02:53.196"></status>
+</kw>
+<status status="PASS" endtime="20180605 18:02:53.197" starttime="20180605 18:02:53.194"></status>
+</kw>
+<kw name="pers one">
+<msg timestamp="20180605 18:02:53.198" level="FAIL">Keyword with same name defined multiple times.</msg>
+<status status="FAIL" endtime="20180605 18:02:53.198" starttime="20180605 18:02:53.198"></status>
+</kw>
+<status status="FAIL" endtime="20180605 18:02:53.198" critical="yes" starttime="20180605 18:02:53.192">Keyword with same name defined multiple times.</status>
+</test>
+<status status="FAIL" endtime="20180605 18:02:53.201" starttime="20180605 18:02:53.119"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="1" id="s1" name="4575101136 TC" pass="0">4575101136 TC</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20180605 18:02:53.120" level="ERROR">Error in test case file '/Volumes/BIGDATA/Project/lyra/core/frontend/static/out/4575101136/4575101136_TC.html': Creating keyword 'pers one' failed: Keyword with same name defined multiple times.</msg>
+</errors>
+</robot>
