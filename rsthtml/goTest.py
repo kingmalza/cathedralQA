@@ -7,10 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 import simplejson
+import sys
 import schedule
 import time
 import threading
-import queue
+if sys.version_info[0] < 3:
+    import Queue as que
+else:
+    import queue as que
 import subprocess
 import re
 
@@ -21,7 +25,7 @@ from operator import itemgetter
 from frontend.models import t_history, t_time, t_threads, t_group, t_group_test, temp_main, t_proj_route, t_tags_route, t_proj, t_tags
 
 t_list = {};
-jobqueue = queue.Queue()
+jobqueue = que.Queue()
 
 
 # Methos used for create a unique list of values and perform for cycle on the variables

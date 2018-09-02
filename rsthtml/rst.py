@@ -6,7 +6,8 @@ import errno
 from functools import reduce
 from itertools import chain
 from docutils.core import publish_string
-from robot import run as run_test, run_cli
+from robot import run as run_test
+#from robot import run_cli
 import threading
 from django.db.models import Count
 from django.db.models import Q
