@@ -10,7 +10,7 @@ import simplejson
 import schedule
 import time
 import threading
-import Queue
+import queue
 import subprocess
 import re
 
@@ -21,7 +21,7 @@ from operator import itemgetter
 from frontend.models import t_history, t_time, t_threads, t_group, t_group_test, temp_main, t_proj_route, t_tags_route, t_proj, t_tags
 
 t_list = {};
-jobqueue = Queue.Queue()
+jobqueue = queue.Queue()
 
 
 # Methos used for create a unique list of values and perform for cycle on the variables
@@ -33,7 +33,7 @@ def product_by_grouping(lst):
 def userdet(sessid):
     session = Session.objects.get(session_key=sessid)
     session_data = session.get_decoded()
-    print session_data
+    print (session_data)
     uid = session_data.get('_auth_user_id')
     user = User.objects.get(id=uid)
     return user

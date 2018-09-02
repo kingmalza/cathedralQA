@@ -20,7 +20,7 @@ note -> Textfield for note
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
@@ -87,7 +87,7 @@ TestCase table
 
 
 class temp_case(models.Model):
-    main_id = models.ForeignKey(temp_main, null=True, blank=True, verbose_name="Main Template")
+    main_id = models.ForeignKey(temp_main, null=True, blank=True, verbose_name="Main Template", on_delete=models.CASCADE,)
     descr = models.CharField(max_length=200, verbose_name="Case description")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tcase_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -135,7 +135,7 @@ Table vor variable collection
 
 
 class temp_variables(models.Model):
-    main_id = models.ForeignKey(temp_main)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     v_key = models.CharField(max_length=200)
     v_val = models.CharField(max_length=200, null=True, blank=True)
     #Fields for API permissions
@@ -161,9 +161,9 @@ Add standard keywords like actions for personalized key
 
 
 class temp_pers_keywords(models.Model):
-    main_id = models.ForeignKey(temp_main)
-    pers_id = models.ForeignKey(temp_keywords, related_name='personal_key', null=True, blank=True)
-    standard_id = models.ForeignKey(temp_keywords, related_name='standard_key')
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
+    pers_id = models.ForeignKey(temp_keywords, related_name='personal_key', null=True, blank=True, on_delete=models.CASCADE,)
+    standard_id = models.ForeignKey(temp_keywords, related_name='standard_key', on_delete=models.CASCADE,)
     variable_val = models.CharField(max_length=250, null=True, blank=True)
     #variable_id = models.ForeignKey(temp_variables, null=True, blank=True)
     #Fields for API permissions
@@ -186,9 +186,9 @@ Table for define keywords for testcases
 
 
 class temp_test_keywords(models.Model):
-    main_id = models.ForeignKey(temp_main)
-    test_id = models.ForeignKey(temp_case)
-    key_id = models.ForeignKey(temp_keywords)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
+    test_id = models.ForeignKey(temp_case, on_delete=models.CASCADE,)
+    key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE,)
     key_val = models.CharField(max_length=200, null=True, blank=True)
     key_group = models.CharField(max_length=200, null=True, blank=True)
     #Fields for API permissions
@@ -210,7 +210,7 @@ Table for libraries
 
 
 class temp_library(models.Model):
-    main_id = models.ForeignKey(temp_main)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     l_type = models.CharField(max_length=50)
     l_val = models.CharField(max_length=100)
     #Fields for API permissions
@@ -239,7 +239,7 @@ active -> Is job active (o=no, 1= yes)
 
 
 class t_schedule(models.Model):
-    id_test = models.OneToOneField(t_test)
+    id_test = models.OneToOneField(t_test, on_delete=models.CASCADE,)
     plan_data = models.DateTimeField(auto_now=True)
     exec_main = models.CharField(max_length=10)
     exec_every = models.CharField(max_length=10, null=True, blank=True)
@@ -299,7 +299,7 @@ class t_group(models.Model):
     descr = models.CharField(max_length=50)
     g_prior = models.IntegerField(default=1)
     g_desc = models.TextField(null=True, blank=True)
-    user_id = models.ForeignKey(User)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
     active = models.IntegerField(default=1)
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrp_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -317,8 +317,8 @@ class t_group(models.Model):
 
 
 class t_group_test(models.Model):
-    id_grp = models.ForeignKey(t_group)
-    id_temp = models.ForeignKey(temp_main)
+    id_grp = models.ForeignKey(t_group, on_delete=models.CASCADE,)
+    id_temp = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     temp_ord = models.IntegerField(default=0)
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrptest_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -344,7 +344,7 @@ quick_res -> 0 = OK 1=FAIL
 
 
 class t_history(models.Model):
-    test_main = models.ForeignKey(temp_main)
+    test_main = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     test_type = models.CharField(max_length=5, blank=True)
     test_group = models.CharField(max_length=50, blank=True)
     exec_data = models.DateTimeField(auto_now=True)
@@ -353,8 +353,8 @@ class t_history(models.Model):
     html_test = models.TextField()
     var_test = models.TextField()
     pid = models.CharField(max_length=20, null=True, blank=True)
-    user_id = models.ForeignKey(User)
-    group_id = models.ForeignKey(t_group, null=True, blank=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
+    group_id = models.ForeignKey(t_group, null=True, blank=True, on_delete=models.CASCADE,)
     pass_num = models.IntegerField(default=0)
     fail_num = models.IntegerField(default=0)
     sched_type = models.CharField(max_length=50, blank=True)
@@ -375,7 +375,7 @@ thread_main -> Main thread of schedule (a sort of daemon)
 
 
 class t_threads(models.Model):
-    id_test = models.ForeignKey(t_history)
+    id_test = models.ForeignKey(t_history, on_delete=models.CASCADE,)
     thread_id = models.CharField(max_length=50, null=True, blank=True)
     thread_main = models.CharField(max_length=100, null=True, blank=True)
     thread_stag = models.CharField(max_length=100, null=True, blank=True)
@@ -411,8 +411,8 @@ class t_tags(models.Model):
 
 
 class t_tags_route(models.Model):
-    main_id = models.ForeignKey(temp_main)
-    tag_id = models.ForeignKey(t_tags)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
+    tag_id = models.ForeignKey(t_tags, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttagsroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -450,8 +450,8 @@ class t_proj(models.Model):
 
 
 class t_proj_route(models.Model):
-    main_id = models.ForeignKey(temp_main)
-    proj_id = models.ForeignKey(t_proj)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
+    proj_id = models.ForeignKey(t_proj, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tprojroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
