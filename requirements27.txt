@@ -28,6 +28,7 @@ Jinja2==2.10
 jira==1.0.15
 JiraRobot==1.0
 jmespath==0.9.3
+lxml==4.2.4
 Markdown==2.6.11
 MarkupSafe==1.0
 numpy==1.13.3
