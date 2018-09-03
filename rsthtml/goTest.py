@@ -150,7 +150,9 @@ def startTest(request, i=[0]):
         if request.POST.get('ttype') == 'PA':
             proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'))
             for x in proj_list:
-                mainId = unicode(x.main_id_id)
+                #Python3 replace unicode with str
+                #mainId = unicode(x.main_id_id)
+                mainId = str(x.main_id_id)
                 main_list.append(mainId)
             #Search aggregation descr
             try:
@@ -162,7 +164,9 @@ def startTest(request, i=[0]):
         elif request.POST.get('ttype') == 'TA':
             proj_list = t_tags_route.objects.filter(tag_id=request.POST.get('mainID'))
             for x in proj_list:
-                mainId = unicode(x.main_id_id)
+                #mainId = unicode(x.main_id_id)
+                #Python3 replace unicode with str
+                mainId = str(x.main_id_id)
                 main_list.append(mainId)
             # Search aggregation descr
             try:
@@ -174,7 +178,9 @@ def startTest(request, i=[0]):
         elif request.POST.get('ttype') == 'TG':
             proj_list = t_group_test.objects.filter(id_grp=request.POST.get('mainID'))
             for x in proj_list:
-                mainId = unicode(x.id_temp_id)
+                #Python3 replace unicode with str
+                #mainId = unicode(x.id_temp_id)
+                mainId = str(x.id_temp_id)
                 main_list.append(mainId)
             # Search aggregation descr
             try:
