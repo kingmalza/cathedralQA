@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
 from decimal import Decimal
 
@@ -17,7 +18,14 @@ regdata -> Data of first registration
 lastlogin -> Last login datetime
 note -> Textfield for note
 """
+class Client(TenantMixin):
+    name = models.CharField(max_length=100)
+    paid_until =  models.DateField()
+    on_trial = models.BooleanField()
+    created_on = models.DateField(auto_now_add=True)
 
+    # default true, schema will be automatically created and synced when it is saved
+    auto_create_schema = True
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)

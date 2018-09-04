@@ -27,31 +27,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-SHARED_APPS = (
-    'tenant_schemas',  # mandatory, should always be before any django app
-    'frontend', # you must list the app where your tenant model resides in
-
-    'django.contrib.contenttypes',
-
-    # everything below here is optional
-    'django.contrib.auth',
-    'django.contrib.sessions',
-    #'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.admin',
-)
-
-TENANT_APPS = (
-    'django.contrib.contenttypes',
-
-    # your tenant-specific apps
-    'frontend',
-    'backend',
-)
-
 
 INSTALLED_APPS = [
-    'tenant_schemas',  # mandatory, should always be before any django app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,12 +40,7 @@ INSTALLED_APPS = [
     'backend',
 ]
 
-TENANT_MODEL = "frontend.Client" # app.Model
-
-DEFAULT_FILE_STORAGE = "tenant_schemas.storage.TenantFileSystemStorage"
-
 MIDDLEWARE = [
-    'tenant_schemas.middleware.DefaultTenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,7 +86,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+"""
 
 #For local use only (Poli)
 DATABASES = {
@@ -127,22 +99,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
-#For tenant use
-DATABASES = {
-    'default': {
-        'ENGINE': 'tenant_schemas.postgresql_backend',
-        'NAME': 'lyraloc_inpeco',
-        'USER': 'postgres',
-        'PASSWORD': '11235813post',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
 
-DATABASE_ROUTERS = (
-    'tenant_schemas.routers.TenantSyncRouter',
-)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
