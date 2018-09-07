@@ -68,7 +68,7 @@ TENANT_MODEL = "frontend.Client" # app.Model
 DEFAULT_FILE_STORAGE = "tenant_schemas.storage.TenantFileSystemStorage"
 
 MIDDLEWARE = [
-    'tenant_schemas.middleware.DefaultTenantMiddleware',
+    'frontend.middleware.XHeaderTenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -103,11 +103,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lyra1',
+        'ENGINE': 'tenant_schemas.postgresql_backend',
+        'NAME': 'helium_web',
         'USER': 'kingmalza',
         'PASSWORD': '11235813post',
         'HOST': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -115,7 +115,7 @@ DATABASES = {
     }
 }
 
-
+"""
 #For local use only (Poli)
 DATABASES = {
     'default': {
@@ -127,7 +127,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
+
 #For tenant use
 DATABASES = {
     'default': {
@@ -139,7 +139,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+"""
 DATABASE_ROUTERS = (
     'tenant_schemas.routers.TenantSyncRouter',
 )
