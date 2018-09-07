@@ -127,8 +127,8 @@ def histrefresh(request, lorder='-id'):
 
             vallabel['TotData'] = oCount
             vallabel['wData'] = twarnings
-            vallabel['PercPass'] = percp
-            vallabel['PercFail'] = percf
+            vallabel['PercPass'] = round(percp, 2)
+            vallabel['PercFail'] = round(percf, 2)
 
             response.append(vallabel)
 

@@ -287,8 +287,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 var t_td7 = document.createElement("TD");
                 //Calculate the success percentage data
                 if (data[index].OptionPass + data[index].OptionFail != 0) {
-                    var ssuc = ((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail);
-                    var sfail = ((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail);
+                    var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                    var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
                 } else {
                     var ssuc = 0;
                     var sfail = 0;
