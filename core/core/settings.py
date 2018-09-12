@@ -43,6 +43,8 @@ SHARED_APPS = (
 
 TENANT_APPS = (
     'django.contrib.contenttypes',
+    'django.contrib.auth',
+    'django.contrib.admin',
 
     # your tenant-specific apps
     'frontend',

@@ -223,8 +223,8 @@
                             <li><a href="/"><i class="fa fa-circle-o"></i> History</a></li>
                         </ul>
                     </li>
+                    <!--
                     {% for g in uGroup %}
-                        <!-- View mwnu just for testadmin and webuser-->
                         {% if g.id == 1 or g.id == 3 %}
                             <li class="treeview active">
                                 <a href="#">
@@ -240,6 +240,19 @@
                             </li>
                         {% endif %}
                     {% endfor %}
+                    -->
+                    <li class="treeview active">
+                                <a href="#">
+                                    <i class="fa fa-files-o"></i>
+                                    <span>Templates</span>
+                                    <span class="label label-primary pull-right" id="tcnum"></span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/admin"><i class="fa fa-circle-o text-danger"></i>Templates Manager</a></li>
+                                    <li><a href="/admin/auth/user/"><i class="fa fa-circle-o"></i>User Manager</a></li>
+                                    <li><a href="/admin/auth/group/"><i class="fa fa-circle-o"></i>Group Manager</a></li>
+                                </ul>
+                            </li>
                     <li>
                         <a href="/files/">
                             <i class="fa fa-laptop"></i>

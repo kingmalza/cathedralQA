@@ -93,9 +93,10 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             htmlcont = parsefile(t_list[t_inst].retval['fpath'])
             #Extract just Thread name
             pattern = "(Thread-\d+)"
-            t_full = str(threading.current_thread())
-            match = re.search(pattern, t_full)
-            t = str(match.group(0))
+            #t_full = str(threading.current_thread())
+            t = str(threading.get_ident())
+            #match = re.search(pattern, t_full)
+            #t = str(match.group(0))
             #t = threading.current_thread()
             if s_type == "TG": g_id = t_group.objects.get(id=mainId)
             # Count FAIL and PASS values into xml
