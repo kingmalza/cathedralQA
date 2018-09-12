@@ -45,6 +45,7 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.admin',
+    'django.contrib.messages',
 
     # your tenant-specific apps
     'frontend',
