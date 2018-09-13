@@ -35,7 +35,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     t_group_testViewSet, \
     t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload
 
-schema_view = get_schema_view(title='Lyra API')
+schema_view = get_schema_view(title='Aida API')
 
 router = routers.DefaultRouter()
 router.register(r't_testapi', t_testViewSet)
