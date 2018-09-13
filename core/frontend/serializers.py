@@ -61,7 +61,7 @@ class temp_pers_keywordsSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = temp_pers_keywords
-        fields = ('id', 'main_id', 'pers_id', 'standard_id', 'variable_id', 'owner')
+        fields = ('id', 'main_id', 'pers_id', 'standard_id', 'variable_val', 'owner')
 
 
 class temp_test_keywordsSerializer(serializers.HyperlinkedModelSerializer):
