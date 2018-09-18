@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 import simplejson
+import boto3
 import sys
 import schedule
 import time
@@ -45,7 +46,7 @@ def userdet(sessid):
 
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
     g_id = None
-
+    client = boto3.client("lambda")
     # Start
     # 1 - Table preparation
     table_case = pr(mainId, "TC")
@@ -118,6 +119,21 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
             test_time = t_time(history_main=test_save.id, elapsed_t=elapsed)
             test_time.save()
+            
+            #Insert data into usage table
+            payload = {"key_id":1,
+            "data_start":str(start_time),
+            "data_stop":str(time.time()),
+            "elapsed_t": int(elapsed)}
+            
+            r = client.invoke(
+                FunctionName='aida_insert_lic',
+                InvocationType='RequestResponse',
+                Payload=bytes(str(payload, 'utf-8'))
+            )
+            
+            print(r.read())
+           
     except Exception as e:
         print("Errore:", e.args)
 
