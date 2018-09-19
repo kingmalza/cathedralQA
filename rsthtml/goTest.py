@@ -21,6 +21,8 @@ else:
 import subprocess
 import re
 
+from tenant_schemas.utils import (get_tenant_model, remove_www,
+                                  get_public_schema_name)
 
 from itertools import groupby, product
 from operator import itemgetter
@@ -127,19 +129,46 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             # Time at the end
             dtime2 = str(datetime.datetime.now())
             
-            #Insert data into usage table
-            payload = {"key_id":"1",
-            "data_start":dtime1,
-            "data_stop":dtime2,
-            "elapsed_t": int(elapsed)}
+            #LAMBDA CALL FOR LIC INSERTION
+            #1 Check customer id         
+            schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+            id_cli = 999
             
-            r = client.invoke(
-                FunctionName='aida_usage_insert',
-                InvocationType='RequestResponse',
-                Payload=json.dumps(payload)
-            )
-
-            print("RRRRR-->",dtime1,"-",dtime2,"--",str(elapsed))
+            pay_c = {
+                "ev_type": "G",
+                "tenant": schema_name
+            }
+            
+            try:
+                cli_id = client.invoke(
+                    FunctionName='aida_lic_get',
+                    InvocationType='RequestResponse',
+                    Payload=json.dumps(pay_c)
+                )
+                
+                id_cli = cli_id[0]
+            except ClientError as e: #if you see a ClientError, catch it as e
+                print(e) #print the client error info to console
+            
+            
+            
+            #2 Insert data into usage table
+            payload = {
+                "key_cli": id_cli,
+                "data_start": dtime1,
+                "data_stop": dtime2,
+                "elapsed_t": elapsed,
+                "bk_tenant": schema_name
+            }
+            
+            try:
+                client.invoke(
+                    FunctionName='aida_usage_insert',
+                    InvocationType='RequestResponse',
+                    Payload=json.dumps(payload)
+                )
+            except ClientError as e: #if you see a ClientError, catch it as e
+                print(e) #print the client error info to console
 
            
     except Exception as e:

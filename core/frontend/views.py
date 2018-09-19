@@ -25,6 +25,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
 
+from tenant_schemas.utils import (get_tenant_model, remove_www,
+                                  get_public_schema_name)
+
 
 test_main = temp_main.objects.all()
 test_case = temp_case.objects.all()
@@ -38,7 +41,9 @@ def index(request, **kwargs):
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
-
+    
+    schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+  
     test_sched = t_schedsettings.objects.all()
 
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
