@@ -8,9 +8,11 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 import simplejson
 import boto3
+import json
 import sys
 import schedule
 import time
+import datetime
 import threading
 if sys.version_info[0] < 3:
     import Queue as que
@@ -47,6 +49,8 @@ def userdet(sessid):
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
     g_id = None
     client = boto3.client("lambda")
+    #Time at the start
+    dtime1 = str(datetime.datetime.now())
     # Start
     # 1 - Table preparation
     table_case = pr(mainId, "TC")
@@ -119,20 +123,24 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
             test_time = t_time(history_main=test_save.id, elapsed_t=elapsed)
             test_time.save()
+
+            # Time at the end
+            dtime2 = str(datetime.datetime.now())
             
             #Insert data into usage table
-            payload = {"key_id":1,
-            "data_start":str(start_time),
-            "data_stop":str(time.time()),
+            payload = {"key_id":"1",
+            "data_start":dtime1,
+            "data_stop":dtime2,
             "elapsed_t": int(elapsed)}
             
             r = client.invoke(
-                FunctionName='aida_insert_lic',
+                FunctionName='aida_usage_insert',
                 InvocationType='RequestResponse',
-                Payload=bytes(str(payload, 'utf-8'))
+                Payload=json.dumps(payload)
             )
-            
-            print(r.read())
+
+            print("RRRRR-->",dtime1,"-",dtime2,"--",str(elapsed))
+
            
     except Exception as e:
         print("Errore:", e.args)
