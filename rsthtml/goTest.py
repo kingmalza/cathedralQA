@@ -1,11 +1,12 @@
 from rsthtml.rst import PrepareRst as pr
 from rsthtml.rst import MakeRst as mr
 from rsthtml.rst import MakeHtml as mh
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from robot import run as run_test
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.conf import settings
 import simplejson
 import boto3
 import json
@@ -19,6 +20,7 @@ if sys.version_info[0] < 3:
 else:
     import queue as que
 import subprocess
+from botocore.exceptions import ClientError
 import re
 
 from tenant_schemas.utils import (get_tenant_model, remove_www,
@@ -131,7 +133,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             
             #LAMBDA CALL FOR LIC INSERTION
             #1 Check customer id         
-            schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+            schema_name = str(settings.DATABASES['default']['SCHEMA'])
             id_cli = 999
             
             pay_c = {

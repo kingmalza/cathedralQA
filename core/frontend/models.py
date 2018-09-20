@@ -95,7 +95,7 @@ TestCase table
 
 
 class temp_case(models.Model):
-    main_id = models.ForeignKey(temp_main, null=True, blank=True, verbose_name="Main Template", on_delete=models.CASCADE,)
+    main_id = models.ForeignKey(temp_main, null=True, blank=True, verbose_name="Main Template", on_delete=models.SET_NULL,)
     descr = models.CharField(max_length=200, verbose_name="Case description")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tcase_owner', on_delete=models.CASCADE, verbose_name="API Owner")
