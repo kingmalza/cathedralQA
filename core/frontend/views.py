@@ -17,6 +17,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
 from django.template import RequestContext
 from rest_framework import renderers
 from rest_framework.response import Response
@@ -24,6 +25,9 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
+
+import boto3
+import json
 
 from tenant_schemas.utils import (get_tenant_model, remove_www,
                                   get_public_schema_name)
@@ -41,9 +45,7 @@ def index(request, **kwargs):
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
-    
-    schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
-  
+     
     test_sched = t_schedsettings.objects.all()
 
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
@@ -232,18 +234,44 @@ def login_register(request, **kwargs):
 
 def user_login(request):
     context = RequestContext(request)
+    client = boto3.client("lambda")
+    schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/')
+        #check if user is active or not
+        pay_c = {
+                "ev_type": "G",
+                "tenant": schema_name
+            }
+            
+        cli_id = client.invoke(
+            FunctionName='aida_lic_get',
+            InvocationType='RequestResponse',
+            Payload=json.dumps(pay_c)
+        )
+                
+        #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
+        
+        #Check if user in lic is active or if there is a connection
+        try:
+            site_active = json.loads(cli_id['Payload'].read().decode())[3]
+        except Exception as e:
+            site_active = False
+        
+        if site_active:
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect('/')
+                else:
+                    return HttpResponse("User not active")
             else:
-                return HttpResponse("User not active")
+                return HttpResponse('Your user dont exist or password is wrong')
         else:
-            return HttpResponse('Your user dont exist')
+            return HttpResponse("SITE NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Aida, \n in case there are no line problems you can contact the Aida's system administrators for more information")
     else:
         return render(request, 'login.html', {}, context)
 

@@ -52,6 +52,9 @@ def userdet(sessid):
 
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
     g_id = None
+    cli_id = None
+    id_cli = 999
+    
     client = boto3.client("lambda")
     #Time at the start
     dtime1 = str(datetime.datetime.now())
@@ -96,8 +99,8 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     # Try to store data into db
     try:
         # Cop content of xml in db
-        print("TINS IS ---->>>> ", t_inst)
         xmlcont = parsefile(t_list[t_inst].retval['fdir'] + "output.xml")
+        
         if xmlcont != "":
             htmlcont = parsefile(t_list[t_inst].retval['fpath'])
             #Extract just Thread name
@@ -130,30 +133,31 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
             # Time at the end
             dtime2 = str(datetime.datetime.now())
-            
+
             #LAMBDA CALL FOR LIC INSERTION
             #1 Check customer id         
             schema_name = str(settings.DATABASES['default']['SCHEMA'])
-            id_cli = 999
-            
+                       
             pay_c = {
                 "ev_type": "G",
                 "tenant": schema_name
             }
             
-            try:
-                cli_id = client.invoke(
-                    FunctionName='aida_lic_get',
-                    InvocationType='RequestResponse',
-                    Payload=json.dumps(pay_c)
-                )
+            cli_id = client.invoke(
+                FunctionName='aida_lic_get',
+                InvocationType='RequestResponse',
+                Payload=json.dumps(pay_c)
+            )
+            
+            """
+            IF THIS INSTALLATION IS FORSTANDALONE YOU HAVE TO REFORCE schema_name FOR IDENTIFY TRAFFIC
+            
+            schema_name = <client name>
+            """
                 
-                id_cli = cli_id[0]
-            except ClientError as e: #if you see a ClientError, catch it as e
-                print(e) #print the client error info to console
-            
-            
-            
+            #id_cli = cli_id[0]
+            id_cli = cli_id['Payload'].read().decode('utf-8')[1]
+
             #2 Insert data into usage table
             payload = {
                 "key_cli": id_cli,
@@ -169,8 +173,8 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                     InvocationType='RequestResponse',
                     Payload=json.dumps(payload)
                 )
-            except ClientError as e: #if you see a ClientError, catch it as e
-                print(e) #print the client error info to console
+            except ClientError as er2: #if you see a ClientError, catch it as e
+                print("Error use--> ",er2) #print the client error info to console
 
            
     except Exception as e:
