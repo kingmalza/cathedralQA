@@ -95,6 +95,7 @@ TestCase table
 
 
 class temp_case(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, null=True, blank=True, verbose_name="Main Template", on_delete=models.SET_NULL,)
     descr = models.CharField(max_length=200, verbose_name="Case description")
     #Fields for API permissions
@@ -143,6 +144,7 @@ Table vor variable collection
 
 
 class temp_variables(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     v_key = models.CharField(max_length=200)
     v_val = models.CharField(max_length=200, null=True, blank=True)
@@ -169,6 +171,7 @@ Add standard keywords like actions for personalized key
 
 
 class temp_pers_keywords(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     pers_id = models.ForeignKey(temp_keywords, related_name='personal_key', null=True, blank=True, on_delete=models.CASCADE,)
     standard_id = models.ForeignKey(temp_keywords, related_name='standard_key', on_delete=models.CASCADE,)
@@ -194,6 +197,7 @@ Table for define keywords for testcases
 
 
 class temp_test_keywords(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     test_id = models.ForeignKey(temp_case, on_delete=models.CASCADE,)
     key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE,)
@@ -218,6 +222,7 @@ Table for libraries
 
 
 class temp_library(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     l_type = models.CharField(max_length=50)
     l_val = models.CharField(max_length=100)
@@ -419,6 +424,7 @@ class t_tags(models.Model):
 
 
 class t_tags_route(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     tag_id = models.ForeignKey(t_tags, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
@@ -458,6 +464,7 @@ class t_proj(models.Model):
 
 
 class t_proj_route(models.Model):
+    id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     proj_id = models.ForeignKey(t_proj, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
