@@ -47,24 +47,24 @@ def create2():
     
     dtn = datetime.datetime.now()
     
-    hello1 = t_main(descr='HelloWorld', dt=str(dtn), notes='First Helloworld test', owner_id=User.objects.get(id=1).id)
+    hello1 = temp_main(descr='HelloWorld', dt=str(dtn), notes='First Helloworld test', owner_id=User.objects.get(id=1).id)
     hello1.save()
     
-    hello2 = temp_case(descr='Test Case Hello', main_id_id=t_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
+    hello2 = temp_case(descr='Test Case Hello', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello2.save()
     
-    hello3 = temp_variables(v_key='${FORM_URL}', v_val='http://aidaproject.io', main_id_id=t_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
+    hello3 = temp_variables(v_key='${FORM_URL}', v_val='http://aidaproject.io', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello3.save()
     
-    hello4_1 = temp_library(l_type='Library', l_val='Selenium2Library', main_id_id=t_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
-    hello4_2 = temp_library(l_type='Test Setup', l_val='Open Browser And Go To Page', main_id_id=t_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
-    hello4_3 = temp_library(l_type='Test Teardown', l_val='Close Browser', main_id_id=t_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)   
+    hello4_1 = temp_library(l_type='Library', l_val='Selenium2Library', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
+    hello4_2 = temp_library(l_type='Test Setup', l_val='Open Browser And Go To Page', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
+    hello4_3 = temp_library(l_type='Test Teardown', l_val='Close Browser', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)   
     hello4_1.save()
     hello4_2.save()
     hello4_3.save()
     
-    hello5_1 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=177).id, main_id_id=t_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='When visit the page it should show the text Aida', owner_id=User.objects.get(id=1).id)
-    hello5_2 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=103).id, main_id_id=t_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='Aida', owner_id=User.objects.get(id=1).id)
+    hello5_1 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=177).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='When visit the page it should show the text Aida', owner_id=User.objects.get(id=1).id)
+    hello5_2 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=103).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='Aida', owner_id=User.objects.get(id=1).id)
     hello5_1.save()
     hello5_2.save()
     
@@ -72,7 +72,7 @@ def create2():
     addkey_pers = temp_keywords(descr='Open Browser And Go To Page', human='Open Browser And Go To Page', personal=True, owner_id=User.objects.get(id=1).id)
     addkey_pers.save()
     
-    hello6 = temp_pers_keywords(main_id_id=t_main.objects.get(id=1).id, pers_id_id=temp_keywords.objects.get(id=182).id, standard_id_id=temp_keywords.objects.get(id=101).id, owner_id=User.objects.get(id=1).id, variable_val='${FORM_URL}')
+    hello6 = temp_pers_keywords(main_id_id=temp_main.objects.get(id=1).id, pers_id_id=temp_keywords.objects.get(id=182).id, standard_id_id=temp_keywords.objects.get(id=101).id, owner_id=User.objects.get(id=1).id, variable_val='${FORM_URL}')
     hello6.save()
     
     
