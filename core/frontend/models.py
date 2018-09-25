@@ -317,6 +317,11 @@ class t_group(models.Model):
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrp_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
+    class Meta:
+        verbose_name = 'TEST GROUP MANAGER'
+        verbose_name_plural = 'TEST GROUP MANAGER'
+        ordering = ('descr',)
+
     def __str__(self):
         return self.g_desc
 
@@ -336,8 +341,13 @@ class t_group_test(models.Model):
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrptest_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
+    class Meta:
+        verbose_name = 'TEST GROUP ITEMS'
+        verbose_name_plural = 'TEST GROUP ITEMS'
+        ordering = ('temp_ord',)
+
     def __str__(self):
-        return str(self.id_grp)
+        return '%s -> %s (%s)' % (str(self.id_grp), str(self.id_temp), str(self.temp_ord))
 
 
 # -----------------------------------------------------------------------------
