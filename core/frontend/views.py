@@ -103,7 +103,7 @@ def temp_group(request, **kwargs):
     global test_case
     uGroup = request.user.groups.all()
     # Back home if no Teatadmin group for that user
-    if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
+    #if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 

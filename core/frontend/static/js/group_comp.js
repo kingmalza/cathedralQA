@@ -142,6 +142,15 @@ function ckSub(tId) {
 
                 tg.appendChild(tr2);
             });
+            
+            var rows = tg.rows; // or table.getElementsByTagName("tr");
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].onclick = (function () { // closure
+                    return function () {
+                        window.open("/","_self")
+                    }
+                })(i);
+            }
 
         }
     });
