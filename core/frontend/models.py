@@ -496,9 +496,19 @@ class t_proj_route(models.Model):
 #----------------------------------------------------
 
 class Document(models.Model):
+    id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/', blank=True)
     dfolder = models.CharField(max_length=255, blank=True)
     dmessage = models.CharField(max_length=255, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     owner = models.IntegerField(default=0)
+
+
+#----------------------------------------------------
+#GENERAL SETTINGS
+#----------------------------------------------------
+
+class settings_gen(models.Model):
+    id = models.AutoField(primary_key=True)
+    tenant_name = models.CharField(max_length=255, blank=True)

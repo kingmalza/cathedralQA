@@ -8,7 +8,7 @@ from django.shortcuts import render
 from frontend.forms import DocumentForm
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
 from frontend.models import temp_main, temp_case, temp_keywords, temp_library, temp_variables, temp_pers_keywords, \
-    temp_test_keywords, t_threads, t_tags, t_tags_route
+    temp_test_keywords, t_threads, t_tags, t_tags_route, settings_gen
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
     temp_variablesSerializer, temp_pers_keywordsSerializer, temp_test_keywordsSerializer, temp_librarySerializer, t_scheduleSerializer, \
@@ -159,6 +159,32 @@ def temp_lib(request, **kwargs):
 
 
 @login_required
+def ext_lib(request, **kwargs):
+    global test_case
+
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case}
+    response = render(request, 'base_extlib.html', context_dict, context)
+
+    return response
+
+
+@login_required
+def sys_usage(request, **kwargs):
+    global test_case
+
+    #HERE WE'LL HAVE TO USE LAMBDA CALL FOR RETRIVE LIST OF USAGE FROM LIC_USAGE
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case}
+    response = render(request, 'base_usage.html', context_dict, context)
+
+    return response
+
+@login_required
 def f_upload(request, **kwargs):
     current_user = request.user
     err_msg = ""
@@ -261,6 +287,12 @@ def user_login(request):
             site_active = False
         
         if site_active:
+            #Now check if in settings_gen table tenant_name there is tenant, otherwise add it
+            t_set = settings_gen.objects.all()
+            if not t_set:
+                ten_add = settings_gen(tenant_name = schema_name)
+                ten_add.save()
+
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:

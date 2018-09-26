@@ -33,7 +33,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     temp_variablesViewSet, \
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
-    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload
+    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage
 
 schema_view = get_schema_view(title='Aida API')
 
@@ -84,6 +84,8 @@ urlpatterns = [
                   url(r'^groupsub', subTgroup),
                   url(r'^tvar$', temp_var),
                   url(r'^tlib$', temp_lib),
+                  url(r'^libs$', ext_lib),
+                  url(r'^usage', sys_usage),
                   url(r'^files', f_upload),
                   url(r'^schema/$', schema_view),
                   url(r'^users/$', user_list, name='user-list'),

@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from django.conf import settings
+
 import simplejson
 import boto3
 import json
@@ -29,7 +30,7 @@ from tenant_schemas.utils import (get_tenant_model, remove_www,
 from itertools import groupby, product
 from operator import itemgetter
 
-from frontend.models import t_history, t_time, t_threads, t_group, t_group_test, temp_main, t_proj_route, t_tags_route, t_proj, t_tags
+from frontend.models import t_history, t_time, t_threads, t_group, t_group_test, temp_main, t_proj_route, t_tags_route, t_proj, t_tags, settings_gen
 
 t_list = {};
 jobqueue = que.Queue()
@@ -136,7 +137,8 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
             #LAMBDA CALL FOR LIC INSERTION
             #1 Check customer id         
-            schema_name = str(settings.DATABASES['default']['SCHEMA'])
+            #schema_name = str(settings.DATABASES['default']['SCHEMA'])
+            schema_name = settings_gen.objects.get(id=1).tenant_name
                        
             pay_c = {
                 "ev_type": "G",

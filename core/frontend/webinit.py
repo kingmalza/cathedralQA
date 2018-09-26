@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from frontend.models import Client
-from frontend.models import t_schedsettings
+from frontend.models import t_schedsettings, settings_gen
 from frontend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
 import datetime
@@ -27,6 +27,10 @@ def create1(t_tenant,t_name):
     #1 Create tenant entry and populate db schema
     tenant = Client(domain_url=t_tenant+'.myaida.io', schema_name=t_tenant,name=t_name, paid_until='2019-12-05',on_trial=False)
     tenant.save()
+
+    #Insert tenant value in settings table
+    tenant_insert = settings_gen(tenant_name=t_tenant)
+    tenant_insert.save()
     
 
 def create2():
