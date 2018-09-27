@@ -63,7 +63,7 @@ def mainoptions(request):
         response = []
         for i in mainOptions.iterator():
             vallabel = {'OptionID': i.id, 'OptionKey': i.v_key, 'OptionVal': i.v_val, 'OptionMain': i.main_id.id,
-                        'OptionDescr': i.main_id.descr}
+                        'OptionDescr': i.main_id.descr, 'OptionNote': i.main_id.notes}
             response.append(vallabel)
         json = simplejson.dumps(response)
 

@@ -129,7 +129,9 @@ function AddOptions(VarID) {
                     liclass = "";
                 }
 
-
+                //If there is a t_main description create a readonly textarea for display it 
+                console.log("Descr: "+data[index].OptionNote);
+              
                 tart11 = document.createElement('input', '', 'form-control');
                 tart11.setAttribute('type', 'text');
                 tart11.id = data[index].OptionKey;
@@ -143,6 +145,12 @@ function AddOptions(VarID) {
                 tart11.defaultValue = data[index].OptionVal;
                 vard = document.getElementById("tab_" + data[index].OptionMain);
                 vard = document.getElementById("tab_1");
+                if (data[index].OptionNote != undefined) {
+                    tartDt = document.createElement('input', '', 'form-control');
+                    tartDt.setAttribute('type', 'text');
+                    tartDt.value = data[index].OptionNote;
+                    vard.appendChild(tartDt);   
+                } 
                 vard.appendChild(createVarText);
                 vard.appendChild(createSpace);
                 vard.appendChild(tart11);

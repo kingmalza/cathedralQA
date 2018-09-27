@@ -21,50 +21,81 @@
             -->
         </section>
         <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Upload</button>
-                    </form>
-                </div>
-            </div>
-            <div style="display:inline-block; height:40px; width: 100%"></div>
-            <!-- Start historical table -->
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Historical file table</h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <table class="table table-bordered">
-                                <tbody id="h_file">
-                                <!--<tr>
-                                    <th style="width: 10px">Col1</th>
-                                    <th>Col2</th>
-                                    <th>Col3</th>
-                                    <th style="width: 40px">Col4</th>
-                                    <th>Col5</th>
-                                    <th>Col6</th>
-                                    <th>Col7</th>
-                                    <th>Col8</th>
-                                    <th>Col9</th>
-                                    <th>Col10</th>
-                                </tr>-->
-                                </tbody>
-                            </table>
-                        </div><!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <ul class="pagination pagination-sm no-margin pull-right" id="ul_group">
-                                <!-- Ajax DOM generated in history_comp -->
-                            </ul>
-                        </div>
+            <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <!-- interactive chart -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Interactive Area Chart</h3>
+                  <div class="box-tools pull-right">
+                    Real time
+                    <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                      <button type="button" class="btn btn-default btn-xs active" data-toggle="on">On</button>
+                      <button type="button" class="btn btn-default btn-xs" data-toggle="off">Off</button>
                     </div>
+                  </div>
                 </div>
-            </div>
-            <!-- end historical table -->
+                <div class="box-body">
+                  <div id="interactive" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="1255" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1255px; height: 300px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 20px; text-align: center;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 141px; text-align: center;">10</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 264px; text-align: center;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 388px; text-align: center;">30</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 512px; text-align: center;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 635px; text-align: center;">50</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 759px; text-align: center;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 882px; text-align: center;">70</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 1006px; text-align: center;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 114px; top: 283px; left: 1130px; text-align: center;">90</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 270px; left: 12px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 216px; left: 6px; text-align: right;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 162px; left: 6px; text-align: right;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 108px; left: 6px; text-align: right;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 54px; left: 6px; text-align: right;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 1px; text-align: right;">100</div></div></div><canvas class="flot-overlay" width="1255" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1255px; height: 300px;"></canvas></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Line chart -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Line Chart</h3>
+                </div>
+                <div class="box-body">
+                  <div id="line-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 21px; text-align: center;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 106px; text-align: center;">2</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 190px; text-align: center;">4</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 275px; text-align: center;">6</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 359px; text-align: center;">8</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 441px; text-align: center;">10</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 75px; top: 283px; left: 526px; text-align: center;">12</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 270px; left: 1px; text-align: right;">-1.5</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 225px; left: 1px; text-align: right;">-1.0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 1px; text-align: right;">-0.5</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 4px; text-align: right;">0.0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 4px; text-align: right;">0.5</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 4px; text-align: right;">1.0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 4px; text-align: right;">1.5</div></div></div><canvas class="flot-overlay" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+
+              <!-- Area chart -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Full Width Area Chart</h3>
+                </div>
+                <div class="box-body">
+                  <div id="area-chart" style="height: 338px; padding: 0px; position: relative;" class="full-width-chart"><canvas class="flot-base" width="641" height="338" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 641px; height: 338px;"></canvas><canvas class="flot-overlay" width="641" height="338" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 641px; height: 338px;"></canvas></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+
+            </div><!-- /.col -->
+
+            <div class="col-md-6">
+              <!-- Bar chart -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Bar Chart</h3>
+                </div>
+                <div class="box-body">
+                  <div id="bar-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 27px; text-align: center;">January</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 127px; text-align: center;">February</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 236px; text-align: center;">March</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 341px; text-align: center;">April</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 444px; text-align: center;">May</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 100px; top: 283px; left: 544px; text-align: center;">June</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 270px; left: 7px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 203px; left: 7px; text-align: right;">5</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 1px; text-align: right;">10</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 68px; left: 1px; text-align: right;">15</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 1px; text-align: right;">20</div></div></div><canvas class="flot-overlay" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+
+              <!-- Donut chart -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="fa fa-bar-chart-o"></i>
+                  <h3 class="box-title">Donut Chart</h3>
+                </div>
+                <div class="box-body">
+                  <div id="donut-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas><canvas class="flot-overlay" width="603" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 603px; height: 300px;"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 71px; left: 360.5px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>30%</div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 211px; left: 338.5px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>20%</div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 130px; left: 179.5px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div></span></div>
+                </div><!-- /.box-body-->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section>
         </section>
     </div>
 
