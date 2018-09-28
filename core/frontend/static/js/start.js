@@ -1,6 +1,7 @@
 function seltype(varID) {
     oCssSet = document.getElementById("sel_opt");
     oTest = document.getElementById("tab_div1");
+    oTestsel = document.getElementById("test_sel");
     oVal = document.getElementById("div_val");
     oCssSet.innerHTML = "";
     $("#div_val").hide();
@@ -10,20 +11,39 @@ function seltype(varID) {
     /*while (oTest.firstChild) {
         oTest.removeChild(oTest.firstChild);
     }*/
+    
+    //Try to remove comment if there are
+    try {
+        oTnotes = document.getElementById("t_notes");
+        oTnotes.remove()
+    }
+    catch(err) {
+        console.log(err);
+    }
+    
     $.ajax({
         type: "POST",
         url: "test_type",
         data: {selType: varID.value},
         success: function (data) {
             oCssSet.disabled = false;
-
+            
             $.each(data, function (index) {
+                
+                if (index == 0) {
+                    var opt1 = document.createElement("option");
+                    opt1.value = 1;
+                    opt1.innerHTML = '-- select an option --';
+                    opt1.disabled = false;
+                    oCssSet.appendChild(opt1);
+                } 
+                
                 var opt = document.createElement("option");
                 opt.value = data[index].selID;
                 opt.innerHTML = data[index].selDescr;
-
+                               
                 oCssSet.appendChild(opt);
-
+                
             });
 
         }
@@ -40,6 +60,7 @@ function AddOptions(VarID) {
     oCss2 = GetElementInsideContainer("div_val", "div_sched");
     //oCssBtn = GetElementInsideContainer("div_val", "div_btn");
     oCssBtn = document.getElementById("div_btn");
+    oCssSet = document.getElementById("sel_opt");
     tmain = document.getElementById("tab_div1");
     tdata = document.getElementById("tab_div2");
     if (tdata == null) {
@@ -96,10 +117,17 @@ function AddOptions(VarID) {
                 $("#div_sched").hide();
             }
 
+            //First if there is a testset description delete it
+            try {
+                oTsel.removeChild(optNotes);
+                }
+            catch(err) {
+                console.log(err);
+            }
 
             $.each(data, function (index) {
 
-
+                                
                 if (index == 0) {
 
                     var li_tab = document.createElement("LI");
@@ -127,11 +155,23 @@ function AddOptions(VarID) {
                     isgroup = data[index].OptionMain;
                     tabpane = "tab-pane";
                     liclass = "";
+                    
+                    
+                    if (oType.value == "ST") {
+                        //If there is a t_main description create a readonly textarea for display it 
+                        console.log("Descr: "+data[index].OptionNote);
+                        if (data[index].OptionNote != undefined) {
+                            optNotes = document.createElement("SPAN");
+                            optNotes.setAttribute("id", "t_notes");
+                            optNotes.setAttribute('class', 'label label-default');
+                            optNotes.innerHTML = data[index].OptionNote;
+                            oTsel.appendChild(optNotes);   
+                        }
+                    }
                 }
-
-                //If there is a t_main description create a readonly textarea for display it 
-                console.log("Descr: "+data[index].OptionNote);
-              
+                
+ 
+            
                 tart11 = document.createElement('input', '', 'form-control');
                 tart11.setAttribute('type', 'text');
                 tart11.id = data[index].OptionKey;
@@ -145,12 +185,6 @@ function AddOptions(VarID) {
                 tart11.defaultValue = data[index].OptionVal;
                 vard = document.getElementById("tab_" + data[index].OptionMain);
                 vard = document.getElementById("tab_1");
-                if (data[index].OptionNote != undefined) {
-                    tartDt = document.createElement('input', '', 'form-control');
-                    tartDt.setAttribute('type', 'text');
-                    tartDt.value = data[index].OptionNote;
-                    vard.appendChild(tartDt);   
-                } 
                 vard.appendChild(createVarText);
                 vard.appendChild(createSpace);
                 vard.appendChild(tart11);

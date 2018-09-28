@@ -27,36 +27,50 @@ def mainoptions(request):
             g_list = []
             # HERE WE HAVE TO SELECT THE temp_variables related to test in t_group_test
             # First create my list from group selection
-            mainGroup = t_group_test.objects.filter(id_grp=int(request.POST['mainID'])).order_by('temp_ord')
-            for i in mainGroup.iterator(): g_list.append(i.id_temp.id)
+            try:
+                mainGroup = t_group_test.objects.filter(id_grp=int(request.POST['mainID'])).order_by('temp_ord')
+                for i in mainGroup.iterator(): g_list.append(i.id_temp.id)
+            except:
+                pass
             # Now filter variables based on multiple temp main
             mainOptions = temp_variables.objects.filter(main_id__in=g_list)
         elif request.POST['selType'] == "ST":
             mainOptions = temp_variables.objects.filter(main_id=int(request.POST['mainID']))
             # If mainOptions is blank insert new nodata line
             if not mainOptions:
-                p = temp_variables(v_key='noData', v_val='noVal',
+                try:
+                    p = temp_variables(v_key='noData', v_val='noVal',
                                    main_id=temp_main.objects.get(id=int(request.POST['mainID'])), owner_id=1)
-                p.save()
+                    p.save()
+                except:
+                    pass
         elif request.POST['selType'] == "TA":
             # is a TA
             t_list = []
             # HERE WE HAVE TO SELECT THE temp_variables related to test in t_tags_route
             # First create my list from tags selection
-            mainTags = t_tags_route.objects.filter(tag_id=int(request.POST['mainID'])).order_by('main_id')
-            for i in mainTags.iterator(): t_list.append(i.main_id.id)
+            try:
+                mainTags = t_tags_route.objects.filter(tag_id=int(request.POST['mainID'])).order_by('main_id')
+                for i in mainTags.iterator(): t_list.append(i.main_id.id)
+            except:
+                pass
+            
             # Now filter variables based on multiple temp main
             mainOptions = temp_variables.objects.filter(main_id__in=t_list)
+
         else:
             # is a TP
             t_list = []
             # HERE WE HAVE TO SELECT THE temp_variables related to test in t_proj_route
             # First create my list from projs selection
 
-            mainProjs = t_proj_route.objects.filter(proj_id=int(request.POST['mainID'])).order_by('main_id')
-            for i in mainProjs.iterator():
-                print('TESTID-->', i.main_id.id)
-                t_list.append(i.main_id.id)
+            try:
+                mainProjs = t_proj_route.objects.filter(proj_id=int(request.POST['mainID'])).order_by('main_id')
+                for i in mainProjs.iterator():
+                    print('TESTID-->', i.main_id.id)
+                    t_list.append(i.main_id.id)
+            except:
+                pass
             # Now filter variables based on multiple temp main
             mainOptions = temp_variables.objects.filter(main_id__in=t_list)
 
@@ -274,6 +288,8 @@ def tselect(request):
             vallabel = {}
             vallabel['selID'] = i.id
             vallabel['selDescr'] = i.descr
+            if request.POST['selType'] == "ST":
+                vallabel['OptionNote'] = i.notes
             vallabel['selType'] = request.POST['selType']
             response.append(vallabel)
         json = simplejson.dumps(response)
