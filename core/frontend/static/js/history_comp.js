@@ -8,7 +8,14 @@ function GetElementInsideContainer(containerID, childID) {
 }
 
 
+  $(document).ajaxStop(function () {
+      //alert('STOP');
+      document.getElementById("overlay").style.display = "none";
+  });
+
+
 function refHistory(j_ord, j_sign, j_search, is_search) {
+    var stat_h = document.getElementById("stat_load");
     j_search = document.getElementById("txthis").value;
     if (j_ord == null){
         j_ord = '-id';
@@ -47,7 +54,9 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
     //TIMELINE ELEMENTS
     t_line = document.getElementById("tline");
     t_lineH1 = GetElementInsideContainer("tl_tit", "tl_h4");
-
+    
+    //SET WARNING FOR LOADING VISIBLE
+    //stat_h.style.visibility = 'visible';
 
     $.ajax({
         type: "POST",
@@ -55,6 +64,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
         data: {tab_slice: t_sect, tab_ord: j_ord, tab_search: j_search, isearch: is_search},
         success: function (data) {
             t_body.innerHTML = "";
+            //stat_h.style.visibility = 'hidden';
             if (data) {
                 t_group.innerHTML = "";
                 //dlen = (data + '').length;

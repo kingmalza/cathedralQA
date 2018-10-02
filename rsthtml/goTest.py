@@ -159,24 +159,32 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                 
             #id_cli = cli_id[0]
             id_cli = cli_id['Payload'].read().decode('utf-8')[1]
-
-            #2 Insert data into usage table
-            payload = {
-                "key_cli": id_cli,
-                "data_start": dtime1,
-                "data_stop": dtime2,
-                "elapsed_t": elapsed,
-                "bk_tenant": schema_name
-            }
+            data_act = cli_id['Payload'].read().decode('utf-8')[5]
             
-            try:
-                client.invoke(
-                    FunctionName='aida_usage_insert',
-                    InvocationType='RequestResponse',
-                    Payload=json.dumps(payload)
-                )
-            except ClientError as er2: #if you see a ClientError, catch it as e
-                print("Error use--> ",er2) #print the client error info to console
+            #Now check delta days from today and activate data
+            d0 = datetime.date.today().strftime("%Y-%m-%d")
+            d0 = datetime.datetime.strptime(d0, '%Y-%m-%d')
+            d1 = datetime.datetime.strptime(data_act, '%Y-%m-%d')
+            delta = (d0-d1)
+            
+            if delta > 30:
+                #2 Insert data into usage table if activation data greater than 30gg
+                payload = {
+                    "key_cli": id_cli,
+                    "data_start": dtime1,
+                    "data_stop": dtime2,
+                    "elapsed_t": elapsed,
+                    "bk_tenant": schema_name
+                }
+            
+                try:
+                    client.invoke(
+                        FunctionName='aida_usage_insert',
+                        InvocationType='RequestResponse',
+                        Payload=json.dumps(payload)
+                    )
+                except ClientError as er2: #if you see a ClientError, catch it as e
+                    print("Error use--> ",er2) #print the client error info to console
 
            
     except Exception as e:

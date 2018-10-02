@@ -41,6 +41,12 @@ function GetElementInsideContainer(containerID, childID) {
 }
 
 
+$(document).ajaxStop(function () {
+    //alert('STOP');
+    document.getElementById("overlay_proc").style.display = "none";
+});
+
+
 function refTable() {
     j_search = document.getElementById("txthish").value;
     j_sord = document.getElementById("txtsord").value;
@@ -55,7 +61,7 @@ function refTable() {
     if (issearch == null) {
         issearch = '-';
     }
-    console.log(j_sord);
+    //console.log(j_sord);
 
     //alert(j_search+"--"+j_sord+"--"+issearch);
 
@@ -356,6 +362,7 @@ function refTable() {
                         t_line.style.visibility = 'visible';
                         t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
                         c_hold = this.cells[8].innerHTML;
+                        document.getElementById("overlay_proc").style.display = "block";
                         getTline(c_hold);
                     }
                 })(i);

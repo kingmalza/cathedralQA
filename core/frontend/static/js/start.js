@@ -207,8 +207,15 @@ function inspectHTML(objID) {
     alert(objID.value);
 }
 
+
+$(document).ajaxStop(function () {
+    //alert('STOP');
+    document.getElementById("overlay").style.display = "none";
+});
+
 function testBtn(VarID, t_type) {
 
+    document.getElementById("overlay").style.display = "block";
     //var divScan = GetElementInsideContainer("tab_div1","tab_div2");
     var divScan = document.getElementById("tab_div2");
     var ancestor = divScan,
@@ -265,7 +272,7 @@ function testBtn(VarID, t_type) {
             t_id: uuid
         },
         success: function (data) {
-
+            //document.getElementById("overlay").style.display = "none";
         }
     });
 }
