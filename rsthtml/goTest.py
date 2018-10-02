@@ -139,7 +139,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             #1 Check customer id         
             #schema_name = str(settings.DATABASES['default']['SCHEMA'])
             schema_name = settings_gen.objects.get(id=1).tenant_name
-                       
+
             pay_c = {
                 "ev_type": "G",
                 "tenant": schema_name
@@ -156,18 +156,22 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             
             schema_name = <client name>
             """
-                
-            #id_cli = cli_id[0]
-            id_cli = cli_id['Payload'].read().decode('utf-8')[1]
-            data_act = cli_id['Payload'].read().decode('utf-8')[5]
-            
+            data1 = cli_id['Payload'].read().decode('utf-8')
+            l_data = json.loads(json.loads(data1,encoding='utf-8'))
+
+            id_cli = l_data[0]
+            data_act = l_data[4]
+
+            print("dataact->",id_cli,data_act)
+
             #Now check delta days from today and activate data
             d0 = datetime.date.today().strftime("%Y-%m-%d")
             d0 = datetime.datetime.strptime(d0, '%Y-%m-%d')
             d1 = datetime.datetime.strptime(data_act, '%Y-%m-%d')
             delta = (d0-d1)
-            
-            if delta > 30:
+
+
+            if delta.days > 30:
                 #2 Insert data into usage table if activation data greater than 30gg
                 payload = {
                     "key_cli": id_cli,
@@ -188,7 +192,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
            
     except Exception as e:
-        print("Errore:", e.args)
+        print("Errore_gotest:", e.args)
 
 
 def run_threaded(job_func, P1, P2, P3, P4, P5, P6, P7, P8, P9='NoGroup'):
