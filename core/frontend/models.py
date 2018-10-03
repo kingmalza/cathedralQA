@@ -522,3 +522,21 @@ class Document(models.Model):
 class settings_gen(models.Model):
     id = models.AutoField(primary_key=True)
     tenant_name = models.CharField(max_length=255, blank=True)
+
+
+
+#----------------------------------------------------
+#SUITE LIBRARIES
+#TODO: Mettere default value pending a field status e capire come toglierlo dalla pagina admin in add
+#----------------------------------------------------
+
+class suite_libs(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, blank=True)
+    descr = models.TextField(null=True, blank=True)
+    docs = models.TextField(null=True, blank=True)
+    lib_name = models.CharField(max_length=255, blank=True)
+    status = models.CharField(max_length=10, blank=True)
+    f_lib = models.FileField(upload_to='documents/', blank=True)
+    notes = models.TextField(null=True, blank=True)
+    #owner = models.IntegerField(default=0)
