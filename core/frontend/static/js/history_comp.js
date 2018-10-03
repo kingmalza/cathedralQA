@@ -11,6 +11,7 @@ function GetElementInsideContainer(containerID, childID) {
   $(document).ajaxStop(function () {
       //alert('STOP');
       document.getElementById("overlay").style.display = "none";
+      document.getElementById("overlay_proc").style.display = "none";
   });
 
 
@@ -351,6 +352,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_line.style.visibility = 'visible';
                         t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
                         c_hold = this.cells[13].innerHTML;
+                        document.getElementById("overlay_proc").style.display = "block";
+                        window.location.href = '/#tl_tit';
                         getTlineHist(c_hold);
                     }
                 })(i);

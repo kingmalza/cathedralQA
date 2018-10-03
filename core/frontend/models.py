@@ -377,12 +377,17 @@ class t_history(models.Model):
     var_test = models.TextField()
     pid = models.CharField(max_length=20, null=True, blank=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
-    group_id = models.ForeignKey(t_group, null=True, blank=True, on_delete=models.CASCADE,)
+    group_id = models.ForeignKey(t_group, null=True, blank=True, on_delete=models.CASCADE, db_index=True)
     pass_num = models.IntegerField(default=0)
     fail_num = models.IntegerField(default=0)
     sched_type = models.CharField(max_length=50, blank=True)
     sched_val = models.CharField(max_length=10, blank=True)
     thread_name = models.CharField(max_length=100, blank=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['group_id']),
+        ]
 
     def __str__(self):
         return self.exec_status
@@ -401,14 +406,19 @@ class t_threads(models.Model):
     id_test = models.ForeignKey(t_history, on_delete=models.CASCADE,)
     thread_id = models.CharField(max_length=50, null=True, blank=True)
     thread_main = models.CharField(max_length=100, null=True, blank=True)
-    thread_stag = models.CharField(max_length=100, null=True, blank=True)
-    thread_status = models.CharField(max_length=10, null=True, blank=True)
+    thread_stag = models.CharField(db_index=True, max_length=100, null=True, blank=True)
+    thread_status = models.CharField(db_index=True, max_length=10, null=True, blank=True)
     thread_startd = models.DateTimeField(auto_now=True)
     thread_stopd = models.DateTimeField(auto_now=False, null=True, blank=True)
     thread_ttype = models.CharField(max_length=5, blank=True)
     thread_tgroup = models.CharField(max_length=50, blank=True)
     thread_stype = models.CharField(max_length=50, blank=True)
     thread_sval = models.CharField(max_length=10, blank=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['thread_stag', 'thread_status']),
+        ]
 
     def __str__(self):
         return self.thread_id
