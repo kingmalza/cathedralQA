@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
-    temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route
+    temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
 
 
 # Here i try an admin model for populate fields with latest values inserted
@@ -59,8 +59,9 @@ class APIAdmin(admin.ModelAdmin):
         super(APIAdmin, self).save_model(request, obj, form, change)
 
 
-admin.site.site_title = 'Lyra Admin'
-admin.site.site_header = 'Lyra admin console'
+        
+admin.site.site_title = 'Aida Admin'
+admin.site.site_header = 'Aida admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
 
 admin.site.register(temp_main, APIAdmin, )
@@ -76,3 +77,4 @@ admin.site.register(t_tags_route, )
 admin.site.register(t_tags, )
 admin.site.register(t_proj_route, )
 admin.site.register(t_proj, )
+admin.site.register(suite_libs, )
