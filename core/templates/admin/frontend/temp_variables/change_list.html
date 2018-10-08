@@ -54,7 +54,7 @@
 &rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
 </div>
 <div class="alert warning">
-  <strong>Hint:</strong> Test libraries contain those lowest-level keywords, often called library keywords, which actually interact with the system under test. All test cases always use keywords from some library, often through higher-level user keywords. Test libraries are normally imported using the Library setting in the Setting table and having the library name in the subsequent column. Unlike most of the other data, the library name is both case- and space-sensitive. If a library is in a package, the full name including the package name must be used.<br><br><strong>Note:</strong> Some test libraries are distributed with Robot Framework and these libraries are called standard or BuiltIn libraries. The BuiltIn library is special, because it is taken into use automatically and thus its keywords are always available. Other standard libraries need to be defined with Library keyword in the same way as any other libraries, but there is no need to install them.<br><br><strong>Reference:</strong><br><a href='http:/www.ciao.it' target='_blank'>aidaproject.io/...</a>
+  <strong>Hint:</strong> Variables are an integral feature of Aida, and they can be used in most places in test data. Most commonly, they are used in arguments for keywords in test case tables and keyword tables, but also all settings allow variables in their values. A normal keyword name cannot be specified with a variable, but the BuiltIn keyword Run Keyword can be used to get the same effect.<br><br><strong>Note:</strong>Aida use Robot Framework variables type that can be used as scalars, lists or dictionaries using syntax ${SCALAR}, @{LIST} and &{DICT}, respectively. In addition to this, environment variables can be used directly with syntax %{ENV_VAR}.<br><br><strong>Reference:</strong><br><a href='http:/www.ciao.it' target='_blank'>aidaproject.io/...</a>
 </div>
 {% endblock %}
 {% endif %}
@@ -110,28 +110,5 @@
       </form>
     </div>
   </div>
-  <div  class="alert success">
-    <strong>Installed libraries:</strong> Here a list of current installed libraries you can use importing using Library module:<br><br>
-    <table style="width:100%">
-        <tr>
-            <th>Name</th>
-            <th>Lib Ref.</th> 
-            <th>Description</th>
-            <th>Documentation</th>
-            <th>Status</th>
-        </tr>
-        {% if sl %}
-            {%  for pic in sl %}
-                <tr>
-                    <td>{{ pic.name }}</td>
-                    <td><strong>{{ pic.lib_name }}</strong></td> 
-                    <td>{{ pic.descr }}</td>
-                    <td><a href={{ pic.docs }} target='_blank'>Link</a></td>
-                    <td>{{ pic.status }}</td>
-                </tr>
-            {%  endfor %}
-        {% endif %}
-    </table>
-</div>
 {% endblock %}
 

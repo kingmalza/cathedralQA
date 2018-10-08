@@ -54,7 +54,7 @@
 &rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
 </div>
 <div class="alert warning">
-  <strong>Hint:</strong> Test libraries contain those lowest-level keywords, often called library keywords, which actually interact with the system under test. All test cases always use keywords from some library, often through higher-level user keywords. Test libraries are normally imported using the Library setting in the Setting table and having the library name in the subsequent column. Unlike most of the other data, the library name is both case- and space-sensitive. If a library is in a package, the full name including the package name must be used.<br><br><strong>Note:</strong> Some test libraries are distributed with Robot Framework and these libraries are called standard or BuiltIn libraries. The BuiltIn library is special, because it is taken into use automatically and thus its keywords are always available. Other standard libraries need to be defined with Library keyword in the same way as any other libraries, but there is no need to install them.<br><br><strong>Reference:</strong><br><a href='http:/www.ciao.it' target='_blank'>aidaproject.io/...</a>
+  <strong>Hint:</strong> In this section you will define the name and the general description of the template you want to create. The description is not mandatory, but it is very important as it will be shown in the test execution mask once it is chosen, thus helping the tester to choose the correct template.<br><br><strong>Reference:</strong><br>aidaproject.io/...
 </div>
 {% endblock %}
 {% endif %}
@@ -110,28 +110,5 @@
       </form>
     </div>
   </div>
-  <div  class="alert success">
-    <strong>Installed libraries:</strong> Here a list of current installed libraries you can use importing using Library module:<br><br>
-    <table style="width:100%">
-        <tr>
-            <th>Name</th>
-            <th>Lib Ref.</th> 
-            <th>Description</th>
-            <th>Documentation</th>
-            <th>Status</th>
-        </tr>
-        {% if sl %}
-            {%  for pic in sl %}
-                <tr>
-                    <td>{{ pic.name }}</td>
-                    <td><strong>{{ pic.lib_name }}</strong></td> 
-                    <td>{{ pic.descr }}</td>
-                    <td><a href={{ pic.docs }} target='_blank'>Link</a></td>
-                    <td>{{ pic.status }}</td>
-                </tr>
-            {%  endfor %}
-        {% endif %}
-    </table>
-</div>
 {% endblock %}
 

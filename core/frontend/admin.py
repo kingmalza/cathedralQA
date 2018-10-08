@@ -6,13 +6,13 @@ from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
 
-
+"""
 class temp_mainAdmin(admin.ModelAdmin):
     
     #list_filter = ('main_id__descr', 'l_type')
     list_display = ('descr', 'notes', 'dt')
     #ordering = ('-l_type',)
-    
+"""   
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
 
@@ -79,8 +79,18 @@ class temp_libraryAdmin(admin.ModelAdmin):
             'sl': s_libs,
         }
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
+        
+    
+    def changeform_view(self, request, extra_context=None):
+        
+        s_libs = suite_libs.objects.all()
+        
+        extra_context = {
+            'sl': s_libs,
+        }
+        return super(temp_libraryAdmin, self).changeform_view(request, extra_context=extra_context)
 
-
+        
 class ttkAdmin(admin.ModelAdmin):
     
     list_filter = ('main_id__descr', 'test_id__descr')

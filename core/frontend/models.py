@@ -84,10 +84,10 @@ class temp_main(models.Model):
         verbose_name = '1-Main Template'
         verbose_name_plural = '1-Main Templates'
 
-    """
+
     def __str__(self):
         return self.descr
-    """
+
 
 # temp_case
 """
