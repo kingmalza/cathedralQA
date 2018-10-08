@@ -54,7 +54,7 @@
 &rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
 </div>
 <div class="alert warning">
-  <strong>Hint:</strong> Test libraries contain those lowest-level keywords, often called library keywords, which actually interact with the system under test. All test cases always use keywords from some library, often through higher-level user keywords. Test libraries are normally imported using the Library setting in the Setting table and having the library name in the subsequent column. Unlike most of the other data, the library name is both case- and space-sensitive. If a library is in a package, the full name including the package name must be used.<br><br><strong>Note:</strong> Some test libraries are distributed with Robot Framework and these libraries are called standard or BuiltIn libraries. The BuiltIn library is special, because it is taken into use automatically and thus its keywords are always available. Other standard libraries need to be defined with Library keyword in the same way as any other libraries, but there is no need to install them.<br><br><strong>Reference:</strong><br><a href='http:/www.ciao.it' target='_blank'>aidaproject.io/...</a>
+  <strong>Hint:</strong> Here you go to define and populate the Keywords section of your template. In this form, you can link custom keys to standard keys and associate a value with them. Each entry generates a new line, to assign different values to the same standard key it is sufficient to insert it several times by changing the custom key and / or the values.<br><br><strong>Reference:</strong><br>aidaproject.io/...
 </div>
 {% endblock %}
 {% endif %}

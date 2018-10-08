@@ -54,7 +54,7 @@
 &rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
 </div>
 <div class="alert warning">
-  <strong>Hint:</strong> Test libraries contain those lowest-level keywords, often called library keywords, which actually interact with the system under test. All test cases always use keywords from some library, often through higher-level user keywords. Test libraries are normally imported using the Library setting in the Setting table and having the library name in the subsequent column. Unlike most of the other data, the library name is both case- and space-sensitive. If a library is in a package, the full name including the package name must be used.<br><br><strong>Note:</strong> Some test libraries are distributed with Robot Framework and these libraries are called standard or BuiltIn libraries. The BuiltIn library is special, because it is taken into use automatically and thus its keywords are always available. Other standard libraries need to be defined with Library keyword in the same way as any other libraries, but there is no need to install them.<br><br><strong>Reference:</strong><br><a href='http:/www.ciao.it' target='_blank'>aidaproject.io/...</a>
+  <strong>Hint:</strong> Once the individual tags have been defined by the specific mask (TAGS) or by creating them directly, in this section it will be possible to associate tags / templates in order to group the test runs based on this kind of association.<br><br><strong>Reference:</strong><br>aidaproject.io/...
 </div>
 {% endblock %}
 {% endif %}

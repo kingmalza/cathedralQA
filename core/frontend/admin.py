@@ -81,7 +81,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
         
     
-    def changeform_view(self, request, extra_context=None):
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
         
         s_libs = suite_libs.objects.all()
         
@@ -94,7 +94,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
 class ttkAdmin(admin.ModelAdmin):
     
     list_filter = ('main_id__descr', 'test_id__descr')
-    list_display = ('get_main_id', 'get_test_id', 'key_id', 'key_val')
+    list_display = ('get_main_id', 'get_test_id', 'key_id', 'key_val', 'key_group')
     #ordering = ('-l_type',)
 
     def get_main_id(self, obj):
@@ -114,6 +114,7 @@ class ttkAdmin(admin.ModelAdmin):
         latest_object = temp_test_keywords.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         form.base_fields['test_id'].initial = latest_object.test_id
+        form.base_fields['key_id'].initial = latest_object.key_id
         return form
 
 
@@ -138,6 +139,46 @@ class tpk(admin.ModelAdmin):
         return form
 
 
+class t_tags_routeAdmin(admin.ModelAdmin):
+
+    list_filter = ('main_id__descr', 'tag_id__descr')
+    list_display = ('get_main_id', 'get_tag_id', 'route_notes')
+
+    # ordering = ('-l_type',)
+
+    def get_main_id(self, obj):
+        return obj.main_id.descr
+
+    get_main_id.short_description = 'Main Template'
+    get_main_id.admin_order_field = 'main_id__descr'
+
+    def get_tag_id(self, obj):
+        return obj.tag_id.descr
+
+    get_tag_id.short_description = 'TAG'
+    get_tag_id.admin_order_field = 'tag_id__descr'
+
+
+class t_proj_routeAdmin(admin.ModelAdmin):
+
+    list_filter = ('main_id__descr', 'proj_id__descr')
+    list_display = ('get_main_id', 'get_proj_id', 'route_notes')
+
+    # ordering = ('-l_type',)
+
+    def get_main_id(self, obj):
+        return obj.main_id.descr
+
+    get_main_id.short_description = 'Main Template'
+    get_main_id.admin_order_field = 'main_id__descr'
+
+    def get_proj_id(self, obj):
+        return obj.proj_id.descr
+
+    get_proj_id.short_description = 'PROJECT'
+    get_proj_id.admin_order_field = 'proj_id__descr'
+
+
 class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
@@ -158,8 +199,8 @@ admin.site.register(temp_pers_keywords, tpk, )
 admin.site.register(temp_test_keywords, ttkAdmin, )
 admin.site.register(t_group, )
 admin.site.register(t_group_test, )
-admin.site.register(t_tags_route, )
+admin.site.register(t_tags_route, t_tags_routeAdmin)
 admin.site.register(t_tags, )
-admin.site.register(t_proj_route, )
+admin.site.register(t_proj_route, t_proj_routeAdmin )
 admin.site.register(t_proj, )
 admin.site.register(suite_libs, )

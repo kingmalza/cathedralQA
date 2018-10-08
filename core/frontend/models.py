@@ -125,7 +125,7 @@ List of selenium, roboframeworks + personalized (flag 1 in personal) keywords an
 class temp_keywords(models.Model):
     descr = models.CharField(max_length=200, unique=True)
     human = models.CharField(max_length=200, unique=True)
-    personal = models.BooleanField(default=False, verbose_name="Linked variable")
+    personal = models.BooleanField(default=True, verbose_name="Personal Keyword (Uncheck if is a new library standard keyword)")
     #personal = models.IntegerField(default=1, verbose_name="Linked variable")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -441,8 +441,8 @@ class t_tags(models.Model):
     owner = models.ForeignKey('auth.User', related_name='ttags_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = 'TAGS'
-        verbose_name_plural = 'TAGS'
+        verbose_name = 'TAGS MANAGER'
+        verbose_name_plural = 'TAGS MANAGER'
         ordering = ('descr',)
 
     """
@@ -459,14 +459,15 @@ class t_tags_route(models.Model):
     owner = models.ForeignKey('auth.User', related_name='ttagsroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '7-Tags for Templates'
-        verbose_name_plural = '7-Tags for Templates'
+        verbose_name = 'TAGS TEMPLATES LINK'
+        verbose_name_plural = 'TAGS TEMPLATES LINK'
         ordering = ('main_id', 'tag_id', 'route_notes',)
 
+    """
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.tag_id))
-
+    """
 
 # -----------------------------------------------------------------------------
 # TEMPLATE PROJECT ASSOCIATION
@@ -482,8 +483,8 @@ class t_proj(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tproj_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = 'PROJECTS'
-        verbose_name_plural = 'PROJECTS'
+        verbose_name = 'PROJECTS MANAGER'
+        verbose_name_plural = 'PROJECTS MANAGER'
         ordering = ('descr',)
 
     def __str__(self):
@@ -499,14 +500,15 @@ class t_proj_route(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tprojroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '8-Projects Templates link'
-        verbose_name_plural = '8-Projects Templates link'
+        verbose_name = 'PROJECT TEMPLATE LINK'
+        verbose_name_plural = 'PROJECT TEMPLATE LINK'
         ordering = ('main_id', 'proj_id', 'route_notes',)
 
+    """
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.proj_id))
-
+    """
 
 #----------------------------------------------------
 #FILES UPLOAD
