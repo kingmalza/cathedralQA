@@ -2,9 +2,18 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
 from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
 from decimal import Decimal
+
+
+def validate_fsize(in_file):
+    file_size = in_file.file.size
+    limit_kb = 150
+    if file_size > limit_kb * 1024:
+        raise ValidationError("Max size of file is %s KB" % limit_kb)
 
 # 1 create user table
 """
@@ -107,13 +116,13 @@ class temp_case(models.Model):
         verbose_name_plural = '2-Test Cases'
         ordering = ('descr',)
 
-    """
+
     def __str__(self):
         return '%s -> %s' % (str(self.main_id), self.descr)
 
     def __repr__(self):
         return self.descr
-    """
+   
 
 # temp_keywords
 """
@@ -545,8 +554,8 @@ class suite_libs(models.Model):
     descr = models.TextField(null=True, blank=True)
     docs = models.TextField(null=True, blank=True, editable= False)
     lib_name = models.CharField(max_length=255, blank=True)
-    status = models.CharField(max_length=10, default='APPROVAL', editable= False)
-    f_lib = models.FileField(upload_to='libs/', blank=True)
+    status = models.CharField(max_length=10, default='PENDING', editable= False)
+    f_lib = models.FileField(upload_to='libs/', blank=True, validators=[FileExtensionValidator(['py']),validate_fsize], verbose_name="File ( .py Max 150Kb )")
     notes = models.TextField(null=True, blank=True)
     #owner = models.IntegerField(default=0)
     

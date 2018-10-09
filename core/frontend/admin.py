@@ -116,6 +116,16 @@ class ttkAdmin(admin.ModelAdmin):
         form.base_fields['test_id'].initial = latest_object.test_id
         form.base_fields['key_id'].initial = latest_object.key_id
         return form
+        
+    
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_test_keywords.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(ttkAdmin, self).changeform_view(request, extra_context=extra_context)
 
 
 # Model page field using custom forms

@@ -20,11 +20,6 @@
     border-bottom: 1px solid #417690;
     color: 0000;
     }
-.alert.last {
-    background-color: #ffffff;
-    border-bottom: 1px solid #417690;
-    color: 0000;
-    }
 </style>
 
 {% extends "admin/base_site.html" %}
@@ -48,6 +43,9 @@
 &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
 &rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
 &rsaquo; {% if add %}{% blocktrans with name=opts.verbose_name %}Add {{ name }}{% endblocktrans %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+<div class="alert warning">
+  <strong>Hint:</strong> It is possible to upload your personal libraries to use in your Aida templates. once a library has been added, the spread will be in PENDING state, only once the validation procedure by Aida staff has been completed will this be READY and usable within your projects.<br><br><strong>Notes:</strong> Only libraries written entirely in python code are accepted, files that can be loaded and managed must have a .py extension and not exceed 150Kb in size.</strong> <br><br><strong>Reference:</strong><br>aidaproject.io/...
 </div>
 {% endblock %}
 {% endif %}
@@ -111,29 +109,5 @@
 
 </div>
 </form>
-{% if lmod %}
-  <h1>Last operation:</h1>
-  <div  class="alert last">
-    <table style="width:100%">
-        <tr>
-            <th>Template</th>
-            <th>Test Case</th> 
-            <th>Keyword</th>
-            <th>Key Value</th>
-            <th>User</th>
-        </tr>
-            <tr>
-                <td>{{ lmod.main_id }}</td>
-                <td><strong>{{ lmod.test_id.descr }}</strong></td> 
-                <td>{{ lmod.key_id.descr }}</td>
-                <td>{{ lmod.key_val }}</td>
-                <td>{{ lmod.owner.username }}</td>
-            </tr>
-    </table>
-</div>
-{% endif %}
-  <div  class="alert success">
-    <strong>PRO Tips:</strong> Using groups allows you to distribute key values either one by one for each new line or one to many on the same line.<br><br><strong>Example:</strong><br>Without group setting:<br><br><table><tr><td>Log</td><td>test1</td></tr><tr><td>Log</td><td>test2</td></tr></table><br>With same group set:<br><br><table><tr><td>Log</td><td>test1</td><td>test2</td></tr></table><br><br></strong>
-</div>
 </div>
 {% endblock %}
