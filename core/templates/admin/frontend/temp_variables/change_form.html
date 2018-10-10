@@ -10,7 +10,10 @@
     margin-bottom: 15px;
 }
 
-.alert.success {background-color: #55B458;}
+.alert.success {
+    background-color: #71c174;
+    color: black
+}
 .alert.info {background-color: #2196F3;}
 .alert.warning {
     background-color: #f8f8f8;
@@ -115,42 +118,19 @@
         <tr>
             <th>Date</th>
             <th>Template</th>
-            <th>Library</th>
-            <th>Codename</th>            
+            <th>Key</th> 
+            <th>Value</th>
             <th>User</th>
         </tr>
             <tr>
                 <td>{{ lmod.dt }}</td>
                 <td>{{ lmod.main_id.descr }}</td>
-                <td>{{ lmod.l_type }}</td> 
-                <td>{{ lmod.l_val }}</td> 
+                <td>{{ lmod.v_key }}</td>
+                <td>{{ lmod.v_val }}</td>                
                 <td>{{ lmod.owner.username }}</td>
             </tr>
     </table>
 </div>
 {% endif %}
-  <div  class="alert success">
-    <strong>Installed libraries:</strong> Here a list of current installed libraries you can use importing using Library module:<br><br>
-    <table style="width:100%">
-        <tr>
-            <th>Name</th>
-            <th>Lib Ref.</th> 
-            <th>Description</th>
-            <th>Documentation</th>
-            <th>Status</th>
-        </tr>
-        {% if sl %}
-            {% for pic in sl %}
-                <tr>
-                    <td>{{ pic.name }}</td>
-                    <td><strong>{{ pic.lib_name }}</strong></td> 
-                    <td>{{ pic.descr }}</td>
-                    <td><a href={{ pic.docs }} target='_blank'>Link</a></td>
-                    <td>{{ pic.status }}</td>
-                </tr>
-            {%  endfor %}
-        {% endif %}
-    </table>
-</div>
 </div>
 {% endblock %}

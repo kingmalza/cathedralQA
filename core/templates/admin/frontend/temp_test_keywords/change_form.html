@@ -112,10 +112,11 @@
 </div>
 </form>
 {% if lmod %}
-  <h1>Last operation:</h1>
   <div  class="alert last">
+    <h1>Last action:</h1>
     <table style="width:100%">
         <tr>
+            <th>Date</th>
             <th>Template</th>
             <th>Test Case</th> 
             <th>Keyword</th>
@@ -123,6 +124,7 @@
             <th>User</th>
         </tr>
             <tr>
+                <td>{{ lmod.dt }}</td>
                 <td>{{ lmod.main_id }}</td>
                 <td><strong>{{ lmod.test_id.descr }}</strong></td> 
                 <td>{{ lmod.key_id.descr }}</td>

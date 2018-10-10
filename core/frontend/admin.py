@@ -6,13 +6,26 @@ from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
 
-"""
+
 class temp_mainAdmin(admin.ModelAdmin):
     
     #list_filter = ('main_id__descr', 'l_type')
     list_display = ('descr', 'notes', 'dt')
     #ordering = ('-l_type',)
-"""   
+    
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(APIAdmin, self).save_model(request, obj, form, change)
+    
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_main.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(temp_mainAdmin, self).changeform_view(request, extra_context=extra_context)
+   
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
 
@@ -31,6 +44,15 @@ class temp_caseAdmin(admin.ModelAdmin):
         latest_object = temp_case.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
+        
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_case.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(temp_caseAdmin, self).changeform_view(request, extra_context=extra_context)
 
 
 class temp_variablesAdmin(admin.ModelAdmin):
@@ -50,6 +72,15 @@ class temp_variablesAdmin(admin.ModelAdmin):
         latest_object = temp_variables.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
+        
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_variables.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(temp_variablesAdmin, self).changeform_view(request, extra_context=extra_context)
 
 
 class temp_libraryAdmin(admin.ModelAdmin):
@@ -84,9 +115,11 @@ class temp_libraryAdmin(admin.ModelAdmin):
     def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
         
         s_libs = suite_libs.objects.all()
+        l_mod = temp_library.objects.latest('id')
         
         extra_context = {
             'sl': s_libs,
+            'lmod': l_mod,
         }
         return super(temp_libraryAdmin, self).changeform_view(request, extra_context=extra_context)
 
@@ -148,6 +181,14 @@ class tpk(admin.ModelAdmin):
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
 
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_pers_keywords.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(tpk, self).changeform_view(request, extra_context=extra_context)
 
 class t_tags_routeAdmin(admin.ModelAdmin):
 
@@ -168,6 +209,23 @@ class t_tags_routeAdmin(admin.ModelAdmin):
     get_tag_id.short_description = 'TAG'
     get_tag_id.admin_order_field = 'tag_id__descr'
 
+    
+class temp_keywordsAdmin(admin.ModelAdmin):
+
+    list_filter = ('personal',)
+    list_display = ('descr', 'human', 'personal')
+
+    # ordering = ('-l_type',)
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        
+        l_mod = temp_keywords.objects.latest('id')
+        
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(temp_keywordsAdmin, self).changeform_view(request, extra_context=extra_context)
+
+    
 
 class t_proj_routeAdmin(admin.ModelAdmin):
 
@@ -200,9 +258,9 @@ admin.site.site_title = 'Aida Admin'
 admin.site.site_header = 'Aida admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
 
-admin.site.register(temp_main, APIAdmin, )
+admin.site.register(temp_main, temp_mainAdmin, )
 admin.site.register(temp_case, temp_caseAdmin, )
-admin.site.register(temp_keywords)
+admin.site.register(temp_keywords, temp_keywordsAdmin)
 admin.site.register(temp_variables, temp_variablesAdmin, )
 admin.site.register(temp_library, temp_libraryAdmin, )
 admin.site.register(temp_pers_keywords, tpk, )

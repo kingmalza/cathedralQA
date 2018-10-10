@@ -108,6 +108,7 @@ class temp_case(models.Model):
     id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, null=True, blank=True, related_name="tm_tc", on_delete=models.SET_NULL,)
     descr = models.CharField(max_length=200, verbose_name="Case description")
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tcase_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -134,7 +135,8 @@ List of selenium, roboframeworks + personalized (flag 1 in personal) keywords an
 class temp_keywords(models.Model):
     descr = models.CharField(max_length=200, unique=True)
     human = models.CharField(max_length=200, unique=True)
-    personal = models.BooleanField(default=True, verbose_name="Personal Keyword (Uncheck if is a new library standard keyword)")
+    personal = models.BooleanField(default=True, verbose_name="Personal Keyword")
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #personal = models.IntegerField(default=1, verbose_name="Linked variable")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -159,6 +161,7 @@ class temp_variables(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name="tm_tv")
     v_key = models.CharField(max_length=200, verbose_name="Variable")
     v_val = models.CharField(max_length=200, null=True, blank=True, verbose_name="Default Value")
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tvar_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -167,13 +170,13 @@ class temp_variables(models.Model):
         verbose_name_plural = '3-Test Variables'
         ordering = ('main_id', 'v_key',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s' % (str(self.main_id), self.v_key)
 
     def __repr__(self):
         return self.v_key
-    """
+    
 
 # temp_pers_keywords
 """
@@ -188,6 +191,7 @@ class temp_pers_keywords(models.Model):
     pers_id = models.ForeignKey(temp_keywords, related_name='tk_tpk', null=True, blank=True, on_delete=models.CASCADE,)
     standard_id = models.ForeignKey(temp_keywords, related_name='tks_tpk', on_delete=models.CASCADE,)
     variable_val = models.CharField(max_length=250, null=True, blank=True, verbose_name='Value')
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #variable_id = models.ForeignKey(temp_variables, null=True, blank=True)
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tperskey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -197,11 +201,11 @@ class temp_pers_keywords(models.Model):
         verbose_name_plural = '6-Keywords Link Chain'
         ordering = ('main_id', 'standard_id', 'pers_id',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s -> %s (%s)' % (
         str(self.main_id), str(self.pers_id), str(self.standard_id), str(self.variable_val))
-    """
+    
 
 # temp_test_keywords
 """
@@ -216,6 +220,7 @@ class temp_test_keywords(models.Model):
     key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='tk_ttk')
     key_val = models.CharField(max_length=200, null=True, blank=True, verbose_name='Value')
     key_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttestkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -224,10 +229,10 @@ class temp_test_keywords(models.Model):
         verbose_name_plural = '5-Test Cases Main Chain'
         ordering = ('main_id', 'test_id', 'key_id',)
 
-    """
+    
     def __str__(self):
         return '%s (%s -> %s)' % (str(self.test_id), str(self.key_id), str(self.key_val))
-    """
+    
 
 # temp_library
 """
@@ -240,6 +245,7 @@ class temp_library(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tl')
     l_type = models.CharField(max_length=50, verbose_name='Type')
     l_val = models.CharField(max_length=100, verbose_name='Value')
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tlib_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -248,10 +254,10 @@ class temp_library(models.Model):
         verbose_name_plural = '4-Test Settings'
         ordering = ('main_id', 'l_type',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s (%s)' % (str(self.main_id), self.l_type, self.l_val)
-    """
+    
 
 # Create a TestSchedue table
 """
@@ -329,6 +335,7 @@ class t_group(models.Model):
     g_desc = models.TextField(null=True, blank=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
     active = models.IntegerField(default=1)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrp_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -353,6 +360,7 @@ class t_group_test(models.Model):
     id_grp = models.ForeignKey(t_group, on_delete=models.CASCADE,)
     id_temp = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     temp_ord = models.IntegerField(default=0)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrptest_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -446,6 +454,7 @@ class t_threads(models.Model):
 class t_tags(models.Model):
     descr = models.CharField(max_length=50)
     tag_notes = models.TextField(null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttags_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -464,6 +473,7 @@ class t_tags_route(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     tag_id = models.ForeignKey(t_tags, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttagsroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -472,11 +482,11 @@ class t_tags_route(models.Model):
         verbose_name_plural = 'TAGS TEMPLATES LINK'
         ordering = ('main_id', 'tag_id', 'route_notes',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.tag_id))
-    """
+    
 
 # -----------------------------------------------------------------------------
 # TEMPLATE PROJECT ASSOCIATION
@@ -488,6 +498,7 @@ class t_proj(models.Model):
     proj_actors = models.TextField(null=True, blank=True)
     proj_start = models.DateTimeField(auto_now=True, null=True, blank=True)
     proj_stop = models.DateTimeField(auto_now=False, null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tproj_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -505,6 +516,7 @@ class t_proj_route(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
     proj_id = models.ForeignKey(t_proj, on_delete=models.CASCADE,)
     route_notes = models.TextField(null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tprojroute_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -513,11 +525,11 @@ class t_proj_route(models.Model):
         verbose_name_plural = 'PROJECT TEMPLATE LINK'
         ordering = ('main_id', 'proj_id', 'route_notes',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.proj_id))
-    """
+    
 
 #----------------------------------------------------
 #FILES UPLOAD
@@ -557,6 +569,7 @@ class suite_libs(models.Model):
     status = models.CharField(max_length=10, default='PENDING', editable= False)
     f_lib = models.FileField(upload_to='libs/', blank=True, validators=[FileExtensionValidator(['py']),validate_fsize], verbose_name="File ( .py Max 150Kb )")
     notes = models.TextField(null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #owner = models.IntegerField(default=0)
     
     class Meta:
@@ -564,8 +577,8 @@ class suite_libs(models.Model):
         verbose_name_plural = 'LIBRARIES'
         ordering = ('name', 'lib_name', 'status',)
 
-    """
+    
     def __str__(self):
         return '%s -> %s (%s)' % (
             str(self.name), str(self.lib_name), str(self.status))
-    """
+    
