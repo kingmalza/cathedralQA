@@ -209,6 +209,15 @@ class t_tags_routeAdmin(admin.ModelAdmin):
     get_tag_id.short_description = 'TAG'
     get_tag_id.admin_order_field = 'tag_id__descr'
 
+
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        l_mod = t_tags_route.objects.latest('id')
+
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(t_tags_routeAdmin, self).changeform_view(request, extra_context=extra_context)
+
     
 class temp_keywordsAdmin(admin.ModelAdmin):
 
@@ -247,6 +256,43 @@ class t_proj_routeAdmin(admin.ModelAdmin):
     get_proj_id.admin_order_field = 'proj_id__descr'
 
 
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        l_mod = t_proj_route.objects.latest('id')
+
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(t_proj_routeAdmin, self).changeform_view(request, extra_context=extra_context)
+
+
+class t_projAdmin(admin.ModelAdmin):
+
+    #list_filter = ('main_id__descr', 'proj_id__descr')
+    list_display = ('descr', 'proj_start', 'proj_stop', 'proj_actors', 'proj_notes')
+
+
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+        l_mod = t_proj.objects.latest('id')
+
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(t_projAdmin, self).changeform_view(request, extra_context=extra_context)
+
+
+class t_tagsAdmin(admin.ModelAdmin):
+        # list_filter = ('main_id__descr', 'proj_id__descr')
+        list_display = ('descr',  'tag_notes')
+
+        def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+            l_mod = t_tags.objects.latest('id')
+
+            extra_context = {
+                'lmod': l_mod,
+            }
+            return super(t_tagsAdmin, self).changeform_view(request, extra_context=extra_context)
+
+
 class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
@@ -268,7 +314,7 @@ admin.site.register(temp_test_keywords, ttkAdmin, )
 admin.site.register(t_group, )
 admin.site.register(t_group_test, )
 admin.site.register(t_tags_route, t_tags_routeAdmin)
-admin.site.register(t_tags, )
+admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
-admin.site.register(t_proj, )
+admin.site.register(t_proj, t_projAdmin, )
 admin.site.register(suite_libs, )

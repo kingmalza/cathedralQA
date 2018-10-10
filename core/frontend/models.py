@@ -463,10 +463,10 @@ class t_tags(models.Model):
         verbose_name_plural = 'TAGS MANAGER'
         ordering = ('descr',)
 
-    """
+
     def __str__(self):
         return self.descr
-    """
+
 
 class t_tags_route(models.Model):
     id = models.AutoField(primary_key=True)
