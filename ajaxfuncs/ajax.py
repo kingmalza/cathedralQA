@@ -4,6 +4,7 @@ import simplejson
 import threading
 import schedule
 import django
+import subprocess, signal
 from datetime import datetime
 from django.http import HttpResponse
 from django.db.models import Count
@@ -309,6 +310,12 @@ def tstopper(request):
     u_conn = request.user.id
     u_thread = 0
     response = []
+
+    p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    for line in out.splitlines():
+        print(line)
+
     if request.is_ajax():
         specThread = t_threads.objects.filter(thread_stag=str(request.POST['tData']))
         for i in specThread:

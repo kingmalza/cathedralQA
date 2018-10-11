@@ -650,6 +650,7 @@ function task_det(dataID, threadUUid) {
 function stopThread(tDet) {
     //DeActivate timeline for specific thread on active thread onclick in table
     t_line = document.getElementById("tline");
+    console.log("TDET: "+tDet)
 
     $.ajax({
         type: "POST",
