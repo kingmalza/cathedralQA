@@ -360,7 +360,7 @@ function refTable() {
                     return function () {
                         task_det(this.cells[0].innerHTML, this.cells[8].innerHTML);
                         t_line.style.visibility = 'visible';
-                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
+                        t_lineH1.innerHTML = "LAST FIVE TIMELINE EVENTS FOR PROC. ID: " + this.cells[0].innerHTML;
                         c_hold = this.cells[8].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         getTline(c_hold);
@@ -566,7 +566,7 @@ function getTline(t_stag) {
                 span4.setAttribute("class", "time");
                 var i42 = document.createElement("I");
                 i42.setAttribute("class", "fa fa-clock-o");
-                span4.innerHTML = "12:20";
+                span4.innerHTML = "";
                 span4.appendChild(i42);
                 var h34 = document.createElement("H3")
                 h34.setAttribute("class", "timeline-header");

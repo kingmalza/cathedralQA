@@ -15,16 +15,16 @@ class temp_mainAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.user = request.user
-        super(APIAdmin, self).save_model(request, obj, form, change)
+        super(temp_mainAdmin, self).save_model(request, obj, form, change)
     
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_main.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(temp_mainAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(temp_mainAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
    
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
@@ -45,14 +45,14 @@ class temp_caseAdmin(admin.ModelAdmin):
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
         
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_case.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(temp_caseAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 class temp_variablesAdmin(admin.ModelAdmin):
@@ -73,14 +73,14 @@ class temp_variablesAdmin(admin.ModelAdmin):
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
         
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_variables.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(temp_variablesAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(temp_variablesAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 class temp_libraryAdmin(admin.ModelAdmin):
@@ -112,7 +112,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
         
     
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         s_libs = suite_libs.objects.all()
         l_mod = temp_library.objects.latest('id')
@@ -121,7 +121,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
             'sl': s_libs,
             'lmod': l_mod,
         }
-        return super(temp_libraryAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(temp_libraryAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
         
 class ttkAdmin(admin.ModelAdmin):
@@ -151,14 +151,14 @@ class ttkAdmin(admin.ModelAdmin):
         return form
         
     
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_test_keywords.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(ttkAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(ttkAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 # Model page field using custom forms
@@ -181,14 +181,14 @@ class tpk(admin.ModelAdmin):
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
 
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_pers_keywords.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(tpk, self).changeform_view(request, extra_context=extra_context)
+        return super(tpk, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 class t_tags_routeAdmin(admin.ModelAdmin):
 
@@ -210,13 +210,13 @@ class t_tags_routeAdmin(admin.ModelAdmin):
     get_tag_id.admin_order_field = 'tag_id__descr'
 
 
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         l_mod = t_tags_route.objects.latest('id')
 
         extra_context = {
             'lmod': l_mod,
         }
-        return super(t_tags_routeAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(t_tags_routeAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
     
 class temp_keywordsAdmin(admin.ModelAdmin):
@@ -225,14 +225,14 @@ class temp_keywordsAdmin(admin.ModelAdmin):
     list_display = ('descr', 'human', 'personal')
 
     # ordering = ('-l_type',)
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_keywords.objects.latest('id')
         
         extra_context = {
             'lmod': l_mod,
         }
-        return super(temp_keywordsAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(temp_keywordsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
     
 
@@ -256,13 +256,14 @@ class t_proj_routeAdmin(admin.ModelAdmin):
     get_proj_id.admin_order_field = 'proj_id__descr'
 
 
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+
         l_mod = t_proj_route.objects.latest('id')
 
         extra_context = {
             'lmod': l_mod,
         }
-        return super(t_proj_routeAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(t_proj_routeAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 class t_projAdmin(admin.ModelAdmin):
@@ -271,26 +272,27 @@ class t_projAdmin(admin.ModelAdmin):
     list_display = ('descr', 'proj_start', 'proj_stop', 'proj_actors', 'proj_notes')
 
 
-    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
         l_mod = t_proj.objects.latest('id')
 
         extra_context = {
             'lmod': l_mod,
         }
-        return super(t_projAdmin, self).changeform_view(request, extra_context=extra_context)
+        return super(t_projAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 class t_tagsAdmin(admin.ModelAdmin):
-        # list_filter = ('main_id__descr', 'proj_id__descr')
-        list_display = ('descr',  'tag_notes')
+    
+    # list_filter = ('main_id__descr', 'proj_id__descr')
+    list_display = ('descr',  'tag_notes')
 
-        def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
             l_mod = t_tags.objects.latest('id')
 
             extra_context = {
                 'lmod': l_mod,
             }
-            return super(t_tagsAdmin, self).changeform_view(request, extra_context=extra_context)
+            return super(t_tagsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 class APIAdmin(admin.ModelAdmin):

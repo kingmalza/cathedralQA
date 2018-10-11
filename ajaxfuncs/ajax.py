@@ -252,7 +252,7 @@ def ecount(request):
 # Populate the timeline for selected thread
 def tlinemgm(request):
     if request.is_ajax():
-        thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()
+        thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:5]
 
         response = []
         for i in thread_list:
