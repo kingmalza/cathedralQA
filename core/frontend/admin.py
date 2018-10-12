@@ -29,7 +29,7 @@ class temp_mainAdmin(admin.ModelAdmin):
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
 
-    list_filter = ('main_id__descr', 'descr')
+    list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'descr')
     #ordering = ('-l_type',)
 
