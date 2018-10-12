@@ -354,7 +354,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         c_hold = this.cells[13].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         window.location.href = '/#tl_tit';
-                        getTlineHist(c_hold);
+                        getTlineHist(c_hold, 'history');
                     }
                 })(i);
             }
@@ -500,7 +500,7 @@ function refFile() {
 
 
 //Function for create an populate timeline
-function getTlineHist(t_stag) {
+function getTlineHist(t_stag, f_view) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
@@ -510,7 +510,7 @@ function getTlineHist(t_stag) {
   $.ajax({
         type: "POST",
         url: "tline_mgm",
-        data: {tTag: t_stag},
+        data: {tTag: t_stag, fView: f_view},
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();

@@ -363,7 +363,7 @@ function refTable() {
                         t_lineH1.innerHTML = "LAST FIVE TIMELINE EVENTS FOR PROC. ID: " + this.cells[0].innerHTML;
                         c_hold = this.cells[8].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
-                        getTline(c_hold);
+                        getTline(c_hold,'active');
                     }
                 })(i);
             }
@@ -374,7 +374,7 @@ function refTable() {
 
     //If someone click the table c_old populate and the tree func is called every tab refresh time
     if (c_hold) {
-        getTline(c_hold);
+        getTline(c_hold,'active');
     }
 
     setTimeout(refTable, 5000)
@@ -482,7 +482,7 @@ function goInteractive() {
 
 
 //Function for create an populate timeline
-function getTline(t_stag) {
+function getTline(t_stag, f_view) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
@@ -492,7 +492,7 @@ function getTline(t_stag) {
     $.ajax({
         type: "POST",
         url: "tline_mgm",
-        data: {tTag: t_stag},
+        data: {tTag: t_stag, fView: f_view},
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();

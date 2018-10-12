@@ -253,7 +253,11 @@ def ecount(request):
 # Populate the timeline for selected thread
 def tlinemgm(request):
     if request.is_ajax():
-        thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:5]
+        #If request come from active form i retreive last 5 results, otherwise (History) last 20
+        if str(request.POST['fView']) == "active": 
+            thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:5]
+        else:
+            thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:20]
 
         response = []
         for i in thread_list:
@@ -313,9 +317,11 @@ def tstopper(request):
 
     p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
     out, err = p.communicate()
+    """
     for line in out.splitlines():
         print(line)
-
+    """
+    
     if request.is_ajax():
         specThread = t_threads.objects.filter(thread_stag=str(request.POST['tData']))
         for i in specThread:

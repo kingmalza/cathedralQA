@@ -243,7 +243,7 @@ class PrepareRst:
                 l.append("")
             ltouple += (l,)
 
-        tklist = [x for x in ltouple]
+        tklist = [[x if x != 'None' else '' for x in group] for group in ltouple]
         return tklist
 
     # Setting rst prep method

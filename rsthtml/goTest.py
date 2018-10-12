@@ -87,6 +87,10 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     print("Current thread is", threading.current_thread())
     print("enumerate", l)
     print("THREAD IN ENUMERATE: ", (threading.current_thread() in l))
+    print("t_inst -> ", t_inst)
+    print("THRED FDIR: ", t_list[t_inst])
+    print("THRED ISALIVE: ", t_list[t_inst].isAlive())
+    print("CURRENT ISALIVE: ", threading.current_thread().isAlive())
     if not t_list[t_inst].isAlive():
         try:
             t_list[t_inst].start()
@@ -94,9 +98,9 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             #lpath = t_list[t_inst].create_html
             t_list[t_inst].run()
 
-    t_list[t_inst].join()  # wait till threads have finished.
-    #run_test(t_list[t_inst].retval['fpath'], outputdir=t_list[t_inst].retval['fdir'], level='TRACE')
-    subprocess.call(['python', 'golog.py', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
+        t_list[t_inst].join()  # wait till threads have finished.
+        #run_test(t_list[t_inst].retval['fpath'], outputdir=t_list[t_inst].retval['fdir'], level='TRACE')
+        subprocess.call(['python', 'golog.py', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
     # Try to store data into db
     try:
         # Cop content of xml in db
@@ -204,7 +208,7 @@ def run_threaded(job_func, P1, P2, P3, P4, P5, P6, P7, P8, P9='NoGroup'):
 def startTest(request, i=[0]):
 
     if request.is_ajax():
-        u_id = request.user.id
+        u_id = int(request.user.id)
         response = []
         main_list = []
         sset = 'once'
@@ -316,8 +320,11 @@ def startTest(request, i=[0]):
         # in each case start first cycle immediately
         for xl in new_one:
                 for iid in main_list:
-                    goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
-                    time.sleep(5)
+                    try:
+                        goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
+                        time.sleep(2)
+                    except Exception as e:
+                        print("Exception in goproc: ",e.args)
         if sset != 'once':
             ##IMPORTANT!##
             ##If multiple value in variable execution is related to all value only for Once selection, in case of scheduled just first value is executed
@@ -341,7 +348,7 @@ def startTest(request, i=[0]):
                 print("Error in schedule settings! Check values->",e)
 
         json = simplejson.dumps(response)
-
+       
         return HttpResponse(
             json, content_type='application/json'
         )
