@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
@@ -330,11 +330,11 @@ class t_time(models.Model):
 
 
 class t_group(models.Model):
-    descr = models.CharField(max_length=50)
-    g_prior = models.IntegerField(default=1)
-    g_desc = models.TextField(null=True, blank=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
-    active = models.IntegerField(default=1)
+    descr = models.CharField(max_length=50, verbose_name="Group name")
+    g_prior = models.IntegerField(default=1, verbose_name="Priority", validators=[MaxValueValidator(3), MinValueValidator(1)])
+    g_desc = models.TextField(null=True, blank=True, verbose_name="Notes")
+    #user_id = models.ForeignKey(User, on_delete=models.CASCADE,)
+    active = models.BooleanField(default=True, verbose_name="Active")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrp_owner', on_delete=models.CASCADE, verbose_name="API Owner")
@@ -345,10 +345,10 @@ class t_group(models.Model):
         ordering = ('descr',)
 
     def __str__(self):
-        return self.g_desc
+        return self.descr
 
     def __unicode__(self):
-        return unicode(self.g_desc)
+        return unicode(self.g_descr)
 
 
 # Create grpup/templates table link
@@ -357,9 +357,9 @@ class t_group(models.Model):
 
 
 class t_group_test(models.Model):
-    id_grp = models.ForeignKey(t_group, on_delete=models.CASCADE,)
-    id_temp = models.ForeignKey(temp_main, on_delete=models.CASCADE,)
-    temp_ord = models.IntegerField(default=0)
+    id_grp = models.ForeignKey(t_group, on_delete=models.CASCADE, verbose_name="Group")
+    id_temp = models.ForeignKey(temp_main, on_delete=models.CASCADE, verbose_name="Template")
+    temp_ord = models.IntegerField(default=1, verbose_name="Template order", validators=[MaxValueValidator(100), MinValueValidator(1)])
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tgrptest_owner', on_delete=models.CASCADE, verbose_name="API Owner")

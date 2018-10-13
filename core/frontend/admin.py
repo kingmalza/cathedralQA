@@ -294,14 +294,46 @@ class t_tagsAdmin(admin.ModelAdmin):
             }
             return super(t_tagsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
+            
+class t_groupAdmin(admin.ModelAdmin):
+    
+    list_filter = ('active',)
+    list_display = ('descr',  'g_prior', 'g_desc', 'active')
 
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+            l_mod = t_group.objects.latest('id')
+
+            extra_context = {
+                'lmod': l_mod,
+            }
+            return super(t_groupAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+
+
+class t_group_testAdmin(admin.ModelAdmin):
+    
+    list_filter = ('id_grp__descr', 'id_temp__descr')
+    list_display = ('id_grp',  'id_temp', 'temp_ord')
+
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+            l_mod = t_group_test.objects.latest('id')
+
+            extra_context = {
+                'lmod': l_mod,
+            }
+            return super(t_group_testAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+
+            
+class APIAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(APIAdmin, self).save_model(request, obj, form, change)
+            
 class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(APIAdmin, self).save_model(request, obj, form, change)
 
-
-        
+            
 admin.site.site_title = 'Aida Admin'
 admin.site.site_header = 'Aida admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
@@ -313,8 +345,8 @@ admin.site.register(temp_variables, temp_variablesAdmin, )
 admin.site.register(temp_library, temp_libraryAdmin, )
 admin.site.register(temp_pers_keywords, tpk, )
 admin.site.register(temp_test_keywords, ttkAdmin, )
-admin.site.register(t_group, )
-admin.site.register(t_group_test, )
+admin.site.register(t_group, t_groupAdmin, )
+admin.site.register(t_group_test, t_group_testAdmin, )
 admin.site.register(t_tags_route, t_tags_routeAdmin)
 admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
