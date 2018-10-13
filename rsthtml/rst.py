@@ -93,6 +93,7 @@ class PrepareRst:
         for r in kv.iterator():
             # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
             # visualization
+            
             if vkey != repr(r.test_id):
                 if l:
                     # Modified for empty spaces
@@ -244,6 +245,10 @@ class PrepareRst:
             ltouple += (l,)
 
         tklist = [[x if x != 'None' else '' for x in group] for group in ltouple]
+        #If no one insert data into table 6, generate a blank list
+        if not l:
+            tklist = [['Keywords', '', ''], ['', '', '']]
+
         return tklist
 
     # Setting rst prep method

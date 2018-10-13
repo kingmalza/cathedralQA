@@ -86,7 +86,7 @@ class temp_variablesAdmin(admin.ModelAdmin):
 class temp_libraryAdmin(admin.ModelAdmin):
     
     list_filter = ('main_id__descr', 'l_type')
-    list_display = ('get_main_id', 'l_type', 'l_val')
+    list_display = ('get_main_id', 'l_type', 'l_val', 'l_group')
     #ordering = ('-l_type',)
 
     def get_main_id(self, obj):
@@ -100,6 +100,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
         latest_object = temp_library.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         form.base_fields['l_type'].initial = latest_object.l_type
+        form.base_fields['l_group'].initial = latest_object.l_group
         return form
         
     def changelist_view(self, request, extra_context=None):

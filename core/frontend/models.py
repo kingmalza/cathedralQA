@@ -245,6 +245,7 @@ class temp_library(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tl')
     l_type = models.CharField(max_length=50, verbose_name='Type')
     l_val = models.CharField(max_length=100, verbose_name='Value')
+    l_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tlib_owner', on_delete=models.CASCADE, verbose_name="API Owner")

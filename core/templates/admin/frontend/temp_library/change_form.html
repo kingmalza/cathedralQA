@@ -116,14 +116,16 @@
             <th>Date</th>
             <th>Template</th>
             <th>Library</th>
-            <th>Codename</th>            
+            <th>Command</th>
+            <th>Group</th>            
             <th>User</th>
         </tr>
             <tr>
                 <td>{{ lmod.dt }}</td>
                 <td>{{ lmod.main_id.descr }}</td>
                 <td>{{ lmod.l_type }}</td> 
-                <td>{{ lmod.l_val }}</td> 
+                <td>{{ lmod.l_val }}</td>
+                <td>{{ lmod.l_group }}</td>                
                 <td>{{ lmod.owner.username }}</td>
             </tr>
     </table>

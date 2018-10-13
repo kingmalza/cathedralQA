@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from frontend.models import Client
 from frontend.models import t_schedsettings, settings_gen
-from frontend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+from frontend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, suite_libs
 
 import datetime
 
@@ -57,8 +57,24 @@ def create2():
     
     print("Keywords OK")
     
-    #4. Create Helloword test
-    print("3.Create helloword...")
+    #4. Create Library table
+    print("3.Create suite Libs...")
+
+    lib1 = suite_libs(name='Buit-In', descr='Robot Framework buitin libraries', lib_name='', status='ACTIVE', docs='http://robotframework.org/robotframework/latest/libraries/BuiltIn.html')
+    lib2 = suite_libs(name='Archive library', descr='Library for handling zip- and tar-archives', lib_name='ArchiveLibrary', status='ACTIVE', docs='http://bulkan.github.io/robotframework-archivelibrary/')
+    lib3 = suite_libs(name='Django Library', descr='Library for Django, a Python web framework', lib_name='DjangoLibrary', status='ACTIVE', docs='https://kitconcept.github.io/robotframework-djangolibrary/')
+    lib4 = suite_libs(name='FTP library', descr='Library for testing and using FTP server', lib_name='FtpLibrary', status='ACTIVE', docs='https://kowalpy.github.io/Robot-Framework-FTP-Library/FtpLibrary.html')
+    lib5 = suite_libs(name='RESTinstance', descr='Test library for HTTP JSON APIs', lib_name='REST', status='ACTIVE', docs='https://asyrjasalo.github.io/RESTinstance/')
+    lib6 = suite_libs(name='SSHLibrary', descr='Enables executing commands on remote machines over an SSH connection. Also supports transfering files using SFTP', lib_name='SSHLibrary', status='ACTIVE', docs='https://github.com/robotframework/SSHLibrary#usage')
+    lib7 = suite_libs(name='Diff Library', descr='Library to diff two files together', lib_name='DiffLibrary', status='ACTIVE', docs='https://bulkan.github.io/robotframework-difflibrary/')
+    lib8 = suite_libs(name='robotframework-faker', descr='Library for Faker, a fake test data generator', lib_name='FakerLibrary', status='ACTIVE', docs='https://guykisel.github.io/robotframework-faker/')
+
+    lib1.save()
+
+    print("Suite Libs OK")
+    
+    #5. Create Helloword test
+    print("4.Create helloword...")
     
     dtn = datetime.datetime.now()
     
@@ -95,8 +111,8 @@ def create2():
     
     print("Helloword OK")
     
-    #5. Send email
-    print("4.Preparing and sending welcome email...")
+    #6. Send email
+    print("5.Preparing and sending welcome email...")
     
     """
     email = EmailMessage('Test first registration OK', 'First registration email ok',
