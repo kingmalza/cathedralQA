@@ -253,8 +253,26 @@ class PrepareRst:
 
     # Setting rst prep method
     def ts_prep(self, test_id):
+        maxpar = temp_library.objects.filter(l_group__isnull=False).filter(main_id=test_id).values('l_group').annotate(total=Count('l_group')).order_by('-l_group').first()
+        count = 0
+        maxMax = 1
+        
+        if maxpar:
+            maxMax = maxpar['total'] + 1
+            
+        ltouple = ()
+        l1 = ["Settings"]
+        while count < maxMax:
+            l1.append("")
+            count += 1
+        ltouple += (l1,)
+
+        
         tab_lib = temp_library.objects.filter(main_id=test_id)
-        tslist = [["Settings", ""]]
+        l=[]
+        
+        #tslist = [["Settings", ""]]
+        tslist = [x for x in ltouple]
         if tab_lib.count() == 0:
             tslist.append(["", ""])
         for r in tab_lib.iterator():
