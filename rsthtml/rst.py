@@ -272,12 +272,18 @@ class PrepareRst:
         l=[]
         
         #tslist = [["Settings", ""]]
-        tslist = [x for x in ltouple]
+        
         if tab_lib.count() == 0:
-            tslist.append(["", ""])
+            #tslist.append(["", ""])
+            l.append("")
+            l.append("")
         for r in tab_lib.iterator():
-            tslist.append([str(r.l_type), str(r.l_val)])
+            #tslist.append([str(r.l_type), str(r.l_val)])
+            l.append(str(r.l_type))
+            l.append(str(r.l_val))
 
+        ltouple += (l,)
+        tslist = [x for x in ltouple]
         return tslist
 
     # Variables rst prep method
