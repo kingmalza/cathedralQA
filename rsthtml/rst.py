@@ -256,9 +256,10 @@ class PrepareRst:
         maxpar = temp_library.objects.filter(l_group__isnull=False).filter(main_id=test_id).values('l_group').annotate(total=Count('l_group')).order_by('-l_group').first()
         count = 0
         maxMax = 1
+        g_id = None
         
         if maxpar:
-            maxMax = maxpar['total'] + 1
+            maxMax = maxpar['total']
             
         ltouple = ()
         l1 = ["Settings"]
@@ -277,12 +278,45 @@ class PrepareRst:
             #tslist.append(["", ""])
             l.append("")
             l.append("")
-        for r in tab_lib.iterator():
-            #tslist.append([str(r.l_type), str(r.l_val)])
-            l.append(str(r.l_type))
-            l.append(str(r.l_val))
+        else:
+            for r in tab_lib.iterator():
+                #tslist.append([str(r.l_type), str(r.l_val)])
+                if r.l_group:
+                    if r.l_group == g_id:
+                        l.append(str(r.l_val))
+                        g_id = str(r.l_group)
+                    else:
+                        if l:
+                            #Check for l len and add white space if lower than maxMax
+                            if len(l) < maxMax+1:
+                                len_dif = maxMax-len(l)
+                                for x in range(0,len_dif+1): l.append('')
+                            ltouple += (l,)
+                            l = []
+                        l.append(str(r.l_type))
+                        l.append(str(r.l_val))
+                        g_id = str(r.l_group)
+                else:
+                    """
+                    if l:
+                        ltouple += (l,)
+                        l = []
+                    """
+                    l.append(str(r.l_type))
+                    l.append(str(r.l_val))
+                    if len(l) < maxMax+1:
+                                len_dif = maxMax-len(l)
+                                for x in range(0,len_dif+1): l.append('')
+                    ltouple += (l,)
+                    l = []
 
-        ltouple += (l,)
+        if l:
+            if len(l) < maxMax+1:
+                len_dif = maxMax-len(l)
+                for x in range(0,len_dif+1): l.append('')
+            ltouple += (l,)
+            l = []
+        print("LTOUPLE_TS>", ltouple)
         tslist = [x for x in ltouple]
         return tslist
 

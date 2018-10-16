@@ -100,7 +100,6 @@ class temp_libraryAdmin(admin.ModelAdmin):
         latest_object = temp_library.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         form.base_fields['l_type'].initial = latest_object.l_type
-        form.base_fields['l_group'].initial = latest_object.l_group
         return form
         
     def changelist_view(self, request, extra_context=None):
