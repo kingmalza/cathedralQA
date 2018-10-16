@@ -69,8 +69,7 @@ class PrepareRst:
 
     # TestCase rst prep method
     def tc_prep(self, test_id):
-        maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id').annotate(
-            total=Count('key_id')).order_by('-total').first()
+        maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id').annotate(total=Count('key_id')).order_by('-total').first()
         print("internat test_id ", maxpar)
         maxMax = maxpar['total'] + 1
 

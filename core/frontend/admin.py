@@ -5,7 +5,7 @@ from django.contrib import admin
 from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
-from django.forms import SelectMultiple
+from django.forms import Select
 
 class temp_mainAdmin(admin.ModelAdmin):
     
@@ -100,6 +100,16 @@ class temp_libraryAdmin(admin.ModelAdmin):
         latest_object = temp_library.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         form.base_fields['l_type'].initial = latest_object.l_type
+
+        form.base_fields['l_group'].widget = Select(choices=(
+            (None, 'No group'),
+            ('--', 'Group1'),
+            ('---', 'Group2'),
+            ('----', 'Group3'),
+            ('-----', 'Group4'),
+            ('------', 'Group5'),
+        ))
+
         return form
         
     def changelist_view(self, request, extra_context=None):
@@ -110,20 +120,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
             'sl': s_libs,
         }
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
-        
-    def get_form(self, request, obj=None, **kwargs):
 
-        form = super(temp_libraryAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['l_group'].widget = SelectMultiple(choices=(
-            ('--', 'Group1'),
-            ('---', 'Group2'),
-            ('----', 'Group3'),
-            ('-----', 'Group4'),
-            ('------', 'Group5'),
-        ))
-        return form
-        
-        
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         s_libs = suite_libs.objects.all()
@@ -160,9 +157,17 @@ class ttkAdmin(admin.ModelAdmin):
         form.base_fields['main_id'].initial = latest_object.main_id
         form.base_fields['test_id'].initial = latest_object.test_id
         form.base_fields['key_id'].initial = latest_object.key_id
+
+        form.base_fields['key_group'].widget = Select(choices=(
+            (None, 'No group'),
+            ('--', 'Group1'),
+            ('---', 'Group2'),
+            ('----', 'Group3'),
+            ('-----', 'Group4'),
+            ('------', 'Group5'),
+        ))
         return form
-        
-    
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_test_keywords.objects.latest('id')

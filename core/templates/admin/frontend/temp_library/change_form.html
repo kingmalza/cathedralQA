@@ -131,7 +131,7 @@
     </table>
 </div>
 {% endif %}
-  <div  class="alert success">
+  <div  class="alert warning">
     <strong>Installed libraries:</strong> Here a list of current installed libraries you can use importing using Library module:<br><br>
     <table style="width:100%">
         <tr>
@@ -153,6 +153,9 @@
             {%  endfor %}
         {% endif %}
     </table>
+</div>
+    <div  class="alert success">
+    <strong>PRO Tips:</strong> Using groups allows you to add libraries/settings values either one by one for each new line or one to many on the same line (for add some parameters to a library for example).<br><br><strong>Example:</strong><br>Without group setting:<br><br><table><tr><td>Log</td><td>test1</td></tr><tr><td>Log</td><td>test2</td></tr></table><br>With same group set:<br><br><table><tr><td>Log</td><td>test1</td><td>test2</td></tr></table><br><br></strong>
 </div>
 </div>
 {% endblock %}
