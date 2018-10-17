@@ -44,7 +44,7 @@ class temp_caseAdmin(admin.ModelAdmin):
         latest_object = temp_case.objects.latest('id')
         form.base_fields['main_id'].initial = latest_object.main_id
         return form
-        
+           
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
         
         l_mod = temp_case.objects.latest('id')
@@ -155,6 +155,11 @@ class ttkAdmin(admin.ModelAdmin):
 
     get_test_id.short_description = 'Test Case'
     get_test_id.admin_order_field = 'test_id__descr'
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "test_id":
+            kwargs["queryset"] = temp_case.objects.filter(main_id = main_id.id)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(ttkAdmin, self).get_form(request, obj, **kwargs)
