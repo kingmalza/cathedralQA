@@ -125,7 +125,20 @@
                 <td>{{ lmod.main_id.descr }}</td>
                 <td>{{ lmod.l_type }}</td> 
                 <td>{{ lmod.l_val }}</td>
-                <td>{{ lmod.l_group }}</td>                
+                <td>
+                    <!--Trasform group field in readable mode -->
+                    {% if not lmod.l_group %}{% with g_name="No group" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '--' %}{% with g_name="Group1" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '---' %}{% with g_name="Group2" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '----' %}{% with g_name="Group3" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '-----' %}{% with g_name="Group4" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '------' %}{% with g_name="Group5" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '-------' %}{% with g_name="Group6" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '--------' %}{% with g_name="Group7" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '---------' %}{% with g_name="Group8" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '----------' %}{% with g_name="Group9" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.l_group == '-----------' %}{% with g_name="Group10" %}{{ g_name }}{% endwith %}{% endif %}
+                </td>                
                 <td>{{ lmod.owner.username }}</td>
             </tr>
     </table>

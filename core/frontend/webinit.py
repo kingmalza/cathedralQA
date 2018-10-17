@@ -68,8 +68,19 @@ def create2():
     lib6 = suite_libs(name='SSHLibrary', descr='Enables executing commands on remote machines over an SSH connection. Also supports transfering files using SFTP', lib_name='SSHLibrary', status='ACTIVE', docs='https://github.com/robotframework/SSHLibrary#usage')
     lib7 = suite_libs(name='Diff Library', descr='Library to diff two files together', lib_name='DiffLibrary', status='ACTIVE', docs='https://bulkan.github.io/robotframework-difflibrary/')
     lib8 = suite_libs(name='robotframework-faker', descr='Library for Faker, a fake test data generator', lib_name='FakerLibrary', status='ACTIVE', docs='https://guykisel.github.io/robotframework-faker/')
+    lib9 = suite_libs(name='HTTP library (Requests)', descr='Library for HTTP level testing using Request internally.', lib_name='RequestsLibrary', status='ACTIVE', docs='http://bulkan.github.io/robotframework-requests/')
+    lib10 = suite_libs(name='TFTPLibrary', descr='Library for interacting over Trivial File Transfer Portocol.', lib_name='TftpLibrary', status='ACTIVE', docs='https://kowalpy.github.io/Robot-Framework-TFTP-Library/TftpLibrary.html')
 
     lib1.save()
+    lib2.save()
+    lib3.save()
+    lib4.save()
+    lib5.save()
+    lib6.save()
+    lib7.save()
+    lib8.save()
+    lib9.save()
+    lib10.save()
 
     print("Suite Libs OK")
     

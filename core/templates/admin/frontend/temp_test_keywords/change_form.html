@@ -121,6 +121,7 @@
             <th>Test Case</th> 
             <th>Keyword</th>
             <th>Key Value</th>
+            <th>Key Group</th>
             <th>User</th>
         </tr>
             <tr>
@@ -129,6 +130,20 @@
                 <td><strong>{{ lmod.test_id.descr }}</strong></td> 
                 <td>{{ lmod.key_id.descr }}</td>
                 <td>{{ lmod.key_val }}</td>
+                <td>
+                <!--Trasform group field in readable mode -->
+                    {% if not lmod.key_group %}{% with g_name="No group" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '--' %}{% with g_name="Group1" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '---' %}{% with g_name="Group2" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '----' %}{% with g_name="Group3" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '-----' %}{% with g_name="Group4" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '------' %}{% with g_name="Group5" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '-------' %}{% with g_name="Group6" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '--------' %}{% with g_name="Group7" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '---------' %}{% with g_name="Group8" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '----------' %}{% with g_name="Group9" %}{{ g_name }}{% endwith %}{% endif %}
+                    {% if lmod.key_group == '-----------' %}{% with g_name="Group10" %}{{ g_name }}{% endwith %}{% endif %}
+                </td>
                 <td>{{ lmod.owner.username }}</td>
             </tr>
     </table>
