@@ -70,6 +70,7 @@ def create2():
     lib8 = suite_libs(name='robotframework-faker', descr='Library for Faker, a fake test data generator', lib_name='FakerLibrary', status='ACTIVE', docs='https://guykisel.github.io/robotframework-faker/')
     lib9 = suite_libs(name='HTTP library (Requests)', descr='Library for HTTP level testing using Request internally.', lib_name='RequestsLibrary', status='ACTIVE', docs='http://bulkan.github.io/robotframework-requests/')
     lib10 = suite_libs(name='TFTPLibrary', descr='Library for interacting over Trivial File Transfer Portocol.', lib_name='TftpLibrary', status='ACTIVE', docs='https://kowalpy.github.io/Robot-Framework-TFTP-Library/TftpLibrary.html')
+    lib11 = suite_libs(name='AppiumLibrary', descr='Library for Android- and iOS-testing.', lib_name='AppiumLibrary', status='ACTIVE',docs='http://serhatbolsu.github.io/robotframework-appiumlibrary/AppiumLibrary.html')
 
     lib1.save()
     lib2.save()
@@ -81,6 +82,7 @@ def create2():
     lib8.save()
     lib9.save()
     lib10.save()
+    lib11.save()
 
     print("Suite Libs OK")
     
