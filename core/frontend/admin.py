@@ -6,6 +6,7 @@ from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
 from django.forms import Select
+from datetime import datetime, timezone
 
 class temp_mainAdmin(admin.ModelAdmin):
     
@@ -155,18 +156,22 @@ class ttkAdmin(admin.ModelAdmin):
 
     get_test_id.short_description = 'Test Case'
     get_test_id.admin_order_field = 'test_id__descr'
-    
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "test_id":
-            kwargs["queryset"] = temp_case.objects.filter(main_id = main_id.id)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
+       
     def get_form(self, request, obj=None, **kwargs):
         form = super(ttkAdmin, self).get_form(request, obj, **kwargs)
         latest_object = temp_test_keywords.objects.latest('id')
-        form.base_fields['main_id'].initial = latest_object.main_id
-        form.base_fields['test_id'].initial = latest_object.test_id
-        form.base_fields['key_id'].initial = latest_object.key_id
+        #Check if last insertion was made within 1 min otherwise form is blank
+        try:
+            d1 = datetime.now(timezone.utc)
+            #d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
+            d2 = latest_object.dt
+            i_sec = (d1-d2).total_seconds()
+            if i_sec < 60:
+                form.base_fields['main_id'].initial = latest_object.main_id
+                form.base_fields['test_id'].initial = latest_object.test_id
+                form.base_fields['key_id'].initial = latest_object.key_id
+        except Exception as e:
+            print('Error in admin.py->164: ',e)
 
         form.base_fields['key_group'].widget = Select(choices=(
             (None, 'No group'),
