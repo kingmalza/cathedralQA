@@ -42,8 +42,18 @@ class temp_caseAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_caseAdmin, self).get_form(request, obj, **kwargs)
+        # Check if last insertion was made within 1 min otherwise form is blank
         latest_object = temp_case.objects.latest('id')
-        form.base_fields['main_id'].initial = latest_object.main_id
+        try:
+            d1 = datetime.now(timezone.utc)
+            # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
+            d2 = latest_object.dt
+            i_sec = (d1 - d2).total_seconds()
+            if i_sec < 60:
+                form.base_fields['main_id'].initial = latest_object.main_id
+        except Exception as e:
+            print('Error in admin.py->45: ',e)
+
         return form
            
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
@@ -70,8 +80,19 @@ class temp_variablesAdmin(admin.ModelAdmin):
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_variablesAdmin, self).get_form(request, obj, **kwargs)
+
+        # Check if last insertion was made within 1 min otherwise form is blank
         latest_object = temp_variables.objects.latest('id')
-        form.base_fields['main_id'].initial = latest_object.main_id
+        try:
+            d1 = datetime.now(timezone.utc)
+            # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
+            d2 = latest_object.dt
+            i_sec = (d1 - d2).total_seconds()
+            if i_sec < 60:
+                form.base_fields['main_id'].initial = latest_object.main_id
+        except Exception as e:
+            print('Error in admin.py->85: ',e)
+
         return form
         
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
@@ -98,9 +119,19 @@ class temp_libraryAdmin(admin.ModelAdmin):
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_libraryAdmin, self).get_form(request, obj, **kwargs)
+
+        # Check if last insertion was made within 1 min otherwise form is blank
         latest_object = temp_library.objects.latest('id')
-        form.base_fields['main_id'].initial = latest_object.main_id
-        form.base_fields['l_type'].initial = latest_object.l_type
+        try:
+            d1 = datetime.now(timezone.utc)
+            # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
+            d2 = latest_object.dt
+            i_sec = (d1 - d2).total_seconds()
+            if i_sec < 60:
+                form.base_fields['main_id'].initial = latest_object.main_id
+                form.base_fields['l_type'].initial = latest_object.l_type
+        except Exception as e:
+            print('Error in admin.py->124: ',e)
 
         form.base_fields['l_group'].widget = Select(choices=(
             (None, 'No group'),
@@ -159,8 +190,9 @@ class ttkAdmin(admin.ModelAdmin):
        
     def get_form(self, request, obj=None, **kwargs):
         form = super(ttkAdmin, self).get_form(request, obj, **kwargs)
-        latest_object = temp_test_keywords.objects.latest('id')
+
         #Check if last insertion was made within 1 min otherwise form is blank
+        latest_object = temp_test_keywords.objects.latest('id')
         try:
             d1 = datetime.now(timezone.utc)
             #d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
@@ -214,8 +246,19 @@ class tpk(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(tpk, self).get_form(request, obj, **kwargs)
+
+        # Check if last insertion was made within 1 min otherwise form is blank
         latest_object = temp_pers_keywords.objects.latest('id')
-        form.base_fields['main_id'].initial = latest_object.main_id
+        try:
+            d1 = datetime.now(timezone.utc)
+            # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
+            d2 = latest_object.dt
+            i_sec = (d1 - d2).total_seconds()
+            if i_sec < 60:
+                form.base_fields['main_id'].initial = latest_object.main_id
+        except Exception as e:
+            print('Error in admin.py->164: ',e)
+
         return form
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
