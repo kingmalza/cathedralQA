@@ -45,7 +45,6 @@ def product_by_grouping(lst):
 def userdet(sessid):
     session = Session.objects.get(session_key=sessid)
     session_data = session.get_decoded()
-    print (session_data)
     uid = session_data.get('_auth_user_id')
     user = User.objects.get(id=uid)
     return user
@@ -76,21 +75,13 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     # t = threading.Thread(target=mh, args=(mrr1, mrr2, mrr3, mrr4,))
 
     global t_list
-    print("TLIST IS -->", t_list)
 
     # if not t_inst in t_list: t_list[t_inst] = mh(mrr3, mrr4, mrr2, mrr1)
     t_list[t_inst] = mh(mrr2, mrr1, mrr3, mrr4)
 
     start_time = time.time()
     l = threading.enumerate()
-    print("The thread is:", t_list[t_inst])
-    print("Current thread is", threading.current_thread())
-    print("enumerate", l)
-    print("THREAD IN ENUMERATE: ", (threading.current_thread() in l))
-    print("t_inst -> ", t_inst)
-    print("THRED FDIR: ", t_list[t_inst])
-    print("THRED ISALIVE: ", t_list[t_inst].isAlive())
-    print("CURRENT ISALIVE: ", threading.current_thread().isAlive())
+
     if not t_list[t_inst].isAlive():
         try:
             t_list[t_inst].start()
@@ -126,7 +117,6 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                                   test_type=s_type, test_group=tx_group, sched_type=sc_type, sched_val=sc_val, thread_name=t)
 
             test_save.save()
-            print("Valori prima %s - %s - %s" % (t_list[t_inst].getName(), t, s_tag))
             thread_save = t_threads(id_test=t_history.objects.get(id=test_save.id), thread_id=t_list[t_inst].getName(),
                                     thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
             thread_save.save()
@@ -166,8 +156,6 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             id_cli = l_data[0]
             data_act = l_data[4]
 
-            print("dataact->",id_cli,data_act)
-
             #Now check delta days from today and activate data
             d0 = datetime.date.today().strftime("%Y-%m-%d")
             d0 = datetime.datetime.strptime(d0, '%Y-%m-%d')
@@ -192,7 +180,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                         Payload=json.dumps(payload)
                     )
                 except ClientError as er2: #if you see a ClientError, catch it as e
-                    print("Error use--> ",er2) #print the client error info to console
+                    print("Error use--> gotest156",er2) #print the client error info to console
 
            
     except Exception as e:
@@ -216,14 +204,12 @@ def startTest(request, i=[0]):
         reqT = request.POST.get('ttype')
         # Decode the json from start js func
         json_string = request.POST.get('des')  # passed from JavaScript
-        print("json = ", json_string)
         # Schedule settings comming from form
         if reqT == "ST":
             sset = request.POST.get('sched_sel')
             sval = request.POST.get('sched_val')
             gval = 'NoGroup'
         stag = request.POST.get('t_id')
-        print("Sel:%s val:%s" % (sset, sval))
 
         if request.POST.get('ttype') == 'PA':
             proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'))
@@ -278,7 +264,6 @@ def startTest(request, i=[0]):
         idTest = 0
         new_l = []
         new_l.insert(0, ["Variables", ""])
-        print('varrlistt--->', varlist)
         for li in varlist:
             if 'tab_' in li[0]:
                 #if new_l and idTest != 0:
@@ -306,14 +291,12 @@ def startTest(request, i=[0]):
                     temp_l.append(i)
             else:
                 temp_l.append(i)
-        print('temp_l--->',temp_l)
         #Now create list of lists of unique values
         a = list(product_by_grouping(temp_l))
         new_one = []
         for x in a:
             new_one.append(list(x))
 
-        print('new_one: ', new_one)
         ###
 
         global jobqueue
@@ -324,7 +307,7 @@ def startTest(request, i=[0]):
                         goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
                         time.sleep(2)
                     except Exception as e:
-                        print("Exception in goproc: ",e.args)
+                        print("Exception in goproc 306: ",e.args)
         if sset != 'once':
             ##IMPORTANT!##
             ##If multiple value in variable execution is related to all value only for Once selection, in case of scheduled just first value is executed
@@ -337,7 +320,6 @@ def startTest(request, i=[0]):
                 'everymin': 'schedule.every(int(sval)).minutes.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
                 'everyhour': 'schedule.every().hour.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
                 'everyday': 'schedule.every().day.at(str(sval)).do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))'}
-            print("SCHEDULE->>", sset, sval)
             try:
                 eval(sched_dict[sset])
                 while 1:
@@ -345,7 +327,7 @@ def startTest(request, i=[0]):
                     time.sleep(1)
 
             except Exception as e:
-                print("Error in schedule settings! Check values->",e)
+                print("Error in schedule settings! Check values-> gotest323",e)
 
         json = simplejson.dumps(response)
        

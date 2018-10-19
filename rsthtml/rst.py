@@ -70,7 +70,6 @@ class PrepareRst:
     # TestCase rst prep method
     def tc_prep(self, test_id):
         maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
-        print("internat test_id ", maxpar)
         maxMax = maxpar['total'] + 1
 
         # Part1 list creation
@@ -131,7 +130,6 @@ class PrepareRst:
                     l.append(vvar)
 
                 else:
-                    print('r_kry->->->', r.key_val,r.key_group)
                     vvar = self.notNone(str(r.key_val))
                     l.append(vvar)
 
@@ -152,8 +150,6 @@ class PrepareRst:
             #Normalize the list
             for i in range(0,len(tclist)):
                 tclist[i][1] = self.tc_clean(tclist[i][1])
-                print('TCL1-->',tclist[i][1])
-            print('TCLIST-->',tclist)
             return tclist
 
     # Keywords rst prep method
@@ -315,7 +311,6 @@ class PrepareRst:
                 for x in range(0,len_dif+1): l.append('')
             ltouple += (l,)
             l = []
-        print("LTOUPLE_TS>", ltouple)
         tslist = [x for x in ltouple]
         return tslist
 
@@ -341,7 +336,6 @@ class MakeRst:
         self.rstab = self.make_table(table)
 
     def make_table(self, grid):
-        print(grid)
         try:
             cell_width = 2 + max(reduce(lambda x, y: x + y, [[len(item) for item in row] for row in grid], []))
         except Exception:

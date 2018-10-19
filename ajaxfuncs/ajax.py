@@ -68,7 +68,6 @@ def mainoptions(request):
             try:
                 mainProjs = t_proj_route.objects.filter(proj_id=int(request.POST['mainID'])).order_by('main_id')
                 for i in mainProjs.iterator():
-                    print('TESTID-->', i.main_id.id)
                     t_list.append(i.main_id.id)
             except:
                 pass
@@ -105,7 +104,6 @@ def tabrefresh(request):
             if not i.thread_main in str(l):
                 t_threads.objects.filter(thread_main=i.thread_main).update(thread_status='DEAD')
         # If order is different from id i have to ungroup results
-        print('LORDDD--->', qsearch)
         # Rescan table and groub by thread_stag
 
         if qsearch == 'noSearch':
@@ -143,7 +141,6 @@ def tabrefresh(request):
             #afilexec = "%s%s%s" % ("activeThreads = t_threads.objects.filter(~Q(thread_status='DEAD'),", strfin[1:], ").select_related().distinct('thread_stag')")
             #exec(afilexec)
             #exec afilexec in {}
-            print(strfin)
             #execstring(afilexec)
 
 
@@ -155,7 +152,6 @@ def tabrefresh(request):
         for i in activeThreads:
             vallabel = {}
             p, f = [], []
-            print("TID__>",i.id)
             vallabel['tID'] = i.id
             vallabel['OptionName'] = i.id_test.test_main.descr
             vallabel['OptionType'] = i.thread_ttype
@@ -329,7 +325,6 @@ def tstopper(request):
             tuid = i.thread_stag
         try:
             if int(u_conn) == int(u_thread):
-                print('tstop-->', tuid)
                 schedule.clear(str(tuid), )
                 t_threads.objects.filter(thread_stag=str(request.POST['tData'])).update(thread_status='DEAD',
                                                                                         thread_stopd=datetime.now())

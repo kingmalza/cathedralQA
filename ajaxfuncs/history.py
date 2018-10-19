@@ -24,10 +24,8 @@ def histrefresh(request, lorder='-id'):
         # l.setLevel(logging.DEBUG)
         # l.addHandler(logging.StreamHandler())
         if request.POST['tab_ord'] is not None: lorder = request.POST['tab_ord']
-        print('TABSEARCH-->>>', request.POST['isearch'])
 
         if request.POST['tab_slice'] == 1 or int(request.POST['isearch']) == 1:
-            print("Dentrooo")
             x, y = 0, 20
         else:
             x = (int(request.POST['tab_slice']) - 1) * 20
@@ -40,7 +38,6 @@ def histrefresh(request, lorder='-id'):
         of = t_history.objects.aggregate(Sum('fail_num'))
         pnum = op['pass_num__sum']
         fnum = of['fail_num__sum']
-        print("X-Y:", x, y)
         # First check if is typed a search term
         if request.POST['tab_search'] == 'noSearch':
             ordered = t_threads.objects.filter(thread_status='DEAD').select_related().order_by(lorder)[x:y]
@@ -98,7 +95,6 @@ def histrefresh(request, lorder='-id'):
         # ordered = sorted(allThreadsF, key=operator.attrgetter('id'), reverse=True)
 
         # All pass and fail
-        print('PNUM--FNUM-->',pnum,'-',fnum)
         try:
             percp = (pnum * 100) / (pnum + fnum)
             percf = (fnum * 100) / (pnum + fnum)
@@ -109,7 +105,6 @@ def histrefresh(request, lorder='-id'):
         response = []
 
         for i in ordered:
-            print("ID->>", i.id)
             vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,
                         'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,
                         'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19],
