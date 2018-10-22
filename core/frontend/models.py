@@ -582,4 +582,43 @@ class suite_libs(models.Model):
     def __str__(self):
         return '%s -> %s (%s)' % (
             str(self.name), str(self.lib_name), str(self.status))
-    
+
+
+# -----------------------------------------------------------------------------
+# JIRA INTERFACE
+# -----------------------------------------------------------------------------
+
+class jra_settings(models.Model):
+    id = models.AutoField(primary_key=True)
+    j_address = models.CharField(max_length=255, verbose_name="Jira server address")
+    j_user = models.CharField(max_length=255, blank=True, verbose_name="Username")
+    j_pass = models.CharField(max_length=255, blank=True, verbose_name="Password")
+    j_notes = models.TextField(null=True, blank=True, verbose_name="Notes")
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
+
+
+    class Meta:
+        verbose_name = 'JIRA SETTINGS'
+        verbose_name_plural = 'JIRA SETTINGS'
+        ordering = ('j_address',)
+
+    def __str__(self):
+        return '%s -> %s' % (
+            str(self.j_address), str(self.j_user))
+
+
+class jra_history(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_his = models.ForeignKey(t_history, on_delete=models.CASCADE,)
+    j_id = models.ForeignKey(jra_settings, on_delete=models.CASCADE, )
+    j_proj = models.CharField(max_length=255, blank=True)
+    j_issue = models.CharField(max_length=255, blank=True)
+    j_comment = models.TextField(null=True, blank=True)
+    j_status = models.TextField(null=True, blank=True)
+    j_file = models.TextField(null=True, blank=True, editable= False)
+    owner = models.ForeignKey('auth.User', related_name='jrahistory_owner', on_delete=models.CASCADE)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
+
+    def __str__(self):
+        return '%s -> %s' % (
+            str(self.j_proj), str(self.j_issue))

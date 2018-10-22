@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from .forms import CustomBarModelForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
-    temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs
+    temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history
 from django.forms import Select
 from datetime import datetime, timezone
 
@@ -402,6 +402,33 @@ class t_group_testAdmin(admin.ModelAdmin):
             }
             return super(t_group_testAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
+
+
+class jra_settingsAdmin(admin.ModelAdmin):
+
+    #list_filter = ('j_address', 'j_user')
+    list_display = ('j_address', 'j_user', 'j_notes')
+
+    def has_add_permission(self, request):
+        # if there's already an entry, do not allow adding
+        count = jra_settings.objects.all().count()
+        if count == 0:
+            return True
+
+        return False
+
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+
+        print("OBJ_ID--> ", obj_id)
+        """
+        l_mod = jra_history.objects.latest('id')
+
+        extra_context = {
+            'lmod': l_mod,
+        }
+        """
+        return super(jra_settingsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+
             
 class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
@@ -432,3 +459,4 @@ admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
 admin.site.register(t_proj, t_projAdmin, )
 admin.site.register(suite_libs, )
+admin.site.register(jra_settings, jra_settingsAdmin)
