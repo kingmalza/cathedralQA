@@ -600,6 +600,14 @@ function getTlineHist(t_stag, f_view) {
                 a4.setAttribute("class", "btn btn-warning btn-flat btn-xs");
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
+                if (data[index].t_jira) {
+                    var div43 = document.createElement("div");
+                    div43.setAttribute("class", "timeline-body");
+                    textJir = document.createElement('LABEL');
+                    textJir.innerHTML = 'JIRAAAAAA';
+                    div43.appendChild(textJir);
+                    div4.appendChild(div43);
+                }
                 div42.appendChild(a4);
                 div4.appendChild(span4);
                 div4.appendChild(h34);

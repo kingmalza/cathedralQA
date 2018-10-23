@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 import lxml.etree as etree
 
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, \
-    t_tags, t_tags_route, t_proj, t_proj_route, Document
+    t_tags, t_tags_route, t_proj, t_proj_route, Document, jra_settings
 
 sys.path.append('core')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
@@ -255,11 +255,16 @@ def tlinemgm(request):
         else:
             thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:20]
 
+        #Now check if there is in jira settings something or not
+        jra_set = jra_settings.objects.all()
+        j_set = None
+        for x in jra_set: j_set = x.id
+
         response = []
         for i in thread_list:
             vallabel = {'t_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data), 't_xml': i.id_test.xml_result,
                         't_html': i.id_test.html_test, 't_var': i.id_test.var_test, 't_pid': i.id_test.pid,
-                        't_user': str(i.id_test.user_id), 't_main': str(i.id_test.test_main)}
+                        't_user': str(i.id_test.user_id), 't_main': str(i.id_test.test_main), 't_jira': j_set}
             response.append(vallabel)
         json = simplejson.dumps(response)
 
