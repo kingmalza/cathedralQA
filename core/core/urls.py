@@ -24,7 +24,7 @@ from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 from django.conf import settings
 from django.contrib import admin
-from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh
+from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost
 from ajaxfuncs.history import histrefresh
 from ajaxfuncs.group import mainTgroup, subTgroup
 from rsthtml.goTest import startTest
@@ -84,6 +84,7 @@ urlpatterns = [
                   url(r'^groupsub', subTgroup),
                   url(r'^tvar$', temp_var),
                   url(r'^tlib$', temp_lib),
+                    url(r'^jirapost$', jpost),
                   url(r'^libs$', ext_lib),
                   url(r'^usage', sys_usage),
                   url(r'^files', f_upload),

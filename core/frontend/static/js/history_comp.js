@@ -505,12 +505,13 @@ function getTlineHist(t_stag, f_view) {
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
     t_btn = document.getElementById("btngrp");
+    jproject = null;
 
 
   $.ajax({
         type: "POST",
         url: "tline_mgm",
-        data: {tTag: t_stag, fView: f_view},
+        data: {tTag: t_stag, fView: f_view, jProj: jproject},
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();
@@ -601,12 +602,41 @@ function getTlineHist(t_stag, f_view) {
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
                 if (data[index].t_jira) {
-                    var div43 = document.createElement("div");
-                    div43.setAttribute("class", "timeline-body");
-                    textJir = document.createElement('LABEL');
-                    textJir.innerHTML = 'JIRAAAAAA';
-                    div43.appendChild(textJir);
-                    div4.appendChild(div43);
+                    var lij1 = document.createElement("LI");
+                    var ij1 = document.createElement("I");
+                    ij1.setAttribute("class", "fa fa-comments bg-yellow");
+                    var divj1 = document.createElement("div");
+                    divj1.setAttribute("class", "timeline-item");
+                    var spanj1 = document.createElement("SPAN");
+                    spanj1.setAttribute("class", "time");
+                    var hj1 = document.createElement("H3")
+                    hj1.setAttribute("class", "timeline-header");
+                    hj1.innerHTML = "Jira history events";
+                    var divj2 = document.createElement("div");
+                    divj2.setAttribute("class", "timeline-body");
+                    textLog = document.createElement('LABEL');
+                    textLog.innerHTML = data[index].t_var;
+                    divj2.appendChild(textLog);
+                    var divj3 = document.createElement("div");
+                    divj3.setAttribute("class", "timeline-footer");
+                    //Now i create form for jira event submission
+                    var jfrm = document.createElement("FORM");
+                    jfrm.method = "post";
+                    jfrm.action = "/jirapost";
+                    jtx1 = document.createElement("INPUT");
+                    var jbut1 = document.createElement("BUTTON");
+                    jbut1.innerHTML = "Submit to jira";
+                    jbut1.addEventListener ("click", function() {
+                        jproject = jtx1.innerHTML;
+                        alert(jproject);
+                    });
+                    jfrm.appendChild(jtx1)
+                    jfrm.appendChild(jbut1)
+                    divj3.appendChild(jfrm)
+                    divj1.appendChild(spanj1)
+                    divj1.appendChild(hj1)
+                    divj1.appendChild(divj2)
+                    divj1.appendChild(divj3)
                 }
                 div42.appendChild(a4);
                 div4.appendChild(span4);
@@ -615,11 +645,17 @@ function getTlineHist(t_stag, f_view) {
                 div4.appendChild(div42);
                 li4.appendChild(i4);
                 li4.appendChild(div4);
+
                 //End Third item
                 t_ultl.appendChild(li1);
                 //t_ultl.appendChild(li2);
                 t_ultl.appendChild(li3);
                 t_ultl.appendChild(li4);
+                if (data[index].t_jira) {
+                    lij1.appendChild(ij1);
+                    lij1.appendChild(divj1);
+                    t_ultl.appendChild(lij1);
+                }
                 //alert(data[index].t_exec);
                 p_proc = data[index].t_pid;
             });
