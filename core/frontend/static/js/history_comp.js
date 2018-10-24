@@ -500,7 +500,7 @@ function refFile() {
 
 
 //Function for add an event in jra_histiry abs
-function postJraEvent(id_ev,j_proj) {
+function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_status, j_file) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
@@ -509,7 +509,7 @@ function postJraEvent(id_ev,j_proj) {
   $.ajax({
         type: "POST",
         url: "jirapost",
-        data: {evid: id_ev, jpro: j_proj},
+        data: {evid: id_ev, jpro: j_proj, jissue: j_issue, jcom: j_comm, jstat: j_status, jfile: j_file},
         success: function (data) {
         
         }
@@ -640,17 +640,35 @@ function getTlineHist(t_stag, f_view) {
                     var jfrm = document.createElement("FORM");
                     jfrm.method = "post";
                     //jfrm.action = function() {postJraEvent(1,'test');}
+                    //Project
                     jtx1 = document.createElement("INPUT");
-                    jtx1.setAttribute("id", "but1");
+                    jtx1.setAttribute("id", "txt1");
+                    //Issue
+                    jtx2 = document.createElement("INPUT");
+                    jtx2.setAttribute("id", "txt2");
+                    //Comment
+                    jtx3 = document.createElement("INPUT");
+                    jtx3.setAttribute("id", "txt3");
+                    //Status (to be combo)
+                    jtx4 = document.createElement("INPUT");
+                    jtx4.setAttribute("id", "txt4");
+                    //File(fill with log html)
+                    jtx5 = document.createElement("INPUT");
+                    jtx5.innerHTML("/static/out/"+data[index].t_pid+"/log.html");
+                    jtx5.setAttribute("id", "txt5");
                     var jbut1 = document.createElement("BUTTON");
                     jbut1.innerHTML = "Submit to jira";
                     jbut1.addEventListener ("click", function() {
                         alert("Message");
                     });
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(1,document.getElementById('but1').value);
+                        postJraEvent(data[index].id,document.getElementById('txt1').value);
                     });
                     jfrm.appendChild(jtx1)
+                    jfrm.appendChild(jtx2)
+                    jfrm.appendChild(jtx3)
+                    jfrm.appendChild(jtx4)
+                    jfrm.appendChild(jtx5)
                     jfrm.appendChild(jbut1)
                     divj3.appendChild(jfrm)
                     divj1.appendChild(spanj1)
