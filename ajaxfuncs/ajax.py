@@ -279,17 +279,10 @@ def tlinemgm(request):
 @csrf_exempt
 # For jira integration post
 def jpost(request):
-    if request.is_ajax():
 
-        print(request.POST['jProj'])
-        json = simplejson.dumps(response)
+    print("Request->",request.POST['but1'])
+        
 
-        return HttpResponse(
-            json, content_type='application/json'
-        )
-
-    else:
-        pass
 
 @csrf_exempt
 def tselect(request):

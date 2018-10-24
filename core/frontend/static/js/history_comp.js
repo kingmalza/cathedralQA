@@ -505,13 +505,11 @@ function getTlineHist(t_stag, f_view) {
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
     t_btn = document.getElementById("btngrp");
-    jproject = null;
-
 
   $.ajax({
         type: "POST",
         url: "tline_mgm",
-        data: {tTag: t_stag, fView: f_view, jProj: jproject},
+        data: {tTag: t_stag, fView: f_view},
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();
@@ -601,6 +599,7 @@ function getTlineHist(t_stag, f_view) {
                 a4.setAttribute("class", "btn btn-warning btn-flat btn-xs");
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
+                //If there is Jira parameters integration
                 if (data[index].t_jira) {
                     var lij1 = document.createElement("LI");
                     var ij1 = document.createElement("I");
@@ -624,11 +623,11 @@ function getTlineHist(t_stag, f_view) {
                     jfrm.method = "post";
                     jfrm.action = "/jirapost";
                     jtx1 = document.createElement("INPUT");
+                    jtx1.setAttribute("id", "but1");
                     var jbut1 = document.createElement("BUTTON");
                     jbut1.innerHTML = "Submit to jira";
                     jbut1.addEventListener ("click", function() {
-                        jproject = jtx1.innerHTML;
-                        alert(jproject);
+                        alert("Message");
                     });
                     jfrm.appendChild(jtx1)
                     jfrm.appendChild(jbut1)
