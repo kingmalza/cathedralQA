@@ -499,6 +499,24 @@ function refFile() {
 }
 
 
+//Function for add an event in jra_histiry abs
+function postJraEvent(id_ev,j_proj) {
+    //main ul for contain dynamic constructors
+    //t_ultl = GetElementInsideContainer("divtl", "ultl");
+    t_ultl = document.getElementById("ultl");
+    t_btn = document.getElementById("btngrp");
+
+  $.ajax({
+        type: "POST",
+        url: "jirapost",
+        data: {evid: id_ev, jpro: j_proj},
+        success: function (data) {
+        
+        }
+    });
+    
+}
+
 //Function for create an populate timeline
 function getTlineHist(t_stag, f_view) {
     //main ul for contain dynamic constructors
@@ -621,13 +639,16 @@ function getTlineHist(t_stag, f_view) {
                     //Now i create form for jira event submission
                     var jfrm = document.createElement("FORM");
                     jfrm.method = "post";
-                    jfrm.action = "/jirapost";
+                    //jfrm.action = function() {postJraEvent(1,'test');}
                     jtx1 = document.createElement("INPUT");
                     jtx1.setAttribute("id", "but1");
                     var jbut1 = document.createElement("BUTTON");
                     jbut1.innerHTML = "Submit to jira";
                     jbut1.addEventListener ("click", function() {
                         alert("Message");
+                    });
+                    jfrm.addEventListener ("submit", function() {
+                        postJraEvent(1,document.getElementById('but1').value);
                     });
                     jfrm.appendChild(jtx1)
                     jfrm.appendChild(jbut1)

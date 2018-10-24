@@ -84,7 +84,7 @@ urlpatterns = [
                   url(r'^groupsub', subTgroup),
                   url(r'^tvar$', temp_var),
                   url(r'^tlib$', temp_lib),
-                    url(r'^jirapost$', jpost),
+                  url(r'^jirapost$', jpost),
                   url(r'^libs$', ext_lib),
                   url(r'^usage', sys_usage),
                   url(r'^files', f_upload),

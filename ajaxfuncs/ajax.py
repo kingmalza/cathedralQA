@@ -280,7 +280,7 @@ def tlinemgm(request):
 # For jira integration post
 def jpost(request):
 
-    print("Request->",request.POST['but1'])
+    print("Request->",request.POST['jpro'])
         
 
 
