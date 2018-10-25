@@ -610,13 +610,9 @@ class jra_settings(models.Model):
 class jra_history(models.Model):
     id = models.AutoField(primary_key=True)
     id_his = models.ForeignKey(t_history, on_delete=models.CASCADE,)
-    j_id = models.ForeignKey(jra_settings, on_delete=models.CASCADE, )
-    j_proj = models.CharField(max_length=255, blank=True)
     j_issue = models.CharField(max_length=255, blank=True)
     j_comment = models.TextField(null=True, blank=True)
-    j_status = models.TextField(null=True, blank=True)
-    j_file = models.TextField(null=True, blank=True, editable= False)
-    owner = models.ForeignKey('auth.User', related_name='jrahistory_owner', on_delete=models.CASCADE)
+    j_file = models.BooleanField(default=True, verbose_name="Log file")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
 
     def __str__(self):

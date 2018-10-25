@@ -283,10 +283,24 @@ def tlinemgm(request):
 def jpost(request):
     if request.is_ajax():
         #Connection first get user and pass from tab
+        jadd = ""
+        juser = ""
+        jpass = ""
+        
+        errarg = ""
+        
         connData = jra_settings.objects.all()
-        jira = JIRA(basic_auth=('admin', 'admin'))
-        print("Request->",request.POST['jpro'])
-    
+        for i in connData:
+            jadd = i.j_address.strip()
+            juser = i.j_user.strip()
+            jpass = i.j_pass.strip()
+        
+        try:
+            jira = JIRA(jadd, basic_auth=(juser, jpass))
+            #if auth ok continue
+        except Exception as e:
+            errarg = e.args
+
     else:
         pass
 

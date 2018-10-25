@@ -500,7 +500,7 @@ function refFile() {
 
 
 //Function for add an event in jra_histiry abs
-function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_status, j_file) {
+function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_file) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
@@ -509,7 +509,7 @@ function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_status, j_file) {
   $.ajax({
         type: "POST",
         url: "jirapost",
-        data: {evid: id_ev, jpro: j_proj, jissue: j_issue, jcom: j_comm, jstat: j_status, jfile: j_file},
+        data: {evid: id_ev, jissue: j_issue, jcom: j_comm, jfile: j_file},
         success: function (data) {
             $.each(data, function (index) {
                     //If some error returned from ajax display it in label error (make css red bold ecc ecc--TODO)
@@ -644,21 +644,16 @@ function getTlineHist(t_stag, f_view) {
                     var jfrm = document.createElement("FORM");
                     jfrm.method = "post";
                     //jfrm.action = function() {postJraEvent(1,'test');}
-                    //Project
-                    jtx1 = document.createElement("INPUT");
-                    jtx1.setAttribute("id", "txt1");
                     //Issue
                     jtx2 = document.createElement("INPUT");
                     jtx2.setAttribute("id", "txt2");
                     //Comment
                     jtx3 = document.createElement("INPUT");
                     jtx3.setAttribute("id", "txt3");
-                    //Status (to be combo)
-                    jtx4 = document.createElement("INPUT");
-                    jtx4.setAttribute("id", "txt4");
                     //File(fill with log html)
                     jtx5 = document.createElement("INPUT");
-                    jtx5.innerHTML("/static/out/"+data[index].t_pid+"/log.html");
+                    jtx5.setAttribute("type", "checkbox");
+                    jtx5.checked = true;
                     jtx5.setAttribute("id", "txt5");
                     //Label for errors
                     jlab1 = document.createElement("INPUT");
@@ -669,7 +664,7 @@ function getTlineHist(t_stag, f_view) {
                         alert("Message");
                     });
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].id,document.getElementById('txt1').value,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt4').value,document.getElementById('txt5').value);
+                        postJraEvent(data[index].id,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
                     });
                     jfrm.appendChild(jlab1)
                     jfrm.appendChild(jtx1)
