@@ -500,22 +500,23 @@ function refFile() {
 
 
 //Function for add an event in jra_histiry abs
-function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_file) {
+function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
-    t_ultl = document.getElementById("ultl");
-    t_btn = document.getElementById("btngrp");
+    //t_ultl = document.getElementById("ultl");
+    //t_btn = document.getElementById("btngrp");
+    console.log('In eventoo');
 
   $.ajax({
         type: "POST",
         url: "jirapost",
-        data: {evid: id_ev, jissue: j_issue, jcom: j_comm, jfile: j_file},
+        data: {evid: id_ev, tid: th_id, jissue: j_issue, jcom: j_comm, jfile: j_file},
         success: function (data) {
             $.each(data, function (index) {
-                    //If some error returned from ajax display it in label error (make css red bold ecc ecc--TODO)
+                    //If some error returned from ajax display it in label error (make css red bold ecc ecc)
                     j_error = document.getElementById("laberr");
-                    j_error.innerHTML = data[index].j_err;
-            }
+                    //j_error.innerHTML = data[index].j_err;
+            });
         }
     });
     
@@ -656,21 +657,20 @@ function getTlineHist(t_stag, f_view) {
                     jtx5.checked = true;
                     jtx5.setAttribute("id", "txt5");
                     //Label for errors
-                    jlab1 = document.createElement("INPUT");
+                    jlab1 = document.createElement("LABEL");
                     jlab1.setAttribute("id", "laberr");
-                    var jbut1 = document.createElement("LABEL");
+                    var jbut1 = document.createElement("INPUT");
+                    jbut1.setAttribute("type", "submit");
                     jbut1.innerHTML = "Submit to jira";
                     jbut1.addEventListener ("click", function() {
                         alert("Message");
                     });
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].id,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
+                        postJraEvent(data[index].id,data[index].t_pid,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
                     });
                     jfrm.appendChild(jlab1)
-                    jfrm.appendChild(jtx1)
                     jfrm.appendChild(jtx2)
                     jfrm.appendChild(jtx3)
-                    jfrm.appendChild(jtx4)
                     jfrm.appendChild(jtx5)
                     jfrm.appendChild(jbut1)
                     divj3.appendChild(jfrm)

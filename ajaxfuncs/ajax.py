@@ -15,7 +15,7 @@ import lxml.etree as etree
 from jira import JIRA
 
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, \
-    t_tags, t_tags_route, t_proj, t_proj_route, Document, jra_settings
+    t_tags, t_tags_route, t_proj, t_proj_route, Document, jra_settings, jra_history
 
 sys.path.append('core')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
@@ -286,9 +286,12 @@ def jpost(request):
         jadd = ""
         juser = ""
         jpass = ""
+
+        jFile = False
+        response = []
         
         errarg = ""
-        
+        print('File-->',request.POST['jfile'])
         connData = jra_settings.objects.all()
         for i in connData:
             jadd = i.j_address.strip()
@@ -296,10 +299,38 @@ def jpost(request):
             jpass = i.j_pass.strip()
         
         try:
-            jira = JIRA(jadd, basic_auth=(juser, jpass))
+            options = {'server': jadd}
+            jira = JIRA(options, basic_auth=(juser, jpass))
             #if auth ok continue
+            # Get the issue.
+            try:
+                issue = jira.issue(request.POST['jissue'])
+                #If issue is ok add element:
+                # Add a comment to the issue.
+                if request.POST['jcom']:
+                    jira.add_comment(issue, request.POST['jcom'])
+
+                #add log file
+                if request.POST['jfile']:
+                    try:
+                        jira.add_attachment(issue,"/static/out/"+request.POST['tid']+"/log.html")
+                        jFile = True
+                    except Exception as ef:
+                        errarg = ef.args
+
+                #Now if all is ok add new line to the table
+                jra_ev = jra_history(id_his=request.POST['evid'], j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()))
+                jra_ev.save()
+
+            except Exception as ei:
+                errarg = ei.args
+
         except Exception as e:
             errarg = e.args
+
+        json = simplejson.dumps(response)
+
+        return HttpResponse(json, content_type='application/json')
 
     else:
         pass
