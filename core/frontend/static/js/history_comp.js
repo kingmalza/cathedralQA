@@ -511,7 +511,11 @@ function postJraEvent(id_ev, j_proj, j_issue, j_comm, j_status, j_file) {
         url: "jirapost",
         data: {evid: id_ev, jpro: j_proj, jissue: j_issue, jcom: j_comm, jstat: j_status, jfile: j_file},
         success: function (data) {
-        
+            $.each(data, function (index) {
+                    //If some error returned from ajax display it in label error (make css red bold ecc ecc--TODO)
+                    j_error = document.getElementById("laberr");
+                    j_error.innerHTML = data[index].j_err;
+            }
         }
     });
     
@@ -656,14 +660,18 @@ function getTlineHist(t_stag, f_view) {
                     jtx5 = document.createElement("INPUT");
                     jtx5.innerHTML("/static/out/"+data[index].t_pid+"/log.html");
                     jtx5.setAttribute("id", "txt5");
-                    var jbut1 = document.createElement("BUTTON");
+                    //Label for errors
+                    jlab1 = document.createElement("INPUT");
+                    jlab1.setAttribute("id", "laberr");
+                    var jbut1 = document.createElement("LABEL");
                     jbut1.innerHTML = "Submit to jira";
                     jbut1.addEventListener ("click", function() {
                         alert("Message");
                     });
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].id,document.getElementById('txt1').value);
+                        postJraEvent(data[index].id,document.getElementById('txt1').value,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt4').value,document.getElementById('txt5').value);
                     });
+                    jfrm.appendChild(jlab1)
                     jfrm.appendChild(jtx1)
                     jfrm.appendChild(jtx2)
                     jfrm.appendChild(jtx3)

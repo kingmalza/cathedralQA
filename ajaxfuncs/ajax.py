@@ -12,6 +12,8 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 import lxml.etree as etree
 
+from jira import JIRA
+
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, \
     t_tags, t_tags_route, t_proj, t_proj_route, Document, jra_settings
 
@@ -279,9 +281,14 @@ def tlinemgm(request):
 @csrf_exempt
 # For jira integration post
 def jpost(request):
-
-    print("Request->",request.POST['jpro'])
-        
+    if request.is_ajax():
+        #Connection first get user and pass from tab
+        connData = jra_settings.objects.all()
+        jira = JIRA(basic_auth=('admin', 'admin'))
+        print("Request->",request.POST['jpro'])
+    
+    else:
+        pass
 
 
 @csrf_exempt
