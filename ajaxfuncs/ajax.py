@@ -328,6 +328,10 @@ def jpost(request):
         except Exception as e:
             errarg = e.args
 
+
+        vallabel = {}
+        vallabel['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
+        response.append(vallabel)
         json = simplejson.dumps(response)
 
         return HttpResponse(json, content_type='application/json')
