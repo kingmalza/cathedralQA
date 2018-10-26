@@ -155,7 +155,6 @@
                 <div class="col-md-12" id="divtl">
                     <!-- The time line -->
                     <ul class="timeline" id="ultl">
-                        {% csrf_token %}
                         <!-- AJAX Dynamic in getTline (home_comp.js) -->
                     </ul>
                 </div><!-- /.col -->
@@ -165,6 +164,7 @@
 
 {% endblock %}
 {% block script %}
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <!-- jQuery 2.1.3 -->
     <script src="{% static "plugins/jQuery/jQuery-2.1.3.min.js" %}"></script>
     <!-- My js for ajax automatic template render -->
