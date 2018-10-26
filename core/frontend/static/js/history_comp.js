@@ -542,7 +542,7 @@ function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
     $.ajax({
         type: "POST",
         url: "jirapost",
-        data: {evid: id_ev, tid: th_id, jissue: j_issue, jcom: j_comm, jfile: j_file},
+        data: {evid: id_ev, tid: th_id, jissue: j_issue, jcom: j_comm, jfile: j_file, csrfmiddlewaretoken: '{{ csrf_token }}'},
         success: function (data) {
             $.each(data, function (index) {
                     //If some error returned from ajax display it in label error (make css red bold ecc ecc)
