@@ -6,9 +6,11 @@ import shutil
 
 from django.shortcuts import render
 from frontend.forms import DocumentForm
+import simplejson
+from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
 from frontend.models import temp_main, temp_case, temp_keywords, temp_library, temp_variables, temp_pers_keywords, \
-    temp_test_keywords, t_threads, t_tags, t_tags_route, settings_gen
+    temp_test_keywords, t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
     temp_variablesSerializer, temp_pers_keywordsSerializer, temp_test_keywordsSerializer, temp_librarySerializer, t_scheduleSerializer, \
@@ -19,12 +21,16 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 from rest_framework import renderers
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
+
+from jira import JIRA
 
 import boto3
 import json
@@ -55,9 +61,72 @@ def index(request, **kwargs):
 
 
 @login_required
+@csrf_exempt
 # Viev for history threads list
 def h_list(request, **kwargs):
     global test_main
+    
+    if request.is_ajax():
+        driver = webdriver.Firefox()
+        print (driver.current_url)
+        #Connection first get user and pass from tab
+        jadd = ""
+        juser = ""
+        jpass = ""
+
+        jFile = False
+        response = []
+        
+        errarg = ""
+        print('File-->',request.POST['evid'])
+        connData = jra_settings.objects.all()
+        for i in connData:
+            jadd = i.j_address.strip()
+            juser = i.j_user.strip()
+            jpass = i.j_pass.strip()
+        
+        try:
+            options = {'server': jadd}
+            jira = JIRA(options, basic_auth=(juser, jpass))
+            #if auth ok continue
+            # Get the issue.
+            try:
+                issue = jira.issue(request.POST['jissue'])
+                #If issue is ok add element:
+                # Add a comment to the issue.
+                if request.POST['jcom']:
+                    jira.add_comment(issue, request.POST['jcom'])
+
+                #add log file
+                if request.POST['jfile']:
+                    try:
+                        jira.add_attachment(issue,"/static/out/"+request.POST['tid']+"/log.html")
+                        jFile = True
+                    except Exception as ef:
+                        errarg = ef.args
+
+                #Now if all is ok add new line to the table
+                jra_ev = jra_history(id_his=t_history.objects.get(id=request.POST['evid']), j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()))
+                jra_ev.save()
+
+            except Exception as ei:
+                errarg = ei.args
+
+        except Exception as e:
+            errarg = e.args
+
+        print("Some errors? ",errarg)
+        vallabel = {}
+        vallabel['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
+        response.append(vallabel)
+        json = simplejson.dumps(response)
+
+        return HttpResponse(json, content_type='application/json')
+
+    else:
+        pass
+    
+    #EXTRA AJAX, NORMAL BEHAVIOUR
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)

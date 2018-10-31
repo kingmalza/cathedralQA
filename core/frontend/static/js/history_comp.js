@@ -541,7 +541,7 @@ function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
 
     $.ajax({
         type: "POST",
-        url: "jirapost",
+        url: "/",
         data: {evid: id_ev, tid: th_id, jissue: j_issue, jcom: j_comm, jfile: j_file, csrfmiddlewaretoken: '{{ csrf_token }}'},
         success: function (data) {
             $.each(data, function (index) {
@@ -698,7 +698,7 @@ function getTlineHist(t_stag, f_view) {
                         alert("Message");
                     });
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].id,data[index].t_pid,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
+                        postJraEvent(data[index].t_id, data[index].t_pid,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
                     });
                     jfrm.appendChild(jlab1)
                     jfrm.appendChild(jtx2)
