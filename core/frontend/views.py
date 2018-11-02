@@ -67,8 +67,8 @@ def h_list(request, **kwargs):
     global test_main
     
     if request.is_ajax():
-        driver = webdriver.Firefox()
-        print (driver.current_url)
+        schema_name = settings_gen.objects.get(id=1).tenant_name
+        j_file = "frontend/static/out/"+request.POST['tid']+"/log.html"
         #Connection first get user and pass from tab
         jadd = ""
         juser = ""
@@ -78,7 +78,6 @@ def h_list(request, **kwargs):
         response = []
         
         errarg = ""
-        print('File-->',request.POST['evid'])
         connData = jra_settings.objects.all()
         for i in connData:
             jadd = i.j_address.strip()
@@ -98,16 +97,12 @@ def h_list(request, **kwargs):
                     jira.add_comment(issue, request.POST['jcom'])
 
                 #add log file
-                if request.POST['jfile']:
+                if str(request.POST['jfile'].strip()) == 'true':
                     try:
-                        jira.add_attachment(issue,"/static/out/"+request.POST['tid']+"/log.html")
+                        jira.add_attachment(issue,j_file)
                         jFile = True
                     except Exception as ef:
                         errarg = ef.args
-
-                #Now if all is ok add new line to the table
-                jra_ev = jra_history(id_his=t_history.objects.get(id=request.POST['evid']), j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()))
-                jra_ev.save()
 
             except Exception as ei:
                 errarg = ei.args
@@ -115,12 +110,19 @@ def h_list(request, **kwargs):
         except Exception as e:
             errarg = e.args
 
-        print("Some errors? ",errarg)
+        
+        #Now if all is ok add new line to the table
+        jra_ev = jra_history(j_tid=request.POST['tid'], j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()), j_error=errarg)
+        jra_ev.save()
+        
+        #Query for have already inserted jira records
+        
+        
         vallabel = {}
         vallabel['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
+        vallabel['j_err'] = errarg
         response.append(vallabel)
         json = simplejson.dumps(response)
-
         return HttpResponse(json, content_type='application/json')
 
     else:

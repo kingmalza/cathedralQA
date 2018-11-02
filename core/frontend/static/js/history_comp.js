@@ -525,10 +525,11 @@ function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     //t_ultl = document.getElementById("ultl");
     //t_btn = document.getElementById("btngrp");
+    j_error = document.getElementById("laberr");
 
     $(document).ready(function() {
         var csrftoken = getCookie('csrftoken');
-        alert(csrftoken);
+        //alert(csrftoken);
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -546,8 +547,6 @@ function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
         success: function (data) {
             $.each(data, function (index) {
                     //If some error returned from ajax display it in label error (make css red bold ecc ecc)
-                    j_error = document.getElementById("laberr");
-                    //j_error.innerHTML = data[index].j_err;
             });
         }
     });
@@ -679,26 +678,26 @@ function getTlineHist(t_stag, f_view) {
                     //jfrm.action = function() {postJraEvent(1,'test');}
                     //Issue
                     jtx2 = document.createElement("INPUT");
-                    jtx2.setAttribute("id", "txt2");
+                    jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
                     //Comment
                     jtx3 = document.createElement("INPUT");
-                    jtx3.setAttribute("id", "txt3");
+                    jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
                     //File(fill with log html)
                     jtx5 = document.createElement("INPUT");
                     jtx5.setAttribute("type", "checkbox");
                     jtx5.checked = true;
-                    jtx5.setAttribute("id", "txt5");
+                    jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
                     //Label for errors
                     jlab1 = document.createElement("LABEL");
                     jlab1.setAttribute("id", "laberr");
                     var jbut1 = document.createElement("INPUT");
                     jbut1.setAttribute("type", "submit");
                     jbut1.innerHTML = "Submit to jira";
-                    jbut1.addEventListener ("click", function() {
+                    /*jbut1.addEventListener ("click", function() {
                         alert("Message");
-                    });
+                    });*/
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].t_id, data[index].t_pid,document.getElementById('txt2').value,document.getElementById('txt3').value,document.getElementById('txt5').value);
+                        postJraEvent(data[index].t_id, data[index].t_pid,document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
                     });
                     jfrm.appendChild(jlab1)
                     jfrm.appendChild(jtx2)

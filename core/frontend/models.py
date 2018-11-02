@@ -609,12 +609,13 @@ class jra_settings(models.Model):
 
 class jra_history(models.Model):
     id = models.AutoField(primary_key=True)
-    id_his = models.ForeignKey(t_history, on_delete=models.CASCADE,)
+    j_tid = models.CharField(max_length=1000, blank=True)
     j_issue = models.CharField(max_length=255, blank=True)
     j_comment = models.TextField(null=True, blank=True)
     j_file = models.BooleanField(default=True, verbose_name="Log file")
+    j_error = models.TextField(null=True, blank=True)
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
 
     def __str__(self):
         return '%s -> %s' % (
-            str(self.j_proj), str(self.j_issue))
+            str(self.j_tid), str(self.j_issue))
