@@ -665,6 +665,10 @@ function getTlineHist(t_stag, f_view) {
                     var hj1 = document.createElement("H3")
                     hj1.setAttribute("class", "timeline-header");
                     hj1.innerHTML = "Jira history events";
+                    //Write here previous jira insertion
+                    jlab_h1 = document.createElement("LABEL");
+                    jlab_h1.setAttribute("id", "labh1");
+                    //jlab_h1.innerHTML = data[index].j_int.j_issue;
                     var divj2 = document.createElement("div");
                     divj2.setAttribute("class", "timeline-body");
                     textLog = document.createElement('LABEL');
@@ -699,16 +703,17 @@ function getTlineHist(t_stag, f_view) {
                     jfrm.addEventListener ("submit", function() {
                         postJraEvent(data[index].t_id, data[index].t_pid,document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
                     });
-                    jfrm.appendChild(jlab1)
-                    jfrm.appendChild(jtx2)
-                    jfrm.appendChild(jtx3)
-                    jfrm.appendChild(jtx5)
-                    jfrm.appendChild(jbut1)
-                    divj3.appendChild(jfrm)
-                    divj1.appendChild(spanj1)
-                    divj1.appendChild(hj1)
-                    divj1.appendChild(divj2)
-                    divj1.appendChild(divj3)
+                    jfrm.appendChild(jlab1);
+                    jfrm.appendChild(jlab_h1);
+                    jfrm.appendChild(jtx2);
+                    jfrm.appendChild(jtx3);
+                    jfrm.appendChild(jtx5);
+                    jfrm.appendChild(jbut1);
+                    divj3.appendChild(jfrm);
+                    divj1.appendChild(spanj1);
+                    divj1.appendChild(hj1);
+                    divj1.appendChild(divj2);
+                    divj1.appendChild(divj3);
                 }
                 div42.appendChild(a4);
                 div4.appendChild(span4);

@@ -616,6 +616,12 @@ class jra_history(models.Model):
     j_error = models.TextField(null=True, blank=True)
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
 
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['j_tid', ]),
+        ]
+
     def __str__(self):
         return '%s -> %s' % (
             str(self.j_tid), str(self.j_issue))

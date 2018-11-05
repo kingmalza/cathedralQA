@@ -263,11 +263,23 @@ def tlinemgm(request):
         for x in jra_set: j_set = x.id
 
         response = []
+
         for i in thread_list:
             vallabel = {'t_id': i.id, 't_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data), 't_xml': i.id_test.xml_result,
                         't_html': i.id_test.html_test, 't_var': i.id_test.var_test, 't_pid': i.id_test.pid,
                         't_user': str(i.id_test.user_id), 't_main': str(i.id_test.test_main), 't_jira': j_set}
+
+            #Now, if is in history tab check for jira history
+            if str(request.POST['fView']) != "active":
+                ji_list = jra_history.objects.filter(j_tid = i.thread_main)
+
+                for x in ji_list:
+                    vallabel['j_int'] = {'j_issue': x.j_issue, 'j_com': x.j_comment, 'j_file': x.j_file, 'j_date': str(x.dt), 'j_err': x.j_error}
+                    response.append(vallabel)
+
             response.append(vallabel)
+
+        print('Response->',response)
         json = simplejson.dumps(response)
 
         return HttpResponse(
