@@ -265,21 +265,12 @@ def tlinemgm(request):
         response = []
 
         for i in thread_list:
-            vallabel = {'t_id': i.id, 't_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data), 't_xml': i.id_test.xml_result,
+            vallabel = {'t_id': i.id, 'th_id': i.thread_id, 't_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data), 't_xml': i.id_test.xml_result,
                         't_html': i.id_test.html_test, 't_var': i.id_test.var_test, 't_pid': i.id_test.pid,
                         't_user': str(i.id_test.user_id), 't_main': str(i.id_test.test_main), 't_jira': j_set}
 
-            #Now, if is in history tab check for jira history
-            if str(request.POST['fView']) != "active":
-                ji_list = jra_history.objects.filter(j_tid = i.thread_main)
-
-                for x in ji_list:
-                    vallabel['j_int'] = {'j_issue': x.j_issue, 'j_com': x.j_comment, 'j_file': x.j_file, 'j_date': str(x.dt), 'j_err': x.j_error}
-                    response.append(vallabel)
-
             response.append(vallabel)
 
-        print('Response->',response)
         json = simplejson.dumps(response)
 
         return HttpResponse(
@@ -294,56 +285,16 @@ def tlinemgm(request):
 # For jira integration post
 def jpost(request):
     if request.is_ajax():
-        #Connection first get user and pass from tab
-        jadd = ""
-        juser = ""
-        jpass = ""
 
-        jFile = False
+        jh_list = jra_history.objects.filter(j_tid=str(request.POST['thId'])).select_related()
+
         response = []
-        
-        errarg = ""
-        print('File-->',request.POST['jfile'])
-        connData = jra_settings.objects.all()
-        for i in connData:
-            jadd = i.j_address.strip()
-            juser = i.j_user.strip()
-            jpass = i.j_pass.strip()
-        
-        try:
-            options = {'server': jadd}
-            jira = JIRA(options, basic_auth=(juser, jpass))
-            #if auth ok continue
-            # Get the issue.
-            try:
-                issue = jira.issue(request.POST['jissue'])
-                #If issue is ok add element:
-                # Add a comment to the issue.
-                if request.POST['jcom']:
-                    jira.add_comment(issue, request.POST['jcom'])
 
-                #add log file
-                if request.POST['jfile']:
-                    try:
-                        jira.add_attachment(issue,"/static/out/"+request.POST['tid']+"/log.html")
-                        jFile = True
-                    except Exception as ef:
-                        errarg = ef.args
+        for i in jh_list:
+            vallabel = {'j_id': i.id, 'j_issue': i.j_issue, 'j_com': i.j_comment, 'j_file': i.j_file, 'j_date': str(i.dt), 'j_err': i.j_error}
 
-                #Now if all is ok add new line to the table
-                jra_ev = jra_history(id_his=request.POST['evid'], j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()))
-                jra_ev.save()
+            response.append(vallabel)
 
-            except Exception as ei:
-                errarg = ei.args
-
-        except Exception as e:
-            errarg = e.args
-
-
-        vallabel = {}
-        vallabel['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
-        response.append(vallabel)
         json = simplejson.dumps(response)
 
         return HttpResponse(json, content_type='application/json')

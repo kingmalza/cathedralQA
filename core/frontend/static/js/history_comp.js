@@ -637,7 +637,7 @@ function getTlineHist(t_stag, f_view) {
                 span4.setAttribute("class", "time");
                 var i42 = document.createElement("I");
                 i42.setAttribute("class", "fa fa-clock-o");
-                span4.innerHTML = "12:20";
+                span4.innerHTML = data[index].th_id;
                 span4.appendChild(i42);
                 var h34 = document.createElement("H3")
                 h34.setAttribute("class", "timeline-header");
@@ -671,9 +671,27 @@ function getTlineHist(t_stag, f_view) {
                     //jlab_h1.innerHTML = data[index].j_int.j_issue;
                     var divj2 = document.createElement("div");
                     divj2.setAttribute("class", "timeline-body");
-                    textLog = document.createElement('LABEL');
-                    textLog.innerHTML = data[index].t_var;
-                    divj2.appendChild(textLog);
+                    //Here i do another ajax call checking if there are history modification in jira for that thread_main
+                    var tabj = document.createElement("TABLE");
+                    $.ajax({
+                        type: "POST",
+                        url: "jirapost",
+                        data: {thId: data[index].th_id},
+                        success: function (data) {
+                            $.each(data, function (index) {
+                                //Insert in table jira history data rows
+                                var trj = document.createElement("TR");
+                                var tdj1 = document.createElement("TD");
+                                var tdj2 = document.createElement("TD");
+                                tdj1.innerHTML = data[index].j_issue;
+                                tdj2.innerHTML = data[index].j_com;
+                                trj.appendChild(tdj1);   
+                                trj.appendChild(tdj2); 
+                                tabj.appendChild(trj);                                
+                            });    
+                        }
+                    });
+                    divj2.appendChild(tabj);
                     var divj3 = document.createElement("div");
                     divj3.setAttribute("class", "timeline-footer");
                     //Now i create form for jira event submission
