@@ -520,37 +520,68 @@ function csrfSafeMethod(method) {
 }
 
 //Function for add an event in jra_histiry abs
-function postJraEvent(id_ev, th_id, j_issue, j_comm, j_file) {
+function postJraEvent(id_ev, th_id, t_pid, j_issue, j_comm, j_file) {
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     //t_ultl = document.getElementById("ultl");
     //t_btn = document.getElementById("btngrp");
     j_error = document.getElementById("laberr");
-
-    $(document).ready(function() {
-        var csrftoken = getCookie('csrftoken');
-        //alert(csrftoken);
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    var j_is;
+    var j_com;
+    j_is = document.getElementById("txt2-"+t_pid).value;
+    j_com = document.getElementById("txt3-"+t_pid).value;
+    if (j_is == "" || j_com == "") {
+        alert("Fields Issue and Comment have to be filled in order to submit your data to jira.");
+        return false;
+    } else {
+        $(document).ready(function () {
+            var csrftoken = getCookie('csrftoken');
+            //alert(csrftoken);
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
                 }
+            });
+        });
+
+
+        $.ajax({
+            type: "POST",
+            url: "/",
+            data: {
+                evid: id_ev,
+                tid: th_id,
+                tpid: t_pid,
+                jissue: j_issue,
+                jcom: j_comm,
+                jfile: j_file,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+                $.each(data, function (index) {
+                    //If some error returned from ajax display it in label error (make css red bold ecc ecc)
+                });
             }
         });
-    });
-    
+    }
+}
 
-    $.ajax({
-        type: "POST",
-        url: "/",
-        data: {evid: id_ev, tid: th_id, jissue: j_issue, jcom: j_comm, jfile: j_file, csrfmiddlewaretoken: '{{ csrf_token }}'},
-        success: function (data) {
-            $.each(data, function (index) {
-                    //If some error returned from ajax display it in label error (make css red bold ecc ecc)
-            });
-        }
-    });
-    
+
+function empty(inpval) {
+    var j_is;
+    var j_com;
+    j_is = document.getElementById("txt2-"+inpval).value;
+    j_com = document.getElementById("txt3-"+inpval).value;
+    if (j_is == "") {
+        alert("Enter a Valid Issue");
+        return false;
+    };
+    if (j_com == "") {
+        alert("Enter a Comment relate to your submission");
+        return false;
+    };
 }
 
 //Function for create an populate timeline
@@ -636,7 +667,7 @@ function getTlineHist(t_stag, f_view) {
                 var span4 = document.createElement("SPAN");
                 span4.setAttribute("class", "time");
                 var i42 = document.createElement("I");
-                i42.setAttribute("class", "fa fa-clock-o");
+                //i42.setAttribute("class", "fa fa-clock-o");
                 span4.innerHTML = data[index].th_id;
                 span4.appendChild(i42);
                 var h34 = document.createElement("H3")
@@ -673,20 +704,52 @@ function getTlineHist(t_stag, f_view) {
                     divj2.setAttribute("class", "timeline-body");
                     //Here i do another ajax call checking if there are history modification in jira for that thread_main
                     var tabj = document.createElement("TABLE");
+                    tabj.setAttribute("class", "minimalistBlack");
                     $.ajax({
                         type: "POST",
                         url: "jirapost",
                         data: {thId: data[index].th_id},
                         success: function (data) {
+                            if ($.trim(data)) {
+                                //Create header
+                                var thj = document.createElement("THEAD");
+                                var trh = document.createElement("TR");
+                                var thh1 = document.createElement("TH");
+                                thh1.innerHTML = 'Issue';
+                                var thh2 = document.createElement("TH");
+                                thh2.innerHTML = 'Comment';
+                                var thh3 = document.createElement("TH");
+                                thh3.innerHTML = 'With File';
+                                var thh4 = document.createElement("TH");
+                                thh4.innerHTML = 'Date Time';
+                                var thh5 = document.createElement("TH");
+                                thh5.innerHTML = 'Errors';
+                                trh.appendChild(thh1);
+                                trh.appendChild(thh2);
+                                trh.appendChild(thh3);
+                                trh.appendChild(thh4);
+                                trh.appendChild(thh5);
+                                thj.appendChild(trh);
+                                tabj.appendChild(thj);
+                            }
                             $.each(data, function (index) {
                                 //Insert in table jira history data rows
                                 var trj = document.createElement("TR");
                                 var tdj1 = document.createElement("TD");
                                 var tdj2 = document.createElement("TD");
+                                var tdj3 = document.createElement("TD");
+                                var tdj4 = document.createElement("TD");
+                                var tdj5 = document.createElement("TD");
                                 tdj1.innerHTML = data[index].j_issue;
                                 tdj2.innerHTML = data[index].j_com;
+                                tdj3.innerHTML = data[index].j_file;
+                                tdj4.innerHTML = data[index].j_date;
+                                tdj5.innerHTML = data[index].j_err;
                                 trj.appendChild(tdj1);   
-                                trj.appendChild(tdj2); 
+                                trj.appendChild(tdj2);
+                                trj.appendChild(tdj3);
+                                trj.appendChild(tdj4);
+                                trj.appendChild(tdj5);
                                 tabj.appendChild(trj);                                
                             });    
                         }
@@ -697,12 +760,10 @@ function getTlineHist(t_stag, f_view) {
                     //Now i create form for jira event submission
                     var jfrm = document.createElement("FORM");
                     jfrm.method = "post";
-                    //jfrm.action = function() {postJraEvent(1,'test');}
                     //Issue
                     jtx2 = document.createElement("INPUT");
                     jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
-                    //Comment
-                    jtx3 = document.createElement("INPUT");
+                    jtx3 = document.createElement("TEXTAREA");
                     jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
                     //File(fill with log html)
                     jtx5 = document.createElement("INPUT");
@@ -715,18 +776,51 @@ function getTlineHist(t_stag, f_view) {
                     var jbut1 = document.createElement("INPUT");
                     jbut1.setAttribute("type", "submit");
                     jbut1.innerHTML = "Submit to jira";
+                    //Create table for incapsulate input and data
+                    var tabAdd = document.createElement("TABLE");
+                    var trAdd1 = document.createElement("TR");
+                    var trAdd2 = document.createElement("TR");
+                    var trAdd3 = document.createElement("TR");
+                    var trAdd4 = document.createElement("TR");
+                    var tdAdd1_1 = document.createElement("TD");
+                    tdAdd1_1.innerHTML = 'Issue: ';
+                    var tdAdd1_2 = document.createElement("TD");
+                    tdAdd1_2.appendChild(jtx2);
+                    var tdAdd2_1 = document.createElement("TD");
+                    tdAdd2_1.innerHTML = 'Comment: ';
+                    var tdAdd2_2 = document.createElement("TD");
+                    tdAdd2_2.appendChild(jtx3);
+                    var tdAdd3_1 = document.createElement("TD");
+                    tdAdd3_1.innerHTML = 'Attach Log: ';
+                    var tdAdd3_2 = document.createElement("TD");
+                    tdAdd3_2.appendChild(jtx5);
+                    var tdAdd4_1 = document.createElement("TD");
+                    var tdAdd4_2 = document.createElement("TD");
+                    tdAdd4_2.appendChild(jbut1);
+                    trAdd1.appendChild(tdAdd1_1);
+                    trAdd1.appendChild(tdAdd1_2);
+                    trAdd2.appendChild(tdAdd2_1);
+                    trAdd2.appendChild(tdAdd2_2);
+                    trAdd3.appendChild(tdAdd3_1);
+                    trAdd3.appendChild(tdAdd3_2);
+                    trAdd4.appendChild(tdAdd4_1);
+                    trAdd4.appendChild(tdAdd4_2);
+                    tabAdd.appendChild(trAdd1);
+                    tabAdd.appendChild(trAdd2);
+                    tabAdd.appendChild(trAdd3);
+                    tabAdd.appendChild(trAdd4);
+                    //jfrm.action = function() {postJraEvent(1,'test');}
+                    //Comment
+
                     /*jbut1.addEventListener ("click", function() {
-                        alert("Message");
+                        return empty(data[index].t_pid);
                     });*/
                     jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].t_id, data[index].t_pid,document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
+                        postJraEvent(data[index].t_id, data[index].th_id, data[index].t_pid, document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
                     });
                     jfrm.appendChild(jlab1);
                     jfrm.appendChild(jlab_h1);
-                    jfrm.appendChild(jtx2);
-                    jfrm.appendChild(jtx3);
-                    jfrm.appendChild(jtx5);
-                    jfrm.appendChild(jbut1);
+                    jfrm.appendChild(tabAdd);
                     divj3.appendChild(jfrm);
                     divj1.appendChild(spanj1);
                     divj1.appendChild(hj1);

@@ -68,7 +68,7 @@ def h_list(request, **kwargs):
     
     if request.is_ajax():
         schema_name = settings_gen.objects.get(id=1).tenant_name
-        j_file = "frontend/static/out/"+request.POST['tid']+"/log.html"
+        j_file = "frontend/static/out/"+request.POST['tpid']+"/log.html"
         #Connection first get user and pass from tab
         jadd = ""
         juser = ""
