@@ -64,6 +64,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
         url: "hrefresh",
         data: {tab_slice: t_sect, tab_ord: j_ord, tab_search: j_search, isearch: is_search},
         success: function (data) {
+            //Var for check if a row is double or not
+            var noDouble = "";
             t_body.innerHTML = "";
             //stat_h.style.visibility = 'hidden';
             if (data) {
@@ -225,120 +227,125 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
 
                 }
                 if (data[index].tID != undefined) {
-                    //label for test type
-                console.log('OptionType-->'+data[index].OptionType);
-                if (data[index].OptionType == '') {
-                    l_ttype = 'NODATA';
-                } else {
-                    l_ttype = data[index].OptionType;
-                }
-                /*
-                switch (data[index].OptionType) {
-                    case 'ST':
-                        l_ttype = "SINGLE";
-                        break;
-                    case 'TA':
-                        l_ttype = "TAG";
-                        break;
-                    case 'PA':
-                        l_ttype = "PROJECT";
-                        break;
-                    case 'TG':
-                        l_ttype = "TEST GROUP";
-                        break;
-                    default:
-                        l_ttype = 'NODATA';
-                }
-                */
-                //Create head and data table
-                var t_tr0 = document.createElement("TR");
-                var t_td0 = document.createElement("TD");
-                t_td0.innerHTML = data[index].tID;
-                var t_td1 = document.createElement("TD");
-                var td1_span = document.createElement("SPAN")
-                if (data[index].OptionGroup == "NoGroup") {
-                    td1_span.setAttribute('class', 'label label-default');
-                } else {
-                    td1_span.setAttribute('class', 'label label-primary');
-                }
-                td1_span.innerHTML = data[index].OptionGroup;
-                t_td1.appendChild(td1_span);
-                var t_td2 = document.createElement("TD");
-                var td2_span = document.createElement("SPAN");
-                if (l_ttype != 'NODATA') {
-                    td2_span.setAttribute('class', 'label label-warning');
-                } else {
-                    td2_span.setAttribute('class', 'label pull-right bg-red');
-                }
-                td2_span.innerHTML = l_ttype;
-                t_td2.appendChild(td2_span);
-                var t_td11 = document.createElement("TD");
-                t_td11.innerHTML = data[index].OptionStype;
-                var t_td12 = document.createElement("TD");
-                t_td12.innerHTML = data[index].OptionSval;
-                var t_td13 = document.createElement("TD");
-                t_td13.innerHTML = data[index].OptionMain;
-                var t_td10 = document.createElement("TD");
-                t_td10.innerHTML = data[index].tTest;
-                var t_td3 = document.createElement("TD");
-                t_td3.innerHTML = data[index].OptionSdate;
-                var t_td4 = document.createElement("TD");
-                if (data[index].OptionStopdate == "None") {
-                    var td4_span = document.createElement("SPAN");
-                    td4_span.setAttribute('class', 'label label-warning');
-                    td4_span.innerHTML = "SCHEDULED TERMINATION";
-                    t_td4.appendChild(td4_span);
-                } else {
-                    t_td4.innerHTML = data[index].OptionStopdate;
-                }
-                var t_td5 = document.createElement("TD");
-                t_td5.innerHTML = data[index].OptionUser;
-                var t_td6 = document.createElement("TD");
-                t_td6.innerHTML = data[index].OptionTest;
-                var t_td7 = document.createElement("TD");
-                //Calculate the success percentage data
-                if (data[index].OptionPass + data[index].OptionFail != 0) {
-                    var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
-                    var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
-                } else {
-                    var ssuc = 0;
-                    var sfail = 0;
-                }
+                    //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
+                    if (noDouble.trim() != data[index].OptionMain.trim()) {
+                        //label for test type
+                        console.log('OptionType-->'+data[index].OptionType);
+                        if (data[index].OptionType == '') {
+                            l_ttype = 'NODATA';
+                        } else {
+                            l_ttype = data[index].OptionType;
+                        }
+                        /*
+                        switch (data[index].OptionType) {
+                            case 'ST':
+                                l_ttype = "SINGLE";
+                                break;
+                            case 'TA':
+                                l_ttype = "TAG";
+                                break;
+                            case 'PA':
+                                l_ttype = "PROJECT";
+                                break;
+                            case 'TG':
+                                l_ttype = "TEST GROUP";
+                                break;
+                            default:
+                                l_ttype = 'NODATA';
+                        }
+                        */
+                        //Create head and data table
+                        var t_tr0 = document.createElement("TR");
+                        var t_td0 = document.createElement("TD");
+                        t_td0.innerHTML = data[index].tID;
+                        var t_td1 = document.createElement("TD");
+                        var td1_span = document.createElement("SPAN")
+                        if (data[index].OptionGroup == "NoGroup") {
+                            td1_span.setAttribute('class', 'label label-default');
+                        } else {
+                            td1_span.setAttribute('class', 'label label-primary');
+                        }
+                        td1_span.innerHTML = data[index].OptionGroup;
+                        t_td1.appendChild(td1_span);
+                        var t_td2 = document.createElement("TD");
+                        var td2_span = document.createElement("SPAN");
+                        if (l_ttype != 'NODATA') {
+                            td2_span.setAttribute('class', 'label label-warning');
+                        } else {
+                            td2_span.setAttribute('class', 'label pull-right bg-red');
+                        }
+                        td2_span.innerHTML = l_ttype;
+                        t_td2.appendChild(td2_span);
+                        var t_td11 = document.createElement("TD");
+                        t_td11.innerHTML = data[index].OptionStype;
+                        var t_td12 = document.createElement("TD");
+                        t_td12.innerHTML = data[index].OptionSval;
+                        var t_td13 = document.createElement("TD");
+                        t_td13.innerHTML = data[index].OptionMain;
+                        var t_td10 = document.createElement("TD");
+                        t_td10.innerHTML = data[index].tTest;
+                        var t_td3 = document.createElement("TD");
+                        t_td3.innerHTML = data[index].OptionSdate;
+                        var t_td4 = document.createElement("TD");
+                        if (data[index].OptionStopdate == "None") {
+                            var td4_span = document.createElement("SPAN");
+                            td4_span.setAttribute('class', 'label label-warning');
+                            td4_span.innerHTML = "SCHEDULED TERMINATION";
+                            t_td4.appendChild(td4_span);
+                        } else {
+                            t_td4.innerHTML = data[index].OptionStopdate;
+                        }
+                        var t_td5 = document.createElement("TD");
+                        t_td5.innerHTML = data[index].OptionUser;
+                        var t_td6 = document.createElement("TD");
+                        t_td6.innerHTML = data[index].OptionTest;
+                        var t_td7 = document.createElement("TD");
+                        //Calculate the success percentage data
+                        if (data[index].OptionPass + data[index].OptionFail != 0) {
+                            var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                            var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                        } else {
+                            var ssuc = 0;
+                            var sfail = 0;
+                        }
 
-                var td7_span = document.createElement("SPAN");
-                td7_span.setAttribute('class', 'badge bg-green');
-                td7_span.innerHTML = ssuc+"%";
-                t_td7.appendChild(td7_span);
-                var t_td8 = document.createElement("TD");
-                var td8_span = document.createElement("SPAN");
-                td8_span.setAttribute('class', 'badge bg-red');
-                td8_span.innerHTML = sfail+"%";
-                t_td8.appendChild(td8_span);
-                var t_td9 = document.createElement("TD");
-                var td9_span = document.createElement("SPAN");
-                td9_span.setAttribute('class', 'badge bg-light-blue');
-                td9_span.innerHTML = data[index].OptionNumT;
-                t_td9.appendChild(td9_span);
-                var t_td14 = document.createElement("TD");
-                t_td14.innerHTML = data[index].OptionUUID;
-                t_td14.setAttribute('style', 'display: none');
+                        var td7_span = document.createElement("SPAN");
+                        td7_span.setAttribute('class', 'badge bg-green');
+                        td7_span.innerHTML = ssuc+"%";
+                        t_td7.appendChild(td7_span);
+                        var t_td8 = document.createElement("TD");
+                        var td8_span = document.createElement("SPAN");
+                        td8_span.setAttribute('class', 'badge bg-red');
+                        td8_span.innerHTML = sfail+"%";
+                        t_td8.appendChild(td8_span);
+                        var t_td9 = document.createElement("TD");
+                        var td9_span = document.createElement("SPAN");
+                        td9_span.setAttribute('class', 'badge bg-light-blue');
+                        td9_span.innerHTML = data[index].OptionNumT;
+                        t_td9.appendChild(td9_span);
+                        var t_td14 = document.createElement("TD");
+                        t_td14.innerHTML = data[index].OptionUUID;
+                        t_td14.setAttribute('style', 'display: none');
 
-                t_tr0.appendChild(t_td0);
-                t_tr0.appendChild(t_td10);
-                t_tr0.appendChild(t_td2);
-                t_tr0.appendChild(t_td1);
-                t_tr0.appendChild(t_td11);
-                t_tr0.appendChild(t_td12);
-                t_tr0.appendChild(t_td13);
-                t_tr0.appendChild(t_td3);
-                t_tr0.appendChild(t_td4);
-                t_tr0.appendChild(t_td5);
-                //t_tr0.appendChild(t_td6);
-                t_tr0.appendChild(t_td7);
-                t_tr0.appendChild(t_td8);
-                t_tr0.appendChild(t_td9);
-                t_tr0.appendChild(t_td14);
-                t_body.appendChild(t_tr0);
+                        t_tr0.appendChild(t_td0);
+                        t_tr0.appendChild(t_td10);
+                        t_tr0.appendChild(t_td2);
+                        t_tr0.appendChild(t_td1);
+                        t_tr0.appendChild(t_td11);
+                        t_tr0.appendChild(t_td12);
+                        t_tr0.appendChild(t_td13);
+                        t_tr0.appendChild(t_td3);
+                        t_tr0.appendChild(t_td4);
+                        t_tr0.appendChild(t_td5);
+                        //t_tr0.appendChild(t_td6);
+                        t_tr0.appendChild(t_td7);
+                        t_tr0.appendChild(t_td8);
+                        t_tr0.appendChild(t_td9);
+                        t_tr0.appendChild(t_td14);
+                        t_body.appendChild(t_tr0);
+                        
+                        noDouble = data[index].OptionMain;
+                    }
                 }
 
 
@@ -755,11 +762,72 @@ function getTlineHist(t_stag, f_view) {
                         }
                     });
                     divj2.appendChild(tabj);
+                    //JIRA EVENT SUBSCRIPTION FORM START
                     var divj3 = document.createElement("div");
-                    divj3.setAttribute("class", "timeline-footer");
+                    divj3.setAttribute("class", "timeline-body");
+                    var divj3_2 = document.createElement("div");
+                    divj3_2.setAttribute("class", "col-md-6");
+                    var divj3_3 = document.createElement("div");
+                    divj3_3.setAttribute("class", "box box-primary");
                     //Now i create form for jira event submission
+                    var divjh = document.createElement("div");
+                    divjh.setAttribute("class", "box-header");
+                    var jh3t = document.createElement("H3");
+                    jh3t.setAttribute("class", "box-title");
+                    jh3t.innerHTML = "Submit to jira";
+                    divjh.appendChild(jh3t);
+                    divj3_3.appendChild(divjh);
+                    
                     var jfrm = document.createElement("FORM");
                     jfrm.method = "post";
+                    
+                    var divjf1 = document.createElement("div");
+                    divjf1.setAttribute("class", "box-body");
+                    var divjf2 = document.createElement("div");
+                    divjf2.setAttribute("class", "form-group");
+                    jlab1 = document.createElement("LABEL");
+                    jlab1.innerHTML = "Jira Issue";
+                    jtx2 = document.createElement("INPUT");
+                    jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
+                    jtx2.setAttribute("class", "form-control");
+                    divjf2.appendChild(jlab1);
+                    divjf2.appendChild(jtx2);
+                    divjf1.appendChild(divjf2);
+                    var divjf3 = document.createElement("div");
+                    divjf3.setAttribute("class", "form-group");
+                    jlab2 = document.createElement("LABEL");
+                    jlab2.innerHTML = "Comment";
+                    jtx3 = document.createElement("TEXTAREA");
+                    jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
+                    jtx3.setAttribute("class", "form-control");
+                    divjf3.appendChild(jlab2);
+                    divjf3.appendChild(jtx3);
+                    divjf1.appendChild(divjf3);
+                    var divjf4 = document.createElement("div");
+                    divjf4.setAttribute("class", "checkbox");
+                    jlab3 = document.createElement("LABEL");
+                    jlab3.innerHTML = "Send log file";
+                    jtx5 = document.createElement("INPUT");
+                    jtx5.setAttribute("type", "checkbox");
+                    jtx5.checked = true;
+                    jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
+                    jlab3.appendChild(jtx5);
+                    divjf4.appendChild(jlab3);
+                    divjf1.appendChild(divjf4);
+                    var divjf5 = document.createElement("div");
+                    divjf5.setAttribute("class", "box-footer");
+                    var jbut1 = document.createElement("INPUT");
+                    jbut1.setAttribute("type", "submit");
+                    jbut1.setAttribute("class", "btn btn-primary");
+                    jbut1.innerHTML = "Submit to jira";
+                    divjf5.appendChild(jbut1);
+                    divjf1.appendChild(divjf5);
+                    jfrm.appendChild(divjf1);
+                    divj3_3.appendChild(jfrm);
+                    divj3_2.appendChild(divj3_3);
+                    divj3.appendChild(divj3_2);
+                    
+                    /*
                     //Issue
                     jtx2 = document.createElement("INPUT");
                     jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
@@ -809,19 +877,21 @@ function getTlineHist(t_stag, f_view) {
                     tabAdd.appendChild(trAdd2);
                     tabAdd.appendChild(trAdd3);
                     tabAdd.appendChild(trAdd4);
+                    //JIRA EVENT SUBSCRIPTION FORM STOP
                     //jfrm.action = function() {postJraEvent(1,'test');}
                     //Comment
 
-                    /*jbut1.addEventListener ("click", function() {
+                    jbut1.addEventListener ("click", function() {
                         return empty(data[index].t_pid);
-                    });*/
+                    });
+                    */
                     jfrm.addEventListener ("submit", function() {
                         postJraEvent(data[index].t_id, data[index].th_id, data[index].t_pid, document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
                     });
-                    jfrm.appendChild(jlab1);
-                    jfrm.appendChild(jlab_h1);
-                    jfrm.appendChild(tabAdd);
-                    divj3.appendChild(jfrm);
+                    //jfrm.appendChild(jlab1);
+                    //jfrm.appendChild(jlab_h1);
+                    //jfrm.appendChild(tabAdd);
+                    //divj3.appendChild(jfrm);
                     divj1.appendChild(spanj1);
                     divj1.appendChild(hj1);
                     divj1.appendChild(divj2);
