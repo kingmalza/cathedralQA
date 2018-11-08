@@ -742,6 +742,10 @@ function getTlineHist(t_stag, f_view) {
                             $.each(data, function (index) {
                                 //Insert in table jira history data rows
                                 var trj = document.createElement("TR");
+                                //If error contain something row become coulored
+                                if (data[index].j_err != "") {
+                                    trj.style.backgroundColor = "#FF9147";
+                                }
                                 var tdj1 = document.createElement("TD");
                                 var tdj2 = document.createElement("TD");
                                 var tdj3 = document.createElement("TD");
@@ -762,136 +766,77 @@ function getTlineHist(t_stag, f_view) {
                         }
                     });
                     divj2.appendChild(tabj);
-                    //JIRA EVENT SUBSCRIPTION FORM START
-                    var divj3 = document.createElement("div");
-                    divj3.setAttribute("class", "timeline-body");
-                    var divj3_2 = document.createElement("div");
-                    divj3_2.setAttribute("class", "col-md-6");
-                    var divj3_3 = document.createElement("div");
-                    divj3_3.setAttribute("class", "box box-primary");
-                    //Now i create form for jira event submission
-                    var divjh = document.createElement("div");
-                    divjh.setAttribute("class", "box-header");
-                    var jh3t = document.createElement("H3");
-                    jh3t.setAttribute("class", "box-title");
-                    jh3t.innerHTML = "Submit to jira";
-                    divjh.appendChild(jh3t);
-                    divj3_3.appendChild(divjh);
-                    
-                    var jfrm = document.createElement("FORM");
-                    jfrm.method = "post";
-                    
-                    var divjf1 = document.createElement("div");
-                    divjf1.setAttribute("class", "box-body");
-                    var divjf2 = document.createElement("div");
-                    divjf2.setAttribute("class", "form-group");
-                    jlab1 = document.createElement("LABEL");
-                    jlab1.innerHTML = "Jira Issue";
-                    jtx2 = document.createElement("INPUT");
-                    jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
-                    jtx2.setAttribute("class", "form-control");
-                    divjf2.appendChild(jlab1);
-                    divjf2.appendChild(jtx2);
-                    divjf1.appendChild(divjf2);
-                    var divjf3 = document.createElement("div");
-                    divjf3.setAttribute("class", "form-group");
-                    jlab2 = document.createElement("LABEL");
-                    jlab2.innerHTML = "Comment";
-                    jtx3 = document.createElement("TEXTAREA");
-                    jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
-                    jtx3.setAttribute("class", "form-control");
-                    divjf3.appendChild(jlab2);
-                    divjf3.appendChild(jtx3);
-                    divjf1.appendChild(divjf3);
-                    var divjf4 = document.createElement("div");
-                    divjf4.setAttribute("class", "checkbox");
-                    jlab3 = document.createElement("LABEL");
-                    jlab3.innerHTML = "Send log file";
-                    jtx5 = document.createElement("INPUT");
-                    jtx5.setAttribute("type", "checkbox");
-                    jtx5.checked = true;
-                    jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
-                    jlab3.appendChild(jtx5);
-                    divjf4.appendChild(jlab3);
-                    divjf1.appendChild(divjf4);
-                    var divjf5 = document.createElement("div");
-                    divjf5.setAttribute("class", "box-footer");
-                    var jbut1 = document.createElement("INPUT");
-                    jbut1.setAttribute("type", "submit");
-                    jbut1.setAttribute("class", "btn btn-primary");
-                    jbut1.innerHTML = "Submit to jira";
-                    divjf5.appendChild(jbut1);
-                    divjf1.appendChild(divjf5);
-                    jfrm.appendChild(divjf1);
-                    divj3_3.appendChild(jfrm);
-                    divj3_2.appendChild(divj3_3);
-                    divj3.appendChild(divj3_2);
-                    
-                    /*
-                    //Issue
-                    jtx2 = document.createElement("INPUT");
-                    jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
-                    jtx3 = document.createElement("TEXTAREA");
-                    jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
-                    //File(fill with log html)
-                    jtx5 = document.createElement("INPUT");
-                    jtx5.setAttribute("type", "checkbox");
-                    jtx5.checked = true;
-                    jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
-                    //Label for errors
-                    jlab1 = document.createElement("LABEL");
-                    jlab1.setAttribute("id", "laberr");
-                    var jbut1 = document.createElement("INPUT");
-                    jbut1.setAttribute("type", "submit");
-                    jbut1.innerHTML = "Submit to jira";
-                    //Create table for incapsulate input and data
-                    var tabAdd = document.createElement("TABLE");
-                    var trAdd1 = document.createElement("TR");
-                    var trAdd2 = document.createElement("TR");
-                    var trAdd3 = document.createElement("TR");
-                    var trAdd4 = document.createElement("TR");
-                    var tdAdd1_1 = document.createElement("TD");
-                    tdAdd1_1.innerHTML = 'Issue: ';
-                    var tdAdd1_2 = document.createElement("TD");
-                    tdAdd1_2.appendChild(jtx2);
-                    var tdAdd2_1 = document.createElement("TD");
-                    tdAdd2_1.innerHTML = 'Comment: ';
-                    var tdAdd2_2 = document.createElement("TD");
-                    tdAdd2_2.appendChild(jtx3);
-                    var tdAdd3_1 = document.createElement("TD");
-                    tdAdd3_1.innerHTML = 'Attach Log: ';
-                    var tdAdd3_2 = document.createElement("TD");
-                    tdAdd3_2.appendChild(jtx5);
-                    var tdAdd4_1 = document.createElement("TD");
-                    var tdAdd4_2 = document.createElement("TD");
-                    tdAdd4_2.appendChild(jbut1);
-                    trAdd1.appendChild(tdAdd1_1);
-                    trAdd1.appendChild(tdAdd1_2);
-                    trAdd2.appendChild(tdAdd2_1);
-                    trAdd2.appendChild(tdAdd2_2);
-                    trAdd3.appendChild(tdAdd3_1);
-                    trAdd3.appendChild(tdAdd3_2);
-                    trAdd4.appendChild(tdAdd4_1);
-                    trAdd4.appendChild(tdAdd4_2);
-                    tabAdd.appendChild(trAdd1);
-                    tabAdd.appendChild(trAdd2);
-                    tabAdd.appendChild(trAdd3);
-                    tabAdd.appendChild(trAdd4);
-                    //JIRA EVENT SUBSCRIPTION FORM STOP
-                    //jfrm.action = function() {postJraEvent(1,'test');}
-                    //Comment
-
-                    jbut1.addEventListener ("click", function() {
-                        return empty(data[index].t_pid);
-                    });
-                    */
-                    jfrm.addEventListener ("submit", function() {
-                        postJraEvent(data[index].t_id, data[index].th_id, data[index].t_pid, document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
-                    });
-                    //jfrm.appendChild(jlab1);
-                    //jfrm.appendChild(jlab_h1);
-                    //jfrm.appendChild(tabAdd);
-                    //divj3.appendChild(jfrm);
+                    if (data[index].j_set != "") {
+                        //JIRA EVENT SUBSCRIPTION FORM START
+                        var divj3 = document.createElement("div");
+                        divj3.setAttribute("class", "timeline-body");
+                        var divj3_2 = document.createElement("div");
+                        divj3_2.setAttribute("class", "col-md-6");
+                        var divj3_3 = document.createElement("div");
+                        divj3_3.setAttribute("class", "box box-primary");
+                        //Now i create form for jira event submission
+                        var divjh = document.createElement("div");
+                        divjh.setAttribute("class", "box-header");
+                        var jh3t = document.createElement("H3");
+                        jh3t.setAttribute("class", "box-title");
+                        jh3t.innerHTML = "Submit to jira";
+                        divjh.appendChild(jh3t);
+                        divj3_3.appendChild(divjh);
+                        
+                        var jfrm = document.createElement("FORM");
+                        jfrm.method = "post";
+                        
+                        var divjf1 = document.createElement("div");
+                        divjf1.setAttribute("class", "box-body");
+                        var divjf2 = document.createElement("div");
+                        divjf2.setAttribute("class", "form-group");
+                        jlab1 = document.createElement("LABEL");
+                        jlab1.innerHTML = "Jira Issue";
+                        jtx2 = document.createElement("INPUT");
+                        jtx2.setAttribute("id", "txt2-"+data[index].t_pid);
+                        jtx2.setAttribute("class", "form-control");
+                        divjf2.appendChild(jlab1);
+                        divjf2.appendChild(jtx2);
+                        divjf1.appendChild(divjf2);
+                        var divjf3 = document.createElement("div");
+                        divjf3.setAttribute("class", "form-group");
+                        jlab2 = document.createElement("LABEL");
+                        jlab2.innerHTML = "Comment";
+                        jtx3 = document.createElement("TEXTAREA");
+                        jtx3.setAttribute("id", "txt3-"+data[index].t_pid);
+                        jtx3.setAttribute("class", "form-control");
+                        divjf3.appendChild(jlab2);
+                        divjf3.appendChild(jtx3);
+                        divjf1.appendChild(divjf3);
+                        var divjf4 = document.createElement("div");
+                        divjf4.setAttribute("class", "checkbox");
+                        jlab3 = document.createElement("LABEL");
+                        jlab3.innerHTML = "Send log file";
+                        jtx5 = document.createElement("INPUT");
+                        jtx5.setAttribute("type", "checkbox");
+                        jtx5.checked = true;
+                        jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
+                        jlab3.appendChild(jtx5);
+                        divjf4.appendChild(jlab3);
+                        divjf1.appendChild(divjf4);
+                        var divjf5 = document.createElement("div");
+                        divjf5.setAttribute("class", "box-footer");
+                        var jbut1 = document.createElement("INPUT");
+                        jbut1.setAttribute("type", "submit");
+                        jbut1.setAttribute("class", "btn btn-primary");
+                        jbut1.innerHTML = "Submit to jira";
+                        jbut1.onclick = function() { alert('The information was sent to the Jira server. Check the result in the aida thread details.'); };
+                        divjf5.appendChild(jbut1);
+                        divjf1.appendChild(divjf5);
+                        jfrm.appendChild(divjf1);
+                        divj3_3.appendChild(jfrm);
+                        divj3_2.appendChild(divj3_3);
+                        divj3.appendChild(divj3_2);
+            
+                        jfrm.addEventListener ("submit", function() {
+                            postJraEvent(data[index].t_id, data[index].th_id, data[index].t_pid, document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
+                        });
+                    }
                     divj1.appendChild(spanj1);
                     divj1.appendChild(hj1);
                     divj1.appendChild(divj2);
