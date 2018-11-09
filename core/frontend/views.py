@@ -112,7 +112,7 @@ def h_list(request, **kwargs):
 
         #check if error is nauthorized Access, too long for be displayed, i trunk it
         strerr = 'Unauthorized'
-        if strerr in str(errarg): errarg = "(401, 'Unauthorized (401), Check Jira settings connection data. Encountered a 401 - Unauthorized error while loading this page.')"
+        if strerr in str(errarg): errarg = "(401, 'Unauthorized (401), Check Jira settings connection data.')"
         
         #Now if all is ok add new line to the table
         jra_ev = jra_history(j_tid=request.POST['tid'], j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()), j_error=errarg)
