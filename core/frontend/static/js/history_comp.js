@@ -816,8 +816,8 @@ function getTlineHist(t_stag, f_view) {
                         jtx5.setAttribute("type", "checkbox");
                         jtx5.checked = true;
                         jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
-                        divjf4.appendChild(jtx5);
                         divjf4.appendChild(jlab3);
+                        divjf4.appendChild(jtx5);
                         divjf1.appendChild(divjf4);
                         var divjf5 = document.createElement("div");
                         divjf5.setAttribute("class", "box-footer");

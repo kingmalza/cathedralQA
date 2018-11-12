@@ -1,6 +1,6 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, PasswordInput
 from django import forms
-from .models import temp_pers_keywords, temp_keywords, temp_main, Document
+from .models import temp_pers_keywords, temp_keywords, temp_main, Document, jra_settings
 
 
 class SelectMain(ModelForm):
@@ -36,3 +36,13 @@ class CustomBarModelForm(ModelForm):
         super(CustomBarModelForm, self).__init__(*args, **kwargs)
         self.fields['pers_id'].queryset = temp_keywords.objects.filter(personal=1)
         self.fields['standard_id'].queryset = temp_keywords.objects.filter(personal=0)
+
+        
+class jra_settingsForm(ModelForm):
+    j_pass = forms.CharField(widget=PasswordInput())
+    class Meta:
+        model = jra_settings
+        labels = {
+            "j_pass": "Password"
+        }
+        fields = '__all__'        

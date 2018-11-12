@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .forms import CustomBarModelForm
+from .forms import CustomBarModelForm, jra_settingsForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history
 from django.forms import Select
@@ -406,6 +406,7 @@ class t_group_testAdmin(admin.ModelAdmin):
 
 class jra_settingsAdmin(admin.ModelAdmin):
 
+    form = jra_settingsForm  
     #list_filter = ('j_address', 'j_user')
     list_display = ('j_address', 'j_user', 'j_notes')
 
@@ -439,6 +440,7 @@ class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(APIAdmin, self).save_model(request, obj, form, change)
+       
 
             
 admin.site.site_title = 'Aida Admin'

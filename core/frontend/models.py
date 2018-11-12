@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
 from decimal import Decimal
+from django import forms
+from django.forms import ModelForm, PasswordInput
 
 
 def validate_fsize(in_file):
@@ -606,7 +608,7 @@ class jra_settings(models.Model):
         return '%s -> %s' % (
             str(self.j_address), str(self.j_user))
 
-
+        
 class jra_history(models.Model):
     id = models.AutoField(primary_key=True)
     j_tid = models.CharField(max_length=1000, blank=True)
