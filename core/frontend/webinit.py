@@ -25,11 +25,11 @@ def send_html_email(to_list, subject, template_name, context, sender=settings.DE
 def create1(t_tenant,t_name):
     
     #1 Create tenant entry and populate db schema
-    tenant = Client(domain_url=t_tenant+'.myaida.io', schema_name=t_tenant,name=t_name, paid_until='2019-12-05',on_trial=False)
+    tenant = Client(domain_url=t_tenant+'.myaida.io', schema_name=t_tenant,name=t_name)
     tenant.save()
 
     #Insert tenant value in settings table
-    tenant_insert = settings_gen(tenant_name=t_tenant)
+    tenant_insert = settings_gen(tenant_name=t_tenant, paid_feed=0.49, on_trial=True)
     tenant_insert.save()
     
 
