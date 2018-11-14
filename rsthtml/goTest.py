@@ -8,7 +8,6 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from django.conf import settings
 
-import webbrowser
 import simplejson
 import boto3
 import json
@@ -130,6 +129,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             # Time at the end
             dtime2 = str(datetime.datetime.now())
 
+            """
             #LAMBDA CALL FOR LIC INSERTION
             #1 Check customer id         
             #schema_name = str(settings.DATABASES['default']['SCHEMA'])
@@ -146,11 +146,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                 Payload=json.dumps(pay_c)
             )
             
-            """
-            IF THIS INSTALLATION IS FORSTANDALONE YOU HAVE TO REFORCE schema_name FOR IDENTIFY TRAFFIC
-            
-            schema_name = <client name>
-            """
+
             data1 = cli_id['Payload'].read().decode('utf-8')
             l_data = json.loads(json.loads(data1,encoding='utf-8'))
 
@@ -183,9 +179,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                 except ClientError as er2: #if you see a ClientError, catch it as e
                     print("Error use--> gotest156",er2) #print the client error info to console
 
-            
-            #Now redirect to history page every active job finisced
-            webbrowser.open('/')
+            """
             
     except Exception as e:
         print("Errore_gotest:", e.args)

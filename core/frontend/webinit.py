@@ -111,8 +111,8 @@ def create2(t_tenant,paid=0.49):
     hello4_2.save()
     hello4_3.save()
     
-    hello5_1 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=177).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='When visit the page it should show the text Aida', owner_id=User.objects.get(id=1).id)
-    hello5_2 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=103).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='${TEXT}', owner_id=User.objects.get(id=1).id)
+    hello5_1 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=178).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='When visit the page it should show the text Aida', owner_id=User.objects.get(id=1).id)
+    hello5_2 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=104).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='${TEXT}', owner_id=User.objects.get(id=1).id)
     hello5_1.save()
     hello5_2.save()
     
@@ -120,7 +120,7 @@ def create2(t_tenant,paid=0.49):
     addkey_pers = temp_keywords(descr='Open Browser And Go To Page', human='Open Browser And Go To Page', personal=True, owner_id=User.objects.get(id=1).id)
     addkey_pers.save()
     
-    hello6 = temp_pers_keywords(main_id_id=temp_main.objects.get(id=1).id, pers_id_id=temp_keywords.objects.get(id=182).id, standard_id_id=temp_keywords.objects.get(id=101).id, owner_id=User.objects.get(id=1).id, variable_val='${FORM_URL}')
+    hello6 = temp_pers_keywords(main_id_id=temp_main.objects.get(id=1).id, pers_id_id=temp_keywords.objects.get(id=187).id, standard_id_id=temp_keywords.objects.get(id=102).id, owner_id=User.objects.get(id=1).id, variable_val='${FORM_URL}')
     hello6.save()
     
     
