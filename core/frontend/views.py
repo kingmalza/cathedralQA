@@ -22,7 +22,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
+from datetime import datetime, date
 from rest_framework import renderers
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
@@ -132,6 +132,11 @@ def h_list(request, **kwargs):
         pass
     
     #EXTRA AJAX, NORMAL BEHAVIOUR
+    #First check if is first time with no threads, if is new, home redirect to active else continue
+
+    a = t_threads.objects.all()[:1]
+    if not a : return HttpResponseRedirect('/active')
+
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
@@ -363,9 +368,26 @@ def user_login(request):
         if site_active:
             #Now check if in settings_gen table tenant_name there is tenant, otherwise add it
             t_set = settings_gen.objects.all()
+
             if not t_set:
-                ten_add = settings_gen(tenant_name = schema_name)
-                ten_add.save()
+                #ten_add = settings_gen(tenant_name = schema_name)
+                #ten_add.save()
+                return HttpResponse("General license not active.\n\n Please contact support@myaida.io for more details.")
+
+            dact = ""
+            istrial = False
+            for x in t_set:
+                dact = x.created_on
+                istrial = x.on_trial
+
+            #Now check if user is in trial mode after 30 days, if yes redirect to register page otherwise continue
+            d0 = date.today().strftime("%Y-%m-%d")
+            d0 = datetime.strptime(d0, '%Y-%m-%d')
+            d1 = datetime.strptime(str(dact.date()), '%Y-%m-%d')
+            delta = (d0-d1)
+
+            if delta.days > 30 and istrial:
+                return HttpResponseRedirect('/register')
 
             user = authenticate(username=username, password=password)
             if user is not None:

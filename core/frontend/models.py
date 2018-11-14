@@ -311,23 +311,6 @@ class t_schedsettings(models.Model):
         return self.sched_desc
 
 
-# Create a table for registering threads elapsed time
-"""
-"""
-
-
-class t_time(models.Model):
-    history_main = models.IntegerField(default=0)
-    elapsed_t = models.DecimalField(max_digits=20, decimal_places=6, default=Decimal('0.0000'))
-    
-    class Meta:
-        verbose_name = 'RESOURCE USAGE'
-        verbose_name_plural = 'RESOURCE USAGE'
-        ordering = ('history_main',)
-    
-    def __str__(self):
-        return self.history_main
-
 
 # -----------------------------------------------------------------------------
 # TEST GROUP MANAGE
@@ -423,6 +406,26 @@ class t_history(models.Model):
 
     def __str__(self):
         return self.exec_status
+
+
+
+# Create a table for registering threads elapsed time
+"""
+"""
+
+
+class t_time(models.Model):
+    history_main = models.ForeignKey(t_history, on_delete=models.CASCADE, verbose_name="History")
+    elapsed_t = models.DecimalField(max_digits=20, decimal_places=6, default=Decimal('0.0000'))
+
+    class Meta:
+        verbose_name = 'RESOURCE USAGE'
+        verbose_name_plural = 'RESOURCE USAGE'
+        ordering = ('history_main',)
+
+    def __str__(self):
+        return '%s -> %s' % (str(self.history_main), str(self.elapsed_t))
+
 
 
 # Create a threads managing table
@@ -564,6 +567,19 @@ class settings_gen(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     on_trial = models.BooleanField(default=True)
     paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
+    paid_plan = models.CharField(max_length=10, blank=True)
+
+
+
+#----------------------------------------------------
+#PAYEMENT DATAS AND AMOUNT FOR ON-DEMAND PLANS
+#----------------------------------------------------
+
+class bill_his(models.Model):
+    id = models.AutoField(primary_key=True)
+    bill_data = models.DateTimeField()
+    bill_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    bill_errors = models.CharField(max_length=254, blank=True)
 
 
 

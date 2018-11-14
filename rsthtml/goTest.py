@@ -123,7 +123,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
             elapsed = time.time() - start_time
 
-            test_time = t_time(history_main=test_save.id, elapsed_t=elapsed)
+            test_time = t_time(history_main=t_history.objects.get(id=test_save.id), elapsed_t=elapsed)
             test_time.save()
 
             # Time at the end
