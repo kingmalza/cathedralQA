@@ -28,13 +28,15 @@ def create1(t_tenant,t_name):
     tenant = Client(domain_url=t_tenant+'.myaida.io', schema_name=t_tenant,name=t_name)
     tenant.save()
 
+  
+
+def create2(t_tenant,paid=0.49):
+  
+    print("PRE.Create setting table...")
     #Insert tenant value in settings table
-    tenant_insert = settings_gen(tenant_name=t_tenant, paid_feed=0.49, on_trial=True)
+    tenant_insert = settings_gen(tenant_name=t_tenant, paid_feed=paid, on_trial=True)
     tenant_insert.save()
     
-
-def create2():
-  
     print("1.Create scheduling...")
     #2 Populate schedule table
     sched1 = t_schedsettings(sched_desc='Once', sched_command='once')

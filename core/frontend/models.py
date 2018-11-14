@@ -30,10 +30,11 @@ lastlogin -> Last login datetime
 note -> Textfield for note
 """
 class Client(TenantMixin):
+    domain_url = models.CharField(max_length=128, blank=True)
+    schema_name = models.CharField(max_length=63, blank=True)
     name = models.CharField(max_length=100)
-    on_trial = models.BooleanField()
-    created_on = models.DateField(auto_now_add=True)
-    paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
+    created_on = models.DateTimeField(auto_now_add=True)
+
 
     # default true, schema will be automatically created and synced when it is saved
     auto_create_schema = True
@@ -560,7 +561,9 @@ class Document(models.Model):
 class settings_gen(models.Model):
     id = models.AutoField(primary_key=True)
     tenant_name = models.CharField(max_length=255, blank=True)
-    created_on = models.DateField(auto_now_add=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    on_trial = models.BooleanField(default=True)
+    paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
 
 
 

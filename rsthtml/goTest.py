@@ -8,6 +8,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from django.conf import settings
 
+import webbrowser
 import simplejson
 import boto3
 import json
@@ -182,7 +183,10 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                 except ClientError as er2: #if you see a ClientError, catch it as e
                     print("Error use--> gotest156",er2) #print the client error info to console
 
-           
+            
+            #Now redirect to history page every active job finisced
+            webbrowser.open('/')
+            
     except Exception as e:
         print("Errore_gotest:", e.args)
 
