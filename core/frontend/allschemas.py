@@ -72,10 +72,9 @@ def main(schema):
                     
 
                 row = t_cursor.fetchone()
-            
             #Insert data into bill table
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount) values ('"+str(datetime.datetime.now())+"',"+tot_amount+");")
+            b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount, bill_errors) values ('"+str(datetime.datetime.now())+"',"+str(tot_amount)+",'');")
             print("Total to pay is: ",tot_amount)
             
     except Exception as e:
