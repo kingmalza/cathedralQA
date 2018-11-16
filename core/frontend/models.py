@@ -417,6 +417,7 @@ class t_history(models.Model):
 class t_time(models.Model):
     history_main = models.ForeignKey(t_history, on_delete=models.CASCADE, verbose_name="History")
     elapsed_t = models.DecimalField(max_digits=20, decimal_places=6, default=Decimal('0.0000'))
+    stop_data = models.DateTimeField(blank=True)
 
     class Meta:
         verbose_name = 'RESOURCE USAGE'

@@ -45,24 +45,39 @@ def main(schema):
             try:
                 p_cursor.execute("SELECT bill_data FROM " + p_tab+" WHERE  id=(select max(id) from "+p_tab+")")
                 pdata = cursor.fetchall()
-                t_cursor.execute("SELECT elapsed_t,exec_data FROM " + t_tab+","+h_tab+" WHERE "+t_tab+".history_main_id="+h_tab+".id AND "+h_tab+".exec_data >= "+pdata)
+                t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab +" WHERE "+h_tab+".stop_data >= "+pdata)
             except Exception:
-                t_cursor.execute("SELECT elapsed_t,exec_data FROM " + t_tab+","+h_tab+" WHERE "+t_tab+".history_main_id="+h_tab+".id")
+                t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab)
 
             row = t_cursor.fetchone()
+            cdata = ""
+            ctime = ""
             while row:
-                cdata = ""
                 #Check data
                 if row[1].date() == cdata:
-                #Test run append in the same day
-                    pass
+                    #Test run append in the same day
+                    #i have to check time
+                    if row[1].time().hour > ctime:
+                        husage = (int(row[0]/3600)+1)*paidfeed
+                        tot_amount += husage
+                        ctime = row[1].time().hour
+                    
                 else:
-                #test append in another day
-                    pass
+                    #test append in another day
+                    #check how mutch hours of usage
+                    husage = (int(row[0]/3600)+1)*paidfeed
+                    tot_amount += husage
+                    cdata = row[1].date()
+                    ctime = row[1].time().hour
+                    
 
-                print(row[1].time().hour)
                 row = t_cursor.fetchone()
-
+            
+            #Insert data into bill table
+            b_cursor = conn.cursor()
+            b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount) values ('"+str(datetime.datetime.now())+"',"+tot_amount+");")
+            print("Total to pay is: ",tot_amount)
+            
     except Exception as e:
         print(e)
     # print out the records using pretty print
@@ -72,6 +87,9 @@ def main(schema):
     #pprint.pprint(records)
 
     cursor.close()
+    p_cursor.close()
+    t_cursor.close()
+    b_cursor.close()
     conn.close()
 
 if __name__ == "__main__":
