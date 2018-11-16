@@ -1,12 +1,23 @@
+
+"""
+Alessandro Malzanini
+TODO:
+-Send an email
+-Integrate with stripe
+"""
+
 #!/usr/bin/python
 import psycopg2
 import pprint
 import datetime
+import json
 
 
-def main(schema):
+glob_riep = {}
+glob_amount=0
 
-    schema = 'demo'
+def start():
+
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
         'database': 'helium_web',
@@ -16,6 +27,18 @@ def main(schema):
 
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
+
+    #Modify with automatic query for discover schemas list
+    sch_list=['demo','helium']
+    for i in sch_list: main(i,conn)
+
+    conn.close()
+
+    global glob_amount, glob_riep
+    print(glob_amount, glob_riep)
+
+
+def main(schema,conn):
 
 
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
@@ -42,17 +65,31 @@ def main(schema):
             #Check las payement data
             p_cursor = conn.cursor()
             t_cursor = conn.cursor()
-            try:
-                p_cursor.execute("SELECT bill_data FROM " + p_tab+" WHERE  id=(select max(id) from "+p_tab+")")
-                pdata = cursor.fetchall()
-                t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab +" WHERE "+h_tab+".stop_data >= "+pdata)
-            except Exception:
+
+            p_cursor.execute("SELECT bill_data FROM " + p_tab+" WHERE  id=(select max(id) from "+p_tab+")")
+            pdata = p_cursor.fetchall()
+            print('pdata->',pdata)
+            if pdata:
+                #Now i have to check if 30 day was passed from last billing
+                d0 = datetime.date.today().strftime("%Y-%m-%d")
+                d0 = datetime.datetime.strptime(d0, '%Y-%m-%d')
+                d1 = datetime.datetime.strptime(str(pdata[0][0].date()), '%Y-%m-%d')
+                delta = (d0 - d1)
+
+                if delta.days > 30:
+                    t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab + " WHERE stop_data >= '" + str(pdata[0][0]) + "'")
+                else:
+                    #Not so good, but useful for have a returned blank t_cursor execution
+                    t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab + " WHERE stop_data < '2002-11-02 11:00:00'")
+            else:
                 t_cursor.execute("SELECT elapsed_t,stop_data FROM " + t_tab)
 
             row = t_cursor.fetchone()
             cdata = ""
             ctime = ""
+
             while row:
+                print(row[1])
                 #Check data
                 if row[1].date() == cdata:
                     #Test run append in the same day
@@ -73,10 +110,21 @@ def main(schema):
 
                 row = t_cursor.fetchone()
             #Insert data into bill table
-            b_cursor = conn.cursor()
-            b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount, bill_errors) values ('"+str(datetime.datetime.now())+"',"+str(tot_amount)+",'');")
-            print("Total to pay is: ",tot_amount)
-            
+            print('Numero di linee->',t_cursor.rowcount)
+            if t_cursor.rowcount > 0:
+                b_cursor = conn.cursor()
+                b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount, bill_errors) values ('"+str(datetime.datetime.now())+"',"+str(tot_amount)+",'');")
+                b_cursor.close()
+                # HERE THE INTEGRATION WITH STRIPE!!!
+
+            print("Total to pay is: ", tot_amount)
+
+            global glob_amount, glob_riep
+            glob_amount += tot_amount
+            glob_riep.update({schema: tot_amount})
+
+            p_cursor.close()
+            t_cursor.close()
     except Exception as e:
         print(e)
     # print out the records using pretty print
@@ -86,10 +134,7 @@ def main(schema):
     #pprint.pprint(records)
 
     cursor.close()
-    p_cursor.close()
-    t_cursor.close()
-    b_cursor.close()
-    conn.close()
+
 
 if __name__ == "__main__":
-    main()
+    start()
