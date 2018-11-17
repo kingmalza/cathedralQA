@@ -11,6 +11,8 @@ import psycopg2
 import pprint
 import datetime
 import json
+import smtplib
+import boto3
 
 
 glob_riep = {}
@@ -25,19 +27,39 @@ def start():
         'password': '11235813post',
     }
 
+    mail_server = smtplib.SMTP('email-smtp.eu-west-1.amazonaws.com', 587)
+    
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
 
-    #Modify with automatic query for discover schemas list
-    sch_list=['demo','helium']
-    for i in sch_list: main(i,conn)
+    #Get list of schemas
+    cursor = conn.cursor()
+    cursor.execute("select schema_name from information_schema.schemata")
+    schemas = cursor.fetchone()
+    while schemas:
+        exlist = ['pg_catalog','information_schema','public']
+        if schemas[0] not in exlist:
+            main(schemas[0].strip(),conn)
+        schemas = cursor.fetchone()
 
+    cursor.close()
     conn.close()
 
     global glob_amount, glob_riep
     print(glob_amount, glob_riep)
-
-
+    
+    #login to server and send email to me
+    mail_server.login("admin", "Grezzigrezzi123!")
+    msg = MIMEMultipart()
+    msg['From'] = 'admin@myaida.io'
+    msg['To'] = 'alessandro.malzanini@gmail.com'
+    msg['Subject'] = "Test email"
+    body = "My test mail"
+    msg.attach(MIMEText(body, 'plain'))
+    mail_server.sendmail(fromaddr, toaddr, text)
+    
+    
+    
 def main(schema,conn):
 
 
@@ -68,7 +90,6 @@ def main(schema,conn):
 
             p_cursor.execute("SELECT bill_data FROM " + p_tab+" WHERE  id=(select max(id) from "+p_tab+")")
             pdata = p_cursor.fetchall()
-            print('pdata->',pdata)
             if pdata:
                 #Now i have to check if 30 day was passed from last billing
                 d0 = datetime.date.today().strftime("%Y-%m-%d")
