@@ -13,7 +13,7 @@ import datetime
 import json
 import smtplib
 import boto3
-
+from botocore.exceptions import ClientError
 
 glob_riep = {}
 glob_amount=0
@@ -26,9 +26,7 @@ def start():
         'user': 'kingmalza',
         'password': '11235813post',
     }
-
-    mail_server = smtplib.SMTP('email-smtp.eu-west-1.amazonaws.com', 587)
-    
+  
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
 
@@ -49,17 +47,9 @@ def start():
     print(glob_amount, glob_riep)
     
     #login to server and send email to me
-    mail_server.login("admin", "Grezzigrezzi123!")
-    msg = MIMEMultipart()
-    msg['From'] = 'admin@myaida.io'
-    msg['To'] = 'alessandro.malzanini@gmail.com'
-    msg['Subject'] = "Test email"
-    body = "My test mail"
-    msg.attach(MIMEText(body, 'plain'))
-    mail_server.sendmail(fromaddr, toaddr, text)
+    sendemail(glob_amount, json.dumps(glob_riep))
     
-    
-    
+       
 def main(schema,conn):
 
 
@@ -156,6 +146,52 @@ def main(schema,conn):
 
     cursor.close()
 
-
+    
+def sendemail(gam,griep):
+    SENDER = "King Malza <kingmalza@comunicame.it>"
+    RECIPIENT = "alessandro.malzanini@gmail.com"
+    #CONFIGURATION_SET = "ConfigSet"
+    AWS_REGION = "eu-west-1"
+    BODY_HTML = "<html><head></head><body><h1>Aida schemas earn details</h1><p>"+griep+"</p></body></html>"
+    BODY_TEXT = griep
+    SUBJECT = "Today you earn: "+str(gam)+" euros!"
+    CHARSET = "UTF-8"
+    client = boto3.client('ses',region_name=AWS_REGION)
+    try:
+        #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            #ConfigurationSetName=CONFIGURATION_SET,
+        )
+        # Display an error if something goes wrong.	
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+    
 if __name__ == "__main__":
     start()

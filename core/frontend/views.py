@@ -249,6 +249,17 @@ def ext_lib(request, **kwargs):
 
     return response
 
+    
+def lic_register(request, **kwargs):
+    global test_case
+
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case}
+    response = render(request, 'base_register.html', context_dict, context)
+
+    return response
 
 @login_required
 def sys_usage(request, **kwargs):

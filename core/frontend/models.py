@@ -568,7 +568,7 @@ class settings_gen(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     on_trial = models.BooleanField(default=True)
     paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
-    paid_plan = models.CharField(max_length=10, blank=True)
+    paid_plan = models.CharField(max_length=10, null=True, blank=True)
 
 
 
