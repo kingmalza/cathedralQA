@@ -31,7 +31,7 @@ note -> Textfield for note
 """
 class Client(TenantMixin):
     domain_url = models.CharField(max_length=128, blank=True)
-    schema_name = models.CharField(max_length=63, blank=True)
+    schema_name = models.CharField(max_length=63, blank=True, unique=True)
     name = models.CharField(max_length=100)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -39,6 +39,8 @@ class Client(TenantMixin):
     # default true, schema will be automatically created and synced when it is saved
     auto_create_schema = True
 
+    
+              
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
     website = models.URLField(blank=True)
@@ -569,6 +571,16 @@ class settings_gen(models.Model):
     on_trial = models.BooleanField(default=True)
     paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
     paid_plan = models.CharField(max_length=10, null=True, blank=True)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    comp_name = models.CharField(max_length=200, null=True, blank=True)
+    addr_1 = models.CharField(max_length=200, null=True, blank=True)
+    addr_2 = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    state_prov = models.CharField(max_length=100, null=True, blank=True)
+    postal_zip = models.CharField(max_length=20, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
+    tax_id = models.CharField(max_length=100, null=True, blank=True)
 
 
 
