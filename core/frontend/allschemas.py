@@ -2,7 +2,6 @@
 """
 Alessandro Malzanini
 TODO:
--Send an email
 -Integrate with stripe
 """
 

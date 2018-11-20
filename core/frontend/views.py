@@ -253,13 +253,43 @@ def ext_lib(request, **kwargs):
 def lic_register(request, **kwargs):
     global test_case
 
-    # menu_list = kwargs['menu']
-    context = RequestContext(request)
+    #First check if pay tupe field is blank, oterwise redirect to home
+    c_plan = None
+    c_tenant = None
+    sg = settings_gen.objects.all()
+    for i in sg:
+        c_plan=i.paid_plan
+        c_tenant = i.tenant_name
 
-    context_dict = {'all_case': test_case}
-    response = render(request, 'base_register.html', context_dict, context)
+    if not c_plan:
 
-    return response
+        # menu_list = kwargs['menu']
+        context = RequestContext(request)
+
+        context_dict = {'all_case': test_case, 'all_set': sg}
+        if request.method == 'POST':
+
+            #If all javascript check was done update record i db
+
+            #First create customer on stripe and get id (ito insert into table)
+
+            #Second if plan_type is flat create a recurrent payement in stripe
+
+            #Then update table with informations
+            t = settings_gen.objects.get(tenant_name=c_tenant)
+            t.first_name = request.POST['firstname']
+            t.last_name = request.POST['lastname']
+            t.save()
+
+            #If all done redirect to homepage and send thanks email
+            return HttpResponseRedirect('/register')
+        else:
+            response = render(request, 'base_register.html', context_dict, context)
+
+            return response
+    else:
+        return HttpResponseRedirect('/')
+
 
 @login_required
 def sys_usage(request, **kwargs):
