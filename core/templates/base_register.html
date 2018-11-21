@@ -481,10 +481,10 @@
                         <label for="plan_type">
                             Plan Type<em class="required">*</em>
                         </label>
-                        <select id="plan_type" name="plan_type" class="select" onchange="updateTaxInfo()" >
+                        <select id="plan_type" name="plan_type" class="select" >
 <option value="">Please select a billing plan</option>
 <option value="ondemand" >ON DEMAND (0.49€/hour test running)</option>
-<option value="flat" >FLAT (149€/month All Inclusive"</option>
+<option value="flat" >FLAT (149€/month All Inclusive)</option>
                         </select>
                 </fieldset>
             
@@ -495,6 +495,29 @@
             <p>This credit card will be used for your recurring payments</p>
 
             <fieldset>
+                <div class="field-group">
+                    <label for="ccType">
+                        Card Type<em class="required">*</em>
+                    </label>
+                    <select id="ccType" name="ccType" class="select" >
+                        <option value="">Please select your Credit Card Type</option>
+                        <option value="Visa" >Visa</option>
+                        <option value="MasterCard" >MasterCard</option>
+                        <option value="DinersClub" >DinersClub</option>
+                        <option value="CarteBlanche" >CarteBlanche</option>
+                        <option value="AmEx" >AmEx</option>
+                        <option value="Discover" >Discover</option>
+                        <option value="JCB" >JCB</option>
+                        <option value="enRoute" >enRoute</option>
+                        <option value="Solo" >Solo</option>
+                        <option value="Switch" >Switch</option>
+                        <option value="Maestro" >Maestro</option>
+                        <option value="VisaElectron" >VisaElectron</option>
+                        <option value="LaserCard" >LaserCard</option>
+                    </select>
+
+                </div>
+
                 <div class="field-group">
                     <label for="ccName">
                         Cardholder Name<em class="required">*</em>
@@ -508,8 +531,8 @@
                     <label for="gatewayCardNumber">
                         Card Number<em class="required">*</em>
                     </label>
-                    <input type="text" id="gatewayCardNumber" class="text" readonly="readonly"
-                           value="" autocomplete="off"/>
+                    <input type="text" id="gatewayCardNumber" class="text"
+                           value="" autocomplete="off" onblur="testCreditCard()"/>
                     
                 </div>
 

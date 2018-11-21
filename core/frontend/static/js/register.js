@@ -10,6 +10,19 @@ ccErrors [3] = "Credit card number is invalid";
 ccErrors [4] = "Credit card number has an inappropriate number of digits";
 ccErrors [5] = "Warning! This credit card number is associated with a scam attempt";
 
+
+function testCreditCard() {
+  myCardNo = document.getElementById('gatewayCardNumber').value;
+  myCardType = document.getElementById('ccType').value;
+  if (checkCreditCard(myCardNo, myCardType)) {
+    //alert("Credit card has a valid format")
+  } else {
+    alert(ccErrors[ccErrorNo])
+      document.getElementById('gatewayCardNumber').value = ''
+  };
+}
+
+
 function checkCreditCard (cardnumber, cardname) {
 
   // Array to hold the permitted card characteristics
@@ -205,6 +218,7 @@ function isempty() {
     var r_10;
     var r_11;
     var r_12;
+    var r_13;
 
     r_1 = document.getElementById("firstname").value;
     r_2 = document.getElementById("lastname").value;
@@ -218,6 +232,7 @@ function isempty() {
     r_10 = document.getElementById("gatewayCardNumber").value;
     r_11 = document.getElementById("gatewayCardExpiryDateMonth").value;
     r_12 = document.getElementById("plan_type").value;
+    r_13 = document.getElementById("ccType").value;
     
     if (r_1 == "") {
         alert("Enter a Valid Firstname");
@@ -265,6 +280,10 @@ function isempty() {
     };
     if (r_11 == "") {
         alert("Enter a Expyry Date");
+        return false;
+    };
+    if (r_13 == "") {
+        alert("Enter a Credit Card type");
         return false;
     };
 }
