@@ -279,6 +279,15 @@ def lic_register(request, **kwargs):
             t = settings_gen.objects.get(tenant_name=c_tenant)
             t.first_name = request.POST['firstname']
             t.last_name = request.POST['lastname']
+            t.comp_name = request.POST['organisationname']
+            t.addr_1 = request.POST['address1']
+            t.addr_2 = request.POST['address2']
+            t.city = request.POST['city']
+            t.state_prov = request.POST['state']
+            t.postal_zip = request.POST['postcode']
+            t.country = request.POST['country']
+            t.tax_id = request.POST['taxid']
+            t.paid_plan = request.POST['plan_type']
             t.save()
 
             #If all done redirect to homepage and send thanks email

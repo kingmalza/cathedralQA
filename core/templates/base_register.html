@@ -105,6 +105,7 @@
     <form method="post"
           action="/register"
           class="aui"
+          onsubmit="isempty()"
           id="paymentform">
         {% csrf_token %}
             <!--<input type="hidden" name="sessionId" value="SESSION0001169081325E7345552H23"/>
@@ -614,5 +615,6 @@
     <script src="{% static "dist/js/app.min.js" %}" type="text/javascript"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{% static "dist/js/demo.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/register.js" %}" type="text/javascript"></script>
   </body>
 </html>
