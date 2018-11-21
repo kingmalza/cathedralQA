@@ -194,11 +194,77 @@ function checkCreditCard (cardnumber, cardname) {
 
 function isempty() {
     var r_1;
+    var r_2;
+    var r_3;
+    var r_4;
+    var r_5;
+    var r_6;
+    var r_7;
+    var r_8;
+    var r_9;
+    var r_10;
+    var r_11;
+    var r_12;
 
     r_1 = document.getElementById("firstname").value;
+    r_2 = document.getElementById("lastname").value;
+    r_3 = document.getElementById("organisationname").value;
+    r_4 = document.getElementById("address1").value;
+    r_5 = document.getElementById("city").value;
+    r_6 = document.getElementById("state").value;
+    r_7 = document.getElementById("country").value;
+    r_8 = document.getElementById("taxid").value;
+    r_9 = document.getElementById("ccName").value;
+    r_10 = document.getElementById("gatewayCardNumber").value;
+    r_11 = document.getElementById("gatewayCardExpiryDateMonth").value;
+    r_12 = document.getElementById("plan_type").value;
+    
     if (r_1 == "") {
         alert("Enter a Valid Firstname");
         return false;
     };
-
+    if (r_2 == "") {
+        alert("Enter a Valid Lastname");
+        return false;
+    };
+    if (r_3 == "") {
+        alert("Enter a company name");
+        return false;
+    };
+    if (r_4 == "") {
+        alert("Enter a Valid Address");
+        return false;
+    };    
+    if (r_12 == "") {
+        alert("Select an Economic Plan");
+        return false;
+    };
+    if (r_5 == "") {
+        alert("Enter a Valid City");
+        return false;
+    };
+    if (r_6 == "") {
+        alert("Enter a Valid State");
+        return false;
+    };
+    if (r_7 == "") {
+        alert("Enter a Valid Country");
+        return false;
+    };
+    if (r_8 == "") {
+        alert("Enter a Valid Tax ID");
+        return false;
+    };
+    if (r_9 == "") {
+        alert("Enter a Valid CreditCard Name");
+        return false;
+    };
+    if (r_10 == "") {
+        alert("Enter a CreditCard Number");
+        return false;
+    };
+    if (r_11 == "") {
+        alert("Enter a Expyry Date");
+        return false;
+    };
 }
