@@ -581,6 +581,8 @@ class settings_gen(models.Model):
     postal_zip = models.CharField(max_length=20, null=True, blank=True)
     country = models.CharField(max_length=50, null=True, blank=True)
     tax_id = models.CharField(max_length=100, null=True, blank=True)
+    stripe_id = models.CharField(max_length=100, null=True, blank=True)
+    reg_email = models.CharField(max_length=150, null=True, blank=True, unique=True)
 
 
 

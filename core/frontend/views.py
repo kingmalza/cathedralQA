@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import os
 import shutil
+import stripe
 
 from django.shortcuts import render
 from frontend.forms import DocumentForm
@@ -252,7 +253,10 @@ def ext_lib(request, **kwargs):
     
 def lic_register(request, **kwargs):
     global test_case
-
+    
+    #Retreive stripe API keys
+    stripe.api_key = getattr(settings, "STRIPE_KEY", None)
+    
     #First check if pay tupe field is blank, oterwise redirect to home
     c_plan = None
     c_tenant = None
@@ -269,14 +273,18 @@ def lic_register(request, **kwargs):
         context_dict = {'all_case': test_case, 'all_set': sg}
         if request.method == 'POST':
 
-            #If all javascript check was done update record i db
-
             #First create customer on stripe and get id (ito insert into table)
+            cus = stripe.Customer.create(
+                description="Customer for "+request.POST['organisationname'],
+                source="tok_amex" # obtained with Stripe.js
+            )
+            
 
             #Second if plan_type is flat create a recurrent payement in stripe
 
             #Then update table with informations
             t = settings_gen.objects.get(tenant_name=c_tenant)
+            t.on_trial = 'False'
             t.first_name = request.POST['firstname']
             t.last_name = request.POST['lastname']
             t.comp_name = request.POST['organisationname']

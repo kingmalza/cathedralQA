@@ -188,6 +188,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#STRIPE SECRET KEY FOR TEST AND LIVE
+#Test
+STRIPE_KEY = 'sk_test_GTVLb2pY6oqhUghSl37OT3Fw'
+
+#Live
+#STRIPE_KEY = 'sk_live_275LYRsuUDymanIlvV9B0HJp'
+
+
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".

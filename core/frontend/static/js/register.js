@@ -219,6 +219,7 @@ function isempty() {
     var r_11;
     var r_12;
     var r_13;
+    var r_14;
 
     r_1 = document.getElementById("firstname").value;
     r_2 = document.getElementById("lastname").value;
@@ -233,6 +234,7 @@ function isempty() {
     r_11 = document.getElementById("gatewayCardExpiryDateMonth").value;
     r_12 = document.getElementById("plan_type").value;
     r_13 = document.getElementById("ccType").value;
+    r_14 = document.getElementById("cardCVC").value;
     
     if (r_1 == "") {
         alert("Enter a Valid Firstname");
@@ -284,6 +286,10 @@ function isempty() {
     };
     if (r_13 == "") {
         alert("Enter a Credit Card type");
+        return false;
+    };
+    if (r_14 == "") {
+        alert("Enter the Credit Card CVC");
         return false;
     };
 }
