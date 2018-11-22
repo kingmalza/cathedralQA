@@ -35,6 +35,7 @@ from jira import JIRA
 
 import boto3
 import json
+import hashlib
 
 from tenant_schemas.utils import (get_tenant_model, remove_www,
                                   get_public_schema_name)
@@ -264,6 +265,7 @@ def lic_register(request, **kwargs):
     for i in sg:
         c_plan=i.paid_plan
         c_tenant = i.tenant_name
+        c_email = i.reg_email
 
     if not c_plan:
 
@@ -274,10 +276,13 @@ def lic_register(request, **kwargs):
         if request.method == 'POST':
 
             #First create customer on stripe and get id (ito insert into table)
+            hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
             cus = stripe.Customer.create(
                 description="Customer for "+request.POST['organisationname'],
-                source="tok_amex" # obtained with Stripe.js
+                email=c_email
             )
+
+            print("customer ID ->", cus['id'])
             
 
             #Second if plan_type is flat create a recurrent payement in stripe
@@ -285,6 +290,7 @@ def lic_register(request, **kwargs):
             #Then update table with informations
             t = settings_gen.objects.get(tenant_name=c_tenant)
             t.on_trial = 'False'
+            t.stripe_id = cus['id']
             t.first_name = request.POST['firstname']
             t.last_name = request.POST['lastname']
             t.comp_name = request.POST['organisationname']
@@ -297,6 +303,20 @@ def lic_register(request, **kwargs):
             t.tax_id = request.POST['taxid']
             t.paid_plan = request.POST['plan_type']
             t.save()
+
+
+            card_source = 'tok_'+request.POST['ccType']
+            print('cc->',card_source,' - ',request.POST['gatewayCardNumber'])
+            #Now retreive customer and associate card
+            customer = stripe.Customer.retrieve(cus['id'])
+            customer.sources.create(
+                source=card_source,
+                object='card',
+                number=str(request.POST['gatewayCardNumber']).strip(),
+                exp_month=request.POST['expiryDateMonth'],
+                exp_year=request.POST['gatewayCardExpiryDateYear'],
+                cvc=request.POST['cardCVC']
+            )
 
             #If all done redirect to homepage and send thanks email
             return HttpResponseRedirect('/register')
