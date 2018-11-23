@@ -277,48 +277,44 @@ def lic_register(request, **kwargs):
 
             #First create customer on stripe and get id (ito insert into table)
             hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
-            cus = stripe.Customer.create(
-                description="Customer for "+request.POST['organisationname'],
-                email=c_email
-            )
+            try:
+                cus = stripe.Customer.create(
+                    description="Customer for "+request.POST['organisationname'],
+                    email=c_email,
+                    source={
+                            'object':'card',
+                            'number':str(request.POST['gatewayCardNumber']).strip(),
+                            'exp_month':request.POST['expiryDateMonth'],
+                            'exp_year':request.POST['expiryDateYear'],
+                            'cvc':request.POST['cardCVC']
+                        },
+                    tax_info={
+                            'tax_id':request.POST['taxid'],
+                            'type':'vat'
+                        }
+                )
+                
+                #Then update table with informations
+                t = settings_gen.objects.get(tenant_name=c_tenant)
+                t.on_trial = 'False'
+                t.stripe_id = cus['id']
+                t.first_name = request.POST['firstname']
+                t.last_name = request.POST['lastname']
+                t.comp_name = request.POST['organisationname']
+                t.addr_1 = request.POST['address1']
+                t.addr_2 = request.POST['address2']
+                t.city = request.POST['city']
+                t.state_prov = request.POST['state']
+                t.postal_zip = request.POST['postcode']
+                t.country = request.POST['country']
+                t.tax_id = request.POST['taxid']
+                t.paid_plan = request.POST['plan_type']
+                t.save()
 
-            print("customer ID ->", cus['id'])
-            
-
-            #Second if plan_type is flat create a recurrent payement in stripe
-
-            #Then update table with informations
-            t = settings_gen.objects.get(tenant_name=c_tenant)
-            t.on_trial = 'False'
-            t.stripe_id = cus['id']
-            t.first_name = request.POST['firstname']
-            t.last_name = request.POST['lastname']
-            t.comp_name = request.POST['organisationname']
-            t.addr_1 = request.POST['address1']
-            t.addr_2 = request.POST['address2']
-            t.city = request.POST['city']
-            t.state_prov = request.POST['state']
-            t.postal_zip = request.POST['postcode']
-            t.country = request.POST['country']
-            t.tax_id = request.POST['taxid']
-            t.paid_plan = request.POST['plan_type']
-            t.save()
-
-
-            card_source = 'tok_'+request.POST['ccType']
-            print('cc->',card_source,' - ',request.POST['gatewayCardNumber'])
-            #Now retreive customer and associate card
-            customer = stripe.Customer.retrieve(cus['id'])
-            customer.sources.create(
-                source=card_source,
-                object='card',
-                number=str(request.POST['gatewayCardNumber']).strip(),
-                exp_month=request.POST['expiryDateMonth'],
-                exp_year=request.POST['gatewayCardExpiryDateYear'],
-                cvc=request.POST['cardCVC']
-            )
-
-            #If all done redirect to homepage and send thanks email
+            except Exception as e:
+                print('e->',e)
+                   
+           #If all done redirect to homepage and send thanks email
             return HttpResponseRedirect('/register')
         else:
             response = render(request, 'base_register.html', context_dict, context)

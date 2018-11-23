@@ -486,6 +486,7 @@
 <option value="ondemand" >ON DEMAND (0.49€/hour test running)</option>
 <option value="flat" >FLAT (149€/month All Inclusive)</option>
                         </select>
+                    </div>
                 </fieldset>
             
 
@@ -531,8 +532,8 @@
                     <label for="gatewayCardNumber">
                         Card Number<em class="required">*</em>
                     </label>
-                    <input type="text" id="gatewayCardNumber" class="text"
-                           value="" autocomplete="off" <!--onblur="testCreditCard()-->"/>
+                    <input type="text" id="gatewayCardNumber" name="gatewayCardNumber" class="text"
+                           value="" />
                     
                 </div>
                 
@@ -540,8 +541,8 @@
                     <label for="cardCVC">
                         CVC<em class="required">*</em>
                     </label>
-                    <input type="text" id="cardCVC" class="text"
-                           value="" autocomplete="off" maxlength="5"/>
+                    <input type="text" id="cardCVC" name="cardCVC" class="text"
+                           value="" maxlength="5"/>
                     
                 </div>
 
@@ -610,7 +611,7 @@
 
             
                 <div class="aui-message aui-message-info">
-                    As your subscription has expired, your credit card will be processed shortly for the next renewal. Atlassian will also use these credit card details to automatically renew your subscription going forward.
+                    As your subscription has expired, your credit card will be processed shortly for the next renewal. Cathedral will also use these credit card details to automatically renew your Aida subscription going forward.
                 </div>
             
 
@@ -633,7 +634,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2016-2017 <a href="http://cathedral.ai">Cathedral.ai</a>.</strong> All rights reserved.
       </footer>
     </div><!-- ./wrapper -->
 
