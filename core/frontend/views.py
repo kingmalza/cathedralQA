@@ -278,21 +278,27 @@ def lic_register(request, **kwargs):
             #First create customer on stripe and get id (ito insert into table)
             hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
             try:
+                #First create the token
+                token = stripe.Token.create(
+                    card={
+                        'number':str(request.POST['gatewayCardNumber']).strip(),
+                        'exp_month':request.POST['expiryDateMonth'],
+                        'exp_year':request.POST['expiryDateYear'],
+                        'cvc':request.POST['cardCVC']
+                    },
+                )
+
                 cus = stripe.Customer.create(
                     description="Customer for "+request.POST['organisationname'],
                     email=c_email,
-                    source={
-                            'object':'card',
-                            'number':str(request.POST['gatewayCardNumber']).strip(),
-                            'exp_month':request.POST['expiryDateMonth'],
-                            'exp_year':request.POST['expiryDateYear'],
-                            'cvc':request.POST['cardCVC']
-                        },
+                    source=token.id,
                     tax_info={
                             'tax_id':request.POST['taxid'],
                             'type':'vat'
                         }
                 )
+
+                #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
                 
                 #Then update table with informations
                 t = settings_gen.objects.get(tenant_name=c_tenant)
