@@ -155,24 +155,25 @@ def main(schema,conn):
                 receipt_email=cemail
             )
 
-            """
-            s_li = stripe.line_item.create(
+            stripe.InvoiceItem.create(
+                customer=c_stripe.id,
                 amount=int(glob_amount*100),
                 currency='eur',
                 description='Myada.io monthly usage',
-                type='invoiceitem'
             )
-            """
-
-            stripe.Invoice.create(
+            
+            stripe_in = stripe.Invoice.create(
                 customer=c_stripe.id,
                 billing='charge_automatically',
                 tax_percent=22,
-                charge=sc.id,
-                description='Myaida ondemand invoice',
-                lines=[s_li,]
+                description='Myaida ondemand invoice'
             )
-
+            
+            #Finalize and pay invoice
+            #invoice_p = stripe.Invoice.retrieve(stripe_in.id)
+            stripe_in.finalize_invoice()
+            stripe_in.pay()
+            
     except Exception as e:
         print(e)
     # print out the records using pretty print
