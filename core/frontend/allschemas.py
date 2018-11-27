@@ -13,6 +13,8 @@ import json
 import smtplib
 import boto3
 from botocore.exceptions import ClientError
+import stripe
+from django.conf import settings
 
 glob_riep = {}
 glob_amount=0
@@ -28,6 +30,9 @@ def start():
   
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
+
+    #Retreive stripe API keys
+    stripe.api_key = getattr(settings, "STRIPE_KEY", None)
 
     #Get list of schemas
     cursor = conn.cursor()
@@ -70,6 +75,8 @@ def main(schema,conn):
         istrial = records[0][3]
         paidfeed = records[0][4]
         plantype = records[0][5]
+        stripeid = records[0][17]
+        cemail = records[0][18]
         tot_amount = 0
         if not istrial and plantype == 'ondemand':
             print('non è un trial quindi picia')
@@ -131,10 +138,41 @@ def main(schema,conn):
 
             global glob_amount, glob_riep
             glob_amount += tot_amount
-            glob_riep.update({schema: tot_amount})
+            glob_riep.update({schema: str(tot_amount)})
 
             p_cursor.close()
             t_cursor.close()
+
+            #retreive the stripe customer_id
+            c_stripe = stripe.Customer.retrieve(stripeid)
+
+            sc = stripe.Charge.create(
+                amount=int(glob_amount*100)+(int(glob_amount*100/22)),
+                customer=c_stripe.id,
+                currency="eur",
+                source=c_stripe.default_source,  # obtained with Stripe.js
+                description="Charge for myaida.io ondemand plan",
+                receipt_email=cemail
+            )
+
+            """
+            s_li = stripe.line_item.create(
+                amount=int(glob_amount*100),
+                currency='eur',
+                description='Myada.io monthly usage',
+                type='invoiceitem'
+            )
+            """
+
+            stripe.Invoice.create(
+                customer=c_stripe.id,
+                billing='charge_automatically',
+                tax_percent=22,
+                charge=sc.id,
+                description='Myaida ondemand invoice',
+                lines=[s_li,]
+            )
+
     except Exception as e:
         print(e)
     # print out the records using pretty print

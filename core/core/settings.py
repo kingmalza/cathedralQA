@@ -191,11 +191,11 @@ STATIC_URL = '/static/'
 #STRIPE SECRET KEY FOR TEST AND LIVE
 #Test
 STRIPE_KEY = 'sk_test_GTVLb2pY6oqhUghSl37OT3Fw'
-PROD149_KEY = 'prod_E2oiz2T4cmssZR'
+PROD149_KEY = 'plan_E2zdkJ9EJvB7t4'
 
 #Live
 #STRIPE_KEY = 'sk_live_275LYRsuUDymanIlvV9B0HJp'
-#PROD149_KEY = 'prod_E2pYATquYMhj5y'
+#PROD149_KEY = 'plan_E2papDJRjqTeWk'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.

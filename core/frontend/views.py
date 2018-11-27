@@ -284,7 +284,13 @@ def lic_register(request, **kwargs):
                         'number':str(request.POST['gatewayCardNumber']).strip(),
                         'exp_month':request.POST['expiryDateMonth'],
                         'exp_year':request.POST['expiryDateYear'],
-                        'cvc':request.POST['cardCVC']
+                        'name': request.POST['ccName'],
+                        'cvc':request.POST['cardCVC'],
+                        'address_city': request.POST['city'],
+                        'address_state': request.POST['state'],
+                        'address_line1': request.POST['address1'],
+                        'address_line2': request.POST['address2'],
+                        'address_zip': request.POST['postcode']
                     },
                 )
 
@@ -299,6 +305,28 @@ def lic_register(request, **kwargs):
                 )
 
                 #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
+                if request.POST['plan_type'].strip() == 'flat':
+
+                    """
+                    s_plan = stripe.Plan.create(
+                        amount=149,
+                        interval="month",
+                        product={
+                            "name": "Aida FLAT"
+                        },
+                        currency="eur",
+                    )
+                    """
+                    s_plan = getattr(settings, "PROD149_KEY", None)
+                    stripe.Subscription.create(
+                        customer=cus['id'],
+                        tax_percent=22.0,
+                        items=[
+                            {
+                                "plan": s_plan,
+                            },
+                        ]
+                    )
                 
                 #Then update table with informations
                 t = settings_gen.objects.get(tenant_name=c_tenant)
