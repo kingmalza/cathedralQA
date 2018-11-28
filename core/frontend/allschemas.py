@@ -228,7 +228,7 @@ def sendemail(gam,griep):
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
-        print("Email sent! Message ID:"),
+        #print("Email sent! Message ID:"),
         print(response['MessageId'])
     
 if __name__ == "__main__":
