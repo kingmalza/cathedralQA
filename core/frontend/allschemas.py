@@ -54,7 +54,7 @@ def start():
     sendemail(glob_amount, json.dumps(glob_riep))
     
        
-def main(schema,conn):
+def main(schema,conn,p_force=False):
 
 
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
@@ -78,8 +78,8 @@ def main(schema,conn):
         stripeid = records[0][17]
         cemail = records[0][18]
         tot_amount = 0
-        if not istrial and plantype == 'ondemand':
-            print('non è un trial quindi picia')
+        #For manual launch method (in case of change contract type request from a client) pass p_force parameter to True
+        if not istrial and plantype == 'ondemand' and not p_force:
             #Check las payement data
             p_cursor = conn.cursor()
             t_cursor = conn.cursor()
@@ -106,7 +106,6 @@ def main(schema,conn):
             ctime = ""
 
             while row:
-                print(row[1])
                 #Check data
                 if row[1].date() == cdata:
                     #Test run append in the same day
