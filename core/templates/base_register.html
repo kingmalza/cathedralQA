@@ -129,8 +129,10 @@
 
             
                 <div class="field-group">
-                    <label>Expired on</label>
-                    <span class="static-field">29 ottobre 2018</span>
+                    <label>Created on</label>
+                    {% for sets in all_set %}
+                        <span class="static-field">{{ sets.created_on }}</span>
+                    {% endfor %}
                 </div>
             
 
@@ -146,8 +148,11 @@
                         <label for="firstname">
                             First Name<em class="required">*</em>
                         </label>
-                        <input type="text" id="firstname" name="firstname" class="text"
-                               value="Luca">
+
+                        {% for sets in all_set %}
+                            <input type="text" id="firstname" name="firstname" class="text"
+                               value={{ sets.first_name|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
 
@@ -155,56 +160,71 @@
                         <label for="lastname">
                             Last Name<em class="required">*</em>
                         </label>
-                        <input type="text" id="lastname" name="lastname" class="text"
-                               value="Grezzi">
+                        {% for sets in all_set %}
+                            <input type="text" id="lastname" name="lastmane" class="text"
+                               value={{ sets.last_name|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
                         <label for="organisationname">
                             Company Name<em class="required">*</em>
                         </label>
-                        <input type="text" id="organisationname" name="organisationname" class="text"
-                               value="luca_grezzixx@hotmail.com">
+                        {% for sets in all_set %}
+                            <input type="text" id="organisationname" name="organisationname" class="text"
+                               value={{ sets.comp_name|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
                         <label for="address1">
                             Address 1<em class="required">*</em>
                         </label>
-                        <input type="text" id="address1" name="address1" class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="address1" name="address1" class="text"
+                               value={{ sets.addr_1|default_if_none:"" }}>
+                        {% endfor %}
+
                         
                     </div>
                     <div class="field-group">
                         <label for="address2">
                             Address 2
                         </label>
-                        <input type="text" id="address2" name="address2" class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="address2" name="address2" class="text"
+                               value={{ sets.addr_2|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
                         <label for="city">
                             City<em class="required">*</em>
                         </label>
-                        <input type="text" id="city" name="city" class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="city" name="city" class="text"
+                               value={{ sets.city|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
                         <label for="state">
                             State/Province<em class="required">*</em>
                         </label>
-                        <input type="text" id="state" name="state"  class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="state" name="state"  class="text"
+                               value={{ sets.state_prov|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
                         <label for="postcode">
                             Postcode/ZIP
                         </label>
-                        <input type="text" id="postcode" name="postcode"  class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="postcode" name="postcode"  class="text"
+                               value={{ sets.postal_zip|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">
@@ -473,8 +493,10 @@
                         <label for="taxid" id="taxIdLabel">
                             Tax ID<em class="required">*</em>
                         </label>
-                        <input type="text" id="taxid" name="taxid" class="text"
-                               value="">
+                        {% for sets in all_set %}
+                            <input type="text" id="taxid" name="taxid" class="text"
+                               value={{ sets.tax_id|default_if_none:"" }}>
+                        {% endfor %}
                         
                     </div>
                     <div class="field-group">

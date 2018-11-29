@@ -2,12 +2,14 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .forms import CustomBarModelForm, jra_settingsForm
+from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
     t_time, t_history, settings_gen
 from django.forms import Select
+from django.conf import settings
 from datetime import datetime, timezone
+import stripe
 
 #global for check if trial or not
 
@@ -437,7 +439,9 @@ class jra_settingsAdmin(admin.ModelAdmin):
 
 class settings_genAdmin(admin.ModelAdmin):
 
-    list_display = ('j_address', 'j_user', 'j_notes')
+    form = SettingsForm
+    list_display = ('tenant_name', 'created_on', 'comp_name', 'tax_id', 'reg_email')
+    readonly_fields = ['tenant_name', 'stripe_id', 'paid_plan']
 
     def has_add_permission(self, request):
         # if there's already an entry, do not allow adding
@@ -447,9 +451,26 @@ class settings_genAdmin(admin.ModelAdmin):
 
         return False
 
+
+    def save_model(self, request, obj, form, change):
+        print('Reg stripe -> ',obj.stripe_id)
+        #If exist a stripe connection update data in stripe
+        if obj.stripe_id:
+            # Retreive stripe API keys
+            stripe.api_key = getattr(settings, "STRIPE_KEY", None)
+            cu = stripe.Customer.retrieve(obj.stripe_id)
+            cu.description = "Customer for "+obj.comp_name
+            cu.email = obj.reg_email
+            cu.tax_info.tax_id = obj.tax_id
+            cu.tax_info.type = 'vat'
+            cu.save()
+
+
+        super(settings_genAdmin, self).save_model(request, obj, form, change)
+
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        print("OBJ_ID--> ", obj_id)
         """
         l_mod = jra_history.objects.latest('id')
 

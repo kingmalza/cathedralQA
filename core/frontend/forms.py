@@ -1,6 +1,6 @@
 from django.forms import ModelForm, PasswordInput
 from django import forms
-from .models import temp_pers_keywords, temp_keywords, temp_main, Document, jra_settings
+from .models import temp_pers_keywords, temp_keywords, temp_main, Document, jra_settings, settings_gen
 
 
 class SelectMain(ModelForm):
@@ -46,3 +46,27 @@ class jra_settingsForm(ModelForm):
             "j_pass": "Password"
         }
         fields = '__all__'        
+
+
+class SettingsForm(forms.ModelForm):
+    class Meta:
+        model = settings_gen
+        fields = ('tenant_name', 'stripe_id', 'paid_plan', 'comp_name', 'addr_1', 'addr_2', 'city',  'country','postal_zip', 'state_prov', 'tax_id', 'first_name', 'last_name',  'reg_email')
+        help_texts = {'comp_name': "Unique identifier for the student", }
+
+    def __init__(self, *args, **kwargs):
+        super(SettingsForm, self).__init__(*args, **kwargs)
+        #self.fields['tenant_name'].label = "System Name"
+        #self.fields['stripe_id'].label = "Account ID"
+        #self.fields['paid_plan'].label = "Plan Type"
+        self.fields['addr_1'].label = "Main Address"
+        self.fields['addr_2'].label = "Secondary Address"
+        self.fields['city'].label = "City"
+        self.fields['comp_name'].label = "Company"
+        self.fields['country'].label = "Country"
+        self.fields['first_name'].label = "First Name"
+        self.fields['last_name'].label = "Last Name"
+        self.fields['postal_zip'].label = "Zip Code"
+        self.fields['state_prov'].label = "State/Province"
+        self.fields['tax_id'].label = "Tax ID"
+        self.fields['reg_email'].label = "Registered Email"

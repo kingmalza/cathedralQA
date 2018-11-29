@@ -6,6 +6,7 @@ from django.core.validators import FileExtensionValidator, MaxValueValidator, Mi
 from django.core.exceptions import ValidationError
 from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
+
 from decimal import Decimal
 from django import forms
 from django.forms import ModelForm, PasswordInput
@@ -565,15 +566,23 @@ class Document(models.Model):
 #----------------------------------------------------
 
 class settings_gen(models.Model):
+
+    PLAN_CHOICES = (
+        ('flat', 'FLAT'),
+        ('ondemand', 'ON DEMAND')
+
+    )
+
     id = models.AutoField(primary_key=True)
-    tenant_name = models.CharField(max_length=255, blank=True)
+    tenant_name = models.CharField(max_length=255, blank=True, verbose_name="System Name")
     created_on = models.DateTimeField(auto_now_add=True)
     on_trial = models.BooleanField(default=True)
     paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
-    paid_plan = models.CharField(max_length=10, null=True, blank=True)
+    #paid_plan = models.CharField(choices=PLAN_CHOICES, max_length=10, null=True, blank=True, default='--------',)
+    paid_plan = models.CharField(max_length=10, null=True, blank=True, verbose_name="Plan Selected")
     first_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100, null=True, blank=True)
-    comp_name = models.CharField(max_length=200, null=True, blank=True)
+    comp_name = models.CharField(max_length=200, null=True, blank=True, verbose_name="Company")
     addr_1 = models.CharField(max_length=200, null=True, blank=True)
     addr_2 = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
@@ -581,8 +590,8 @@ class settings_gen(models.Model):
     postal_zip = models.CharField(max_length=20, null=True, blank=True)
     country = models.CharField(max_length=50, null=True, blank=True)
     tax_id = models.CharField(max_length=100, null=True, blank=True)
-    stripe_id = models.CharField(max_length=100, null=True, blank=True)
-    reg_email = models.CharField(max_length=150, null=True, blank=True, unique=True)
+    stripe_id = models.CharField(max_length=100, null=True, blank=True, verbose_name="Account ID")
+    reg_email = models.CharField(max_length=150, null=True, blank=True, unique=True, verbose_name="Email")
 
 
     class Meta:
@@ -591,7 +600,7 @@ class settings_gen(models.Model):
 
     def __str__(self):
         return '%s -> %s' % (
-            str(self.tenant_name), str(self.on_trial))
+            str(self.tenant_name), str(self.comp_name))
 
 
 #----------------------------------------------------
