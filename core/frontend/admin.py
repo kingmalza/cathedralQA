@@ -5,9 +5,12 @@ from django.contrib import admin
 from .forms import CustomBarModelForm, jra_settingsForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
-    t_time, t_history
+    t_time, t_history, settings_gen
 from django.forms import Select
 from datetime import datetime, timezone
+
+#global for check if trial or not
+
 
 class temp_mainAdmin(admin.ModelAdmin):
     
@@ -432,20 +435,29 @@ class jra_settingsAdmin(admin.ModelAdmin):
         return super(jra_settingsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
-class t_timeAdmin(admin.ModelAdmin):
-    list_display = ('id','hist_data','elapsed_t')
+class settings_genAdmin(admin.ModelAdmin):
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        myqs = t_history.objects.get(id=t_time.history_main)
-        queryset = queryset.annotate(
-            _hist_data=myqs.test_type,
-            #_villain_count=Count("villain", distinct=True),
-        )
-        return queryset
-    
-    def hist_data(self, obj):
-        return obj._hist_data
+    list_display = ('j_address', 'j_user', 'j_notes')
+
+    def has_add_permission(self, request):
+        # if there's already an entry, do not allow adding
+        count = settings_gen.objects.all().count()
+        if count == 0:
+            return True
+
+        return False
+
+    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+
+        print("OBJ_ID--> ", obj_id)
+        """
+        l_mod = jra_history.objects.latest('id')
+
+        extra_context = {
+            'lmod': l_mod,
+        }
+        """
+        return super(settings_genAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
             
 class APIAdmin(admin.ModelAdmin):
@@ -477,6 +489,6 @@ admin.site.register(t_tags_route, t_tags_routeAdmin)
 admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
 admin.site.register(t_proj, t_projAdmin, )
-admin.site.register(t_time, t_timeAdmin, )
+admin.site.register(settings_gen, settings_genAdmin, )
 admin.site.register(suite_libs, )
 admin.site.register(jra_settings, jra_settingsAdmin)

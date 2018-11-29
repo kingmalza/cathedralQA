@@ -585,6 +585,14 @@ class settings_gen(models.Model):
     reg_email = models.CharField(max_length=150, null=True, blank=True, unique=True)
 
 
+    class Meta:
+        verbose_name = 'ACCOUNT SETTINGS'
+        verbose_name_plural = 'ACCOUNT SETTINGS'
+
+    def __str__(self):
+        return '%s -> %s' % (
+            str(self.tenant_name), str(self.on_trial))
+
 
 #----------------------------------------------------
 #PAYEMENT DATAS AND AMOUNT FOR ON-DEMAND PLANS
