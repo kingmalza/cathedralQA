@@ -3,19 +3,20 @@
   <head>
       {% load static %}
     <meta charset="UTF-8">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>Myaida Testsuite - User Registration</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
     <!-- Font Awesome Icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
-    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="{% static "dist/css/AdminLTE.min.css" %}" rel="stylesheet" type="text/css" />
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="{% static "dist/css/skins/_all-skins.min.css" %}" rel="stylesheet" type="text/css" />
+    <link href="{% static "dist/css/Custom.css" %}" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,60 +26,39 @@
     <![endif]-->
   </head>
   <body class="skin-blue">
-    <div id="container">
-	<!-- header section -->
-	<div id="header">
-	<div class="boxNew">
-        <div id="logo">
-            <a href="/"></a>
-        </div>
-        <div id="globalNav">
-        <ul>
+  <header class="main_h">
 
-            
-                <li>
-                    <a href="https://id.atlassian.com/profile/profile.action?application=mac&continue=https%3A%2F%2Fmy.atlassian.com%2Fgrails%2Fproduct%2Fpaymentdetails.dispatch" target="_blank">Luca Grezzi</a>
-                </li>
-                <li>
-                    <a href="https://id.atlassian.com/manage/billing?application=mac" target="_blank">Billing Details</a>
-                </li>
-                <li>
-                    
-                </li>
-                <li>
-                    <a href="/email">Email Preferences</a>
-                </li>
-            <li><a href="http://www.atlassian.com/resources/support">Get Help</a></li>
-            <li><a href="http://marketplace.atlassian.com">Marketplace</a></li>
-            <li><a href="http://www.atlassian.com/">Atlassian Home</a></li>
-                <li><a href="/logout/index">Log Out</a></li>
-        </ul>
-		</div>
-		<div id="mainNav">
-		<ul>
-			<li class='selected'><a href="/products/index">Licenses</a></li>
-			<li class=''><a href="/billing/index">Orders</a></li>
-			<li><a href="http://www.atlassian.com/download/">Downloads</a></li>
-			<li class=''><a href="https://www.atlassian.com/purchase/">Buy</a></li>
-		</ul>
-		</div>
-		<div id="userNav">
-		<ul>
-			<li>
-			<form action="https://www.atlassian.com/en/wac/search" method="GET" id="searchForm">
-				<input type="text" name="query" id="searchInput" onblur="this.value = this.value || this.defaultValue;this.className='';" onfocus="this.value='';this.className='focus';">
-				<input type="submit" value="Search" id="searchSubmit">
-			</form></li>
-		</ul>
-		</div>
-	</div><!--/.box-->
-	</div>
-	<!-- end header section -->
-    <div id="myAtlassianHeader">
-        <div class="boxDefault">
-            <h1>My Atlassian</h1>
+    <div class="row">
+        <a class="logo" href="/">Aida</a>
+
+        <div class="mobile-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
+
+        <nav>
+            <ul>
+                <li><a href=".sec01">Section 01</a></li>
+                <li><a href=".sec02">Section 02</a></li>
+                <li><a href=".sec03">Section 03</a></li>
+                <li><a href=".sec04">Section 04</a></li>
+            </ul>
+        </nav>
+
+    </div> <!-- / row -->
+
+</header>
+<div class="hero">
+
+    <h1><span>I'm a cool</span><br>Navigation</h1>
+
+    <div class="mouse">
+        <span></span>
     </div>
+
+</div>
+    <div id="container">
 	<!-- content section -->
 	<div id="content">
 	<div class="boxDefault">
@@ -111,7 +91,7 @@
             <!--<input type="hidden" name="sessionId" value="SESSION0001169081325E7345552H23"/>
             <input type="hidden" name="csrfToken" value="5ca419b5-3e06-46e6-980e-62ceda7e465d"/>-->
 
-            <div class="field-group">
+            <div class="form-group">
                 <label>Account information</label>
                 {% for sets in all_set %}
                     <span class="static-field">https://{{ sets.tenant_name }}.myaida.io</span>
@@ -134,104 +114,108 @@
                         <span class="static-field">{{ sets.created_on }}</span>
                     {% endfor %}
                 </div>
-            
+                <br><br>
 
-            
+                <div class="row">
+                <div class="col-md-6">
+                <div class="box box-warning">
+                <div class="box-header">
                 <h3>
                     Billing details
                 </h3>
+               
                 <p>This will appear in your invoice</p>
-
-
+                </div>
+                <div class="box-body">
                 <fieldset>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="firstname">
                             First Name<em class="required">*</em>
                         </label>
 
                         {% for sets in all_set %}
-                            <input type="text" id="firstname" name="firstname" class="text"
+                            <input type="text" id="firstname" name="firstname" class="form-control"
                                value={{ sets.first_name|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
 
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="lastname">
                             Last Name<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="lastname" name="lastmane" class="text"
+                            <input type="text" id="lastname" name="lastmane" class="form-control"
                                value={{ sets.last_name|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="organisationname">
                             Company Name<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="organisationname" name="organisationname" class="text"
+                            <input type="text" id="organisationname" name="organisationname" class="form-control"
                                value={{ sets.comp_name|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="address1">
                             Address 1<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="address1" name="address1" class="text"
+                            <input type="text" id="address1" name="address1" class="form-control"
                                value={{ sets.addr_1|default_if_none:"" }}>
                         {% endfor %}
 
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="address2">
                             Address 2
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="address2" name="address2" class="text"
+                            <input type="text" id="address2" name="address2" class="form-control"
                                value={{ sets.addr_2|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="city">
                             City<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="city" name="city" class="text"
+                            <input type="text" id="city" name="city" class="form-control"
                                value={{ sets.city|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="state">
                             State/Province<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="state" name="state"  class="text"
+                            <input type="text" id="state" name="state"  class="form-control"
                                value={{ sets.state_prov|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="postcode">
                             Postcode/ZIP
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="postcode" name="postcode"  class="text"
+                            <input type="text" id="postcode" name="postcode"  class="form-control"
                                value={{ sets.postal_zip|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="country">
                             Country<em class="required">*</em>
                         </label>
-                        <select id="country" name="country" class="select" onchange="updateTaxInfo()" >
+                        <select id="country" name="country" class="form-control" onchange="updateTaxInfo()" >
 <option value="">Please select a country</option>
 <option value="Australia" >Australia</option>
 <option value="Canada" >Canada</option>
@@ -489,40 +473,43 @@
 </select>
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="taxid" id="taxIdLabel">
                             Tax ID<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="taxid" name="taxid" class="text"
+                            <input type="text" id="taxid" name="taxid" class="form-control"
                                value={{ sets.tax_id|default_if_none:"" }}>
                         {% endfor %}
                         
                     </div>
-                    <div class="field-group">
+                    <div class="form-group">
                         <label for="plan_type">
                             Plan Type<em class="required">*</em>
                         </label>
-                        <select id="plan_type" name="plan_type" class="select" >
+                        <select id="plan_type" name="plan_type" class="form-control" >
 <option value="">Please select a billing plan</option>
 <option value="ondemand" >ON DEMAND (0.49€/hour test running)</option>
 <option value="flat" >FLAT (149€/month All Inclusive)</option>
                         </select>
                     </div>
                 </fieldset>
-            
-
+            </div>
+</div>
+            <div class="box box-success">
+            <div class="box-header">
             <h3>
                 Credit card details
             </h3>
             <p>This credit card will be used for your recurring payments</p>
-
+            </div>
+            <div class="box-body">
             <fieldset>
-                <div class="field-group">
+                <div class="form-group">
                     <label for="ccType">
                         Card Type<em class="required">*</em>
                     </label>
-                    <select id="ccType" name="ccType" class="select" >
+                    <select id="ccType" name="ccType" class="form-control" >
                         <option value="">Please select your Credit Card Type</option>
                         <option value="Visa" >Visa</option>
                         <option value="MasterCard" >MasterCard</option>
@@ -541,39 +528,39 @@
 
                 </div>
 
-                <div class="field-group">
+                <div class="form-group">
                     <label for="ccName">
                         Cardholder Name<em class="required">*</em>
                     </label>
-                    <input type="text" id="ccName" name="ccName" class="text"
+                    <input type="text" id="ccName" name="ccName" class="form-control"
                            value=""/>
                     
                 </div>
 
-                <div class="field-group">
+                <div class="form-group">
                     <label for="gatewayCardNumber">
                         Card Number<em class="required">*</em>
                     </label>
-                    <input type="text" id="gatewayCardNumber" name="gatewayCardNumber" class="text"
+                    <input type="text" id="gatewayCardNumber" name="gatewayCardNumber" class="form-control"
                            value="" />
                     
                 </div>
                 
-                <div class="field-group">
+                <div class="form-group">
                     <label for="cardCVC">
                         CVC<em class="required">*</em>
                     </label>
-                    <input type="text" id="cardCVC" name="cardCVC" class="text"
+                    <input type="text" id="cardCVC" name="cardCVC" class="form-control"
                            value="" maxlength="5"/>
                     
                 </div>
 
-                <div class="field-group">
+                <div class="form-group">
                     <label for="gatewayCardExpiryDateYear">
                         Expiry<em class="required">*</em>
                     </label>
                     <div class="inline-elements">
-                        <select id="gatewayCardExpiryDateMonth" name="expiryDateMonth" class="select short-field" >
+                        <select id="gatewayCardExpiryDateMonth" name="expiryDateMonth" class="form-control" >
 <option value="01" >01</option>
 <option value="02" >02</option>
 <option value="03" >03</option>
@@ -588,7 +575,7 @@
 <option value="12" >12</option>
 </select>
                         /
-                        <select id="gatewayCardExpiryDateYear" name="expiryDateYear" class="select short-field" >
+                        <select id="gatewayCardExpiryDateYear" name="expiryDateYear" class="form-control" >
 <option value="2018" >2018</option>
 <option value="2019" >2019</option>
 <option value="2020" >2020</option>
@@ -622,14 +609,8 @@
                 </div>
 
             </fieldset>
-
-            <input type="hidden" name="id" value="12697197">
-            <input type="hidden" name="accountId" value="12697197">
-            <input type="hidden" name="updateBillingDetails" value="true">
-            <input type="hidden" name="reseller" value="false">
-            <input type="hidden" name="expert" value="false">
-
-            <input type="hidden" name="callback" value=""/>
+            </div>
+            </div>
 
             
                 <div class="aui-message aui-message-info">
@@ -642,17 +623,20 @@
             </div>
 
             <div class="field-group field-group-spacing" id="eulaConfirm">
-                <p> By clicking here you accept the <a data-link="customer-agreement" href="https://www.atlassian.com/legal/customer-agreement" target="_blank" title="Atlassian Customer Agreement">Atlassian Customer Agreement</a>. </p>
+                <p> By clicking here you accept the <a data-link="customer-agreement" href="/legal" target="_blank" title="Aida Customer Agreement">Aida Customer Agreement</a>. </p>
             </div>
 
             <div class="buttons-container" style="margin-top: 10px;">
                 <div class="buttons">
-                    <button class="aui-button aui-button-primary" id="submit-button">Update</button>
-                    <a href="/products" class="cancel">Cancel</a>
+                    <button class="btn btn-primary" id="submit-button">Update</button>
+                    <a href="/" class="cancel">Cancel</a>
                 </div>
             </div>
+                </div>
+    </div>
     </form>
-   <footer class="main-footer">
+    <br>
+   <footer>
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.0
         </div>
@@ -665,7 +649,7 @@
     <!-- Bootstrap 3.3.2 JS -->
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}" type="text/javascript"></script>
     <!-- FastClick -->
-    <script src="{% static "plugins/fastclick/fastclick.min.js" %}"></script>
+    <!--<script src="{% static "plugins/fastclick/fastclick.min.js" %}"></script>-->
     <!-- AdminLTE App -->
     <script src="{% static "dist/js/app.min.js" %}" type="text/javascript"></script>
     <!-- AdminLTE for demo purposes -->

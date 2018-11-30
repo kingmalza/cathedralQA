@@ -252,6 +252,18 @@ def ext_lib(request, **kwargs):
     return response
 
     
+def legal_terms(request, **kwargs):
+    global test_case
+
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case}
+    response = render(request, 'base_legal.html', context_dict, context)
+
+    return response
+    
+    
 def lic_register(request, **kwargs):
     global test_case
     
