@@ -88,6 +88,7 @@ function AddOptions(VarID) {
     buttonHtml.onclick = function () {
         inspectHTML(VarID);
     }*/
+    document.getElementById("overlay_get").style.display = "block";
     console.log('varid is:'+VarID.value);
     $.ajax({
         type: "POST",
@@ -230,6 +231,7 @@ function inspectHTML(objID) {
 $(document).ajaxStop(function () {
     //alert('STOP');
     document.getElementById("overlay").style.display = "none";
+    document.getElementById("overlay_get").style.display = "none";
 });
 
 function testBtn(VarID, t_type) {
