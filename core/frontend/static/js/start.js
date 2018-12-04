@@ -63,6 +63,10 @@ function AddOptions(VarID) {
     oCssSet = document.getElementById("sel_opt");
     tmain = document.getElementById("tab_div1");
     tdata = document.getElementById("tab_div2");
+    drst = document.getElementById("div_rst");
+    trst1 = document.getElementById("rst1");
+    trst2 = document.getElementById("rst2");
+    trst3 = document.getElementById("rst3");
     if (tdata == null) {
                 location.reload();
     }
@@ -170,26 +174,41 @@ function AddOptions(VarID) {
                     }
                 }
                 
- 
-            
-                tart11 = document.createElement('input', '', 'form-control');
-                tart11.setAttribute('type', 'text');
-                tart11.id = data[index].OptionKey;
-                tart11.value = data[index].OptionVal;
-                var createVarText = document.createElement("SPAN");
-                createVarText.setAttribute('class', 'label label-warning');
-                createVarText.innerHTML = data[index].OptionDescr+" - "+data[index].OptionKey;
-                //var createVarText = document.createTextNode(data[index].OptionDescr+"-> "+data[index].OptionKey+"-> ");
-                var createSpace = document.createTextNode("  ");
-                var br = document.createElement("BR");
-                tart11.defaultValue = data[index].OptionVal;
-                vard = document.getElementById("tab_" + data[index].OptionMain);
-                vard = document.getElementById("tab_1");
-                vard.appendChild(createVarText);
-                vard.appendChild(createSpace);
-                vard.appendChild(tart11);
-                vard.appendChild(br);
-                opdescr = document.createTextNode(data[index].OptionDescr);
+                //Because if is undefine is related to rst values for preview in json return response
+                if (data[index].OptionID)
+                {
+                    tart11 = document.createElement('input', '', 'form-control');
+                    tart11.setAttribute('type', 'text');
+                    tart11.id = data[index].OptionKey;
+                    tart11.value = data[index].OptionVal;
+                    var createVarText = document.createElement("SPAN");
+                    createVarText.setAttribute('class', 'label label-warning');
+                    createVarText.innerHTML = data[index].OptionDescr + " - " + data[index].OptionKey;
+                    //var createVarText = document.createTextNode(data[index].OptionDescr+"-> "+data[index].OptionKey+"-> ");
+                    var createSpace = document.createTextNode("  ");
+                    var br = document.createElement("BR");
+                    tart11.defaultValue = data[index].OptionVal;
+                    vard = document.getElementById("tab_" + data[index].OptionMain);
+                    vard = document.getElementById("tab_1");
+                    vard.appendChild(createVarText);
+                    vard.appendChild(createSpace);
+                    vard.appendChild(tart11);
+                    vard.appendChild(br);
+                    opdescr = document.createTextNode(data[index].OptionDescr);
+                } else {
+                    if (oType.value == "ST") {
+                        drst.style.display = 'inline-block';
+                        trst1.innerText = "";
+                        trst2.innerText = "";
+                        trst3.innerText = "";
+                        trst1.innerText = data[index].r_settings;
+                        trst2.innerText = data[index].r_case;
+                        trst3.innerText = data[index].r_key;
+                    } else {
+                        drst.style.display = 'none';
+                    }
+                }
+
 
             });
 

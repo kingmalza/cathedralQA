@@ -10,6 +10,12 @@ from django.http import HttpResponse
 from django.db.models import Count
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+
+from rsthtml.rst import PrepareRst as pr
+from rsthtml.rst import MakeRst as mr
+from rsthtml.rst import MakeHtml as mh
+from rsthtml.goTest import parsefile
+
 import lxml.etree as etree
 
 from jira import JIRA
@@ -76,13 +82,37 @@ def mainoptions(request):
             # Now filter variables based on multiple temp main
             mainOptions = temp_variables.objects.filter(main_id__in=t_list)
 
+
+        #Now i have toretreive html for display in preview div
+        #------------RST AND HTML PREPARATION--------------------------
+
+        # 1 - Table preparation
+        table_case = pr(request.POST['mainID'], "TC")
+        table_key = pr(request.POST['mainID'], "TK")
+        table_setting = pr(request.POST['mainID'], "TS")
+        #In this case take the default variables
+        #table_var = pr(request.POST['mainID'], "TV")
+
+        # 2 - MakeRst
+        mrr1 = mr(table_setting.rst)
+        mrr3 = mr(table_case.rst)
+        mrr4 = mr(table_key.rst)
+
+        # 3 - Clean string returned for display roperly
+        cmr1 = mrr1.rstab.replace("-","").replace("+","")
+        cmr2 = mrr3.rstab.replace("-", "").replace("+","")
+        cmr3 = mrr4.rstab.replace("-", "").replace("+","")
+        #------------------------------------------------------------
+
         response = []
         for i in mainOptions.iterator():
             vallabel = {'OptionID': i.id, 'OptionKey': i.v_key, 'OptionVal': i.v_val, 'OptionMain': i.main_id.id,
                         'OptionDescr': i.main_id.descr, 'OptionNote': i.main_id.notes}
             response.append(vallabel)
+        valrst = {'r_settings': cmr1, 'r_case': cmr2, 'r_key': cmr3}
+        response.append(valrst)
         json = simplejson.dumps(response)
-
+        print(json)
         return HttpResponse(
             json, content_type='application/json'
         )
