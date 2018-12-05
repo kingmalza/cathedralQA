@@ -74,7 +74,14 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 dlen = data[data.length-1];
                 //Create footer elements for multiple of 20
                 
-                var multipler = dlen / 20;
+                //Create set for unique threads_main management
+                var set1 = new Set();
+                var i;
+                for (i = 0; i < data[0].Unique.length; i++) {
+                    set1.add(data[0].Unique[i][0]);
+                }
+
+                var multipler = set1.size / 20;
                 console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
                 for (i = 0; i < multipler; i++) {
                     var li_0 = document.createElement("LI");
@@ -228,9 +235,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 }
                 if (data[index].tID != undefined) {
                     //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
-                    if (noDouble.trim() != data[index].OptionMain.trim()) {
+                    //if (noDouble.trim() != data[index].OptionMain.trim()) {
+                    if (set1.has(data[index].OptionMain)) {
+                        set1.delete(data[index].OptionMain);
                         //label for test type
-                        console.log('OptionType-->'+data[index].OptionType);
                         if (data[index].OptionType == '') {
                             l_ttype = 'NODATA';
                         } else {
@@ -344,7 +352,6 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_tr0.appendChild(t_td14);
                         t_body.appendChild(t_tr0);
                         
-                        noDouble = data[index].OptionMain;
                     }
                 }
 

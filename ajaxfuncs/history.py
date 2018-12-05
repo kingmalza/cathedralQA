@@ -41,6 +41,9 @@ def histrefresh(request, lorder='-id'):
         # First check if is typed a search term
         if request.POST['tab_search'] == 'noSearch':
             ordered = t_threads.objects.filter(thread_status='DEAD').select_related().order_by(lorder)[x:y]
+            #Here i create a list of distinct thread_main values for calculate and manage in js the history threads list
+            a = t_threads.objects.values_list('thread_main').distinct()
+            dis_thread = list(a)
             oCount = t_threads.objects.filter(thread_status='DEAD').count()
             twarnings = t_threads.objects.filter(thread_status='DEAD',thread_stopd__isnull=True).count()
         # if is typed check if is a correct name of columns, otherwise make generic standard query
@@ -121,6 +124,7 @@ def histrefresh(request, lorder='-id'):
             vallabel['OptionNumT'] = tn['tcount']
 
             vallabel['TotData'] = oCount
+            vallabel['Unique'] = dis_thread
             vallabel['wData'] = twarnings
             vallabel['PercPass'] = round(percp, 2)
             vallabel['PercFail'] = round(percf, 2)
