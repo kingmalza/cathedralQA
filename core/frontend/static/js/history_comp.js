@@ -334,25 +334,98 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
                         t_td14.setAttribute('style', 'display: none');
-
-                        t_tr0.appendChild(t_td0);
-                        t_tr0.appendChild(t_td10);
-                        t_tr0.appendChild(t_td2);
-                        t_tr0.appendChild(t_td1);
-                        t_tr0.appendChild(t_td11);
-                        t_tr0.appendChild(t_td12);
-                        t_tr0.appendChild(t_td13);
-                        t_tr0.appendChild(t_td3);
-                        t_tr0.appendChild(t_td4);
-                        t_tr0.appendChild(t_td5);
-                        //t_tr0.appendChild(t_td6);
-                        t_tr0.appendChild(t_td7);
-                        t_tr0.appendChild(t_td8);
-                        t_tr0.appendChild(t_td9);
-                        t_tr0.appendChild(t_td14);
-                        t_body.appendChild(t_tr0);
                         
+                    } else {
+                        //Create head and data table for child (multi executed elements)
+                        var t_tr0 = document.createElement("TR");
+                        var t_td0 = document.createElement("TD");
+                        t_td0.innerHTML = data[index].tID;
+                        var t_td1 = document.createElement("TD");
+                        var td1_span = document.createElement("SPAN")
+                        if (data[index].OptionGroup == "NoGroup") {
+                            td1_span.setAttribute('class', 'label label-default');
+                        } else {
+                            td1_span.setAttribute('class', 'label label-primary');
+                        }
+                        td1_span.innerHTML = data[index].OptionGroup;
+                        t_td1.appendChild(td1_span);
+                        var t_td2 = document.createElement("TD");
+                        var td2_span = document.createElement("SPAN");
+                        if (l_ttype != 'NODATA') {
+                            td2_span.setAttribute('class', 'label label-warning');
+                        } else {
+                            td2_span.setAttribute('class', 'label pull-right bg-red');
+                        }
+                        td2_span.innerHTML = l_ttype;
+                        t_td2.appendChild(td2_span);
+                        var t_td11 = document.createElement("TD");
+                        t_td11.innerHTML = 'TEST';
+                        var t_td12 = document.createElement("TD");
+                        t_td12.innerHTML = 'TEST';
+                        var t_td13 = document.createElement("TD");
+                        t_td13.innerHTML = 'TEST';
+                        var t_td10 = document.createElement("TD");
+                        t_td10.innerHTML = 'TEST';
+                        var t_td3 = document.createElement("TD");
+                        t_td3.innerHTML = 'TEST';
+                        var t_td4 = document.createElement("TD");
+                        if (data[index].OptionStopdate == "None") {
+                            var td4_span = document.createElement("SPAN");
+                            td4_span.setAttribute('class', 'label label-warning');
+                            td4_span.innerHTML = "SCHEDULED TERMINATION";
+                            t_td4.appendChild(td4_span);
+                        } else {
+                            t_td4.innerHTML = data[index].OptionStopdate;
+                        }
+                        var t_td5 = document.createElement("TD");
+                        t_td5.innerHTML = data[index].OptionUser;
+                        var t_td6 = document.createElement("TD");
+                        t_td6.innerHTML = data[index].OptionTest;
+                        var t_td7 = document.createElement("TD");
+                        //Calculate the success percentage data
+                        if (data[index].OptionPass + data[index].OptionFail != 0) {
+                            var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                            var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                        } else {
+                            var ssuc = 0;
+                            var sfail = 0;
+                        }
+
+                        var td7_span = document.createElement("SPAN");
+                        td7_span.setAttribute('class', 'badge bg-green');
+                        td7_span.innerHTML = ssuc+"%";
+                        t_td7.appendChild(td7_span);
+                        var t_td8 = document.createElement("TD");
+                        var td8_span = document.createElement("SPAN");
+                        td8_span.setAttribute('class', 'badge bg-red');
+                        td8_span.innerHTML = sfail+"%";
+                        t_td8.appendChild(td8_span);
+                        var t_td9 = document.createElement("TD");
+                        var td9_span = document.createElement("SPAN");
+                        td9_span.setAttribute('class', 'badge bg-light-blue');
+                        td9_span.innerHTML = data[index].OptionNumT;
+                        t_td9.appendChild(td9_span);
+                        var t_td14 = document.createElement("TD");
+                        t_td14.innerHTML = data[index].OptionUUID;
+                        t_td14.setAttribute('style', 'display: none');
                     }
+                    
+                    t_tr0.appendChild(t_td0);
+                    t_tr0.appendChild(t_td10);
+                    t_tr0.appendChild(t_td2);
+                    t_tr0.appendChild(t_td1);
+                    t_tr0.appendChild(t_td11);
+                    t_tr0.appendChild(t_td12);
+                    t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td3);
+                    t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td5);
+                    //t_tr0.appendChild(t_td6);
+                    t_tr0.appendChild(t_td7);
+                    t_tr0.appendChild(t_td8);
+                    t_tr0.appendChild(t_td9);
+                    t_tr0.appendChild(t_td14);
+                    t_body.appendChild(t_tr0);
                 }
 
 

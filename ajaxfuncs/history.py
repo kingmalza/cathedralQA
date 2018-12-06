@@ -113,7 +113,7 @@ def histrefresh(request, lorder='-id'):
                         'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19],
                         'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype,
                         'OptionGroup': i.thread_tgroup,
-                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval}
+                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubData':str(i.id_test.exec_data), 'SubStatus':i.id_test.exec_status, 'SubPass':i.id_test.pass_num, 'SubFail':i.id_test.fail_num, 'SubVar':i.id_test.var_test}
             # Create inline data for pass/fail
             p = ['1' for x in range(i.id_test.pass_num)]
             f = ['-1' for x in range(i.id_test.fail_num)]
