@@ -264,6 +264,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         */
                         //Create head and data table
                         var t_tr0 = document.createElement("TR");
+                        t_tr0.style.borderStyle = 'solid';
+                        t_tr0.id = data[index].OptionMain;
                         var t_td0 = document.createElement("TD");
                         t_td0.innerHTML = data[index].tID;
                         var t_td1 = document.createElement("TD");
@@ -338,72 +340,90 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     } else {
                         //Create head and data table for child (multi executed elements)
                         var t_tr0 = document.createElement("TR");
+                        t_tr0.style.borderStyle = 'hidden';
                         var t_td0 = document.createElement("TD");
-                        t_td0.innerHTML = data[index].tID;
+                        //t_td0.innerHTML = data[index].tID;
                         var t_td1 = document.createElement("TD");
-                        var td1_span = document.createElement("SPAN")
+                        /*var td1_span = document.createElement("SPAN")
                         if (data[index].OptionGroup == "NoGroup") {
                             td1_span.setAttribute('class', 'label label-default');
                         } else {
                             td1_span.setAttribute('class', 'label label-primary');
                         }
                         td1_span.innerHTML = data[index].OptionGroup;
-                        t_td1.appendChild(td1_span);
+                        t_td1.appendChild(td1_span);*/
                         var t_td2 = document.createElement("TD");
-                        var td2_span = document.createElement("SPAN");
+                        /*var td2_span = document.createElement("SPAN");
                         if (l_ttype != 'NODATA') {
                             td2_span.setAttribute('class', 'label label-warning');
                         } else {
                             td2_span.setAttribute('class', 'label pull-right bg-red');
                         }
                         td2_span.innerHTML = l_ttype;
-                        t_td2.appendChild(td2_span);
+                        t_td2.appendChild(td2_span);*/
                         var t_td11 = document.createElement("TD");
-                        t_td11.innerHTML = 'TEST';
+                        //t_td11.innerHTML = 'TEST';
                         var t_td12 = document.createElement("TD");
-                        t_td12.innerHTML = 'TEST';
+                        //t_td12.innerHTML = data[index].SubVar;
                         var t_td13 = document.createElement("TD");
-                        t_td13.innerHTML = 'TEST';
+                        t_td13.innerHTML = 'Child';
+                        t_td13.style.color = "white";
+                        t_td13.style.background="gray";
                         var t_td10 = document.createElement("TD");
-                        t_td10.innerHTML = 'TEST';
+                        //t_td10.innerHTML = 'TEST';
                         var t_td3 = document.createElement("TD");
-                        t_td3.innerHTML = 'TEST';
+                        t_td3.innerHTML = data[index].SubData.slice(0,-13);
+                        t_td3.style.color = "white";
+                        t_td3.style.background="gray";
                         var t_td4 = document.createElement("TD");
                         if (data[index].OptionStopdate == "None") {
-                            var td4_span = document.createElement("SPAN");
+                            /*var td4_span = document.createElement("SPAN");
                             td4_span.setAttribute('class', 'label label-warning');
                             td4_span.innerHTML = "SCHEDULED TERMINATION";
-                            t_td4.appendChild(td4_span);
+                            t_td4.appendChild(td4_span);*/
+                            t_td4.innerHTML = "SCHEDULED TERMINATION";
                         } else {
                             t_td4.innerHTML = data[index].OptionStopdate;
                         }
+                        t_td4.style.color = "white";
+                        t_td4.style.background="gray";
                         var t_td5 = document.createElement("TD");
                         t_td5.innerHTML = data[index].OptionUser;
+                        t_td5.style.color = "white";
+                        t_td5.style.background="gray";
                         var t_td6 = document.createElement("TD");
                         t_td6.innerHTML = data[index].OptionTest;
+                        t_td6.style.color = "white";
+                        t_td6.style.background="gray";
                         var t_td7 = document.createElement("TD");
                         //Calculate the success percentage data
-                        if (data[index].OptionPass + data[index].OptionFail != 0) {
+                        /*if (data[index].OptionPass + data[index].OptionFail != 0) {
                             var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
                             var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
                         } else {
                             var ssuc = 0;
                             var sfail = 0;
-                        }
+                        }*/
 
                         var td7_span = document.createElement("SPAN");
                         td7_span.setAttribute('class', 'badge bg-green');
-                        td7_span.innerHTML = ssuc+"%";
+                        t_td7.innerHTML = data[index].OptionPass;
                         t_td7.appendChild(td7_span);
+                        t_td7.style.color = "white";
+                        t_td7.style.background="gray";
                         var t_td8 = document.createElement("TD");
                         var td8_span = document.createElement("SPAN");
                         td8_span.setAttribute('class', 'badge bg-red');
-                        td8_span.innerHTML = sfail+"%";
+                        t_td8.innerHTML = data[index].OptionFail;
+                        t_td8.style.color = "white";
+                        t_td8.style.background="gray";
                         t_td8.appendChild(td8_span);
                         var t_td9 = document.createElement("TD");
                         var td9_span = document.createElement("SPAN");
                         td9_span.setAttribute('class', 'badge bg-light-blue');
-                        td9_span.innerHTML = data[index].OptionNumT;
+                        t_td9.innerHTML = "1";
+                        t_td9.style.color = "white";
+                        t_td9.style.background="gray";
                         t_td9.appendChild(td9_span);
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
