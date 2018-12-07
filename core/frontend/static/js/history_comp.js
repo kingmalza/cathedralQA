@@ -74,14 +74,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 dlen = data[data.length-1];
                 //Create footer elements for multiple of 20
                 
-                //Create set for unique threads_main management
-                var set1 = new Set();
-                var i;
-                for (i = 0; i < data[0].Unique.length; i++) {
-                    set1.add(data[0].Unique[i][0]);
-                }
-
-                var multipler = set1.size / 20;
+                //var multipler = dlen.size / 20;
+                var multipler = dlen / 20;
                 console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
                 for (i = 0; i < multipler; i++) {
                     var li_0 = document.createElement("LI");
@@ -236,8 +230,6 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 if (data[index].tID != undefined) {
                     //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
                     //if (noDouble.trim() != data[index].OptionMain.trim()) {
-                    if (set1.has(data[index].OptionUUID)) {
-                        set1.delete(data[index].OptionUUID);
                         //label for test type
                         if (data[index].OptionType == '') {
                             l_ttype = 'NODATA';
@@ -337,7 +329,26 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_td14.innerHTML = data[index].OptionUUID;
                         t_td14.setAttribute('style', 'display: none');
                         
-                    } else {
+                    t_tr0.appendChild(t_td0);
+                    t_tr0.appendChild(t_td10);
+                    t_tr0.appendChild(t_td2);
+                    t_tr0.appendChild(t_td1);
+                    t_tr0.appendChild(t_td11);
+                    t_tr0.appendChild(t_td12);
+                    t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td3);
+                    t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td5);
+                    //t_tr0.appendChild(t_td6);
+                    t_tr0.appendChild(t_td7);
+                    t_tr0.appendChild(t_td8);
+                    t_tr0.appendChild(t_td9);
+                    t_tr0.appendChild(t_td14);
+                    t_body.appendChild(t_tr0);
+                    
+                    console.log(data[index].tID +' '+data[index]['SubThread']);                    
+                    for (i = 0; i < data[index]['SubThread'].length; i++) {  
+                        console.log(data[index]['SubThread'].SubVar);
                         //Create head and data table for child (multi executed elements)
                         var t_tr0 = document.createElement("TR");
                         t_tr0.style.borderStyle = 'hidden';
@@ -372,7 +383,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td10 = document.createElement("TD");
                         //t_td10.innerHTML = 'TEST';
                         var t_td3 = document.createElement("TD");
-                        t_td3.innerHTML = data[index].SubData.slice(0,-13);
+                        t_td3.innerHTML = data[index]['SubThread'].SubDataStart.slice(0,-13);
                         t_td3.style.color = "white";
                         t_td3.style.background="gray";
                         var t_td4 = document.createElement("TD");
@@ -383,7 +394,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             t_td4.appendChild(td4_span);*/
                             t_td4.innerHTML = "SCHEDULED TERMINATION";
                         } else {
-                            t_td4.innerHTML = data[index].OptionStopdate;
+                            t_td4.innerHTML = data[index]['SubThread'].SubDataStop;
                         }
                         t_td4.style.color = "white";
                         t_td4.style.background="gray";
@@ -407,14 +418,14 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
 
                         var td7_span = document.createElement("SPAN");
                         td7_span.setAttribute('class', 'badge bg-green');
-                        t_td7.innerHTML = data[index].OptionPass;
+                        t_td7.innerHTML = data[index]['SubThread'].SubPass;
                         t_td7.appendChild(td7_span);
                         t_td7.style.color = "white";
                         t_td7.style.background="gray";
                         var t_td8 = document.createElement("TD");
                         var td8_span = document.createElement("SPAN");
                         td8_span.setAttribute('class', 'badge bg-red');
-                        t_td8.innerHTML = data[index].OptionFail;
+                        t_td8.innerHTML = data[index]['SubThread'].SubFail;
                         t_td8.style.color = "white";
                         t_td8.style.background="gray";
                         t_td8.appendChild(td8_span);
@@ -428,24 +439,26 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
                         t_td14.setAttribute('style', 'display: none');
+                        
+                        t_tr0.appendChild(t_td0);
+                        t_tr0.appendChild(t_td10);
+                        t_tr0.appendChild(t_td2);
+                        t_tr0.appendChild(t_td1);
+                        t_tr0.appendChild(t_td11);
+                        t_tr0.appendChild(t_td12);
+                        t_tr0.appendChild(t_td13);
+                        t_tr0.appendChild(t_td3);
+                        t_tr0.appendChild(t_td4);
+                        t_tr0.appendChild(t_td5);
+                        //t_tr0.appendChild(t_td6);
+                        t_tr0.appendChild(t_td7);
+                        t_tr0.appendChild(t_td8);
+                        t_tr0.appendChild(t_td9);
+                        t_tr0.appendChild(t_td14);
+                        t_body.appendChild(t_tr0);
                     }
+                                        
                     
-                    t_tr0.appendChild(t_td0);
-                    t_tr0.appendChild(t_td10);
-                    t_tr0.appendChild(t_td2);
-                    t_tr0.appendChild(t_td1);
-                    t_tr0.appendChild(t_td11);
-                    t_tr0.appendChild(t_td12);
-                    t_tr0.appendChild(t_td13);
-                    t_tr0.appendChild(t_td3);
-                    t_tr0.appendChild(t_td4);
-                    t_tr0.appendChild(t_td5);
-                    //t_tr0.appendChild(t_td6);
-                    t_tr0.appendChild(t_td7);
-                    t_tr0.appendChild(t_td8);
-                    t_tr0.appendChild(t_td9);
-                    t_tr0.appendChild(t_td14);
-                    t_body.appendChild(t_tr0);
                 }
 
 
