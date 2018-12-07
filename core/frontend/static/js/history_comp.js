@@ -72,6 +72,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 t_group.innerHTML = "";
                 //dlen = (data + '').length;
                 dlen = data[data.length-1];
+                //dlen = data[index].OptionNumT;
                 //Create footer elements for multiple of 20
                 
                 //var multipler = dlen.size / 20;
@@ -346,9 +347,9 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td14);
                     t_body.appendChild(t_tr0);
                     
-                    console.log(data[index].tID +' '+data[index]['SubThread']);                    
-                    for (i = 0; i < data[index]['SubThread'].length; i++) {  
-                        console.log(data[index]['SubThread'].SubVar);
+                    console.log(data[index].tID +' '+data[index].SubLen);
+                    for (i = 0; i < data[index].SubLen; i++) {
+                        console.log(data[index]['SubThread'][i].SubVar);
                         //Create head and data table for child (multi executed elements)
                         var t_tr0 = document.createElement("TR");
                         t_tr0.style.borderStyle = 'hidden';
@@ -383,7 +384,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td10 = document.createElement("TD");
                         //t_td10.innerHTML = 'TEST';
                         var t_td3 = document.createElement("TD");
-                        t_td3.innerHTML = data[index]['SubThread'].SubDataStart.slice(0,-13);
+                        t_td3.innerHTML = data[index]['SubThread'][i].SubDataStart.slice(0,-13);
                         t_td3.style.color = "white";
                         t_td3.style.background="gray";
                         var t_td4 = document.createElement("TD");
@@ -394,7 +395,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             t_td4.appendChild(td4_span);*/
                             t_td4.innerHTML = "SCHEDULED TERMINATION";
                         } else {
-                            t_td4.innerHTML = data[index]['SubThread'].SubDataStop;
+                            t_td4.innerHTML = data[index]['SubThread'][i].SubDataStop.slice(0,-13);
                         }
                         t_td4.style.color = "white";
                         t_td4.style.background="gray";
@@ -418,14 +419,14 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
 
                         var td7_span = document.createElement("SPAN");
                         td7_span.setAttribute('class', 'badge bg-green');
-                        t_td7.innerHTML = data[index]['SubThread'].SubPass;
+                        t_td7.innerHTML = data[index]['SubThread'][i].SubPass;
                         t_td7.appendChild(td7_span);
                         t_td7.style.color = "white";
                         t_td7.style.background="gray";
                         var t_td8 = document.createElement("TD");
                         var td8_span = document.createElement("SPAN");
                         td8_span.setAttribute('class', 'badge bg-red');
-                        t_td8.innerHTML = data[index]['SubThread'].SubFail;
+                        t_td8.innerHTML = data[index]['SubThread'][i].SubFail;
                         t_td8.style.color = "white";
                         t_td8.style.background="gray";
                         t_td8.appendChild(td8_span);

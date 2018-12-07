@@ -111,19 +111,20 @@ def histrefresh(request, lorder='-id'):
         response = []
 
         for i in ordered:
-            print(i.thread_stag,' <->', dis_thread)
+            #print(i.thread_stag,' <->', len(dis_thread))
             if i.thread_stag in dis_thread:
-
+                valsth = dict()
+                vcount = 0
                 q_sub = t_threads.objects.filter(thread_stag=i.thread_stag).filter(~Q(id=i.id)).all().select_related()
                 for x in q_sub:
-                    valsth = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test}
-
+                    valsth[vcount] = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test}
+                    vcount += 1
                 vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,
                         'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,
                         'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19],
                         'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype,
                         'OptionGroup': i.thread_tgroup,
-                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubThread': valsth}
+                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubLen': vcount, 'SubThread': valsth}
                 # Create inline data for pass/fail
                 p = ['1' for x in range(i.id_test.pass_num)]
                 f = ['-1' for x in range(i.id_test.fail_num)]
@@ -141,10 +142,10 @@ def histrefresh(request, lorder='-id'):
                 response.append(vallabel)
                 dis_thread.remove(i.thread_stag)
 
-        response.append(oCount)
+        response.append(len(a))
 
         json = simplejson.dumps(response)
-        print(json)
+        #print(json)
         return HttpResponse(
             json, content_type='application/json'
         )
