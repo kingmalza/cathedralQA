@@ -4,6 +4,7 @@ import simplejson
 import threading
 from django.http import HttpResponse
 from django.db.models import Count
+from django.db.models import Q
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test
@@ -42,8 +43,10 @@ def histrefresh(request, lorder='-id'):
         if request.POST['tab_search'] == 'noSearch':
             ordered = t_threads.objects.filter(thread_status='DEAD').select_related().order_by(lorder)[x:y]
             #Here i create a list of distinct thread_main values for calculate and manage in js the history threads list
-            a = t_threads.objects.values_list('thread_main').distinct()
-            dis_thread = list(a)
+            a = set(t_threads.objects.values_list('thread_stag'))
+            dis_thread = []
+            for s in a: dis_thread.append(s[0])
+            #dis_thread = list(a)
             oCount = t_threads.objects.filter(thread_status='DEAD').count()
             twarnings = t_threads.objects.filter(thread_status='DEAD',thread_stopd__isnull=True).count()
         # if is typed check if is a correct name of columns, otherwise make generic standard query
@@ -108,33 +111,40 @@ def histrefresh(request, lorder='-id'):
         response = []
 
         for i in ordered:
-            vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,
+            print(i.thread_stag,' <->', dis_thread)
+            if i.thread_stag in dis_thread:
+
+                q_sub = t_threads.objects.filter(thread_stag=i.thread_stag).filter(~Q(id=i.id)).all().select_related()
+                for x in q_sub:
+                    valsth = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test}
+
+                vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,
                         'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,
                         'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19],
                         'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype,
                         'OptionGroup': i.thread_tgroup,
-                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubData':str(i.id_test.exec_data), 'SubStatus':i.id_test.exec_status, 'SubPass':i.id_test.pass_num, 'SubFail':i.id_test.fail_num, 'SubVar':i.id_test.var_test}
-            # Create inline data for pass/fail
-            p = ['1' for x in range(i.id_test.pass_num)]
-            f = ['-1' for x in range(i.id_test.fail_num)]
-            vallabel['OptionPass'] = len(p)
-            vallabel['OptionFail'] = len(f)
-            # Now i find number of total cycle groupping by thread_stag
-            tn = t_threads.objects.filter(thread_stag=str(i.thread_stag)).aggregate(tcount=Count('thread_stag'))
-            vallabel['OptionNumT'] = tn['tcount']
+                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubThread': valsth}
+                # Create inline data for pass/fail
+                p = ['1' for x in range(i.id_test.pass_num)]
+                f = ['-1' for x in range(i.id_test.fail_num)]
+                vallabel['OptionPass'] = len(p)
+                vallabel['OptionFail'] = len(f)
+                # Now i find number of total cycle groupping by thread_stag
+                tn = t_threads.objects.filter(thread_stag=str(i.thread_stag)).aggregate(tcount=Count('thread_stag'))
+                vallabel['OptionNumT'] = tn['tcount']
 
-            vallabel['TotData'] = oCount
-            vallabel['Unique'] = dis_thread
-            vallabel['wData'] = twarnings
-            vallabel['PercPass'] = round(percp, 2)
-            vallabel['PercFail'] = round(percf, 2)
+                vallabel['TotData'] = oCount
+                vallabel['wData'] = twarnings
+                vallabel['PercPass'] = round(percp, 2)
+                vallabel['PercFail'] = round(percf, 2)
 
-            response.append(vallabel)
+                response.append(vallabel)
+                dis_thread.remove(i.thread_stag)
 
         response.append(oCount)
 
         json = simplejson.dumps(response)
-
+        print(json)
         return HttpResponse(
             json, content_type='application/json'
         )

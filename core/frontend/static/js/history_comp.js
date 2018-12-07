@@ -236,8 +236,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 if (data[index].tID != undefined) {
                     //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
                     //if (noDouble.trim() != data[index].OptionMain.trim()) {
-                    if (set1.has(data[index].OptionMain)) {
-                        set1.delete(data[index].OptionMain);
+                    if (set1.has(data[index].OptionUUID)) {
+                        set1.delete(data[index].OptionUUID);
                         //label for test type
                         if (data[index].OptionType == '') {
                             l_ttype = 'NODATA';
