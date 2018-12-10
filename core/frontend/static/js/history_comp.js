@@ -484,6 +484,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
             for (var i = 0; i < alink.length; i++) {
                 alink[i].onclick = function fun() {
                     t_sect = this.innerHTML;
+                    document.getElementById("overlay_proc").style.display = "block";
+                    window.location.href = '/#c_head';
                     refHistory(j_ord,j_sign,j_search);
 
                 }
@@ -978,12 +980,17 @@ function getTlineHist(t_stag, f_view) {
                 p_proc = data[index].t_pid;
             });
         //Create the buttons in tline head for raw html and other
-        $('#btngrp').empty();
+            try {
+            $('#btngrp').empty();
         var btnLeft2 = document.createElement("A");
         btnLeft2.setAttribute("class", "btn btn-warning btn-flat btn-xs");
         btnLeft2.setAttribute("href", "javascript:window.open('/static/out/"+p_proc+"/"+p_proc+"_TC.html')");
         btnLeft2.innerHTML = "RAW Html";
         t_btn.appendChild(btnLeft2);
+        }
+            catch(err) {
+                console.log(err.message);
+            }
         }
     });
 

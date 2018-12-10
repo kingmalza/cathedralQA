@@ -1,6 +1,6 @@
 from django.forms import ModelForm, PasswordInput
 from django import forms
-from .models import temp_pers_keywords, temp_keywords, temp_main, Document, jra_settings, settings_gen
+from .models import temp_pers_keywords, temp_keywords, Document, jra_settings, settings_gen, temp_main, temp_case, temp_variables, temp_library
 
 
 class SelectMain(ModelForm):
@@ -70,3 +70,38 @@ class SettingsForm(forms.ModelForm):
         self.fields['state_prov'].label = "State/Province"
         self.fields['tax_id'].label = "Tax ID"
         self.fields['reg_email'].label = "Registered Email"
+
+
+class TempMainForm(forms.ModelForm):
+    class Meta:
+        model = temp_main
+        fields = '__all__'
+        help_texts = {'descr': "General description for the template",
+                      'notes': 'The template notes will be displayed in the selection window on the test start screen'}
+
+
+class TempCaseForm(forms.ModelForm):
+    class Meta:
+        model = temp_case
+        fields = '__all__'
+        help_texts = {'main_id': "Main template to which to connect the testcase",
+                      'descr': 'The name of the test case that will be shown in the test structure'}
+
+
+class TempVarsForm(forms.ModelForm):
+    class Meta:
+        model = temp_variables
+        fields = '__all__'
+        help_texts = {'main_id': "Main template to which to connect the variable Key/Val",
+                      'v_key': 'Variable name',
+                      'v_val': 'Optional, initial value shown on the test start screen'}
+
+
+class TempLibsForm(forms.ModelForm):
+    class Meta:
+        model = temp_library
+        fields = '__all__'
+        help_texts = {'main_id': "Main template to which to connect the variable Key/Val",
+                      'l_type': 'Type of library (Example Documentation, Library, Test Setup, etc.)',
+                      'l_val': 'Value of the chosen library type',
+                      'l_group': 'Grouping or not of library values'}

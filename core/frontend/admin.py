@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm
+from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
     t_time, t_history, settings_gen
@@ -16,6 +16,8 @@ import stripe
 
 class temp_mainAdmin(admin.ModelAdmin):
     
+    form = TempMainForm
+
     #list_filter = ('main_id__descr', 'l_type')
     list_display = ('descr', 'notes', 'dt')
     #ordering = ('-l_type',)
@@ -35,6 +37,7 @@ class temp_mainAdmin(admin.ModelAdmin):
    
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
+    form = TempCaseForm
 
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'descr')
@@ -74,6 +77,8 @@ class temp_caseAdmin(admin.ModelAdmin):
 
 class temp_variablesAdmin(admin.ModelAdmin):
 
+    form = TempVarsForm
+
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'v_key', 'v_val')
     #ordering = ('-l_type',)
@@ -112,6 +117,8 @@ class temp_variablesAdmin(admin.ModelAdmin):
 
 
 class temp_libraryAdmin(admin.ModelAdmin):
+
+    form = TempLibsForm
     
     list_filter = ('main_id__descr', 'l_type')
     list_display = ('get_main_id', 'l_type', 'l_val', 'l_group')

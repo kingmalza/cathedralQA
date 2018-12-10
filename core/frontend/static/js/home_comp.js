@@ -44,6 +44,7 @@ function GetElementInsideContainer(containerID, childID) {
 $(document).ajaxStop(function () {
     //alert('STOP');
     document.getElementById("overlay_proc").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
 });
 
 
