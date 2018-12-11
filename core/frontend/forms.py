@@ -1,6 +1,6 @@
 from django.forms import ModelForm, PasswordInput
 from django import forms
-from .models import temp_pers_keywords, temp_keywords, Document, jra_settings, settings_gen, temp_main, temp_case, temp_variables, temp_library
+from .models import temp_pers_keywords, temp_keywords, Document, jra_settings, settings_gen, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
 
 class SelectMain(ModelForm):
@@ -31,6 +31,10 @@ class CustomBarModelForm(ModelForm):
     class Meta:
         model = temp_pers_keywords
         fields = '__all__'
+        help_texts = {'main_id': "Main template to which to connect the keyword",
+                      'pers_id': 'Personal keyword connected to the template',
+                      'standard_id': 'Standard keyword connected to the template',
+                      'variable_val': 'Value for the keyword'}
 
     def __init__(self, *args, **kwargs):
         super(CustomBarModelForm, self).__init__(*args, **kwargs)
@@ -105,3 +109,14 @@ class TempLibsForm(forms.ModelForm):
                       'l_type': 'Type of library (Example Documentation, Library, Test Setup, etc.)',
                       'l_val': 'Value of the chosen library type',
                       'l_group': 'Grouping or not of library values'}
+
+
+class TtkForm(forms.ModelForm):
+    class Meta:
+        model = temp_test_keywords
+        fields = '__all__'
+        help_texts = {'main_id': "Main template to which to connect the keyword",
+                      'test_id': 'Main testcase to which to connect',
+                      'key_id': 'Standard keyword connected to testcase',
+                      'key_val': 'Value for the key',
+                      'key_group': 'Grouping or not of keywords values'}

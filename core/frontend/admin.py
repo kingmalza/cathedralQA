@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm
+from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
     t_time, t_history, settings_gen
@@ -184,6 +184,8 @@ class temp_libraryAdmin(admin.ModelAdmin):
 
         
 class ttkAdmin(admin.ModelAdmin):
+
+    form = TtkForm
     
     list_filter = ('main_id__descr', 'test_id__descr')
     list_display = ('get_main_id', 'get_test_id', 'key_id', 'key_val', 'key_group')
@@ -246,7 +248,7 @@ class ttkAdmin(admin.ModelAdmin):
 # Model page field using custom forms
 class tpk(admin.ModelAdmin):
     form = CustomBarModelForm
-        
+
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'pers_id', 'standard_id', 'variable_val')
     #ordering = ('-l_type',)
