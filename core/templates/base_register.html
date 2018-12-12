@@ -51,7 +51,7 @@
 </header>
 <div class="hero">
 
-    <h1><span>I'm a cool</span><br>Navigation</h1>
+    <h1><span>Aida Project</span><br>Update Payment Details</h1>
 
     <div class="mouse">
         <span></span>
@@ -64,14 +64,6 @@
 	<div class="boxDefault">
 		<div class="mainContent">
             <div class="content order-form body">
-
-                
-
-                
-    <h2>Update Payment Details</h2>
-
-    
-
     <div id="welcome-div">
         <p>
             You can use this form to update the payment details associated with your account.
@@ -91,23 +83,18 @@
             <!--<input type="hidden" name="sessionId" value="SESSION0001169081325E7345552H23"/>
             <input type="hidden" name="csrfToken" value="5ca419b5-3e06-46e6-980e-62ceda7e465d"/>-->
 
-            <div class="form-group">
+            <div class="field-group">
                 <label>Account information</label>
                 {% for sets in all_set %}
                     <span class="static-field">https://{{ sets.tenant_name }}.myaida.io</span>
                 {% endfor %}
             </div>
-
             <div class="field-group">
                 <label>Description</label>
                 <span class="static-field">
-                    
+                        New Aida account registration
                 </span>
             </div>
-
-            
-
-            
                 <div class="field-group">
                     <label>Created on</label>
                     {% for sets in all_set %}
