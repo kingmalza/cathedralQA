@@ -230,7 +230,7 @@ function inspectHTML(objID) {
 
 $(document).ajaxStop(function () {
     //alert('STOP');
-    document.getElementById("overlay").style.display = "none";
+    
     document.getElementById("overlay_get").style.display = "none";
 });
 
@@ -295,6 +295,12 @@ function testBtn(VarID, t_type) {
         },
         success: function (data) {
             //document.getElementById("overlay").style.display = "none";
+        },
+        complete: function (data) {
+            document.getElementById("overlay").style.display = "none";
+            if (document.getElementById('tab_threads') == null) {
+                window.location.href = '/';
+            }
         }
     });
 }

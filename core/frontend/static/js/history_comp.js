@@ -347,12 +347,12 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td14);
                     t_body.appendChild(t_tr0);
                     
-                    console.log(data[index].tID +' '+data[index].SubLen);
                     for (i = 0; i < data[index].SubLen; i++) {
                         console.log(data[index]['SubThread'][i].SubVar);
                         //Create head and data table for child (multi executed elements)
                         var t_tr0 = document.createElement("TR");
                         t_tr0.style.borderStyle = 'hidden';
+                        t_tr0.style.height = '80%';
                         var t_td0 = document.createElement("TD");
                         //t_td0.innerHTML = data[index].tID;
                         var t_td1 = document.createElement("TD");
@@ -376,17 +376,18 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td11 = document.createElement("TD");
                         //t_td11.innerHTML = 'TEST';
                         var t_td12 = document.createElement("TD");
+                        t_td12.style.background="#ECF0F5";
                         //t_td12.innerHTML = data[index].SubVar;
                         var t_td13 = document.createElement("TD");
                         t_td13.innerHTML = 'Child';
-                        t_td13.style.color = "white";
-                        t_td13.style.background="gray";
+                        t_td13.style.color = "black";
+                        t_td13.style.background="#ECF0F5";
                         var t_td10 = document.createElement("TD");
                         //t_td10.innerHTML = 'TEST';
                         var t_td3 = document.createElement("TD");
                         t_td3.innerHTML = data[index]['SubThread'][i].SubDataStart.slice(0,-13);
-                        t_td3.style.color = "white";
-                        t_td3.style.background="gray";
+                        t_td3.style.color = "black";
+                        t_td3.style.background="#ECF0F5";
                         var t_td4 = document.createElement("TD");
                         if (data[index].OptionStopdate == "None") {
                             /*var td4_span = document.createElement("SPAN");
@@ -397,16 +398,16 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         } else {
                             t_td4.innerHTML = data[index]['SubThread'][i].SubDataStop.slice(0,-13);
                         }
-                        t_td4.style.color = "white";
-                        t_td4.style.background="gray";
+                        t_td4.style.color = "black";
+                        t_td4.style.background="#ECF0F5";
                         var t_td5 = document.createElement("TD");
                         t_td5.innerHTML = data[index].OptionUser;
-                        t_td5.style.color = "white";
-                        t_td5.style.background="gray";
+                        t_td5.style.color = "black";
+                        t_td5.style.background="#ECF0F5";
                         var t_td6 = document.createElement("TD");
                         t_td6.innerHTML = data[index].OptionTest;
-                        t_td6.style.color = "white";
-                        t_td6.style.background="gray";
+                        t_td6.style.color = "black";
+                        t_td6.style.background="#ECF0F5";
                         var t_td7 = document.createElement("TD");
                         //Calculate the success percentage data
                         /*if (data[index].OptionPass + data[index].OptionFail != 0) {
@@ -421,21 +422,21 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         td7_span.setAttribute('class', 'badge bg-green');
                         t_td7.innerHTML = data[index]['SubThread'][i].SubPass;
                         t_td7.appendChild(td7_span);
-                        t_td7.style.color = "white";
-                        t_td7.style.background="gray";
+                        t_td7.style.color = "black";
+                        t_td7.style.background="#ECF0F5";
                         var t_td8 = document.createElement("TD");
                         var td8_span = document.createElement("SPAN");
                         td8_span.setAttribute('class', 'badge bg-red');
                         t_td8.innerHTML = data[index]['SubThread'][i].SubFail;
-                        t_td8.style.color = "white";
-                        t_td8.style.background="gray";
+                        t_td8.style.color = "black";
+                        t_td8.style.background="#ECF0F5";
                         t_td8.appendChild(td8_span);
                         var t_td9 = document.createElement("TD");
                         var td9_span = document.createElement("SPAN");
                         td9_span.setAttribute('class', 'badge bg-light-blue');
                         t_td9.innerHTML = "1";
-                        t_td9.style.color = "white";
-                        t_td9.style.background="gray";
+                        t_td9.style.color = "black";
+                        t_td9.style.background="#ECF0F5";
                         t_td9.appendChild(td9_span);
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
