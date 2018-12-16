@@ -24,6 +24,21 @@ def send_html_email(to_list, subject, template_name, context, sender=settings.DE
     return msg.send()
     
 
+def emailsend(l_sender, l_user, l_pass):
+    context = {
+        'news': 'We have good news!',
+        'user': l_user,
+        'pass': l_pass
+    }
+
+
+    try:
+        send_html_email(l_sender, 'Get started with Aida', 'email.html', context, sender='wepredict@cathedral.ai')
+        print("Email send")
+    except Exception as e:
+        print(e)
+
+
 def create1(t_tenant,t_name):
     
     #1 Create tenant entry and populate db schema
@@ -40,7 +55,7 @@ def create1(t_tenant,t_name):
     print('Pass is: ',auth_pass)
 
 
-def create2(t_tenant,u_email,paid=0.49):
+def create2(t_tenant,auth_pass,u_email,paid=0.49):
   
     print("PRE.Create setting table...")
     #Insert tenant value in settings table
@@ -138,29 +153,8 @@ def create2(t_tenant,u_email,paid=0.49):
     
     #6. Send email
     print("5.Preparing and sending welcome email...")
-    
-    """
-    email = EmailMessage('Test first registration OK', 'First registration email ok',
-                         'kingmalza@comunicame.it',
-                         to=['alessandro.malzanini@gmail.com'])
-    try:
-        email.send()
-        print("Email send")
-    except Exception as e:
-        print(e)
 
-    """
-    context = {
-        'news': 'We have good news!'
-    }
-    
     l_sender = []
-    #l_sender.append(str(User.objects.get(id=1).email))
+    # l_sender.append(str(User.objects.get(id=1).email))
     l_sender.append(u_email)
-    
-    try:
-        send_html_email(l_sender, 'Get started with Aida', 'email.html', context, sender='wepredict@cathedral.ai')
-        print("Email send")
-    except Exception as e:
-        print(e)
-    
+    emailsend(l_sender,t_tenant,auth_pass)
