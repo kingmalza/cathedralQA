@@ -213,8 +213,8 @@ SESSION_COOKIE_AGE = 3000
 
 # Email setting
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
 EMAIL_PORT = 587
-EMAIL_FROM = 'kingmalza@comunicame.it'
-EMAIL_HOST_USER = 'AKIAJ6GB7RAIFEHEM3UA'
-EMAIL_HOST_PASSWORD = 'Av+Lqj9TxNhbDINCMFEhyUrBsuNIFlf+d88Gnww12nXe'
+EMAIL_FROM = 'account@myaida.io'
+EMAIL_HOST_USER = 'AKIAJTZHNXNLRVCHPUSA'
+EMAIL_HOST_PASSWORD = 'An7TbcZeo0q5Xm+0p2qIFo/f1xn0B0GfC9WC9DunCkVt'
