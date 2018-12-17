@@ -24,6 +24,7 @@ from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 from django.conf import settings
 from django.contrib import admin
+from django.urls import path
 from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost
 from ajaxfuncs.history import histrefresh
 from ajaxfuncs.group import mainTgroup, subTgroup
@@ -91,6 +92,7 @@ urlpatterns = [
                   url(r'^usage', sys_usage),
                   url(r'^files', f_upload),
                   url(r'^schema/$', schema_view),
+                  path('accounts/', include('django.contrib.auth.urls')),
                   url(r'^users/$', user_list, name='user-list'),
                   url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
