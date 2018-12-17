@@ -27,6 +27,19 @@ body {
   overflow-y: auto;
 }
 /* Layout */
+.bg { 
+  /* The image used */
+  background-image: url("/static/dist/img/background.png");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .wrapper {
   min-height: 100%;
   position: static;
