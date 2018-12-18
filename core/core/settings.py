@@ -216,5 +216,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
 EMAIL_PORT = 587
 EMAIL_FROM = 'account@myaida.io'
+DEFAULT_FROM_EMAIL='account@myaida.io'
 EMAIL_HOST_USER = 'AKIAJTZHNXNLRVCHPUSA'
 EMAIL_HOST_PASSWORD = 'An7TbcZeo0q5Xm+0p2qIFo/f1xn0B0GfC9WC9DunCkVt'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
