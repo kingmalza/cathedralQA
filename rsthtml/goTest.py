@@ -52,6 +52,12 @@ def userdet(sessid):
 
 
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
+    print("Varlist---> ", varlist)
+    for li in varlist:
+        # SUPER TEST FOR RANDOM INT, TO MODIFY#
+        if li[0] == '${NUM_RAND}':
+            li[1] = str(int(random.randint(0, 20)))
+
     g_id = None
     cli_id = None
     id_cli = 999
@@ -264,12 +270,8 @@ def startTest(request, i=[0]):
         idTest = 0
         new_l = []
         new_l.insert(0, ["Variables", ""])
-        print("Varlist---> ",varlist)
+
         for li in varlist:
-            #SUPER TEST FOR RANDOM INT, TO MODIFY#
-            if li[0] == '${NUM_RAND}':
-                li[1] = str(int(random.randint(0,20)))
-            
             if 'tab_' in li[0]:
                 #if new_l and idTest != 0:
                     #goProc(idTest, new_l, 1, stag, reqT, u_id)

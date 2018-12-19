@@ -181,6 +181,7 @@ function AddOptions(VarID) {
                     tart11 = document.createElement('input', '', 'form-control');
                     tart11.setAttribute('type', 'text');
                     tart11.id = data[index].OptionKey;
+                    tart11.setAttribute('class',"form-control");
                     tart11.value = data[index].OptionVal;
                     var createVarText = document.createElement("SPAN");
                     createVarText.setAttribute('class', 'label label-warning');
@@ -189,11 +190,39 @@ function AddOptions(VarID) {
                     var createSpace = document.createTextNode("  ");
                     var br = document.createElement("BR");
                     tart11.defaultValue = data[index].OptionVal;
+                    //Create all elements for make select in text (scalar,rand int and rand string
+                    var dsel1 = document.createElement("div");
+                    dsel1.setAttribute('class',"input-group input-group-lg");
+                    var dsel2 = document.createElement("div");
+                    dsel2.setAttribute('class',"input-group-btn");
+                    var butsel = document.createElement("button");
+                    butsel.type = "button";
+                    butsel.innerHTML = "Scalar";
+                    butsel.className = "btn btn-warning dropdown-toggle";
+                    var spambtn = document.createElement("SPAN");
+                    spambtn.setAttribute('class',"fa fa-caret-down");
+                    butsel.appendChild(spambtn);
+                    ulsel = document.createElement("UL");
+                    ulsel.setAttribute('class',"dropdown-menu");
+                    lisel1 = document.createElement("LI");
+                    lisel1.innerHTML = "Scalar";
+                    lisel2 = document.createElement("LI");
+                    lisel2.innerHTML = "Random (num)";
+                    lisel3 = document.createElement("LI");
+                    lisel3.innerHTML = "Random (string)";
+                    ulsel.appendChild(lisel1)
+                    ulsel.appendChild(lisel2)
+                    ulsel.appendChild(lisel3)
+                    dsel2.appendChild(butsel);
+                    dsel2.appendChild(ulsel);
+                    dsel1.appendChild(dsel2);
+                    dsel1.appendChild(tart11);
+                    //--------------------------------------------------------------
                     vard = document.getElementById("tab_" + data[index].OptionMain);
                     vard = document.getElementById("tab_1");
                     vard.appendChild(createVarText);
                     vard.appendChild(createSpace);
-                    vard.appendChild(tart11);
+                    vard.appendChild(dsel1);
                     vard.appendChild(br);
                     opdescr = document.createTextNode(data[index].OptionDescr);
                 } else {
