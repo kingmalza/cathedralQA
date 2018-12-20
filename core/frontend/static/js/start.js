@@ -192,27 +192,43 @@ function AddOptions(VarID) {
                     tart11.defaultValue = data[index].OptionVal;
                     //Create all elements for make select in text (scalar,rand int and rand string
                     var dsel1 = document.createElement("div");
-                    dsel1.setAttribute('class',"input-group input-group-lg");
+                    dsel1.setAttribute('class',"input-group input-group-sm");
                     var dsel2 = document.createElement("div");
                     dsel2.setAttribute('class',"input-group-btn");
                     var butsel = document.createElement("button");
                     butsel.type = "button";
-                    butsel.innerHTML = "Scalar";
+                    butsel.innerHTML = "Scalar ";
                     butsel.className = "btn btn-warning dropdown-toggle";
+                    butsel.setAttribute('data-toggle',"dropdown");
                     var spambtn = document.createElement("SPAN");
                     spambtn.setAttribute('class',"fa fa-caret-down");
                     butsel.appendChild(spambtn);
                     ulsel = document.createElement("UL");
                     ulsel.setAttribute('class',"dropdown-menu");
                     lisel1 = document.createElement("LI");
-                    lisel1.innerHTML = "Scalar";
+                    asel1 = document.createElement("A");
+                    asel1.innerHTML = "Scalar";
+                    asel1.onclick = function () {
+                        butsel.innerHTML = "Scalar ";
+                    }
+                    lisel1.appendChild(asel1);
                     lisel2 = document.createElement("LI");
-                    lisel2.innerHTML = "Random (num)";
+                    asel2 = document.createElement("A");
+                    asel2.innerHTML = "Random (Num)";
+                    asel2.onclick = function () {
+                        butsel.innerHTML = "Random (Num) ";
+                    }
+                    lisel2.appendChild(asel2);
                     lisel3 = document.createElement("LI");
-                    lisel3.innerHTML = "Random (string)";
-                    ulsel.appendChild(lisel1)
-                    ulsel.appendChild(lisel2)
-                    ulsel.appendChild(lisel3)
+                    asel3 = document.createElement("A");
+                    asel3.innerHTML = "Random (String)";
+                    asel3.onclick = function () {
+                        butsel.innerHTML = "Random (String) ";
+                    }
+                    lisel3.appendChild(asel3);
+                    ulsel.appendChild(lisel1);
+                    ulsel.appendChild(lisel2);
+                    ulsel.appendChild(lisel3);
                     dsel2.appendChild(butsel);
                     dsel2.appendChild(ulsel);
                     dsel1.appendChild(dsel2);
