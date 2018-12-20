@@ -7,9 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from django.conf import settings
+from copy import deepcopy
 
 import simplejson
 import random
+import string
 import boto3
 import json
 import sys
@@ -51,24 +53,36 @@ def userdet(sessid):
     return user
 
 
+def randomword(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
+
+
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
     print("Varlist---> ", varlist)
     p_oper = 'SC'
-    for li in varlist:
+    varlist_a = deepcopy(varlist)
+    varlist_b = deepcopy(varlist)
+    for li in varlist_a:
         if li[0][0:3] == 'bs_':
             p_oper = li[1]
-            print('lidentro-->', p_oper)
-            varlist.remove(li)
+            varlist_b.remove(li)
         else:
             print("poper--->", p_oper)
             if p_oper == 'RN':
                 num1 = int(li[1].split('-')[0].strip())
                 num2 = int(li[1].split('-')[1].strip())
-                print("num1, num2 -->", num1, num2)
                 li[1] = str(int(random.randint(num1, num2)))
-                print("li1--->", li[1])
+            elif p_oper == 'RS':
+                li[1] = randomword(int(li[1]))
 
-    print("Varlist---> ", varlist)
+    #Clean varlist_a
+    for x in varlist_a:
+        if x[0][0:3] == 'bs_':
+            varlist_a.remove(x)
+
+
+    print("Varlist---> ", varlist_a)
     g_id = None
     cli_id = None
     id_cli = 999
@@ -86,7 +100,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     mrr1 = mr(table_setting.rst)
     mrr3 = mr(table_case.rst)
     mrr4 = mr(table_key.rst)
-    mrr2 = mr(varlist)
+    mrr2 = mr(varlist_a)
 
     # 3 - MakeHTML and Run test
     # We need to make this a thread then when is stopped save dta in db
@@ -130,7 +144,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             t_fail = str(xmlcont).count('FAIL')
             test_save = t_history(test_main=temp_main.objects.get(id=mainId), exec_status="TERMINATE",
                                   xml_result=xmlcont,
-                                  html_test=htmlcont, var_test=varlist, pid=t_list[t_inst].retval['pid'],
+                                  html_test=htmlcont, var_test=varlist_a, pid=t_list[t_inst].retval['pid'],
                                   user_id=User.objects.get(id=u_id), group_id=g_id, pass_num=t_pass, fail_num=t_fail,
                                   test_type=s_type, test_group=tx_group, sched_type=sc_type, sched_val=sc_val, thread_name=t)
 
