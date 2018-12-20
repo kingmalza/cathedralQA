@@ -53,11 +53,22 @@ def userdet(sessid):
 
 def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
     print("Varlist---> ", varlist)
+    p_oper = 'SC'
     for li in varlist:
-        # SUPER TEST FOR RANDOM INT, TO MODIFY#
-        if li[0] == '${NUM_RAND}':
-            li[1] = str(int(random.randint(0, 20)))
+        if li[0][0:3] == 'bs_':
+            p_oper = li[1]
+            print('lidentro-->', p_oper)
+            varlist.remove(li)
+        else:
+            print("poper--->", p_oper)
+            if p_oper == 'RN':
+                num1 = int(li[1].split('-')[0].strip())
+                num2 = int(li[1].split('-')[1].strip())
+                print("num1, num2 -->", num1, num2)
+                li[1] = str(int(random.randint(num1, num2)))
+                print("li1--->", li[1])
 
+    print("Varlist---> ", varlist)
     g_id = None
     cli_id = None
     id_cli = 999

@@ -197,7 +197,9 @@ function AddOptions(VarID) {
                     dsel2.setAttribute('class',"input-group-btn");
                     var butsel = document.createElement("button");
                     butsel.type = "button";
+                    butsel.id = 'bs_'+data[index].OptionKey;
                     butsel.innerHTML = "Scalar ";
+                    butsel.value = "SC";
                     butsel.className = "btn btn-warning dropdown-toggle";
                     butsel.setAttribute('data-toggle',"dropdown");
                     var spambtn = document.createElement("SPAN");
@@ -208,23 +210,14 @@ function AddOptions(VarID) {
                     lisel1 = document.createElement("LI");
                     asel1 = document.createElement("A");
                     asel1.innerHTML = "Scalar";
-                    asel1.onclick = function () {
-                        butsel.innerHTML = "Scalar ";
-                    }
                     lisel1.appendChild(asel1);
                     lisel2 = document.createElement("LI");
                     asel2 = document.createElement("A");
                     asel2.innerHTML = "Random (Num)";
-                    asel2.onclick = function () {
-                        butsel.innerHTML = "Random (Num) ";
-                    }
                     lisel2.appendChild(asel2);
                     lisel3 = document.createElement("LI");
                     asel3 = document.createElement("A");
                     asel3.innerHTML = "Random (String)";
-                    asel3.onclick = function () {
-                        butsel.innerHTML = "Random (String) ";
-                    }
                     lisel3.appendChild(asel3);
                     ulsel.appendChild(lisel1);
                     ulsel.appendChild(lisel2);
@@ -233,6 +226,26 @@ function AddOptions(VarID) {
                     dsel2.appendChild(ulsel);
                     dsel1.appendChild(dsel2);
                     dsel1.appendChild(tart11);
+                    asel1.onclick = function () {
+                        butsel.innerHTML = "Scalar ";
+                        document.getElementById(data[index].OptionKey).value = "";
+                        document.getElementById(data[index].OptionKey).placeholder = "Enter the value of the variable";
+                        document.getElementById('bs_'+data[index].OptionKey).value = "SC";
+                    }
+                    asel2.onclick = function () {
+                        butsel.innerHTML = "Random (Num) ";
+                        //Clear data and display help text
+                        document.getElementById(data[index].OptionKey).value = "";
+                        document.getElementById(data[index].OptionKey).placeholder = "Enter the number range (ex: 0-200)";
+                        document.getElementById('bs_'+data[index].OptionKey).value = "RN";
+                    }
+                    asel3.onclick = function () {
+                        butsel.innerHTML = "Random (String) ";
+                        document.getElementById(data[index].OptionKey).value = "";
+                        document.getElementById(data[index].OptionKey).placeholder = "Enter the length of the string (ex: 10)\n";
+                        document.getElementById('bs_'+data[index].OptionKey).value = "RS";
+
+                    }
                     //--------------------------------------------------------------
                     vard = document.getElementById("tab_" + data[index].OptionMain);
                     vard = document.getElementById("tab_1");
