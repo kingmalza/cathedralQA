@@ -32,14 +32,14 @@ class CustomBarModelForm(ModelForm):
         model = temp_pers_keywords
         fields = '__all__'
         help_texts = {'main_id': "Main template to which to connect the keyword",
-                      'pers_id': 'Personal keyword connected to the template',
-                      'standard_id': 'Standard keyword connected to the template',
+                      'pers_id': 'Sub-keyword connected to the primary key',
+                      'standard_id': 'Primary keyword connected to the template',
                       'variable_val': 'Value for the keyword'}
 
     def __init__(self, *args, **kwargs):
         super(CustomBarModelForm, self).__init__(*args, **kwargs)
-        self.fields['pers_id'].queryset = temp_keywords.objects.filter(personal=1)
-        self.fields['standard_id'].queryset = temp_keywords.objects.filter(personal=0)
+        #self.fields['pers_id'].queryset = temp_keywords.objects.filter(personal=1)
+        #self.fields['standard_id'].queryset = temp_keywords.objects.filter(personal=0)
 
         
 class jra_settingsForm(ModelForm):

@@ -32,7 +32,8 @@ def start():
     conn.autocommit = True
 
     #Retreive stripe API keys
-    stripe.api_key = getattr(settings, "STRIPE_KEY", None)
+    #stripe.api_key = getattr(settings, "STRIPE_KEY", None)
+    stripe.api_key = 'sk_test_GTVLb2pY6oqhUghSl37OT3Fw'
 
     #Get list of schemas
     cursor = conn.cursor()
@@ -48,7 +49,7 @@ def start():
     conn.close()
 
     global glob_amount, glob_riep
-    print(glob_amount, glob_riep)
+    #print(glob_amount, glob_riep)
     
     #login to server and send email to me
     sendemail(glob_amount, json.dumps(glob_riep))
@@ -126,14 +127,14 @@ def main(schema,conn,p_force=False):
 
                 row = t_cursor.fetchone()
             #Insert data into bill table
-            print('Numero di linee->',t_cursor.rowcount)
+            #print('Numero di linee->',t_cursor.rowcount)
             if t_cursor.rowcount > 0:
                 b_cursor = conn.cursor()
                 b_cursor.execute("insert into "+p_tab+"(bill_data,bill_amount, bill_errors) values ('"+str(datetime.datetime.now())+"',"+str(tot_amount)+",'');")
                 b_cursor.close()
                 # HERE THE INTEGRATION WITH STRIPE!!!
 
-            print("Total to pay is: ", tot_amount)
+            #print("Total to pay is: ", tot_amount)
 
             global glob_amount, glob_riep
             glob_amount += tot_amount
@@ -174,7 +175,7 @@ def main(schema,conn,p_force=False):
             stripe_in.pay()
             
     except Exception as e:
-        print(e)
+        print("Error1: ",e)
     # print out the records using pretty print
     # note that the NAMES of the columns are not shown, instead just indexes.
     # for most people this isn't very useful so we'll show you how to return
@@ -185,10 +186,11 @@ def main(schema,conn,p_force=False):
 
     
 def sendemail(gam,griep):
-    SENDER = "King Malza <kingmalza@comunicame.it>"
+    SENDER = "Myida <account@myaida.io>"
     RECIPIENT = "alessandro.malzanini@gmail.com"
     #CONFIGURATION_SET = "ConfigSet"
-    AWS_REGION = "eu-west-1"
+    EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
+    AWS_REGION = "us-east-1"
     BODY_HTML = "<html><head></head><body><h1>Aida schemas earn details</h1><p>"+griep+"</p></body></html>"
     BODY_TEXT = griep
     SUBJECT = "Today you earn: "+str(gam)+" euros!"
@@ -225,10 +227,9 @@ def sendemail(gam,griep):
         )
         # Display an error if something goes wrong.	
     except ClientError as e:
-        print(e.response['Error']['Message'])
-    else:
-        #print("Email sent! Message ID:"),
-        print(response['MessageId'])
-    
+        print("Error2: ", e.response['Error']['Message'])
+
+
+
 if __name__ == "__main__":
     start()

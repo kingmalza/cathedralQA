@@ -69,88 +69,92 @@ class PrepareRst:
 
     # TestCase rst prep method
     def tc_prep(self, test_id):
-        maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
-        maxMax = maxpar['total'] + 1
+        try:
+            maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
+            maxMax = maxpar['total'] + 1
 
-        # Part1 list creation
-        count = 0
-        ltouple = ()
-        l1 = ["Test Case"]
-        while count < maxMax:
-            l1.append("")
-            count += 1
-        ltouple += (l1,)
+            # Part1 list creation
+            count = 0
+            ltouple = ()
+            l1 = ["Test Case"]
+            while count < maxMax:
+                l1.append("")
+                count += 1
+            ltouple += (l1,)
 
-        # Query for extract keywords, values
-        kv = temp_test_keywords.objects.filter(main_id=test_id).order_by('id').select_related()
+            # Query for extract keywords, values
+            kv = temp_test_keywords.objects.filter(main_id=test_id).order_by('id').select_related()
 
-        vkey = ""
-        skey = ""
-        vcont = ""
-        l = []
-        for r in kv.iterator():
-            # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
-            # visualization
-            
-            if vkey != repr(r.test_id):
-                if l:
-                    # Modified for empty spaces
-                    for i in range(maxMax - len(l) + 1):
-                        l.append("")
-                    ltouple += (l,)
-                    l = []
-                l.append(repr(r.test_id))
+            vkey = ""
+            skey = ""
+            vcont = ""
+            l = []
+            for r in kv.iterator():
+                # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
+                # visualization
 
-                if r.key_group is not None:
-                    l.append(str(r.key_group)+str(r.key_id))
-                else:
-                    l.append(str(r.key_id))
-                vvar = self.notNone(str(r.key_val))
-                l.append(vvar)
-
-            else:
-                # check if standard_id is the same or diff for create another row"
-                if r.key_group is not None:
-                    vcont = str(r.key_group) + str(r.key_id)
-                else:
-                    vcont = str(r.key_id)
-                if skey != vcont:
+                if vkey != repr(r.test_id):
                     if l:
                         # Modified for empty spaces
                         for i in range(maxMax - len(l) + 1):
                             l.append("")
                         ltouple += (l,)
                         l = []
-                    l.append("")
+                    l.append(repr(r.test_id))
+
                     if r.key_group is not None:
-                        l.append(str(r.key_group) + str(r.key_id))
+                        l.append(str(r.key_group)+str(r.key_id))
                     else:
                         l.append(str(r.key_id))
                     vvar = self.notNone(str(r.key_val))
                     l.append(vvar)
 
                 else:
-                    vvar = self.notNone(str(r.key_val))
-                    l.append(vvar)
+                    # check if standard_id is the same or diff for create another row"
+                    if r.key_group is not None:
+                        vcont = str(r.key_group) + str(r.key_id)
+                    else:
+                        vcont = str(r.key_id)
+                    if skey != vcont:
+                        if l:
+                            # Modified for empty spaces
+                            for i in range(maxMax - len(l) + 1):
+                                l.append("")
+                            ltouple += (l,)
+                            l = []
+                        l.append("")
+                        if r.key_group is not None:
+                            l.append(str(r.key_group) + str(r.key_id))
+                        else:
+                            l.append(str(r.key_id))
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
 
-            vkey = repr(r.test_id)
-            if r.key_group is not None:
-                skey = str(r.key_group) + str(r.key_id)
-            else:
-                skey = str(r.key_id)
+                    else:
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
 
-        # Last check after for cycle finished if l is not null (difference in last loop)
-        if l:
-            # Modified for empty spaces
-            for i in range(maxMax - len(l) + 1):
-                l.append("")
-            ltouple += (l,)
+                vkey = repr(r.test_id)
+                if r.key_group is not None:
+                    skey = str(r.key_group) + str(r.key_id)
+                else:
+                    skey = str(r.key_id)
 
-            tclist = [x for x in ltouple]
-            #Normalize the list
-            for i in range(0,len(tclist)):
-                tclist[i][1] = self.tc_clean(tclist[i][1])
-            return tclist
+            # Last check after for cycle finished if l is not null (difference in last loop)
+            if l:
+                # Modified for empty spaces
+                for i in range(maxMax - len(l) + 1):
+                    l.append("")
+                ltouple += (l,)
+
+                tclist = [x for x in ltouple]
+                #Normalize the list
+                for i in range(0,len(tclist)):
+                    tclist[i][1] = self.tc_clean(tclist[i][1])
+        except Exception as e:
+            tclist = [['Test Case', '', ''], ['noTest', '', '']]
+
+        return tclist
 
     # Keywords rst prep method
 

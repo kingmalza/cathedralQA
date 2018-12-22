@@ -194,8 +194,8 @@ Add standard keywords like actions for personalized key
 class temp_pers_keywords(models.Model):
     id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tpk')
-    pers_id = models.ForeignKey(temp_keywords, related_name='tk_tpk', null=True, blank=True, on_delete=models.CASCADE,)
-    standard_id = models.ForeignKey(temp_keywords, related_name='tks_tpk', on_delete=models.CASCADE,)
+    standard_id = models.ForeignKey(temp_keywords, related_name='tks_tpk', on_delete=models.CASCADE, verbose_name="Keyword")
+    pers_id = models.ForeignKey(temp_keywords, related_name='tk_tpk', null=True, blank=True, on_delete=models.CASCADE, verbose_name="Sub Keyword")
     variable_val = models.CharField(max_length=250, null=True, blank=True, verbose_name='Value')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #variable_id = models.ForeignKey(temp_variables, null=True, blank=True)

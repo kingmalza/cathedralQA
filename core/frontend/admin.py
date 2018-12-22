@@ -250,7 +250,7 @@ class tpk(admin.ModelAdmin):
     form = CustomBarModelForm
 
     list_filter = ('main_id__descr',)
-    list_display = ('get_main_id', 'pers_id', 'standard_id', 'variable_val')
+    list_display = ('get_main_id', 'standard_id', 'pers_id', 'variable_val')
     #ordering = ('-l_type',)
 
     def get_main_id(self, obj):
