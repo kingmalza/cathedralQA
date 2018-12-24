@@ -95,4 +95,4 @@ urlpatterns = [
                   path('accounts/', include('django.contrib.auth.urls')),
                   url(r'^users/$', user_list, name='user-list'),
                   url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
