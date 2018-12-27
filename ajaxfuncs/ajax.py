@@ -258,8 +258,8 @@ def ecount(request):
         # Count quantity of active threads,killed,testcase etc for display in menu
         TestMainNum = temp_main.objects.all().count()
         # Active and hidle threads
-        ThreadsActNum = t_threads.objects.filter(~Q(thread_status='DEAD')).count()
-        ThreadsHideNum = t_threads.objects.filter(thread_status='DEAD').count()
+        ThreadsActNum = t_threads.objects.values('thread_stag').filter(~Q(thread_status='DEAD')).distinct().count()
+        ThreadsHideNum = t_threads.objects.values('thread_stag').filter(thread_status='DEAD').distinct().count()
         # Limit killed thread num visualization is to hight the number in table
         if ThreadsHideNum > 10000: ThreadsHideNum = '>10000'
 

@@ -11,7 +11,7 @@ document.head.appendChild(imported);*/
 function selSched(selVal) {
 
     sVal = document.getElementById("sched_val");
-    sVal.innerHTML = "";
+    sVal.value = '';
     sVal.style.backgroundColor = "";
     sVal.placeholder = "Schedule data input";
     sVal.disabled = true;
@@ -649,6 +649,7 @@ function task_det(dataID, threadUUid) {
 }
 
 function stopThread(tDet) {
+    document.getElementById("overlay_stop").style.display = "block";
     //DeActivate timeline for specific thread on active thread onclick in table
     t_line = document.getElementById("tline");
     console.log("TDET: "+tDet)
@@ -666,7 +667,10 @@ function stopThread(tDet) {
                 }
             });
 
+        },
+        complete: function (data) {
             t_line.style.visibility = 'hidden';
+            document.getElementById("overlay_stop").style.display = "none";
         }
     });
 }

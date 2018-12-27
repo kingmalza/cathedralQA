@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models import Q
 from copy import deepcopy
 
 import simplejson
@@ -227,147 +228,154 @@ def run_threaded(job_func, P1, P2, P3, P4, P5, P6, P7, P8, P9='NoGroup'):
 def startTest(request, i=[0]):
 
     if request.is_ajax():
-        u_id = int(request.user.id)
+        #Check if there are already 5 started process, if this get message
+        ThreadsActNum = t_threads.objects.values('thread_stag').filter(~Q(thread_status='DEAD')).distinct().count()
+        limitMsg = None
         response = []
-        main_list = []
-        sset = 'once'
-        sval = ""
-        reqT = request.POST.get('ttype')
-        # Decode the json from start js func
-        json_string = request.POST.get('des')  # passed from JavaScript
-        # Schedule settings comming from form
-        if reqT == "ST":
-            sset = request.POST.get('sched_sel')
-            sval = request.POST.get('sched_val')
-            gval = 'NoGroup'
-        stag = request.POST.get('t_id')
+        if ThreadsActNum <= 4:
+            u_id = int(request.user.id)
+            main_list = []
+            sset = 'once'
+            sval = ""
+            reqT = request.POST.get('ttype')
+            # Decode the json from start js func
+            json_string = request.POST.get('des')  # passed from JavaScript
+            # Schedule settings comming from form
+            if reqT == "ST":
+                sset = request.POST.get('sched_sel')
+                sval = request.POST.get('sched_val')
+                gval = 'NoGroup'
+            stag = request.POST.get('t_id')
 
-        if request.POST.get('ttype') == 'PA':
-            proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'))
-            for x in proj_list:
-                #Python3 replace unicode with str
-                #mainId = unicode(x.main_id_id)
-                mainId = str(x.main_id_id)
-                main_list.append(mainId)
-            #Search aggregation descr
-            try:
-                proj_search = t_proj.objects.filter(id=int(request.POST.get('group_val')))
-                for p in proj_search:
-                    gval = p.descr
-            except:
-                gval='DataError'
-        elif request.POST.get('ttype') == 'TA':
-            proj_list = t_tags_route.objects.filter(tag_id=request.POST.get('mainID'))
-            for x in proj_list:
-                #mainId = unicode(x.main_id_id)
-                #Python3 replace unicode with str
-                mainId = str(x.main_id_id)
-                main_list.append(mainId)
-            # Search aggregation descr
-            try:
-                proj_search = t_tags.objects.filter(id=int(request.POST.get('group_val')))
-                for p in proj_search:
-                    gval = p.descr
-            except:
-                gval = 'DataError'
-        elif request.POST.get('ttype') == 'TG':
-            proj_list = t_group_test.objects.filter(id_grp=request.POST.get('mainID'))
-            for x in proj_list:
-                #Python3 replace unicode with str
-                #mainId = unicode(x.id_temp_id)
-                mainId = str(x.id_temp_id)
-                main_list.append(mainId)
-            # Search aggregation descr
-            try:
-                proj_search = t_group.objects.filter(id=int(request.POST.get('group_val')))
-                for p in proj_search:
-                    gval = p.descr
-            except:
-                gval = 'DataError'
-        else:
-            mainId = request.POST.get('mainID')
-            main_list.append(mainId)
-
-        # var to use for evaluate variables
-        varlist = simplejson.loads(json_string)
-
-        # cycle fror clean the data
-        idTest = 0
-        new_l = []
-        new_l.insert(0, ["Variables", ""])
-
-        for li in varlist:
-            if 'tab_' in li[0]:
-                #if new_l and idTest != 0:
-                    #goProc(idTest, new_l, 1, stag, reqT, u_id)
-                    #time.sleep(15)
-                idTest = int(li[0].split("tab_", 1)[-1])
-                new_l = []
-                new_l.insert(0, ["Variables", ""])
+            if request.POST.get('ttype') == 'PA':
+                proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'))
+                for x in proj_list:
+                    #Python3 replace unicode with str
+                    #mainId = unicode(x.main_id_id)
+                    mainId = str(x.main_id_id)
+                    main_list.append(mainId)
+                #Search aggregation descr
+                try:
+                    proj_search = t_proj.objects.filter(id=int(request.POST.get('group_val')))
+                    for p in proj_search:
+                        gval = p.descr
+                except:
+                    gval='DataError'
+            elif request.POST.get('ttype') == 'TA':
+                proj_list = t_tags_route.objects.filter(tag_id=request.POST.get('mainID'))
+                for x in proj_list:
+                    #mainId = unicode(x.main_id_id)
+                    #Python3 replace unicode with str
+                    mainId = str(x.main_id_id)
+                    main_list.append(mainId)
+                # Search aggregation descr
+                try:
+                    proj_search = t_tags.objects.filter(id=int(request.POST.get('group_val')))
+                    for p in proj_search:
+                        gval = p.descr
+                except:
+                    gval = 'DataError'
+            elif request.POST.get('ttype') == 'TG':
+                proj_list = t_group_test.objects.filter(id_grp=request.POST.get('mainID'))
+                for x in proj_list:
+                    #Python3 replace unicode with str
+                    #mainId = unicode(x.id_temp_id)
+                    mainId = str(x.id_temp_id)
+                    main_list.append(mainId)
+                # Search aggregation descr
+                try:
+                    proj_search = t_group.objects.filter(id=int(request.POST.get('group_val')))
+                    for p in proj_search:
+                        gval = p.descr
+                except:
+                    gval = 'DataError'
             else:
-                new_l.append(li)
+                mainId = request.POST.get('mainID')
+                main_list.append(mainId)
 
-        # varlist.insert(0, ["Variables", ""])
+            # var to use for evaluate variables
+            varlist = simplejson.loads(json_string)
 
-        # goProc(mainId, varlist)
-        i[0] += 1
-        ###LIST OV VALUES TRANSFORMATION
-        temp_l = []
-        for i in new_l:
-            if i[1] is not None:
-                sp = i[1].split('__')
-                if len(sp) > 1:
-                    for x in sp:
-                        temp_l.append([i[0], x])
+            # cycle fror clean the data
+            idTest = 0
+            new_l = []
+            new_l.insert(0, ["Variables", ""])
+
+            for li in varlist:
+                if 'tab_' in li[0]:
+                    #if new_l and idTest != 0:
+                        #goProc(idTest, new_l, 1, stag, reqT, u_id)
+                        #time.sleep(15)
+                    idTest = int(li[0].split("tab_", 1)[-1])
+                    new_l = []
+                    new_l.insert(0, ["Variables", ""])
+                else:
+                    new_l.append(li)
+
+            # varlist.insert(0, ["Variables", ""])
+
+            # goProc(mainId, varlist)
+            i[0] += 1
+            ###LIST OV VALUES TRANSFORMATION
+            temp_l = []
+            for i in new_l:
+                if i[1] is not None:
+                    sp = i[1].split('__')
+                    if len(sp) > 1:
+                        for x in sp:
+                            temp_l.append([i[0], x])
+                    else:
+                        temp_l.append(i)
                 else:
                     temp_l.append(i)
-            else:
-                temp_l.append(i)
-        #Now create list of lists of unique values
-        a = list(product_by_grouping(temp_l))
-        new_one = []
-        for x in a:
-            new_one.append(list(x))
+            #Now create list of lists of unique values
+            a = list(product_by_grouping(temp_l))
+            new_one = []
+            for x in a:
+                new_one.append(list(x))
 
-        ###
+            ###
 
-        global jobqueue
-        # in each case start first cycle immediately
-        for xl in new_one:
-                for iid in main_list:
-                    try:
-                        goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
-                        time.sleep(2)
-                    except Exception as e:
-                        print("Exception in goproc 306: ",e.args)
-        if sset != 'once':
-            ##IMPORTANT!##
-            ##If multiple value in variable execution is related to all value only for Once selection, in case of scheduled just first value is executed
+            global jobqueue
+            # in each case start first cycle immediately
+            for xl in new_one:
+                    for iid in main_list:
+                        try:
+                            goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
+                            time.sleep(2)
+                        except Exception as e:
+                            print("Exception in goproc 306: ",e.args)
+            if sset != 'once':
+                ##IMPORTANT!##
+                ##If multiple value in variable execution is related to all value only for Once selection, in case of scheduled just first value is executed
 
-            # set tag with currentproc number
+                # set tag with currentproc number
 
-            # check if is every hour and set sval to None
-            #if sset == 'everyhour': sval = None
-            sched_dict = {
-                'everymin': 'schedule.every(int(sval)).minutes.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
-                'everyhour': 'schedule.every().hour.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
-                'everyday': 'schedule.every().day.at(str(sval)).do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))'}
-            try:
-                eval(sched_dict[sset])
-                while 1:
-                    schedule.run_pending()
-                    time.sleep(1)
+                # check if is every hour and set sval to None
+                #if sset == 'everyhour': sval = None
+                sched_dict = {
+                    'everymin': 'schedule.every(int(sval)).minutes.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
+                    'everyhour': 'schedule.every().hour.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
+                    'everyday': 'schedule.every().day.at(str(sval)).do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))'}
+                try:
+                    eval(sched_dict[sset])
+                    while 1:
+                        schedule.run_pending()
+                        time.sleep(1)
 
-            except Exception as e:
-                print("Error in schedule settings! Check values-> gotest323",e)
+                except Exception as e:
+                    print("Error in schedule settings! Check values-> gotest323",e)
 
+        else:
+            limitMsg = 'Concurrent threads limit reached (Max concurrent proceses allowed are 5)'
+        
+        vallabel = {'Rmessage': limitMsg,}
+        response.append(vallabel)
         json = simplejson.dumps(response)
-       
+           
         return HttpResponse(
             json, content_type='application/json'
         )
-
-
     else:
         pass
 

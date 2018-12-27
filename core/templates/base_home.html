@@ -29,6 +29,9 @@
         <div id="overlay_get" style="display:none">
             <div id="text"><span style="background-color: #000000; padding: 10px;"> Getting template...please wait </span></div>
         </div>
+        <div id="overlay_stop" style="display:none">
+            <div id="text"><span style="background-color: #000000; padding: 10px;"> Stopping proces and sub-task...please wait </span></div>
+        </div>
         <section class="content">
             <div class="row">
                 <!-- Main content -->
@@ -205,7 +208,7 @@
                             <p>
                                 List of executions linked to the process. Specific log details for each individual thread available using the 'Log details' button; The test structure created by the selected template is in 'RAW Html' button.
                             </p>
-                            <button class="pull-right btn btn-default" id="stop_btn">STOP <i
+                            <button class="pull-right btn stopbtn" id="stop_btn">STOP <i
                                     class="fa fa-arrow-circle-right"></i></button>
                         </div><!-- /.box-body -->
                     </div>

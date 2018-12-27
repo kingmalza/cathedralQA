@@ -353,6 +353,11 @@ function testBtn(VarID, t_type) {
         },
         success: function (data) {
             //document.getElementById("overlay").style.display = "none";
+            $.each(data, function (index) {
+                if (data[index].Rmessage){
+                    alert(data[index].Rmessage)
+                }
+            } );
         },
         complete: function (data) {
             document.getElementById("overlay").style.display = "none";
