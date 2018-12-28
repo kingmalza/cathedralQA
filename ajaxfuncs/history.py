@@ -76,7 +76,7 @@ def histrefresh(request, lorder='-id'):
                     strfin, strperc = strfin + ',id_test__user_id__contains=' + "'"+b[1].strip()+"'"
 
 
-            strexec1 = "%s%s%s" % ("ordered = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").select_related().order_by(lorder)[x:y]")
+            strexec1 = "%s%s%s" % ("ordered = t_threads.objects.values('thread_stag').filter(thread_status='DEAD',",strfin[1:],").distinct().select_related().order_by(lorder)[x:y]")
             strexec2 = "%s%s%s" % ("oCount = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").count()")
             strexec3 = "%s%s%s" % ("twarnings = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],",thread_stopd__isnull=True).count()")
 
@@ -115,7 +115,7 @@ def histrefresh(request, lorder='-id'):
             if i.thread_stag in dis_thread:
                 valsth = dict()
                 vcount = 0
-                q_sub = t_threads.objects.filter(thread_stag=i.thread_stag).filter(~Q(id=i.id)).all().select_related()
+                q_sub = t_threads.objects.filter(thread_stag=i.thread_stag).filter(~Q(id=i.id)).filter(thread_status='DEAD').all().select_related()
                 for x in q_sub:
                     valsth[vcount] = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test}
                     vcount += 1
