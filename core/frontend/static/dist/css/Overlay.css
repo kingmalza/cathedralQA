@@ -28,6 +28,21 @@
 }
 
 
+#overlay_demo {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 99;
+    cursor: pointer;
+}
+
+
 #overlay_get {
     position: fixed;
     display: none;
@@ -63,6 +78,18 @@
     top: 50%;
     left: 50%;
     font-size: 30px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#text-demo{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 15px;
     color: white;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);

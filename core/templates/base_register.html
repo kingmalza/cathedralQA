@@ -51,7 +51,7 @@
 </header>
 <div class="hero">
 
-    <h1><span>Aida Project</span><br>Update Payment Details</h1>
+    <h1><span>Aida Project</span><br>CREATE NEW ACCOUNT</h1>
 
     <div class="mouse">
         <span></span>
@@ -66,7 +66,7 @@
             <div class="content order-form body">
     <div id="welcome-div">
         <p>
-            You can use this form to update the payment details associated with your account.
+            You can use this form to create and manage informations related to your new Aida account.
         </p>
     </div>
 
@@ -121,8 +121,7 @@
                         </label>
 
                         {% for sets in all_set %}
-                            <input type="text" id="firstname" name="firstname" class="form-control"
-                               value={{ sets.first_name|default_if_none:"" }}>
+                            <input type="text" id="firstname" name="firstname" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -132,8 +131,7 @@
                             Last Name<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="lastname" name="lastmane" class="form-control"
-                               value={{ sets.last_name|default_if_none:"" }}>
+                            <input type="text" id="lastname" name="lastmane" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -142,8 +140,7 @@
                             Company Name<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="organisationname" name="organisationname" class="form-control"
-                               value={{ sets.comp_name|default_if_none:"" }}>
+                            <input type="text" id="organisationname" name="organisationname" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -152,8 +149,7 @@
                             Address 1<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="address1" name="address1" class="form-control"
-                               value={{ sets.addr_1|default_if_none:"" }}>
+                            <input type="text" id="address1" name="address1" class="form-control">
                         {% endfor %}
 
                         
@@ -163,8 +159,7 @@
                             Address 2
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="address2" name="address2" class="form-control"
-                               value={{ sets.addr_2|default_if_none:"" }}>
+                            <input type="text" id="address2" name="address2" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -173,8 +168,7 @@
                             City<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="city" name="city" class="form-control"
-                               value={{ sets.city|default_if_none:"" }}>
+                            <input type="text" id="city" name="city" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -183,8 +177,7 @@
                             State/Province<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="state" name="state"  class="form-control"
-                               value={{ sets.state_prov|default_if_none:"" }}>
+                            <input type="text" id="state" name="state"  class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -193,8 +186,7 @@
                             Postcode/ZIP
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="postcode" name="postcode"  class="form-control"
-                               value={{ sets.postal_zip|default_if_none:"" }}>
+                            <input type="text" id="postcode" name="postcode"  class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -465,8 +457,7 @@
                             Tax ID<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="taxid" name="taxid" class="form-control"
-                               value={{ sets.tax_id|default_if_none:"" }}>
+                            <input type="text" id="taxid" name="taxid" class="form-control">
                         {% endfor %}
                         
                     </div>
@@ -488,7 +479,8 @@
             <h3>
                 Credit card details
             </h3>
-            <p>This credit card will be used for your recurring payments</p>
+            <p>This credit card will be used for your recurring payments (First 30 days are Free)
+                <br><br><strong>You can easily cancel your Aida subscription anytime through your control panel</strong></p>
             </div>
             <div class="box-body">
             <fieldset>

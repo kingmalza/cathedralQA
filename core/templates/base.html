@@ -136,6 +136,14 @@
                     </li>
                     -->
                     <!-- User Account: style can be found in dropdown.less -->
+                    {% if 'demo.myaida.io' in request.build_absolute_uri %}
+                        <li class="dropdown user user-menu">
+                            <!--Button for demo account only -->
+                            <form action="/register">
+                                <button class="btn btn-block btn-success btn-lg">Create Your Free 30 Days Account</button>
+                            </form>
+                        </li>
+                    {% endif %}
                     <li class="dropdown user user-menu">
                         <a href="/admin/frontend/settings_gen/" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{% static "dist/img/SoloBrain.png" %}" class="user-image" alt="User Image"/>
@@ -212,7 +220,7 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <div class="stick-menu">
-                    <ul class="sidebar-menu">
+                    <div class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
                         <li class="treeview active">
                             <a href="#">
@@ -265,8 +273,13 @@
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </a>
                                     <ul class="treeview-menu">
-                                        <li><a href="/admin/auth/user/"><i class="fa fa-circle-o"></i>User Manager</a></li>
-                                        <li><a href="/admin/auth/group/"><i class="fa fa-circle-o"></i>Group Manager</a></li>
+                                        {% if 'demo.myaida.io' in request.build_absolute_uri %}
+                                            <li><a href="javascript:alert('User cannot be managed in demo mode.');"><i class="fa fa-circle-o"></i>User Manager</a></li>
+                                            <li><a href="javascript:alert('Groups cannot be managed in demo mode.');"><i class="fa fa-circle-o"></i>Group Manager</a></li>
+                                        {% else %}
+                                            <li><a href="/admin/auth/user/"><i class="fa fa-circle-o"></i>User Manager</a></li>
+                                            <li><a href="/admin/auth/group/"><i class="fa fa-circle-o"></i>Group Manager</a></li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                         <!-- DEACTIVATE FOR ONLINE VERSION, TO REACTIVATE FOR STANDALONE
@@ -315,6 +328,20 @@
                                 <li><a href="/ticket"><i class="fa fa-circle-o"></i> Ticketing</a></li>
                             </ul>
                         </li>
+                        <!-- Just for demo domain -->
+                        {% if 'demo.myaida.io' in request.build_absolute_uri %}
+                        <br><br>
+                        <li class="dropdown user user-menu">
+                            <div style="text-align:center;">
+                            <div style="display:inline-block; width:80%;">
+                                <!--Button for demo account only -->
+                                <form action="/register">
+                                    <button class="btn btn-block btn-success btn-lg">Create Account</button>
+                                </form>
+                            </div>
+                            </div>
+                        </li>
+                        {% endif %}
                         <!--
                         <li>
                             <a href="../widgets.html">
@@ -469,6 +496,7 @@ window.cookieconsent.initialise({
   }
 })});
 </script>
+
     <!-- Script for CSRF reason -->
     <script type="text/javascript">
         jQuery(document).ajaxSend(function (event, xhr, settings) {

@@ -40,7 +40,7 @@ def start():
     cursor.execute("select schema_name from information_schema.schemata")
     schemas = cursor.fetchone()
     while schemas:
-        exlist = ['pg_catalog','information_schema','public']
+        exlist = ['pg_catalog','information_schema','public','demo']
         if schemas[0] not in exlist:
             main(schemas[0].strip(),conn)
         schemas = cursor.fetchone()

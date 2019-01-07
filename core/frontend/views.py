@@ -67,6 +67,7 @@ def index(request, **kwargs):
 # Viev for history threads list
 def h_list(request, **kwargs):
     global test_main
+    uCookie = request.COOKIES.get('demoF', '')
     
     if request.is_ajax():
         schema_name = settings_gen.objects.get(id=1).tenant_name
@@ -142,8 +143,8 @@ def h_list(request, **kwargs):
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
-
-    context_dict = {'all_test': test_main, 'uGroup': uGroup}
+    print("Il tuo cookie e: ",uCookie)
+    context_dict = {'all_test': test_main, 'uGroup': uGroup, 'uCookie':uCookie}
     response = render(request, 'base_history.html', context_dict, context)
 
     return response
@@ -506,8 +507,11 @@ def user_login(request):
             d1 = datetime.strptime(str(dact.date()), '%Y-%m-%d')
             delta = (d0-d1)
 
+            #Disabled because we decide to keep demo account every open
+            """
             if delta.days > 30 and istrial:
                 return HttpResponseRedirect('/register')
+            """
 
             user = authenticate(username=username, password=password)
             if user is not None:

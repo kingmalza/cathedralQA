@@ -57,6 +57,17 @@
             </div><!-- /.col -->
           </div>
         </form>
+        {% if 'demo.myaida.io' in request.build_absolute_uri %}
+        <br>
+        You are try to use a demo enviroment; If you don't have a user register it here:
+        <br><br>
+          <div>
+            <!--Button for demo account only -->
+            <form action="https://aidaproject.io/register">
+              <button class="btn btn-block btn-info btn-lg">Create a demo user</button>
+            </form>
+          </div>
+        {% endif %}
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
 

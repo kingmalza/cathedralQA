@@ -20,9 +20,29 @@
             </ol>
             -->
         </section>
-        <div id="overlay" style="display:block">
-            <div id="text"><span style="background-color: #000000; padding: 10px;"> Fetching data from server....please wait </span></div>
-        </div>
+        {% if 'demo.myaida.io' in request.build_absolute_uri and uCookie != 'Y' %}
+            <div id="overlay_demo" style="display:block">
+                <div id="text-demo">
+                    <div class="login-box-body">
+                        <p class="login-box-msg"><strong>YOU ARE IN A DEMO AREA</strong></p>
+                        <br>
+                        The Aida environment you have access to is used only for demonstration purposes.<br>Data contained within are seen and can be managed by several users. Use this environment just for familiarize with the test suite and its characteristics.<br><br>To use a real dedicated Aida environment, create an account through the "<strong>Create account</strong>" buttons.
+                        <br><br>
+                    <div>
+                    <!--Button for demo account only -->
+                        <form>
+                            <button onclick="showHide();" class="btn btn-block btn-success btn-lg">OK I UNDERSTAND</button>
+                        </form>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div id="overlay" style="display:block">
+                <div id="text"><span style="background-color: #000000; padding: 10px;"> Fetching data from server....please wait </span></div>
+            </div>
+        {% endif %}
         <div id="overlay_proc" style="display:none">
             <div id="text"><span style="background-color: #000000; padding: 10px;"> Getting proces data...please wait </span></div>
         </div>
@@ -185,6 +205,42 @@
     <script src="{% static "js/history_comp.js" %}" type="text/javascript"></script>
     <!-- Scripts for base_home components -->
     <script src="{% static "js/home_comp.js" %}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+     function showHide() {
+        document.getElementById("overlay_demo").style.display = "none";
+
+        var x = getCookie('demoF');
+        if (x === null) {
+            setCookie('demoF','Y',7);
+        }
+     }
+    </script>
+    <!-- Script x la gestione dei cookies primo accesso -->
+    <script>
+        function setCookie(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        function eraseCookie(name) {
+            document.cookie = name+'=; Max-Age=-99999999;';
+        }
+    </script>
     <script>
         document.body.onload = function () {
             refHistory();
