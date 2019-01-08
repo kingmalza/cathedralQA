@@ -271,6 +271,16 @@ def lic_register(request, reg_status=None, **kwargs):
     #Retreive stripe API keys
     stripe.api_key = getattr(settings, "STRIPE_KEY", None)
     sg = settings_gen.objects.all()
+    b_temp = 'base_register.html'
+    con_stat = None
+    if reg_status:
+        b_temp = 'base_register_status.html'
+        if reg_status == 'OK':
+            con_stat = '<p><strong>Bell fess</strong></p>'
+        elif reg_status == 'KO':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong>YOU ARE IN A DEMO AREA</strong></p><br>The Aida environment you have access to is used only for demonstration purposes.<br>Data contained within are seen and can be managed by several users. Use this environment just for familiarize with the test suite and its characteristics.<br><br>To use a real dedicated Aida environment, create an account through the '<strong>Create account</strong>' buttons.<br><br><div><form><button onclick='location.href=https://aidaproject.io/contact;' class='btn btn-block btn-danger btn-lg'>REPORT THE PROBLEM</button><br><a href='/register'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></form></div></div></div></div>"
+        else:
+            con_stat = '<p><strong>che get sciglit chi nsoma?</strong></p>'
     """
     #First check if pay tupe field is blank, oterwise redirect to home
     c_plan = None
@@ -286,7 +296,7 @@ def lic_register(request, reg_status=None, **kwargs):
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
-    context_dict = {'all_case': test_case, 'all_set': sg}
+    context_dict = {'all_case': test_case, 'all_set': sg, 'the_stat': con_stat}
     if request.method == 'POST':
 
         #First create customer on stripe and get id (ito insert into table)
@@ -362,11 +372,12 @@ def lic_register(request, reg_status=None, **kwargs):
             """
         except Exception as e:
             print('e->',e)
+            return HttpResponseRedirect('/register/KO/')
                
        #If all done redirect to homepage and send thanks email
-        return HttpResponseRedirect('/register')
+        return HttpResponseRedirect('/register/OK')
     else:
-        response = render(request, 'base_register.html', context_dict, context)
+        response = render(request, b_temp, context_dict, context)
 
         return response
     #else:
