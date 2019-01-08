@@ -265,12 +265,13 @@ def legal_terms(request, **kwargs):
     return response
     
     
-def lic_register(request, **kwargs):
+def lic_register(request, reg_status=None, **kwargs):
     global test_case
     
     #Retreive stripe API keys
     stripe.api_key = getattr(settings, "STRIPE_KEY", None)
-    
+    sg = settings_gen.objects.all()
+    """
     #First check if pay tupe field is blank, oterwise redirect to home
     c_plan = None
     c_tenant = None
@@ -281,94 +282,95 @@ def lic_register(request, **kwargs):
         c_email = i.reg_email
 
     if not c_plan:
+    """
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
 
-        # menu_list = kwargs['menu']
-        context = RequestContext(request)
+    context_dict = {'all_case': test_case, 'all_set': sg}
+    if request.method == 'POST':
 
-        context_dict = {'all_case': test_case, 'all_set': sg}
-        if request.method == 'POST':
+        #First create customer on stripe and get id (ito insert into table)
+        hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
+        try:
+            #First create the token
+            token = stripe.Token.create(
+                card={
+                    'number':str(request.POST['gatewayCardNumber']).strip(),
+                    'exp_month':request.POST['expiryDateMonth'],
+                    'exp_year':request.POST['expiryDateYear'],
+                    'name': request.POST['ccName'],
+                    'cvc':request.POST['cardCVC'],
+                    'address_city': request.POST['city'],
+                    'address_state': request.POST['state'],
+                    'address_line1': request.POST['address1'],
+                    'address_line2': request.POST['address2'],
+                    'address_zip': request.POST['postcode']
+                },
+            )
 
-            #First create customer on stripe and get id (ito insert into table)
-            hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
-            try:
-                #First create the token
-                token = stripe.Token.create(
-                    card={
-                        'number':str(request.POST['gatewayCardNumber']).strip(),
-                        'exp_month':request.POST['expiryDateMonth'],
-                        'exp_year':request.POST['expiryDateYear'],
-                        'name': request.POST['ccName'],
-                        'cvc':request.POST['cardCVC'],
-                        'address_city': request.POST['city'],
-                        'address_state': request.POST['state'],
-                        'address_line1': request.POST['address1'],
-                        'address_line2': request.POST['address2'],
-                        'address_zip': request.POST['postcode']
+            cus = stripe.Customer.create(
+                description="Customer for "+request.POST['organisationname'],
+                email=request.POST['c_email'],
+                source=token.id,
+                tax_info={
+                        'tax_id':request.POST['taxid'],
+                        'type':'vat'
+                    }
+            )
+
+            #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
+            if request.POST['plan_type'].strip() == 'flat':
+
+                """
+                s_plan = stripe.Plan.create(
+                    amount=149,
+                    interval="month",
+                    product={
+                        "name": "Aida FLAT"
                     },
+                    currency="eur",
                 )
-
-                cus = stripe.Customer.create(
-                    description="Customer for "+request.POST['organisationname'],
-                    email=c_email,
-                    source=token.id,
-                    tax_info={
-                            'tax_id':request.POST['taxid'],
-                            'type':'vat'
-                        }
-                )
-
-                #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
-                if request.POST['plan_type'].strip() == 'flat':
-
-                    """
-                    s_plan = stripe.Plan.create(
-                        amount=149,
-                        interval="month",
-                        product={
-                            "name": "Aida FLAT"
+                """
+                s_plan = getattr(settings, "PROD149_KEY", None)
+                stripe.Subscription.create(
+                    customer=cus['id'],
+                    tax_percent=22.0,
+                    items=[
+                        {
+                            "plan": s_plan,
                         },
-                        currency="eur",
-                    )
-                    """
-                    s_plan = getattr(settings, "PROD149_KEY", None)
-                    stripe.Subscription.create(
-                        customer=cus['id'],
-                        tax_percent=22.0,
-                        items=[
-                            {
-                                "plan": s_plan,
-                            },
-                        ]
-                    )
-                
-                #Then update table with informations
-                t = settings_gen.objects.get(tenant_name=c_tenant)
-                t.on_trial = 'False'
-                t.stripe_id = cus['id']
-                t.first_name = request.POST['firstname']
-                t.last_name = request.POST['lastname']
-                t.comp_name = request.POST['organisationname']
-                t.addr_1 = request.POST['address1']
-                t.addr_2 = request.POST['address2']
-                t.city = request.POST['city']
-                t.state_prov = request.POST['state']
-                t.postal_zip = request.POST['postcode']
-                t.country = request.POST['country']
-                t.tax_id = request.POST['taxid']
-                t.paid_plan = request.POST['plan_type']
-                t.save()
-
-            except Exception as e:
-                print('e->',e)
-                   
-           #If all done redirect to homepage and send thanks email
-            return HttpResponseRedirect('/register')
-        else:
-            response = render(request, 'base_register.html', context_dict, context)
-
-            return response
+                    ]
+                )
+            
+            #Then update table with informations
+            """
+            t = settings_gen.objects.get(tenant_name=c_tenant)
+            t.on_trial = 'False'
+            t.stripe_id = cus['id']
+            t.first_name = request.POST['firstname']
+            t.last_name = request.POST['lastname']
+            t.comp_name = request.POST['organisationname']
+            t.addr_1 = request.POST['address1']
+            t.addr_2 = request.POST['address2']
+            t.city = request.POST['city']
+            t.state_prov = request.POST['state']
+            t.postal_zip = request.POST['postcode']
+            t.country = request.POST['country']
+            t.tax_id = request.POST['taxid']
+            t.paid_plan = request.POST['plan_type']
+            t.save()
+            """
+        except Exception as e:
+            print('e->',e)
+               
+       #If all done redirect to homepage and send thanks email
+        return HttpResponseRedirect('/register')
     else:
-        return HttpResponseRedirect('/')
+        response = render(request, 'base_register.html', context_dict, context)
+
+        return response
+    #else:
+        #return HttpResponseRedirect('/')
 
 
 @login_required
