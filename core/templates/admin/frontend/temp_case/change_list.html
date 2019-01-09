@@ -37,6 +37,12 @@
     text-align: right;
 }
 
+.nexprev {
+    font-size: 16px;
+    position:relative;
+    top: 0px;
+}
+
 a.button3{
     display:inline-block;
     padding:6px 1.2em;
@@ -163,8 +169,8 @@ a.button3:hover{
     <table style="width:100%">
         <tr>
             <td>
-                <span class='t_left'><a href="/admin/frontend/temp_main/" class="button3" style="color:#fff;">Prev: Back to templates</a></span>
-                <span class='t_right'><a href="/admin/frontend/temp_variables/" class="button3" style="color:#fff;">Next: Go to Variables</a></span>
+                <span class='t_left'><a href="/admin/frontend/temp_main/" class="button3" style="color:#fff;"><span class="nexprev"><<</span> Back to templates</a></span>
+                <span class='t_right'><a href="/admin/frontend/temp_variables/" class="button3" style="color:#fff;">Go to Variables <span class="nexprev">>></span></a></span>
             </td>
         </tr>
     </table>

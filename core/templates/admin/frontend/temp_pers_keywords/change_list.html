@@ -17,6 +17,61 @@
     border-bottom: 1px solid #417690;
     color: 0000;
     }
+.foo {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.t_left{
+    width: 100%;
+    display: inline-block;
+}
+.t_right{
+    width: 49%;
+    display: inline-block;
+    text-align: right;
+}
+
+.nexprev {
+    font-size: 16px;
+    position:relative;
+    top: 0px;
+}
+
+a.button3{
+    display:inline-block;
+    padding:6px 1.2em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color:#fff;
+    text-decoration: none;
+    background-color:#417690;
+    text-align:center;
+    transition: all 0.2s;
+}
+a.button3:hover{
+    background-color:#999999;
+}
+a.button3:visited{
+    text-decoration: none;
+}
+@media all and (max-width:30em){
+    a.button3{
+        display:block;
+        margin:0.2em auto;
+    }
+}
 </style>
 
 {% extends "admin/base_site.html" %}
@@ -83,7 +138,7 @@
         </p>
         {{ cl.formset.non_form_errors }}
     {% endif %}
-    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist" style="min-height: 200px;">
       {% block search %}{% search_form cl %}{% endblock %}
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
@@ -110,5 +165,17 @@
       </form>
     </div>
   </div>
+{% endblock %}
+{% block footer %}
+<div class="foo">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <span class='t_left'><a href="/admin/frontend/temp_test_keywords/" class="button3" style="color:#fff;"><span class="nexprev"><<</span> Back to testcase links</a></span>
+                <!--<span class='t_right'><a href="/admin/frontend/temp_variables/" class="button3" style="color:#fff;">Go to Variables <span class="nexprev">>></span></a></span>-->
+            </td>
+        </tr>
+    </table>
+</div>
 {% endblock %}
 
