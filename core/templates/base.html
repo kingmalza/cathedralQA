@@ -145,10 +145,16 @@
                         </li>
                     {% endif %}
                     <li class="dropdown user user-menu">
-                        <a href="/admin/frontend/settings_gen/" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{% static "dist/img/SoloBrain.png" %}" class="user-image" alt="User Image"/>
-                            <span class="hidden-xs">{{ request.user.username }}</span>
-                        </a>
+                        {% if 'demo.myaida.io' in request.build_absolute_uri %}
+                            <a href="javascript:alert('User profile management cannot be accessible in demo mode.');" class="dropdown-toggle" >
+                        {% else %}
+                            <a href="/admin/frontend/settings_gen/" class="dropdown-toggle" >
+                        {% endif %}
+                                <img src="{% static "dist/img/SoloBrain.png" %}" class="user-image" alt="User Image"/>
+                                <span class="hidden-xs">{{ request.user.username }}</span>
+                            </a>
+
+
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
