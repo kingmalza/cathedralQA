@@ -81,7 +81,7 @@ urlpatterns = [
                   url(r'^start$', startTest),
                   url(r'^tmain$', temp_main),
                   url(r'^tcase$', temp_case),
-                  url(r'^register$', lic_register),
+                  url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
                   url(r'^tgroup', temp_group),
                   url(r'^groupmain', mainTgroup),

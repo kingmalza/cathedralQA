@@ -278,9 +278,9 @@ def lic_register(request, reg_status=None, **kwargs):
         if reg_status == 'OK':
             con_stat = '<p><strong>Bell fess</strong></p>'
         elif reg_status == 'KO':
-            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong>YOU ARE IN A DEMO AREA</strong></p><br>The Aida environment you have access to is used only for demonstration purposes.<br>Data contained within are seen and can be managed by several users. Use this environment just for familiarize with the test suite and its characteristics.<br><br>To use a real dedicated Aida environment, create an account through the '<strong>Create account</strong>' buttons.<br><br><div><form><button onclick='location.href=https://aidaproject.io/contact;' class='btn btn-block btn-danger btn-lg'>REPORT THE PROBLEM</button><br><a href='/register'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></form></div></div></div></div>"
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>YOU ARE IN A DEMO AREA</font></strong></p><br>The Aida environment you have access to is used only for demonstration purposes.<br>Data contained within are seen and can be managed by several users. Use this environment just for familiarize with the test suite and its characteristics.<br><br>To use a real dedicated Aida environment, create an account through the '<strong>Create account</strong>' buttons.<br><br><div><form><button onclick='location.href=https://aidaproject.io/contact;' class='btn btn-block btn-danger btn-lg'>REPORT THE PROBLEM</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></form></div></div></div></div>"
         else:
-            con_stat = '<p><strong>che get sciglit chi nsoma?</strong></p>'
+            return HttpResponseRedirect('/register/')
     """
     #First check if pay tupe field is blank, oterwise redirect to home
     c_plan = None
