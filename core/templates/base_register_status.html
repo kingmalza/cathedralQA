@@ -35,7 +35,7 @@
 		<div class="mainContent">
             <div class="content order-form body">
     <div id="welcome-div">
-        {{ the_stat|safe }}
+        {% autoescape off %}{{ the_stat }}{% endautoescape %}
     </div>
     </div><!-- ./wrapper -->
 
