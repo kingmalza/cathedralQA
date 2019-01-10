@@ -186,6 +186,15 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('thread_stopd','-');
                         };
                     };
+                    var t_td4time = document.createElement("TD");
+                    t_td4time.innerHTML = 'Elapsed'.bold();
+                    t_td4time.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-id_time__elapsed_t','+');
+                        } else {
+                            refHistory('id_time__elapsed_t','-');
+                        };
+                    };
                     var t_td5 = document.createElement("TD");
                     t_td5.innerHTML = 'User'.bold();
                     t_td5.onclick = function() {
@@ -216,6 +225,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td13);
                     t_tr0.appendChild(t_td3);
                     t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td4time);
                     t_tr0.appendChild(t_td5);
                     //t_tr0.appendChild(t_td6);
                     t_tr0.appendChild(t_td7);
@@ -298,6 +308,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         } else {
                             t_td4.innerHTML = data[index].OptionStopdate;
                         }
+                        var t_td4time = document.createElement("TD");
+                        t_td4time.innerHTML = data[index].OptionTime;
                         var t_td5 = document.createElement("TD");
                         t_td5.innerHTML = data[index].OptionUser;
                         var t_td6 = document.createElement("TD");
@@ -339,6 +351,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td13);
                     t_tr0.appendChild(t_td3);
                     t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td4time);
                     t_tr0.appendChild(t_td5);
                     //t_tr0.appendChild(t_td6);
                     t_tr0.appendChild(t_td7);
@@ -348,7 +361,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_body.appendChild(t_tr0);
                     
                     for (i = 0; i < data[index].SubLen; i++) {
-                        console.log(data[index]['SubThread'][i].SubVar);
+                        //console.log(data[index]['SubThread'][i].SubVar);
                         //Create head and data table for child (multi executed elements)
                         var t_tr0 = document.createElement("TR");
                         t_tr0.style.borderStyle = 'hidden';
@@ -400,6 +413,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         }
                         t_td4.style.color = "black";
                         t_td4.style.background="#ECF0F5";
+                        var t_td4time = document.createElement("TD");
+                        t_td4time.innerHTML = data[index]['SubThread'][i].SubTime;
+                        t_td4time.style.color = "black";
+                        t_td4time.style.background="#ECF0F5";
                         var t_td5 = document.createElement("TD");
                         t_td5.innerHTML = data[index].OptionUser;
                         t_td5.style.color = "black";
@@ -451,6 +468,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_tr0.appendChild(t_td13);
                         t_tr0.appendChild(t_td3);
                         t_tr0.appendChild(t_td4);
+                        t_tr0.appendChild(t_td4time);
                         t_tr0.appendChild(t_td5);
                         //t_tr0.appendChild(t_td6);
                         t_tr0.appendChild(t_td7);
