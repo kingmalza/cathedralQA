@@ -150,18 +150,17 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                                   test_type=s_type, test_group=tx_group, sched_type=sc_type, sched_val=sc_val, thread_name=t)
 
             test_save.save()
-            thread_save = t_threads(id_test=t_history.objects.get(id=test_save.id), thread_id=t_list[t_inst].getName(),
-                                    thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
-            thread_save.save()
-
-            elapsed = time.time() - start_time
-
+            
             # Time at the end
             dtime2 = str(datetime.datetime.now())
             
+            elapsed = "{0:.1f}".format(time.time() - start_time)
             test_time = t_time(history_main=t_history.objects.get(id=test_save.id), elapsed_t=elapsed, stop_data=dtime2)
             test_time.save()
-
+            
+            thread_save = t_threads(id_test=t_history.objects.get(id=test_save.id), id_time=t_time.objects.get(id=test_time.id), thread_id=t_list[t_inst].getName(),
+                                    thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
+            thread_save.save()
 
             """
             #LAMBDA CALL FOR LIC INSERTION
