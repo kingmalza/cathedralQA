@@ -295,7 +295,7 @@ def tlinemgm(request):
         response = []
 
         for i in thread_list:
-            vallabel = {'t_id': i.id, 'th_id': i.thread_id, 't_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data), 't_xml': i.id_test.xml_result,
+            vallabel = {'t_id': i.id, 'th_id': i.thread_id, 't_stag': i.thread_stag, 't_exec': str(i.id_test.exec_data.strftime("%Y-%d-%m %H:%M:%S")), 't_xml': i.id_test.xml_result,
                         't_html': i.id_test.html_test, 't_var': i.id_test.var_test, 't_pid': i.id_test.pid,
                         't_user': str(i.id_test.user_id), 't_main': str(i.id_test.test_main), 't_jira': j_set}
 

@@ -49,7 +49,8 @@ $(document).ajaxStop(function () {
 
 
 function refTable() {
-    j_search = document.getElementById("txthish").value;
+    //j_search = document.getElementById("txthish").value;
+    j_search = null;
     j_sord = document.getElementById("txtsord").value;
     issearch = document.getElementById("txtsign").value;
 

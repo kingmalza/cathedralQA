@@ -77,8 +77,8 @@ def histrefresh(request, lorder='-id'):
                 elif b[0].upper() == 'USER':
                     strfin, strperc = strfin + ',id_test__user_id__contains=' + "'"+b[1].strip()+"'"
 
-
-            strexec1 = "%s%s%s" % ("ordered = t_threads.objects.values('thread_stag').filter(thread_status='DEAD',",strfin[1:],").distinct().select_related().order_by(lorder)[x:y]")
+            strexec1 = "%s%s%s" % ("ordered = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").distinct().select_related().values('thread_stag').order_by(lorder)[x:y]")
+            #strexec1 = "%s%s%s" % ("ordered = t_threads.objects.values('thread_stag').filter(thread_status='DEAD',",strfin[1:],").distinct().order_by(lorder)[x:y]")
             strexec2 = "%s%s%s" % ("oCount = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").count()")
             strexec3 = "%s%s%s" % ("twarnings = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],",thread_stopd__isnull=True).count()")
 

@@ -88,7 +88,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     cli_id = None
     id_cli = 999
     
-    client = boto3.client("lambda")
+    #client = boto3.client("lambda")
     #Time at the start
     dtime1 = str(datetime.datetime.now())
     # Start

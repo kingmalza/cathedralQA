@@ -17,7 +17,8 @@ function GetElementInsideContainer(containerID, childID) {
 
 function refHistory(j_ord, j_sign, j_search, is_search) {
     var stat_h = document.getElementById("stat_load");
-    j_search = document.getElementById("txthis").value;
+    //j_search = document.getElementById("txthis").value;
+    j_search = null;
     if (j_ord == null){
         j_ord = '-id';
     }
@@ -491,7 +492,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     return function () {
                         t_line.style.visibility = 'visible';
                         t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
-                        c_hold = this.cells[13].innerHTML;
+                        c_hold = this.cells[14].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         window.location.href = '/#tl_tit';
                         getTlineHist(c_hold, 'history');
@@ -823,14 +824,14 @@ function getTlineHist(t_stag, f_view) {
                 var div42 = document.createElement("div");
                 div42.setAttribute("class", "timeline-footer");
                 var a4 = document.createElement("A");
-                a4.setAttribute("class", "btn btn-warning btn-flat btn-xs");
+                a4.setAttribute("class", "btn btn-log btn-flat btn-xs");
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
                 //If there is Jira parameters integration
                 if (data[index].t_jira) {
                     var lij1 = document.createElement("LI");
                     var ij1 = document.createElement("I");
-                    ij1.setAttribute("class", "fa fa-comments bg-yellow");
+                    ij1.setAttribute("class", "fa fa-cogs bg-green");
                     var divj1 = document.createElement("div");
                     divj1.setAttribute("class", "timeline-item");
                     var spanj1 = document.createElement("SPAN");
@@ -946,11 +947,13 @@ function getTlineHist(t_stag, f_view) {
                         var divjf4 = document.createElement("div");
                         divjf4.setAttribute("class", "checkbox");
                         jlab3 = document.createElement("LABEL");
-                        jlab3.innerHTML = "Send log file";
+                        jlab3.innerHTML = "Attach log file";
+                        jlab3.setAttribute("style", "width:16%; display:inline-block; padding-left:0px;");
                         jtx5 = document.createElement("INPUT");
                         jtx5.setAttribute("type", "checkbox");
                         jtx5.checked = true;
                         jtx5.setAttribute("id", "txt5-"+data[index].t_pid);
+                        jtx5.setAttribute("style", "width:5%; display:inline-block;");
                         divjf4.appendChild(jlab3);
                         divjf4.appendChild(jtx5);
                         divjf1.appendChild(divjf4);
