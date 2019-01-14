@@ -265,6 +265,9 @@ function AddOptions(VarID) {
                         trst3.innerText = data[index].r_key;
                     } else {
                         drst.style.display = 'none';
+                        document.getElementById("rst1").innerText = '';
+                        document.getElementById("rst2").innerText = '';
+                        document.getElementById("rst3").innerText = '';
                     }
                 }
 
@@ -302,6 +305,10 @@ function testBtn(VarID, t_type) {
     oCssSet = document.getElementById("sel_opt");
     console.log("Ocss.val--->"+oCssSet.value);
 
+    ckrst1 = document.getElementById("rst1").innerText.toUpperCase();
+    ckrst2 = document.getElementById("rst2").innerText.toUpperCase();
+    ckrst3 = document.getElementById("rst3").innerText.toUpperCase();
+
     var row = [];
     var col = [];
     var uuid = guid();
@@ -334,38 +341,44 @@ function testBtn(VarID, t_type) {
             //res.splice(index,1);
         }
     });*/
+    var rsterror = 'GITHUB';
+    if (ckrst1.includes(rsterror) || ckrst2.includes(rsterror) || ckrst3.includes(rsterror)) {
+        document.getElementById("overlay").style.display = "none";
+        alert(ckrst1);
+    } else {
 
-    //Stringhify the array for pass to python and then decode it
-    var json_string = JSON.stringify(res);
-    window.location.href = '/active#act_th';
+        //Stringhify the array for pass to python and then decode it
+        var json_string = JSON.stringify(res);
+        window.location.href = '/active#act_th';
 
-    $.ajax({
-        type: "POST",
-        url: "start",
-        data: {
-            mainID: VarID.value,
-            ttype: t_type,
-            des: json_string,
-            sched_sel: Schedsel.value,
-            sched_val: Schedval.value,
-            group_val: oCssSet.value,
-            t_id: uuid
-        },
-        success: function (data) {
-            //document.getElementById("overlay").style.display = "none";
-            $.each(data, function (index) {
-                if (data[index].Rmessage){
-                    alert(data[index].Rmessage)
+        $.ajax({
+            type: "POST",
+            url: "start",
+            data: {
+                mainID: VarID.value,
+                ttype: t_type,
+                des: json_string,
+                sched_sel: Schedsel.value,
+                sched_val: Schedval.value,
+                group_val: oCssSet.value,
+                t_id: uuid
+            },
+            success: function (data) {
+                //document.getElementById("overlay").style.display = "none";
+                $.each(data, function (index) {
+                    if (data[index].Rmessage){
+                        alert(data[index].Rmessage)
+                    }
+                } );
+            },
+            complete: function (data) {
+                document.getElementById("overlay").style.display = "none";
+                if (document.getElementById('tab_threads') == null) {
+                    window.location.href = '/';
                 }
-            } );
-        },
-        complete: function (data) {
-            document.getElementById("overlay").style.display = "none";
-            if (document.getElementById('tab_threads') == null) {
-                window.location.href = '/';
             }
-        }
-    });
+        });
+    }
 }
 
 
