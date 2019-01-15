@@ -341,10 +341,10 @@ function testBtn(VarID, t_type) {
             //res.splice(index,1);
         }
     });*/
-    var rsterror = 'GITHUB';
+    var rsterror = 'MALFORMED TABLE';
     if (ckrst1.includes(rsterror) || ckrst2.includes(rsterror) || ckrst3.includes(rsterror)) {
         document.getElementById("overlay").style.display = "none";
-        alert(ckrst1);
+        alert("Errors have been detected in the template that prevent it from being executed. You can check the preview of the code from this page and fix the errors from 'Template Manager'");
     } else {
 
         //Stringhify the array for pass to python and then decode it

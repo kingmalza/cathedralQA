@@ -192,7 +192,7 @@ def tabrefresh(request):
             vallabel['OptionSchedVal'] = i.thread_sval
             vallabel['OptionID'] = i.thread_id
             vallabel['OptionUUID'] = i.thread_stag
-            vallabel['OptionSdate'] = str(i.thread_startd)
+            vallabel['OptionSdate'] = str(i.thread_startd.strftime("%Y-%d-%m %H:%M:%S"))
             vallabel['OptionUser'] = str(i.id_test.user_id)
             vallabel['OptionStatus'] = i.thread_status
             vallabel['OptionTest'] = i.id_test.id
