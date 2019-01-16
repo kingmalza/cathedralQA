@@ -86,8 +86,9 @@ class t_test(models.Model):
 # -----------------------------------------------------------------------------
 #Try to send Welcome email after new DEMO user registration
 @receiver(post_save,sender=User)
-def create_user_data(sender, update_fields, created, instance, **kwargs):
-    if created:
+def create_initial_story(sender, update_fields, created, instance, **kwargs):
+    print("CREATED--->",update_fields)
+    if not update_fields and instance.email:
         user_name = instance.username
         first_name = instance.first_name
         last_name = instance.last_name
