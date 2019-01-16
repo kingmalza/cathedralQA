@@ -86,6 +86,7 @@ function refTable() {
                 if (index == 0) {
                     var t_tr0 = document.createElement("TR");
                     var t_td0 = document.createElement("TD");
+                    t_td0.setAttribute("style", "padding-left: 8px");
                     t_td0.innerHTML = 'ID'.bold();
                     t_td0.onclick = function () {
                         if (issearch == '-') {
@@ -100,6 +101,7 @@ function refTable() {
                         ;
                     };
                     var t_td9 = document.createElement("TD");
+                    t_td9.setAttribute("style", "padding-left: 8px");
                     t_td9.innerHTML = 'Test Name'.bold();
                     t_td9.onclick = function () {
                         if (issearch == '-') {
@@ -114,6 +116,7 @@ function refTable() {
                         ;
                     };
                     var t_td10 = document.createElement("TD");
+                    t_td10.setAttribute("style", "padding-left: 8px");
                     t_td10.innerHTML = 'Test Type'.bold();
                     t_td10.onclick = function () {
                         if (issearch == '-') {
@@ -128,6 +131,7 @@ function refTable() {
                         ;
                     };
                     var t_td11 = document.createElement("TD");
+                    t_td11.setAttribute("style", "padding-left: 8px");
                     t_td11.innerHTML = 'Test Group'.bold();
                     t_td11.onclick = function () {
                         if (issearch == '-') {
@@ -142,6 +146,7 @@ function refTable() {
                         ;
                     };
                     var t_td12 = document.createElement("TD");
+                    t_td12.setAttribute("style", "padding-left: 8px");
                     t_td12.innerHTML = 'Schedule Type'.bold();
                     t_td12.onclick = function () {
                         if (issearch == '-') {
@@ -156,6 +161,7 @@ function refTable() {
                         ;
                     };
                     var t_td13 = document.createElement("TD");
+                    t_td13.setAttribute("style", "padding-left: 8px");
                     t_td13.innerHTML = 'Schedule Value'.bold();
                     t_td13.onclick = function () {
                         if (issearch == '-') {
@@ -170,6 +176,7 @@ function refTable() {
                         ;
                     };
                     var t_td1 = document.createElement("TD");
+                    t_td1.setAttribute("style", "padding-left: 8px");
                     t_td1.innerHTML = 'Thread'.bold();
                     t_td1.onclick = function () {
                         if (issearch == '-') {
@@ -184,6 +191,7 @@ function refTable() {
                         ;
                     };
                     var t_td2 = document.createElement("TD");
+                    t_td2.setAttribute("style", "padding-left: 8px");
                     t_td2.innerHTML = 'Status'.bold();
                     t_td2.onclick = function () {
                         if (issearch == '-') {
@@ -198,6 +206,7 @@ function refTable() {
                         ;
                     };
                     var t_td3 = document.createElement("TD");
+                    t_td3.setAttribute("style", "padding-left: 8px");
                     t_td3.innerHTML = 'TAG'.bold();
                     t_td3.setAttribute('id', 'tag_h');
                     t_td3.onclick = function () {
@@ -213,6 +222,7 @@ function refTable() {
                         ;
                     };
                     var t_td4 = document.createElement("TD");
+                    t_td4.setAttribute("style", "padding-left: 8px");
                     t_td4.innerHTML = 'Start'.bold();
                     t_td4.onclick = function () {
                         if (issearch == '-') {
@@ -227,6 +237,7 @@ function refTable() {
                         ;
                     };
                     var t_td5 = document.createElement("TD");
+                    t_td5.setAttribute("style", "padding-left: 8px");
                     t_td5.innerHTML = 'User'.bold();
                     t_td5.onclick = function () {
                         if (issearch == '-') {
@@ -241,10 +252,13 @@ function refTable() {
                         ;
                     };
                     var t_td6 = document.createElement("TD");
+                    t_td6.setAttribute("style", "padding-left: 8px");
                     t_td6.innerHTML = 'Pid';
                     var t_td7 = document.createElement("TD");
+                    t_td7.setAttribute("style", "padding-left: 8px");
                     t_td7.innerHTML = 'Cycles';
                     var t_td8 = document.createElement("TD");
+                    t_td8.setAttribute("style", "padding-left: 8px");
                     t_td8.innerHTML = 'Going';
 
                     t_tr0.appendChild(t_td0);

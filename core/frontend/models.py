@@ -6,10 +6,16 @@ from django.core.validators import FileExtensionValidator, MaxValueValidator, Mi
 from django.core.exceptions import ValidationError
 from tenant_schemas.models import TenantMixin
 from django.contrib.auth.models import User
+from django.core.mail import send_mail, EmailMessage
+
+from django.template.loader import render_to_string
 
 from decimal import Decimal
 from django import forms
 from django.forms import ModelForm, PasswordInput
+
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 def validate_fsize(in_file):
@@ -78,6 +84,27 @@ class t_test(models.Model):
 # -----------------------------------------------------------------------------
 # TEMPLATE DATA
 # -----------------------------------------------------------------------------
+#Try to send Welcome email after new DEMO user registration
+@receiver(post_save,sender=User)
+def create_user_data(sender, update_fields, created, instance, **kwargs):
+    if created:
+        user_name = instance.username
+        first_name = instance.first_name
+        last_name = instance.last_name
+        email = instance.email
+        password = "AidaDemo1"
+        context = {
+            'news': 'Your aida demo account',
+            'user': instance.username,
+            'pass': "AidaDemo1"
+        }
+        html_content = render_to_string('email_demo.html', context)
+        #html_content = "your username:%s <br> first name:%s <br> last name:%s <br> address:%s <br> password:%s"
+        #message=EmailMessage(subject='welcome',body=html_content %(user_name,first_name,last_name,email,password),to=[email])
+        message=EmailMessage(subject='Myaida Demo Account Registration',body=html_content,to=[email])
+        message.content_subtype='html'
+        message.send()
+
 
 # temp_main
 """
