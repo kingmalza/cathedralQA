@@ -87,6 +87,7 @@ celerybeat-schedule
 .venv2
 .venv27
 .venv36
+sendy/.venvsendy
 env/
 venv/
 ENV/
