@@ -371,37 +371,38 @@ def lic_register(request, reg_status=None, **kwargs):
             t.paid_plan = request.POST['plan_type']
             t.save()
             """
+            #If all done add to sendy customers list, redirect to homepage and send thanks email
+            client = boto3.client("lambda")
+            payload = {
+                        "evtype": "customer",
+                        "user_id": "1",
+                        "fname": request.POST['firstname'],
+                        "email": request.POST['c_email'],
+                        "gdpr": "1",
+                        "country": request.POST['country'],
+                        "business": request.POST['organisationname'],
+                        "active": "N",
+                        "phone": "00-0000"
+                    }
+
+            try:
+                client.invoke(
+                    FunctionName='aidasendy',
+                    InvocationType='RequestResponse',
+                    Payload=json.dumps(payload)
+                )
+            except ClientError as er2:  # if you see a ClientError, catch it as e
+                print("Error lambda--> view379", er2)  # print the client error info to console
+                return HttpResponseRedirect('/register/KO/')
+                
+
+            return HttpResponseRedirect('/register/OK')
         except Exception as e:
             print('e->',e)
             return HttpResponseRedirect('/register/KO/')
-               
-       #If all done add to sendy customers list, redirect to homepage and send thanks email
-        client = boto3.client("lambda")
-        payload = {
-                    "evtype": "customer",
-                    "user_id": "1",
-                    "fname": request.POST['firstname'],
-                    "email": request.POST['c_email'],
-                    "gdpr": "1",
-                    "country": request.POST['country'],
-                    "business": request.POST['organisationname'],
-                    "active": "N",
-                    "phone": "00-0000"
-                }
-
-        try:
-            client.invoke(
-                FunctionName='aidasendy',
-                InvocationType='RequestResponse',
-                Payload=json.dumps(payload)
-            )
-        except ClientError as er2:  # if you see a ClientError, catch it as e
-            print("Error lambda--> view379", er2)  # print the client error info to console
-
-        return HttpResponseRedirect('/register/OK')
+                 
     else:
         response = render(request, b_temp, context_dict, context)
-
         return response
     #else:
         #return HttpResponseRedirect('/')

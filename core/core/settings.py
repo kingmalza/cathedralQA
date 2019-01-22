@@ -82,6 +82,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+#APPEND_SLASH=False
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
