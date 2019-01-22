@@ -280,6 +280,8 @@ def lic_register(request, reg_status=None, **kwargs):
             con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your aida account was successful.</strong><br><br>Our staff will take care of your request and will proceed in the shortest possible time to carry out all the necessary operations to allow you to use aida without restrictions.<br><br>As soon as the registration procedure is complete you will receive an email to the address you specify in registration proces containing all the necessary data Using your new aida environment, if you do not receive the activation email within 24 hours, try checking your spam box.<br><br><br><div><a href='https://aidaproject.io'><button class='btn btn-block btn-success btn-lg'>GO TO AIDA PROJECT HOMEPAGE</button></a></div></div></div></div>"
         elif reg_status == 'KO':
             con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>FAIL!</font></strong></p><br><strong>The registration process for your new Aida account has not been completed successfully.</strong><br><br>Probably some of the data entered in the previous mask are not correct or there has been an internal error of the service.<br><br>Try to re-enter your registration data or report to our technical assistance the problem.<br><br><div><button onclick='javascript:location.href=https://aidaproject.io/contact;' class='btn btn-block btn-danger btn-lg'>REPORT THE PROBLEM</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></div></div></div></div>"
+        elif reg_status == 'KO_USER':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>USER ALREADY REGISTERED!</font></strong></p><br><strong>The email address you are trying to register is already associated to an active user in aida.</strong><br><br>If you do not remember your user's password, you can change it from the login panel using the 'Forgot password?' Link.<br>To change the preferences related to your user, within aida it is sufficient going to the username that appears at the top right to open the account control panel.<br><br><div><button onclick='javascript:location.href='https://aidaproject.io' class='btn btn-block btn-danger btn-lg'>GO TO AIDA HOME</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></div></div></div></div>"
         else:
             return HttpResponseRedirect('/register/')
     """
@@ -300,107 +302,116 @@ def lic_register(request, reg_status=None, **kwargs):
     context_dict = {'all_case': test_case, 'all_set': sg, 'the_stat': con_stat}
     if request.method == 'POST':
 
-        #First create customer on stripe and get id (ito insert into table)
-        hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
-        try:
-            #First create the token
-            token = stripe.Token.create(
-                card={
-                    'number':str(request.POST['gatewayCardNumber']).strip(),
-                    'exp_month':request.POST['expiryDateMonth'],
-                    'exp_year':request.POST['expiryDateYear'],
-                    'name': request.POST['ccName'],
-                    'cvc':request.POST['cardCVC'],
-                    'address_city': request.POST['city'],
-                    'address_state': request.POST['state'],
-                    'address_line1': request.POST['address1'],
-                    'address_line2': request.POST['address2'],
-                    'address_zip': request.POST['postcode']
-                },
-            )
+        #First of all check if there is already a customer with the same email address registeed in strupe:
+        same_email = 0
+        cu_list = stripe.Customer.list()
+        for x in cu_list:
+            if x.email.upper().strip() == request.POST['c_email'].upper().strip():
+                same_email += 1
 
-            cus = stripe.Customer.create(
-                description="Customer for "+request.POST['organisationname'],
-                email=request.POST['c_email'],
-                source=token.id,
-                tax_info={
-                        'tax_id':request.POST['taxid'],
-                        'type':'vat'
-                    }
-            )
-
-            #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
-            if request.POST['plan_type'].strip() == 'flat':
-
-                """
-                s_plan = stripe.Plan.create(
-                    amount=149,
-                    interval="month",
-                    product={
-                        "name": "Aida FLAT"
-                    },
-                    currency="eur",
-                )
-                """
-                s_plan = getattr(settings, "PROD149_KEY", None)
-                stripe.Subscription.create(
-                    customer=cus['id'],
-                    tax_percent=22.0,
-                    items=[
-                        {
-                            "plan": s_plan,
-                        },
-                    ]
-                )
-            
-            #Then update table with informations
-            """
-            t = settings_gen.objects.get(tenant_name=c_tenant)
-            t.on_trial = 'False'
-            t.stripe_id = cus['id']
-            t.first_name = request.POST['firstname']
-            t.last_name = request.POST['lastname']
-            t.comp_name = request.POST['organisationname']
-            t.addr_1 = request.POST['address1']
-            t.addr_2 = request.POST['address2']
-            t.city = request.POST['city']
-            t.state_prov = request.POST['state']
-            t.postal_zip = request.POST['postcode']
-            t.country = request.POST['country']
-            t.tax_id = request.POST['taxid']
-            t.paid_plan = request.POST['plan_type']
-            t.save()
-            """
-            #If all done add to sendy customers list, redirect to homepage and send thanks email
-            client = boto3.client("lambda")
-            payload = {
-                        "evtype": "customer",
-                        "user_id": "1",
-                        "fname": request.POST['firstname'],
-                        "email": request.POST['c_email'],
-                        "gdpr": "1",
-                        "country": request.POST['country'],
-                        "business": request.POST['organisationname'],
-                        "active": "N",
-                        "phone": "00-0000"
-                    }
-
+        if same_email == 0:
+            #First create customer on stripe and get id (ito insert into table)
+            hash_object = hashlib.md5(bytes(request.POST['taxid'], 'utf-8'))
             try:
-                client.invoke(
-                    FunctionName='aidasendy',
-                    InvocationType='RequestResponse',
-                    Payload=json.dumps(payload)
+                #First create the token
+                token = stripe.Token.create(
+                    card={
+                        'number':str(request.POST['gatewayCardNumber']).strip(),
+                        'exp_month':request.POST['expiryDateMonth'],
+                        'exp_year':request.POST['expiryDateYear'],
+                        'name': request.POST['ccName'],
+                        'cvc':request.POST['cardCVC'],
+                        'address_city': request.POST['city'],
+                        'address_state': request.POST['state'],
+                        'address_line1': request.POST['address1'],
+                        'address_line2': request.POST['address2'],
+                        'address_zip': request.POST['postcode']
+                    },
                 )
-            except ClientError as er2:  # if you see a ClientError, catch it as e
-                print("Error lambda--> view379", er2)  # print the client error info to console
-                return HttpResponseRedirect('/register/KO/')
-                
 
-            return HttpResponseRedirect('/register/OK')
-        except Exception as e:
-            print('e->',e)
-            return HttpResponseRedirect('/register/KO/')
-                 
+                cus = stripe.Customer.create(
+                    description="Customer for "+request.POST['organisationname'],
+                    email=request.POST['c_email'],
+                    source=token.id,
+                    tax_info={
+                            'tax_id':request.POST['taxid'],
+                            'type':'vat'
+                        }
+                )
+
+                #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
+                if request.POST['plan_type'].strip() == 'flat':
+
+                    """
+                    s_plan = stripe.Plan.create(
+                        amount=149,
+                        interval="month",
+                        product={
+                            "name": "Aida FLAT"
+                        },
+                        currency="eur",
+                    )
+                    """
+                    s_plan = getattr(settings, "PROD149_KEY", None)
+                    stripe.Subscription.create(
+                        customer=cus['id'],
+                        tax_percent=22.0,
+                        items=[
+                            {
+                                "plan": s_plan,
+                            },
+                        ]
+                    )
+
+                #Then update table with informations
+                """
+                t = settings_gen.objects.get(tenant_name=c_tenant)
+                t.on_trial = 'False'
+                t.stripe_id = cus['id']
+                t.first_name = request.POST['firstname']
+                t.last_name = request.POST['lastname']
+                t.comp_name = request.POST['organisationname']
+                t.addr_1 = request.POST['address1']
+                t.addr_2 = request.POST['address2']
+                t.city = request.POST['city']
+                t.state_prov = request.POST['state']
+                t.postal_zip = request.POST['postcode']
+                t.country = request.POST['country']
+                t.tax_id = request.POST['taxid']
+                t.paid_plan = request.POST['plan_type']
+                t.save()
+                """
+                #If all done add to sendy customers list, redirect to homepage and send thanks email
+                client = boto3.client("lambda")
+                payload = {
+                            "evtype": "customer",
+                            "user_id": "1",
+                            "fname": request.POST['firstname'],
+                            "email": request.POST['c_email'],
+                            "gdpr": "1",
+                            "country": request.POST['country'],
+                            "business": request.POST['organisationname'],
+                            "active": "N",
+                            "phone": "00-0000"
+                        }
+
+                try:
+                    client.invoke(
+                        FunctionName='aidasendy',
+                        InvocationType='RequestResponse',
+                        Payload=json.dumps(payload)
+                    )
+                except ClientError as er2:  # if you see a ClientError, catch it as e
+                    print("Error lambda--> view379", er2)  # print the client error info to console
+                    return HttpResponseRedirect('/register/KO/')
+
+
+                return HttpResponseRedirect('/register/OK')
+            except Exception as e:
+                print('e->',e)
+                return HttpResponseRedirect('/register/KO/')
+        else:
+            return HttpResponseRedirect('/register/KO_USER/')
     else:
         response = render(request, b_temp, context_dict, context)
         return response
