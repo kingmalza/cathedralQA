@@ -149,7 +149,7 @@
                             Email<em class="required">*</em>
                         </label>
                         {% for sets in all_set %}
-                            <input type="text" id="c_email" name="c_email" class="form-control">
+                            <input type="text" id="c_email" name="c_email" class="form-control" onblur="checkEmail(this.value)">
                         {% endfor %}
                         
                     </div>
