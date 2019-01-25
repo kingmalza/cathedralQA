@@ -101,6 +101,14 @@ class TempVarsForm(forms.ModelForm):
                       'v_val': 'Optional, initial value shown on the test start screen'}
 
 
+class TempKeyForm(forms.ModelForm):
+    class Meta:
+        model = temp_keywords
+        fields = '__all__'
+        help_texts = {'descr': "Exactly key name as code defined",
+                      'human': 'Alternative human friendly description, this description will be shown in template creation phases'}
+
+
 class TempLibsForm(forms.ModelForm):
     class Meta:
         model = temp_library

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm
+from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
 from .models import temp_main, temp_case, temp_keywords, temp_variables, temp_library, temp_pers_keywords, \
     temp_test_keywords, t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
     t_time, t_history, settings_gen
@@ -315,6 +315,8 @@ class t_tags_routeAdmin(admin.ModelAdmin):
 
     
 class temp_keywordsAdmin(admin.ModelAdmin):
+
+    form = TempKeyForm
 
     list_filter = ('personal',)
     list_display = ('descr', 'human', 'personal')
