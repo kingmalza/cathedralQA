@@ -18,13 +18,13 @@ def mainTgroup(request):
     if request.is_ajax():
 
         # Create First table from t_group_tet
-        tmain = t_group.objects.select_related().all()
+        tmain = t_group.objects.select_related().all().select_related()
 
         response = []
 
         for i in tmain:
             vallabel = {'t_ID': i.id, 't_ord': i.descr, 't_grp': i.g_prior, 't_temp': i.g_desc, 't_active': i.active,
-                        't_user': str(i.user_id)}
+                        't_user': str(i.owner_id)}
 
             response.append(vallabel)
 

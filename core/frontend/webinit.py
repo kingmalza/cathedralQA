@@ -151,6 +151,24 @@ def create2(t_tenant,auth_pass,u_email,paid=0.49):
     
     print("Helloword OK")
     
+    #5a. Create project, groupping and tag
+    print("4a.Create projects and tags...")
+    
+    protag1 = t_proj(descr='First Demo Project', dt=str(dtn), proj_notes='Created for demo, you can edit data for personalization purposes', owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag1.save()
+    protag2 = t_proj_route(route_notes='First Demo Project', main_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, proj_id = t_proj.objects.get(id=1).id, dt=str(dtn))
+    protag2.save()
+    protag3 = t_tags(descr='First Demo TAG', tag_notes= "Demo tag, you can modify it.", owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag3.save()
+    protag4 = t_tags_route(route_notes='First Demo TAG', main_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, tag_id= t_tags.objects.get(id=1).id, dt=str(dtn))
+    protag4.save()
+    protag5 = t_group(descr='First Demo Group', g_prior= 1, active = True, owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag5.save()
+    protag6 = t_group_test(temp_ord= 1, id_grp= t_group.objects.get(id=1).id, id_temp= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag6.save()
+    
+    print("Projects and TAGS OK")
+    
     #6. Send email
     print("5.Preparing and sending welcome email...")
 
