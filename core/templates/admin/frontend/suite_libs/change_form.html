@@ -45,7 +45,7 @@
 &rsaquo; {% if add %}{% blocktrans with name=opts.verbose_name %}Add {{ name }}{% endblocktrans %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 </div>
 <div class="alert warning">
-    <strong>Hint:</strong> It is possible to upload your personal libraries to use in your Aida templates. once a library has been added, the spread will be in PENDING state, only once the validation procedure by Aida staff has been completed will this be READY and usable within your projects.<br><br><strong>Notes:</strong> Only libraries written entirely in python code and correctly packaged are accepted, files that can be loaded and managed must have a .py extension and not exceed 150Kb in size.</strong> <br><br><strong>Reference:</strong><br>aidaproject.io/...<br><a href="https://packaging.python.org/tutorials/packaging-projects/" target="_blank">Packaging Python Projects</a>
+    <strong>Hint:</strong> It is possible to upload your personal libraries to use in your Aida templates. once a library has been added, the spread will be in PENDING state, only once the validation procedure by Aida staff has been completed will this be READY and usable within your projects.<br><br><strong>Notes:</strong> Only libraries written entirely in python code and correctly packaged are accepted, files that can be loaded and managed must have a .py extension and not exceed 150Kb in size.</strong> <br><br><strong>Reference:</strong><br><a href="https://aidadoc.readthedocs.io/en/latest/frontend.html#libraries" target="_blank">Aida Documentation</a><br><a href="https://packaging.python.org/tutorials/packaging-projects/" target="_blank">Packaging Python Projects</a>
 </div>
 {% endblock %}
 {% endif %}
