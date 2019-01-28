@@ -48,6 +48,9 @@ test_var = temp_variables.objects.all()
 test_lib = temp_library.objects.all()
 
 
+def handler500(request):
+    return render(request, '500.html', status=500)
+
 @login_required
 def index(request, **kwargs):
     global test_main

@@ -34,7 +34,8 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     temp_variablesViewSet, \
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
-    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms
+    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms, \
+    handler500
 
 schema_view = get_schema_view(title='Aida API')
 
@@ -61,6 +62,8 @@ user_list = UserViewSet.as_view({
 user_detail = UserViewSet.as_view({
     'get': 'retrieve'
 })
+
+handler500 = handler500
 
 urlpatterns = [
                   url(r'^admin/', admin.site.urls),
