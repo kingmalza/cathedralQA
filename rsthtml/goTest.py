@@ -83,7 +83,6 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             varlist_a.remove(x)
 
 
-    print("Varlist---> ", varlist_a)
     g_id = None
     cli_id = None
     id_cli = 999
@@ -323,16 +322,17 @@ def startTest(request, i=[0]):
                     if len(sp) > 1:
                         for x in sp:
                             temp_l.append([i[0], x])
+
                     else:
                         temp_l.append(i)
                 else:
                     temp_l.append(i)
+
             #Now create list of lists of unique values
             a = list(product_by_grouping(temp_l))
             new_one = []
             for x in a:
                 new_one.append(list(x))
-
             ###
 
             global jobqueue

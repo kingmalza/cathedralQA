@@ -332,6 +332,7 @@ class PrepareRst:
             l = []
 
         tvlist = [x for x in ltouple]
+
         return tvlist
 
 
@@ -404,7 +405,8 @@ class MakeHtml(threading.Thread):
         with open(filepath, 'wb') as file:
             try:
                 for x in self.outhtml:
-                    file.write(publish_string(x.rstab, writer_name='html'))
+                    print("SELF---->",self.outhtml)
+                    file.write(publish_string(x.rstab.encode('utf-8'), writer_name='html'))
 
                     # run test
                     # rc = run_cli([filepath], exit=False)
