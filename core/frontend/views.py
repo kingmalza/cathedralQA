@@ -245,6 +245,19 @@ def temp_lib(request, **kwargs):
 
 
 @login_required
+def temp_assist(request, **kwargs):
+    global test_case
+    ugroup = request.user.groups.all()
+
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case, 'ugroup': ugroup}
+    response = render(request, 'base_tassist.html', context_dict, context)
+
+    return response
+
+
+@login_required
 def ext_lib(request, **kwargs):
     global test_case
 

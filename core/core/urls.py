@@ -29,7 +29,7 @@ from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, t
 from ajaxfuncs.history import histrefresh
 from ajaxfuncs.group import mainTgroup, subTgroup
 from rsthtml.goTest import startTest
-from frontend.views import index, h_list, login_register, user_login, user_logout, temp_main, temp_case, temp_var, \
+from frontend.views import index, h_list, login_register, user_login, user_logout, temp_main, temp_case, temp_assist, temp_var, \
     temp_lib, temp_group, t_testViewSet, temp_mainViewSet, UserViewSet, temp_caseViewSet, temp_keywordsViewSet, \
     temp_variablesViewSet, \
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
@@ -84,6 +84,7 @@ urlpatterns = [
                   url(r'^start$', startTest),
                   url(r'^tmain$', temp_main),
                   url(r'^tcase$', temp_case),
+                url(r'^tassist$', temp_assist),
                   url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
                   url(r'^tgroup', temp_group),
