@@ -81,6 +81,9 @@ class TempMainForm(forms.ModelForm):
         model = temp_main
         fields = '__all__'
         help_texts = {'descr': "General description for the template",
+                      'precond': "The preconditions of this Project. You can reference other templates here.",
+                      'steps': "The required steps to execute the template.",
+                      'expected': "The expected result after executing the template.",
                       'notes': 'The template notes will be displayed in the selection window on the test start screen'}
 
 

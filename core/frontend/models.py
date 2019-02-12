@@ -118,6 +118,9 @@ user_id -> onetoone User
 
 class temp_main(models.Model):
     descr = models.CharField(max_length=200, verbose_name="Description")
+    precond = models.TextField(null=True, blank=True, verbose_name="Preconditions")
+    steps = models.TextField(null=True, blank=True, verbose_name="Steps")
+    expected = models.TextField(null=True, blank=True, verbose_name="Expected Result")
     notes = models.TextField(null=True, blank=True, verbose_name="Note")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
