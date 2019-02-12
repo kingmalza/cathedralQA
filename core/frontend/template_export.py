@@ -12,14 +12,12 @@ import boto3
 from botocore.exceptions import ClientError
 import stripe
 
-glob_riep = {}
-glob_amount=0
 
-def start(id_templ):
+def start(id_templ, d_base='helium_web'):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-        'database': 'helium_web',
+        'database': d_base,
         'user': 'kingmalza',
         'password': '11235813post',
     }
@@ -27,12 +25,12 @@ def start(id_templ):
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
 
-    main('demo', id_templ, conn)
+    pydict = main('demo', id_templ, conn)
+    #print(json.dumps(pydict, indent=4))
+    load_data(pydict)
 
     conn.close()
 
-    global glob_amount, glob_riep
-    #print(glob_amount, glob_riep)
 
     
        
@@ -99,9 +97,12 @@ def main(schema, id_templ, conn, p_force=False):
 
 
         j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list}
-        print(j_dict)
+        #print(json.dumps(j_dict, indent=4))
         cursor.close()
         conn.close()
+
+        return j_dict
+
             
     except Exception as e:
         print("Error1: ",e)
@@ -112,6 +113,26 @@ def main(schema, id_templ, conn, p_force=False):
     #pprint.pprint(records)
 
     cursor.close()
+
+
+
+def load_data(p_struct, d_base='helium_ai'):
+
+    connection_parameters = {
+        'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+        'database': d_base,
+        'user': 'kingmalza',
+        'password': '11235813post',
+    }
+
+    conn = psycopg2.connect(**connection_parameters)
+    conn.autocommit = True
+    try:
+        b_cursor = conn.cursor()
+        b_cursor.execute("insert into aida_export (py_dict) values ('" + json.dumps(p_struct) + "');")
+        b_cursor.close()
+    except Exception as e:
+        print("Error Insert: ",e)
 
 
 if __name__ == "__main__":
