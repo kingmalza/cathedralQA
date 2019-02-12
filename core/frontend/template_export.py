@@ -5,13 +5,17 @@ Methods for export template by id and save in shared DB
 """
 
 #!/usr/bin/python
+import sys
+import os
+import django
 import psycopg2
-import datetime
 import json
-import boto3
-from botocore.exceptions import ClientError
-import stripe
+from rsthtml.rst import PrepareRst as pr
+from rsthtml.rst import MakeRst as mr
 
+sys.path.append('core')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
+django.setup()
 
 def start(id_templ, d_base='helium_web'):
 
@@ -27,7 +31,7 @@ def start(id_templ, d_base='helium_web'):
 
     pydict = main('demo', id_templ, conn)
     #print(json.dumps(pydict, indent=4))
-    load_data(pydict)
+    load_data(pydict,id_templ)
 
     conn.close()
 
@@ -116,7 +120,7 @@ def main(schema, id_templ, conn, p_force=False):
 
 
 
-def load_data(p_struct, d_base='helium_ai'):
+def load_data(p_struct, id_templ, d_base='helium_ai'):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -125,14 +129,42 @@ def load_data(p_struct, d_base='helium_ai'):
         'password': '11235813post',
     }
 
+    rstcur = load_rst(id_templ)
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
     try:
         b_cursor = conn.cursor()
-        b_cursor.execute("insert into aida_export (py_dict) values ('" + json.dumps(p_struct) + "');")
+        b_cursor.execute("insert into aida_export (py_dict, rst_tc,rst_tk, rst_ts) values ('" + json.dumps(p_struct) + "','"+rstcur['r_settings']+"', '"+rstcur['r_case']+"', '"+rstcur['r_key']+"', 'bbb');")
         b_cursor.close()
     except Exception as e:
         print("Error Insert: ",e)
+
+
+def load_rst(mainID):
+
+    # Now i have toretreive html for display in preview div
+    # ------------RST AND HTML PREPARATION--------------------------
+
+    # 1 - Table preparation
+    table_case = pr(mainID, "TC")
+    table_key = pr(mainID, "TK")
+    table_setting = pr(mainID, "TS")
+    # In this case take the default variables
+    # table_var = pr(request.POST['mainID'], "TV")
+
+    # 2 - MakeRst
+    mrr1 = mr(table_setting.rst)
+    mrr3 = mr(table_case.rst)
+    mrr4 = mr(table_key.rst)
+
+    # 3 - Clean string returned for display roperly
+    cmr1 = mrr1.rstab.replace("-", "").replace("+", "")
+    cmr2 = mrr3.rstab.replace("-", "").replace("+", "")
+    cmr3 = mrr4.rstab.replace("-", "").replace("+", "")
+    # ------------------------------------------------------------
+
+    valrst = {'r_settings': cmr1, 'r_case': cmr2, 'r_key': cmr3}
+    return valrst
 
 
 if __name__ == "__main__":
