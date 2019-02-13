@@ -38,6 +38,7 @@ def main(schema, id_templ, conn, p_force=False):
     t_html = None
     t_descr = []
     t_ulib = set()
+    slib = ""
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
     cursor = conn.cursor()
     tmain_list = []
@@ -108,7 +109,9 @@ def main(schema, id_templ, conn, p_force=False):
         j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list}
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])
-        t_descr.append(list(t_ulib))
+        for i in list(t_ulib):
+            slib = slib+i+";"
+        t_descr.append(slib)
         l_ret = [j_dict,t_html,t_descr]
         #print(json.dumps(j_dict, indent=4))
         cursor.close()
