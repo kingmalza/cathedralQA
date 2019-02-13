@@ -35,7 +35,9 @@ def start(id_templ, d_base='helium_web'):
        
 def main(schema, id_templ, conn, p_force=False):
 
-    t_html = ""
+    t_html = None
+    t_descr = []
+    t_ulib = set()
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
     cursor = conn.cursor()
     tmain_list = []
@@ -85,6 +87,7 @@ def main(schema, id_templ, conn, p_force=False):
                             'tl_group': row[6]
                             })
 
+            if row[1] == 'Library': t_ulib.add(row[2])
 
         cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM demo.frontend_temp_test_keywords as ftt, demo.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
@@ -101,10 +104,12 @@ def main(schema, id_templ, conn, p_force=False):
         rec_main = cursor.fetchall()
         for row in rec_main:
             t_html = str(row[0])
-            print(t_html)
         
         j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list}
-        l_ret = [j_dict,t_html]
+        t_descr.append(tmain_list[0]['t_name'])
+        t_descr.append(tmain_list[0]['t_notes'])
+        t_descr.append(list(t_ulib))
+        l_ret = [j_dict,t_html,t_descr]
         #print(json.dumps(j_dict, indent=4))
         cursor.close()
         conn.close()
@@ -140,15 +145,15 @@ def load_data(p_struct, id_templ, d_base='helium_ai'):
     ck_cursor = conn.cursor()
     ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE aie.original_id = " + id_templ)
     ck_old = ck_cursor.fetchone()
-    if not ck_old:
+    if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into aida_export (py_dict,html_test, original_id) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+id_templ+"');")
+            b_cursor.execute("insert into aida_export (py_dict,html_test, original_id, descr, notes, u_libs) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+id_templ+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"');")
             b_cursor.close()
         except Exception as e:
             print("Error Insert: ",e)
     else:
-        print("TEMPLATE ALREADY UPLOADED! No data was inserted into table")
+        print("TEMPLATE ALREADY UPLOADED OR HTML NOT GENERATED! No data was inserted into table")
     
     ck_cursor.close()
 
