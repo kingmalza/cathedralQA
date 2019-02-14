@@ -12,7 +12,7 @@ import psycopg2
 import json
 
 
-def start(id_templ, d_base='helium_web'):
+def start(id_templ, schema='helium', d_base='helium_web'):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -24,9 +24,9 @@ def start(id_templ, d_base='helium_web'):
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
 
-    pydict = main('helium', id_templ, conn)
+    pydict = main(schema, id_templ, conn)
     #print(json.dumps(pydict, indent=4))
-    load_data(pydict,id_templ)
+    load_data(pydict,id_templ, schema)
 
     conn.close()
 
@@ -46,6 +46,7 @@ def main(schema, id_templ, conn, p_force=False):
     tvar_list = []
     tlib_list = []
     ttk_list = []
+    tpk_list = []
     #schema tab
     t_main = schema+'.frontend_temp_main'
     t_case = schema+'.frontend_temp_case'
@@ -98,6 +99,15 @@ def main(schema, id_templ, conn, p_force=False):
                             'tk_descr': row[4]
                             })
 
+
+        cursor.execute("SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id AND t.main_id_id = " + id_templ)
+        rec_main = cursor.fetchall()
+        for row in rec_main:
+            tpk_list.append({'tp_key1': row[3],
+                            'tp_key2': row[4],
+                            'tp_kval': row[5]
+                            })
+
         
         #Now retreive the html from histoy
         #cursor.execute("SELECT format('%s',html_test) FROM demo.frontend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
@@ -106,7 +116,7 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             t_html = str(row[0])
         
-        j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list}
+        j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list, 't_tpk':tpk_list}
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])
         for i in list(t_ulib):
@@ -132,7 +142,7 @@ def main(schema, id_templ, conn, p_force=False):
 
 
 
-def load_data(p_struct, id_templ, d_base='helium_ai'):
+def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -140,18 +150,20 @@ def load_data(p_struct, id_templ, d_base='helium_ai'):
         'user': 'kingmalza',
         'password': '11235813post',
     }
-    
+
+    ex_id = schema+"_"+str(id_templ)
+
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
     #First check if original_id already exist (meand that template was already charged)
     #IMPORTANT IN FUTURE IF I WHANT  THAT ANYONE CAN PUBLISH YOUR TEMPLATE LEAVE THIS CHECK
     ck_cursor = conn.cursor()
-    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE aie.original_id = " + id_templ)
+    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE aie.export_id = '" + ex_id+"'")
     ck_old = ck_cursor.fetchone()
     if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into aida_export (py_dict,html_test, original_id, descr, notes, u_libs) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+id_templ+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"');")
+            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"');")
             b_cursor.close()
         except Exception as e:
             print("Error Insert: ",e)
