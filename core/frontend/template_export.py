@@ -8,6 +8,7 @@ Methods for export template by id and save in shared DB
 
 import psycopg2
 import json
+import datetime
 
 
 def start(id_templ, schema='helium', d_base='helium_web'):
@@ -146,7 +147,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     }
 
     ex_id = schema+"_"+str(id_templ)
-
+    now = datetime.datetime.now()
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
     #First check if original_id already exist (meand that template was already charged)
@@ -157,7 +158,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"');")
+            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"', '"+str(now)+"');")
             b_cursor.close()
         except Exception as e:
             print("Error Insert: ",e)
