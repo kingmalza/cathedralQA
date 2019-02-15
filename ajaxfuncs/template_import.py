@@ -48,8 +48,8 @@ def list_templ(c_tenant):
     conn.autocommit = True
 
     ck_cursor = conn.cursor()
-    #retreive only data for generating row preview in mask
-    ck_cursor.execute("SELECT id,descr,notes,u_libs,num_down,export_source FROM public.aida_export WHERE export_id NOT LIKE '" + c_tenant + "%'")
+    #retreive only data for generating row preview in mask only if not inserted by user or in viewed there is all or user tenant
+    ck_cursor.execute("SELECT id,descr,notes,u_libs,num_down,export_source,view_by FROM public.aida_export WHERE export_id NOT LIKE '" + c_tenant + "%' AND (view_by LIKE '%"+c_tenant+"%' OR view_by = 'all')")
     rec_main = ck_cursor.fetchall()
     for row in rec_main:
         tt_list.append({'tt_id': row[0],
@@ -57,7 +57,8 @@ def list_templ(c_tenant):
                         'tt_note': row[2],
                         'tt_libs': row[3],
                         'tt_ndown': row[4],
-                        'tt_exported': row[5]
+                        'tt_exported': row[5],
+                        'tt_view': row[6]
                         })
 
     ck_cursor.close()
