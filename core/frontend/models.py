@@ -636,6 +636,18 @@ class settings_gen(models.Model):
 
 
 #----------------------------------------------------
+#TABLE CHECKING ALREADY IMPORTED TEMPLATES
+#----------------------------------------------------
+
+class import_his(models.Model):
+    id = models.AutoField(primary_key=True)
+    imp_data = models.DateTimeField()
+    imp_template = models.IntegerField(default=0)
+    imp_num = models.IntegerField(default=0)
+
+
+
+#----------------------------------------------------
 #PAYEMENT DATAS AND AMOUNT FOR ON-DEMAND PLANS
 #----------------------------------------------------
 

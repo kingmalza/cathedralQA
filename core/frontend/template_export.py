@@ -5,9 +5,7 @@ Methods for export template by id and save in shared DB
 """
 
 #!/usr/bin/python
-import sys
-import os
-import django
+
 import psycopg2
 import json
 
@@ -100,7 +98,7 @@ def main(schema, id_templ, conn, p_force=False):
                             })
 
 
-        cursor.execute("SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id AND t.main_id_id = " + id_templ)
+        cursor.execute("SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             tpk_list.append({'tp_key1': row[3],
@@ -132,11 +130,7 @@ def main(schema, id_templ, conn, p_force=False):
             
     except Exception as e:
         print("Error1: ",e)
-    # print out the records using pretty print
-    # note that the NAMES of the columns are not shown, instead just indexes.
-    # for most people this isn't very useful so we'll show you how to return
-    # columns as a dictionary (hash) in the next example.
-    #pprint.pprint(records)
+
 
     cursor.close()
 
@@ -158,7 +152,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     #First check if original_id already exist (meand that template was already charged)
     #IMPORTANT IN FUTURE IF I WHANT  THAT ANYONE CAN PUBLISH YOUR TEMPLATE LEAVE THIS CHECK
     ck_cursor = conn.cursor()
-    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE aie.export_id = '" + ex_id+"'")
+    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper()+"'")
     ck_old = ck_cursor.fetchone()
     if not ck_old and p_struct[1]:
         try:
@@ -175,4 +169,4 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
 
 
 if __name__ == "__main__":
-    start(1)
+    start("1")
