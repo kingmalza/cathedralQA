@@ -3,15 +3,106 @@
 {% block title %}AidaTestSuite - Dashboard{% endblock %}
 {% load static %}
 {% block content %}
+
 <style>
-    body {
-        background-color: #fefefe;
+    .box2 {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 3px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 280px;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     }
 </style>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Active Test
+                <small>run and schedule testing</small>
+            </h1>
+            <!--
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+            -->
+        </section>
 
-<div style="height: 600px;">
+        <!-- Div with overflow y -->
+            <section class="content">
+                <div class="row">
+                    <!-- First area, title and template descr -->
+                    <div class="col-md-4">
+              <!-- Info box -->
+              <div class="box2 box-info">
+                <div class="box-header">
+                  <h3 class="box-title">Info Box</h3>
+                  <div class="box-tools pull-right">
+                    <div class="label bg-aqua">Label</div>
+                  </div>
+                </div>
+                <div class="box-body" style="height: 70%;">
+                  Box class: <code>.box.box-info</code>
+                  <p>
+                    amber, microbrewery abbey hydrometer, brewpub ale lauter tun saccharification oxidized barrel.
+                    berliner weisse wort chiller adjunct hydrometer alcohol aau!
+                    sour/acidic sour/acidic chocolate malt ipa ipa hydrometer.
+                  </p>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                  <code>.box-footer</code>
+                </div><!-- /.box-footer-->
+              </div><!-- /.box -->
+            </div>
+            <!--ENd template descr -->
+                    <div class="col-lg-3 col-xs-6">
+                        <div class="row">
+              <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3>
+                    150
+                  </h3>
+                  <p>
+                    New Orders
+                  </p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+                        </div>
+                        <div class = "row">
+                                          <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3>
+                    150
+                  </h3>
+                  <p>
+                    New Orders
+                  </p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+                        </div>
+            </div>
+                </div>
+            </section>
 
-</div>
+        </div>
 
 
 {% endblock %}
