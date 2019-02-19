@@ -20,12 +20,13 @@ function createLine() {
 
             $.each(data, function (index) {
 
-                var div_row = document.createElement("div");
-                div_row.setAttribute('class', 'row');
-                div_row.style.paddingBottom = '30px';
+                //var div_row = document.createElement("div");
+                //div_row.setAttribute('class', 'row');
+                //div_row.style.paddingBottom = '30px';
                 //First create box info
                 var div_inf1 = document.createElement("div");
                 div_inf1.setAttribute('class', 'col-md-4');
+                div_inf1.style.paddingBottom = '30px';
                 var div_inf2 = document.createElement("div");
                 div_inf2.setAttribute('class', 'box2 box-info');
                 var div_inf3 = document.createElement("div");
@@ -65,8 +66,8 @@ function createLine() {
                 div_inf2.appendChild(div_inf2c);
 
                 div_inf1.appendChild(div_inf2);
-                div_row.appendChild(div_inf1);
-                t_main.appendChild(div_row);
+                //div_row.appendChild(div_inf1);
+                t_main.appendChild(div_inf1);
                 //End box info
 
             });
