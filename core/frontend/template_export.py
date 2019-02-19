@@ -13,6 +13,8 @@ import simplejson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from frontend.models import import_his
+
 
 
 def start(id_templ, schema='helium', d_base='helium_web'):
@@ -175,6 +177,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
 @csrf_exempt
 def ret_list(request):
     response = []
+    alvar = "N"
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -183,13 +186,20 @@ def ret_list(request):
         'password': '11235813post',
     }
 
+
+    #First retreive all template already imported by user
+    alist = []
+    alimp = import_his.objects.all()
+    for x in alimp: alist.append(x.imp_template)
+
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM public.aida_export")
+    cursor.execute("SELECT * FROM public.aida_export ORDER BY id DESC")
     rec_tot = cursor.fetchall()
     for row in rec_tot:
+        if row[1] in alist: alvar = "Y"
         response.append({'rl_py': row[0],
                          'rl_id': row[1],
                          'rl_html': row[2],
@@ -199,8 +209,10 @@ def ret_list(request):
                          'rl_ndown': row[6],
                          'rl_exps': row[8],
                          'rl_view': row[9],
-                         'rl_dt': str(row[10])
+                         'rl_dt': str(row[10]),
+                            'rl_already': alvar
                          })
+        alvar="N"
 
 
     cursor.close()

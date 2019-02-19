@@ -204,6 +204,8 @@
     <script src="{% static "js/history_comp.js" %}" type="text/javascript"></script>
     <!-- Scripts for base_home components -->
     <script src="{% static "js/home_comp.js" %}" type="text/javascript"></script>
+    <!-- Scripts for base_home components -->
+    <script src="{% static "js/tassist_comp.js" %}" type="text/javascript"></script>
 <!-- Start of LiveChat (www.livechatinc.com) code -->
 <script type="text/javascript">
 window.__lc = window.__lc || {};
@@ -254,6 +256,7 @@ window.__lc.license = 10552602;
         document.body.onload = function () {
             refHistory();
             countElem();
+            createLine();
         };
     </script>
 {% endblock %}
