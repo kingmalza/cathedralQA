@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'b)xb0#xtdg$-oq@il@48!@k6cpotcd0ku%f&39r^$y=8b(5o)o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['18.213.17.156', 'localhost', '127.0.0.1', '.myaida.io']
 

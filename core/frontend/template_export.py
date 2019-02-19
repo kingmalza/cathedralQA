@@ -9,6 +9,10 @@ Methods for export template by id and save in shared DB
 import psycopg2
 import json
 import datetime
+import simplejson
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 def start(id_templ, schema='helium', d_base='helium_web'):
@@ -90,7 +94,7 @@ def main(schema, id_templ, conn, p_force=False):
 
             if row[1] == 'Library': t_ulib.add(row[2])
 
-        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM demo.frontend_temp_test_keywords as ftt, demo.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM helium.frontend_temp_test_keywords as ftt, demo.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             ttk_list.append({'tk_kval': row[0],
@@ -108,9 +112,9 @@ def main(schema, id_templ, conn, p_force=False):
                             })
 
         
-        #Now retreive the html from histoy
+        #Now retreive the pid from histoy (for html)
         #cursor.execute("SELECT format('%s',html_test) FROM demo.frontend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
-        cursor.execute("SELECT html_test FROM demo.frontend_t_history as fth WHERE fth.test_main_id = " + id_templ + " LIMIT 1")
+        cursor.execute("SELECT pid FROM helium.frontend_t_history as fth WHERE fth.test_main_id = " + id_templ + "ORDER BY id DESC LIMIT 1")
         rec_main = cursor.fetchall()
         for row in rec_main:
             t_html = str(row[0])
@@ -167,6 +171,45 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     
     ck_cursor.close()
 
+
+@csrf_exempt
+def ret_list(request):
+    response = []
+
+    connection_parameters = {
+        'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+        'database': 'helium_ai',
+        'user': 'kingmalza',
+        'password': '11235813post',
+    }
+
+    conn = psycopg2.connect(**connection_parameters)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM public.aida_export")
+    rec_tot = cursor.fetchall()
+    for row in rec_tot:
+        response.append({'rl_py': row[0],
+                         'rl_id': row[1],
+                         'rl_html': row[2],
+                         'rl_desc': row[3],
+                         'rl_notes': row[4],
+                         'rl_libs': row[5],
+                         'rl_ndown': row[6],
+                         'rl_exps': row[8],
+                         'rl_view': row[9],
+                         'rl_dt': str(row[10])
+                         })
+
+
+    cursor.close()
+    conn.close()
+
+    json = simplejson.dumps(response)
+    return HttpResponse(
+        json, content_type='application/json'
+    )
 
 
 if __name__ == "__main__":
