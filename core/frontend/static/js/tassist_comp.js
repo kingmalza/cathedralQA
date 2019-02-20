@@ -9,6 +9,12 @@ $(document).ajaxStop(function () {
     document.getElementById("overlay_tass").style.display = "none";
 });
 
+
+function submitHandler(e) {
+    e.preventDefault();
+    window.open("/import_templ");
+}
+
 function createLine() {
 
     try {
@@ -86,9 +92,10 @@ function createLine() {
                     div_inf2c.setAttribute('class', 'box-footer');
                     var impform = document.createElement("FORM");
                     impform.method = "post";
-                    impform.action = function{alert("Ciao");};
-                    var buthtml = document.createElement("button");
-                    buthtml.type = "button";
+                    impform.action = "/import_templ";
+                    impform.addEventListener("submit", submitHandler);
+                    var buthtml = document.createElement("input");
+                    buthtml.type = "submit";
                     buthtml.innerHTML = "IMPORT THIS TEMPLATE";
                     buthtml.className = "btn btn-block btn-primary btn-sm";
                     impform.appendChild(buthtml)

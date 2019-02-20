@@ -27,6 +27,7 @@ from django.contrib import admin
 from django.urls import path
 from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost
 from ajaxfuncs.history import histrefresh
+from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
 from rsthtml.goTest import startTest
 from frontend.views import index, h_list, login_register, user_login, user_logout, temp_main, temp_case, temp_assist, temp_var, \
@@ -90,6 +91,7 @@ urlpatterns = [
                   url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
                   url(r'^tgroup', temp_group),
+                  url(r'^import_templ', import_templ),
                   url(r'^groupmain', mainTgroup),
                 url(r'^getassist', ret_list),
                   url(r'^groupsub', subTgroup),

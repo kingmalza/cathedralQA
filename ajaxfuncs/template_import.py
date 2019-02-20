@@ -66,23 +66,6 @@ def list_templ(c_tenant):
 
     return tt_list
 
-#Method for get HTML if called in preview
-def get_thtml(id_templ):
-    global connection_parameters
-
-    conn = psycopg2.connect(**connection_parameters)
-    conn.autocommit = True
-
-    ck_cursor = conn.cursor()
-    # retreive only data for generating row preview in mask
-    ck_cursor.execute("SELECT html_test FROM public.aida_export WHERE id = " + id_templ)
-    rec_main = ck_cursor.fetchone()
-
-    ck_cursor.close()
-    conn.close()
-
-    return rec_main[0][0]
-
 
 #Method for import template
 def import_templ(id_templ,t_dict):
