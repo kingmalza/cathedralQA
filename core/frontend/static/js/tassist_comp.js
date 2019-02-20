@@ -11,6 +11,7 @@ $(document).ajaxStop(function () {
 
 
 function submitHandler(e) {
+    console.log(e);
     e.preventDefault();
     window.open("/import_templ");
 }

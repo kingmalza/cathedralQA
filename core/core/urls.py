@@ -91,7 +91,7 @@ urlpatterns = [
                   url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
                   url(r'^tgroup', temp_group),
-                  url(r'^import_templ', import_templ),
+                  url(r'^import_templ/(?P<templ_id>\w+)/$', import_templ),
                   url(r'^groupmain', mainTgroup),
                 url(r'^getassist', ret_list),
                   url(r'^groupsub', subTgroup),

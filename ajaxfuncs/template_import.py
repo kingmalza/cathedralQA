@@ -18,6 +18,7 @@ from django.http import HttpResponse
 from django.db.models import Count
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -68,6 +69,8 @@ def list_templ(c_tenant):
 
 
 #Method for import template
+#Decorated because called directly from a link in url.py
+@login_required
 def import_templ(request):
 
     #t_dict come directly from javascript
