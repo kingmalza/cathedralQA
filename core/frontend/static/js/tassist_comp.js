@@ -94,11 +94,18 @@ function createLine() {
                     impform.method = "post";
                     impform.action = "/import_templ";
                     impform.addEventListener("submit", submitHandler);
+                    //Create hidden ID input
+                    var IDinput = document.createElement("input");
+                    IDinput.setAttribute("type", "hidden");
+                    IDinput.setAttribute("id", "idimp");
+                    IDinput.setAttribute("name", "idimp");
+                    IDinput.setAttribute("value", data[index].rl_id);
                     var buthtml = document.createElement("input");
                     buthtml.type = "submit";
                     buthtml.innerHTML = "IMPORT THIS TEMPLATE";
                     buthtml.className = "btn btn-block btn-primary btn-sm";
-                    impform.appendChild(buthtml)
+                    impform.appendChild(IDinput);
+                    impform.appendChild(buthtml);
                     div_inf2c.appendChild(impform);
                     div_inf2.appendChild(div_inf2c);
 

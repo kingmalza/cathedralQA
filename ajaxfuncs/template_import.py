@@ -68,13 +68,13 @@ def list_templ(c_tenant):
 
 
 #Method for import template
-def import_templ(id_templ,t_dict):
+def import_templ(request):
 
     #t_dict come directly from javascript
-
+    print(request.POST)
     #I cannot check if id_templ if ok because i have already filtered it in list_templ method
     #First check if a template with the same name exist (now django ORM)
-
+    """
     r_msg = ""
     json_t = None
 
@@ -108,4 +108,4 @@ def import_templ(id_templ,t_dict):
         r_msg = "General exception: "+e
 
     return r_msg
-
+    """
