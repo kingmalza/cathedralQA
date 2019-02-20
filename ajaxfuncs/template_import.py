@@ -19,6 +19,10 @@ from django.db.models import Count
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.template import RequestContext
 
 
 
@@ -71,44 +75,47 @@ def list_templ(c_tenant):
 #Method for import template
 #Decorated because called directly from a link in url.py
 @login_required
+@csrf_exempt
 def import_templ(request):
 
     #t_dict come directly from javascript
-    print(request.POST)
-    #I cannot check if id_templ if ok because i have already filtered it in list_templ method
-    #First check if a template with the same name exist (now django ORM)
-    """
-    r_msg = ""
-    json_t = None
+    if request.POST:
 
-    try:
-        mainCheck = temp_main.objects.filter(descr__iexact=str(t_dict['t_desc']))
-        if mainCheck:
-            #START IMPORT PROCEDURE FOR EVERY TABLE
-            #First GET template structure
-            global connection_parameters
+        tmainl = ""
+        tlocal = []
 
-            conn = psycopg2.connect(**connection_parameters)
-            conn.autocommit = True
+        #First retreive exported struct and check if name not exist already
+        global connection_parameters
 
-            ck_cursor = conn.cursor()
-            # retreive only data for generating row preview in mask
-            ck_cursor.execute("SELECT py_dict FROM public.aida_export WHERE id = " + id_templ)
-            rec_main = ck_cursor.fetchone()
-            json_t = json.loads(rec_main[0][0])
-            ck_cursor.close()
-            conn.close()
+        conn = psycopg2.connect(**connection_parameters)
+        conn.autocommit = True
 
-            #Well, now start importing template
-            print(json_t)
+        ck_cursor = conn.cursor()
+        # retreive only data for generating row preview in mask only if not inserted by user or in viewed there is all or user tenant
+        ck_cursor.execute("SELECT py_dict FROM public.aida_export WHERE id = " + request.POST['idimp'])
+        rec_main = ck_cursor.fetchall()
+        for x in rec_main: tmainl = json.loads(x[0])
 
+        ck_cursor.close()
+        conn.close()
 
-            r_msg = "Template correctly imported"
+        #Check if not esist a template with the same name
+        local_t = temp_main.objects.all()
+        for t in local_t: tlocal.append(t.descr.upper())
+        if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
+            #REMOVE PASS AND START IMPORT PROCESS!!!
+            pass
         else:
-            r_msg = "Template with the same name already exist"
+            #NOW PRINT, THEN TO TRASFORM IN A GUI MESSAGE
+            print("Template with same name already exist")
 
-    except Exception as e:
-        r_msg = "General exception: "+e
+        return HttpResponseRedirect('/tassist')
 
-    return r_msg
-    """
+    else:
+        return HttpResponseRedirect('/')
+
+
+    response = render(request)
+    return response
+
+

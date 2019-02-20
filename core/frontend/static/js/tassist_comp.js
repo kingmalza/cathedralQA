@@ -11,9 +11,8 @@ $(document).ajaxStop(function () {
 
 
 function submitHandler(e) {
-    console.log(e);
-    e.preventDefault();
-    window.open("/import_templ");
+    document.getElementById("iform").submit();
+    //e.preventDefault();
 }
 
 function createLine() {
@@ -92,8 +91,9 @@ function createLine() {
                     var div_inf2c = document.createElement("div");
                     div_inf2c.setAttribute('class', 'box-footer');
                     var impform = document.createElement("FORM");
+                    impform.setAttribute("id", "iform");
                     impform.method = "post";
-                    impform.action = "/import_templ";
+                    impform.action = "/import_templ/";
                     impform.addEventListener("submit", submitHandler);
                     //Create hidden ID input
                     var IDinput = document.createElement("input");

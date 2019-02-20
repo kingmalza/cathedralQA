@@ -245,7 +245,7 @@ def temp_lib(request, **kwargs):
 
 
 @login_required
-def temp_assist(request, **kwargs):
+def temp_assist(request, templ_id=None, **kwargs):
     global test_case
     ugroup = request.user.groups.all()
 
