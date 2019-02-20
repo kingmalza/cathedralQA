@@ -27,9 +27,9 @@ function createLine() {
         data: {},
         success: function (data) {
 
-            document.getElementById("asnum").innerHTML = data.length;
+            var templ_count = 0;
 
-            try {
+
                 $.each(data, function (index) {
 
                     //var div_row = document.createElement("div");
@@ -38,23 +38,37 @@ function createLine() {
                     //First create box info
                     var div_inf1 = document.createElement("div");
                     div_inf1.setAttribute('class', 'col-md-4');
-                    div_inf1.style.paddingBottom = '30px';
+                    div_inf1.style.paddingBottom = '40px';
                     var div_inf2 = document.createElement("div");
                     div_inf2.setAttribute('class', 'box2 box-info');
                     var div_inf3 = document.createElement("div");
                     div_inf3.setAttribute('class', 'box-header');
+                    var createH = document.createElement('a');
+                    createH.setAttribute('href', '/static/out/'+data[index].rl_html+'/'+data[index].rl_html+'_TC.html');
+                    createH.target = "_blank";
+                    var buthtview = document.createElement("button");
+                    buthtview.type = "button";
+                    buthtview.className = "btn btn-default";
+                    var ibut = document.createElement("I");
+                    ibut.setAttribute('class', 'fa fa-search');
+                    buthtview.appendChild(ibut);
+                    createH.appendChild(buthtview);
                     var h3_1 = document.createElement("h3");
                     h3_1.innerHTML = data[index].rl_desc;
                     h3_1.setAttribute('class', 'box-title');
+                    h3_1.style.paddingLeft = '10px';
+                    div_inf3.appendChild(createH);
                     div_inf3.appendChild(h3_1);
                     var div_inf3_1 = document.createElement("div");
                     div_inf3_1.setAttribute('class', 'box-tools pull-right');
                     var div_inf3_1_1 = document.createElement("div");
-                    div_inf3_1_1.setAttribute('class', 'label bg-aqua');
                     if (data[index].rl_already == "Y") {
-                        var text_div3 = document.createTextNode("Already");
+                        div_inf3_1_1.setAttribute('class', 'label bg-aqua');
+                        var text_div3 = document.createTextNode("INSTALLED");
                     } else {
-                        var text_div3 = document.createTextNode("New");
+                        templ_count = templ_count+1;
+                        div_inf3_1_1.setAttribute('class', 'label pull-right bg-green');
+                        var text_div3 = document.createTextNode("NEW");
                     }
                     div_inf3_1_1.appendChild(text_div3);
                     div_inf3_1.appendChild(div_inf3_1_1);
@@ -70,29 +84,31 @@ function createLine() {
 
                     var div_inf2c = document.createElement("div");
                     div_inf2c.setAttribute('class', 'box-footer');
-                    var createA = document.createElement('a');
-                    createA.setAttribute('href', '/static/out/'+data[index].rl_html+'/'+data[index].rl_html+'_TC.html');
-                    createA.target = "_blank";
+                    var impform = document.createElement("FORM");
+                    impform.method = "post";
+                    impform.action = function{alert("Ciao");};
                     var buthtml = document.createElement("button");
                     buthtml.type = "button";
-                    buthtml.innerHTML = "HTML Structure ";
-                    buthtml.className = "btn btn-block btn-default btn-sm";
-                    createA.appendChild(buthtml)
-                    div_inf2c.appendChild(createA);
+                    buthtml.innerHTML = "IMPORT THIS TEMPLATE";
+                    buthtml.className = "btn btn-block btn-primary btn-sm";
+                    impform.appendChild(buthtml)
+                    div_inf2c.appendChild(impform);
                     div_inf2.appendChild(div_inf2c);
 
                     div_inf1.appendChild(div_inf2);
                     //div_row.appendChild(div_inf1);
 
-                    t_main.appendChild(div_inf1);
+                    try {
+                        t_main.appendChild(div_inf1);
+                    }
+                    catch(err) {
+                        console.log("From main");
+                    }
                     //End box info
 
                 });
-            }
-            catch(err) {
-                console.log("From main");
-            }
 
+            document.getElementById("asnum").innerHTML = templ_count;
 
         }
     });
