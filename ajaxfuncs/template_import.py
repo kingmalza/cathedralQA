@@ -102,12 +102,15 @@ def import_templ(request):
         #Check if not esist a template with the same name
         local_t = temp_main.objects.all()
         for t in local_t: tlocal.append(t.descr.upper())
-        if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
+        #if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
+        if tmainl['t_main'][0]['t_name'].upper() not in [l.descr.upper() for l in local_t]:
             #REMOVE PASS AND START IMPORT PROCESS!!!
             pass
         else:
             #NOW PRINT, THEN TO TRASFORM IN A GUI MESSAGE
             print("Template with same name already exist")
+            return HttpResponseRedirect('/tassist/busy')
+            
 
         return HttpResponseRedirect('/tassist')
 

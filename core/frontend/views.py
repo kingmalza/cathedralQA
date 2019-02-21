@@ -246,13 +246,21 @@ def temp_lib(request, **kwargs):
 
 @login_required
 def temp_assist(request, templ_id=None, **kwargs):
-    global test_case
-    ugroup = request.user.groups.all()
 
+    con_stat = "<div><strong>NO DATA</strong></div>"
+    b_templ = 'base_tassist.html'
+    
+    print("templ_id is: ", templ_id)
+    if templ_id == 'busy':
+            con_stat = "<div><strong>TESTTTTTT</strong></div>"
+            #con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your aida account was successful.</strong><br><br>Our staff will take care of your request and will proceed in the shortest possible time to carry out all the necessary operations to allow you to use aida without restrictions.<br><br>As soon as the registration procedure is complete you will receive an email to the address you specify in registration proces containing all the necessary data Using your new aida environment, if you do not receive the activation email within 24 hours, try checking your spam box.<br><br><br><div><a href='https://aidaproject.io'><button class='btn btn-block btn-success btn-lg'>GO TO AIDA PROJECT HOMEPAGE</button></a></div></div></div></div>"
+            b_templ = 'base_tassist_status.html'
+    
+    
     context = RequestContext(request)
 
-    context_dict = {'all_case': test_case, 'ugroup': ugroup}
-    response = render(request, 'base_tassist.html', context_dict, context)
+    context_dict = {'tmessage': con_stat}
+    response = render(request, b_templ, context_dict, context)
 
     return response
 
