@@ -61,7 +61,9 @@ def index(request, **kwargs):
     test_sched = t_schedsettings.objects.all()
 
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
-    response = render(request, 'base_home.html', context_dict, context)
+    #response = render(request, 'base_home.html', context_dict, context)
+    #For IE compatibility remove context
+    response = render(request, 'base_home.html', context_dict)
 
     return response
 
