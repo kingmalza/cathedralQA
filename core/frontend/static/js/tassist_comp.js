@@ -15,6 +15,22 @@ function submitHandler(e) {
     //e.preventDefault();
 }
 
+
+function importLine() {
+
+
+    $.ajax({
+        type: "POST",
+        url: "import_templ",
+        data: {},
+        success: function (data) {
+
+
+        }
+    });
+}
+
+
 function createLine() {
 
     try {
@@ -93,7 +109,7 @@ function createLine() {
                     var impform = document.createElement("FORM");
                     impform.setAttribute("id", "iform");
                     impform.method = "post";
-                    impform.action = "/import_templ/";
+                    impform.action = importLine();
                     impform.addEventListener("submit", submitHandler);
                     //Create hidden ID input
                     var IDinput = document.createElement("input");
@@ -128,6 +144,7 @@ function createLine() {
         }
     });
 }
+
 
 function openHtml(id_teml) {
   window.open('/static/out/'+id_teml+'/'+id_teml+'_TC.html', '_blank');
