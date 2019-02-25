@@ -13,7 +13,8 @@ import simplejson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from frontend.models import import_his
+#if launch export manual from idlelib.idle, comment this
+#from frontend.models import import_his
 
 
 
@@ -96,9 +97,9 @@ def main(schema, id_templ, conn, p_force=False):
 
             if row[1] == 'Library': t_ulib.add(row[2])
 
-        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM helium.frontend_temp_test_keywords as ftt, demo.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM helium.frontend_temp_test_keywords as ftt, helium.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
-        for row in rec_main:
+        for row in reversed(rec_main):
             ttk_list.append({'tk_kval': row[0],
                             'tk_kgroup': row[1],
                             'tk_descr': row[4]

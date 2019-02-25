@@ -213,11 +213,15 @@ def import_templ(request):
                     tpk_save.save()
 
                 #If all done save in local import_his table
-                tin_save = import_his(imp_data=str(datetime.now()),
+                try:
+                    tin_save = import_his(imp_data=str(datetime.now()),
                                         imp_template=request.POST['idimp'],
-                                        imnum=F('imnum') + 1)
+                                        imp_num=1)
 
-                tin_save.save()
+                    tin_save.save()
+                except Exception as etin:
+                    print("IMPHIST exception-->",etin)
+
             except Exception as e:
                 return HttpResponseRedirect('/tassist/fail')
 
