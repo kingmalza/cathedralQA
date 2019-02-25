@@ -120,7 +120,7 @@ function createLine() {
                     IDinput.setAttribute("value", data[index].rl_id);
                     var buthtml = document.createElement("input");
                     buthtml.type = "submit";
-                    buthtml.innerHTML = "IMPORT THIS TEMPLATE";
+                    buthtml.value = "IMPORT THIS TEMPLATE";
                     buthtml.className = "btn btn-block btn-primary btn-sm";
                     impform.appendChild(IDinput);
                     impform.appendChild(buthtml);

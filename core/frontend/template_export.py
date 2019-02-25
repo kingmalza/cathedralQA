@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 #if launch export manual from idlelib.idle, comment this
-#from frontend.models import import_his
+from frontend.models import import_his
 
 
 
