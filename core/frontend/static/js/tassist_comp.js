@@ -21,7 +21,7 @@ function importLine() {
 
     $.ajax({
         type: "POST",
-        url: "import_templ",
+        url: "import_templ/",
         data: {},
         success: function (data) {
 
@@ -109,7 +109,8 @@ function createLine() {
                     var impform = document.createElement("FORM");
                     impform.setAttribute("id", "iform");
                     impform.method = "post";
-                    impform.action = importLine();
+                    //impform.action = "JavaScript:importLine()";
+                    impform.action = "/import_templ/";
                     impform.addEventListener("submit", submitHandler);
                     //Create hidden ID input
                     var IDinput = document.createElement("input");
