@@ -2,6 +2,14 @@
 """
 Alessandro Malzanini
 Methods for export template by id and save in shared DB
+
+For export a template method is still manual:
+
+1.comment line 25
+2. from command line go to var/www/web/core and type python -m idlelib.idle (afetr accessed virtualenv)
+3. from frontend.template_export import start
+4. start("<template_id>")
+5. When export finisch UNCOMMENT line 25
 """
 
 #!/usr/bin/python
