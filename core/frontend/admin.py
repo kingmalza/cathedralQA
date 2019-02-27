@@ -138,6 +138,19 @@ class temp_variablesAdmin(admin.ModelAdmin):
         return super(temp_variablesAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+
 class temp_libraryAdmin(admin.ModelAdmin):
 
     form = TempLibsForm
@@ -152,7 +165,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -174,6 +187,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
                 form.base_fields['l_type'].initial = latest_object.l_type
         except Exception as e:
             print('Error in admin.py->124: ',e)
+
 
         form.base_fields['l_group'].widget = Select(choices=(
             (None, 'No group'),

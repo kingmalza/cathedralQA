@@ -268,7 +268,7 @@ class PrepareRst:
         ltouple += (l1,)
 
         
-        tab_lib = temp_library.objects.filter(main_id=test_id)
+        tab_lib = temp_library.objects.filter(main_id=test_id).order_by("id")
         l=[]
         
         #tslist = [["Settings", ""]]
@@ -296,11 +296,11 @@ class PrepareRst:
                         l.append(str(r.l_val))
                         g_id = str(r.l_group)
                 else:
-                    """
+
                     if l:
                         ltouple += (l,)
                         l = []
-                    """
+
                     l.append(str(r.l_type))
                     l.append(str(r.l_val))
                     if len(l) < maxMax+1:
