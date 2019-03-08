@@ -25,6 +25,7 @@
     border-bottom: 1px solid #417690;
     color: 0000;
     }
+
 </style>
 
 {% extends "admin/base_site.html" %}
@@ -109,13 +110,18 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
 
 {% block after_related_objects %} {% endblock %}
 
-    {% if oId %}
-        <a href="/temp_clone/{{ oId }}">Clone Template</a>
-    {% endif %}
 
     {% block submit_buttons_bottom %}
 
     {% submit_row %}
+            {% if oId %}
+    <div class="submit-row">
+        <p class="deletelink-box"><a href="/temp_clone/{{ oId }}" class="deletelink">Clone this template</a></p>
+        <!--<a href="/temp_clone/{{ oId }}" style="padding-left: 15px; padding-bottom: 10px;">
+            <strong>CLONE THIS TEMPLATE</strong>
+        </a>-->
+    </div>
+    {% endif %}
     {% endblock %}
 
 {% block admin_change_form_document_ready %}
@@ -127,6 +133,7 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
             {% endif %}>
     </script>
 {% endblock %}
+
 
 {# JavaScript for prepopulated fields #}
 {% prepopulated_fields_js %}

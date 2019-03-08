@@ -277,7 +277,7 @@ def import_internal(t_struct):
                 for a in range(len(tmainl['t_case'])):
                     case_save = temp_case(descr=tmainl['t_case'][a]['tc_desr'],
                                           main_id_id=main_id,
-                                          owner_id=1,
+                                          owner_id=tmainl['t_case'][a]['t_owner'],
                                           dt=str(datetime.now()))
                     case_save.save()
                     case_id = case_save.id
@@ -287,7 +287,7 @@ def import_internal(t_struct):
                     var_save = temp_variables(v_key=tmainl['t_vars'][a]['tv_key'],
                                               v_val=tmainl['t_vars'][a]['tv_val'],
                                               main_id_id=main_id,
-                                              owner_id=1,
+                                              owner_id=tmainl['t_vars'][a]['t_owner'],
                                               dt=str(datetime.now()))
                     var_save.save()
 
@@ -296,7 +296,7 @@ def import_internal(t_struct):
                     lib_save = temp_library(l_type=tmainl['t_libs'][a]['tl_type'],
                                             l_val=tmainl['t_libs'][a]['tl_val'],
                                             main_id_id=main_id,
-                                            owner_id=1,
+                                            owner_id=tmainl['t_libs'][a]['t_owner'],
                                             dt=str(datetime.now()),
                                             l_group=tmainl['t_libs'][a]['tl_group'])
                     lib_save.save()
@@ -308,7 +308,7 @@ def import_internal(t_struct):
                         t_key = temp_keywords(descr=tmainl['t_ttk'][a]['tk_descr'],
                                               human=tmainl['t_ttk'][a]['tk_descr'],
                                               personal=True,
-                                              owner_id=1,
+                                              owner_id=tmainl['t_ttk'][a]['t_owner'],
                                               dt=str(datetime.now()))
                         t_key.save()
                         last_key = t_key.id
@@ -321,7 +321,7 @@ def import_internal(t_struct):
                                                   key_id_id=last_key,
                                                   main_id_id=main_id,
                                                   test_id_id=case_id,
-                                                  owner_id=1,
+                                                  owner_id=tmainl['t_ttk'][a]['t_owner'],
                                                   dt=str(datetime.now()))
 
                     ttk_save.save()
@@ -333,7 +333,7 @@ def import_internal(t_struct):
                         t_key = temp_keywords(descr=tmainl['t_tpk'][a]['tp_key1'],
                                               human=tmainl['t_tpk'][a]['tp_key1'],
                                               personal=True,
-                                              owner_id=1,
+                                              owner_id=tmainl['t_tpk'][a]['t_owner'],
                                               dt=str(datetime.now()))
                         t_key.save()
                         first_key = t_key.id
@@ -345,7 +345,7 @@ def import_internal(t_struct):
                         t_key = temp_keywords(descr=tmainl['t_tpk'][a]['tp_key2'],
                                               human=tmainl['t_tpk'][a]['tp_key2'],
                                               personal=False,
-                                              owner_id=1,
+                                              owner_id=tmainl['t_tpk'][a]['t_owner'],
                                               dt=str(datetime.now()))
                         t_key.save()
                         second_key = t_key.id
@@ -357,7 +357,7 @@ def import_internal(t_struct):
                                                   strd_id_id=second_key,
                                                   variable_val=tmainl['t_tpk'][a]['tp_kval'],
                                                   main_id_id=main_id,
-                                                  owner_id=1,
+                                                  owner_id=tmainl['t_tpk'][a]['t_owner'],
                                                   dt=str(datetime.now()))
 
                     tpk_save.save()

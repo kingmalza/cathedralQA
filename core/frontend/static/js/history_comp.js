@@ -827,6 +827,10 @@ function getTlineHist(t_stag, f_view) {
                 a4.setAttribute("class", "btn btn-log btn-flat btn-xs");
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
+                var a5 = document.createElement("A");
+                a5.setAttribute("class", "btn btn-alert btn-flat btn-xs");
+                a5.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/output.xml')");
+                a5.innerHTML = "Download XML";
                 //If there is Jira parameters integration
                 if (data[index].t_jira) {
                     var lij1 = document.createElement("LI");
@@ -981,6 +985,7 @@ function getTlineHist(t_stag, f_view) {
                     divj1.appendChild(divj3);
                 }
                 div42.appendChild(a4);
+                div42.appendChild(a5);
                 div4.appendChild(span4);
                 div4.appendChild(h34);
                 div4.appendChild(div41);
@@ -1007,7 +1012,7 @@ function getTlineHist(t_stag, f_view) {
         var btnLeft2 = document.createElement("A");
         btnLeft2.setAttribute("class", "btn btn-warning btn-flat btn-xs");
         btnLeft2.setAttribute("href", "javascript:window.open('/static/out/"+p_proc+"/"+p_proc+"_TC.html')");
-        btnLeft2.innerHTML = "RAW Html";
+        btnLeft2.innerHTML = "Test Structure";
         t_btn.appendChild(btnLeft2);
         }
             catch(err) {

@@ -49,6 +49,9 @@ test_case = temp_case.objects.all()
 test_var = temp_variables.objects.all()
 test_lib = temp_library.objects.all()
 
+#Global schema variable populated on login (row 553)
+schemaname = None;
+
 
 def handler500(request):
     return render(request, '500.html', status=500)
@@ -278,10 +281,11 @@ def temp_assist(request, templ_id=None, **kwargs):
 @login_required
 def temp_clone(request, t_id=None, **kwargs):
 
-    #PASSARE ANCHE IL TENANT CORRETTO!!!
-    exp_dict = start(t_id, internal = True)
-    print("templatedict-->",exp_dict[0])
-    import_internal(json.dumps(exp_dict[0]))
+    try:
+        exp_dict = start(t_id, schema=schemaname, internal = True)
+        import_internal(json.dumps(exp_dict[0]))
+    except Exception:
+        return HttpResponseRedirect('/logout')
 
     return HttpResponseRedirect('/admin/frontend/temp_main/')
 
@@ -554,6 +558,8 @@ def user_login(request):
     context = RequestContext(request)
     client = boto3.client("lambda")
     schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+    global schemaname
+    schemaname = schema_name
     
     if request.method == 'POST':
         username = request.POST['username']

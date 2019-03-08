@@ -89,7 +89,8 @@ def main(schema, id_templ, conn, p_force=False):
         cursor.execute("SELECT * FROM " + t_case + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
-            tcase_list.append({'tc_desr': row[1]})
+            tcase_list.append({'tc_desr': row[1],
+                               't_owner': row[3]})
 
 
         cursor.execute("SELECT * FROM " + t_var + " WHERE main_id_id = " + id_templ)
@@ -97,7 +98,7 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             tvar_list.append({'tv_key': row[1],
                               'tv_val': row[2],
-                               })
+                              't_owner': row[4]})
 
 
         cursor.execute("SELECT * FROM " + t_libs + " WHERE main_id_id = " + id_templ)
@@ -105,26 +106,29 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             tlib_list.append({'tl_type': row[1],
                             'tl_val': row[2],
-                            'tl_group': row[6]
+                            'tl_group': row[6],
+                            't_owner': row[4]
                             })
 
             if row[1] == 'Library': t_ulib.add(row[2])
 
-        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr FROM helium.frontend_temp_test_keywords as ftt, helium.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+        cursor.execute("SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr, ftk.owner_id FROM helium.frontend_temp_test_keywords as ftt, helium.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in reversed(rec_main):
             ttk_list.append({'tk_kval': row[0],
                             'tk_kgroup': row[1],
-                            'tk_descr': row[4]
+                            'tk_descr': row[4],
+                            't_owner': row[5]
                             })
 
 
-        cursor.execute("SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
+        cursor.execute("SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val, t.owner_id FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             tpk_list.append({'tp_key1': row[3],
                             'tp_key2': row[4],
-                            'tp_kval': row[5]
+                            'tp_kval': row[5],
+                            't_owner': row[6]
                             })
 
         
