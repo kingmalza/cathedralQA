@@ -19,7 +19,7 @@ class temp_mainAdmin(admin.ModelAdmin):
     form = TempMainForm
 
     #list_filter = ('main_id__descr', 'l_type')
-    list_display = ('descr', 'notes', 'dt')
+    list_display = ('descr', 'notes', 'dt', 'active')
     #ordering = ('-l_type',)
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
@@ -39,6 +39,7 @@ class temp_mainAdmin(admin.ModelAdmin):
         
         extra_context = {
             'lmod': l_mod,
+            'oId': obj_id
         }
         return super(temp_mainAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
    

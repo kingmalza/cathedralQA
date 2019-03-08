@@ -107,9 +107,16 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
 {% endfor %}
 {% endblock %}
 
-{% block after_related_objects %}{% endblock %}
+{% block after_related_objects %} {% endblock %}
 
-{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+    {% if oId %}
+        <a href="/temp_clone/{{ oId }}">Clone Template</a>
+    {% endif %}
+
+    {% block submit_buttons_bottom %}
+
+    {% submit_row %}
+    {% endblock %}
 
 {% block admin_change_form_document_ready %}
     <script type="text/javascript"

@@ -123,6 +123,7 @@ class temp_main(models.Model):
     expected = models.TextField(null=True, blank=True, verbose_name="Expected Result")
     notes = models.TextField(null=True, blank=True, verbose_name="Note")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
+    active = models.BooleanField(default=True, verbose_name="Active")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tmain_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
@@ -485,6 +486,8 @@ class t_threads(models.Model):
     thread_tgroup = models.CharField(max_length=50, blank=True)
     thread_stype = models.CharField(max_length=50, blank=True)
     thread_sval = models.CharField(max_length=10, blank=True)
+    pre_note = models.TextField(null=True, blank=True)
+    post_note = models.TextField(null=True, blank=True)
     
     class Meta:
         indexes = [

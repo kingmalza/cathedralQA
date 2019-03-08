@@ -26,7 +26,7 @@ from frontend.models import import_his
 
 
 
-def start(id_templ, schema='helium', d_base='helium_web'):
+def start(id_templ, schema='helium', d_base='helium_web', internal = False):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -39,6 +39,11 @@ def start(id_templ, schema='helium', d_base='helium_web'):
     conn.autocommit = True
 
     pydict = main(schema, id_templ, conn)
+
+    #If this function was called from view.py temp_clone (internal) return just dict
+    if internal:
+        conn.close()
+        return pydict
     #print(json.dumps(pydict, indent=4))
     load_data(pydict,id_templ, schema)
 

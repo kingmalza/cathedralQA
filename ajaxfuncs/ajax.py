@@ -37,7 +37,7 @@ def mainoptions(request):
             # HERE WE HAVE TO SELECT THE temp_variables related to test in t_group_test
             # First create my list from group selection
             try:
-                mainGroup = t_group_test.objects.filter(id_grp=int(request.POST['mainID'])).order_by('temp_ord')
+                mainGroup = t_group_test.objects.filter(id_grp=int(request.POST['mainID']), id_temp__active = True).order_by('temp_ord')
                 for i in mainGroup.iterator(): g_list.append(i.id_temp.id)
             except:
                 pass
@@ -59,7 +59,7 @@ def mainoptions(request):
             # HERE WE HAVE TO SELECT THE temp_variables related to test in t_tags_route
             # First create my list from tags selection
             try:
-                mainTags = t_tags_route.objects.filter(tag_id=int(request.POST['mainID'])).order_by('main_id')
+                mainTags = t_tags_route.objects.filter(tag_id=int(request.POST['mainID']), main_id__active = True).order_by('main_id')
                 for i in mainTags.iterator(): t_list.append(i.main_id.id)
             except:
                 pass
@@ -74,7 +74,7 @@ def mainoptions(request):
             # First create my list from projs selection
 
             try:
-                mainProjs = t_proj_route.objects.filter(proj_id=int(request.POST['mainID'])).order_by('main_id')
+                mainProjs = t_proj_route.objects.filter(proj_id=int(request.POST['mainID']), main_id__active = True).order_by('main_id')
                 for i in mainProjs.iterator():
                     t_list.append(i.main_id.id)
             except:
@@ -338,7 +338,7 @@ def tselect(request):
     l = threading.enumerate()
     if request.is_ajax():
         if request.POST['selType'] == "ST":
-            selData = temp_main.objects.all()
+            selData = temp_main.objects.filter(active=True)
         elif request.POST['selType'] == "TG":
             selData = t_group.objects.all()
         elif request.POST['selType'] == "TA":

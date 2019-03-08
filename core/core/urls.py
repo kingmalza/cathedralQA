@@ -36,7 +36,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
     t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms, \
-    handler500
+    handler500, temp_clone
 
 from frontend.template_export import ret_list
 
@@ -89,6 +89,7 @@ urlpatterns = [
                   url(r'^tcase$', temp_case),
                 url(r'^tassist$', temp_assist),
                   url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),
+                url(r'^temp_clone/(?P<t_id>\w+)/$', temp_clone),
                   url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
                   url(r'^tgroup', temp_group),

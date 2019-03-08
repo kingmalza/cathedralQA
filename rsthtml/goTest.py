@@ -138,15 +138,26 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             #match = re.search(pattern, t_full)
             #t = str(match.group(0))
             #t = threading.current_thread()
-            if s_type == "TG": g_id = t_group.objects.get(id=mainId)
+            if s_type == "TG":
+                g_id = t_group_test.objects.get(id_temp=mainId)
             # Count FAIL and PASS values into xml
             t_pass = str(xmlcont).count('PASS')
             t_fail = str(xmlcont).count('FAIL')
-            test_save = t_history(test_main=temp_main.objects.get(id=mainId), exec_status="TERMINATE",
+            try:
+                test_save = t_history(test_main=temp_main.objects.get(id=mainId), exec_status="TERMINATE",
                                   xml_result=xmlcont,
                                   html_test=htmlcont, var_test=varlist_a, pid=t_list[t_inst].retval['pid'],
-                                  user_id=User.objects.get(id=u_id), group_id=g_id, pass_num=t_pass, fail_num=t_fail,
+                                  user_id=User.objects.get(id=u_id), group_id=t_group.objects.get(id=g_id.id_grp_id), pass_num=t_pass,  fail_num=t_fail,
                                   test_type=s_type, test_group=tx_group, sched_type=sc_type, sched_val=sc_val, thread_name=t)
+            except Exception:
+                test_save = t_history(test_main=temp_main.objects.get(id=mainId), exec_status="TERMINATE",
+                                      xml_result=xmlcont,
+                                      html_test=htmlcont, var_test=varlist_a, pid=t_list[t_inst].retval['pid'],
+                                      user_id=User.objects.get(id=u_id),
+                                        pass_num=t_pass, fail_num=t_fail,
+                                      test_type=s_type, test_group=tx_group, sched_type=sc_type, sched_val=sc_val,
+                                      thread_name=t)
+
 
             test_save.save()
             
@@ -246,7 +257,7 @@ def startTest(request, i=[0]):
             stag = request.POST.get('t_id')
 
             if request.POST.get('ttype') == 'PA':
-                proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'))
+                proj_list = t_proj_route.objects.filter(proj_id=request.POST.get('mainID'), main_id__active = True)
                 for x in proj_list:
                     #Python3 replace unicode with str
                     #mainId = unicode(x.main_id_id)
@@ -260,7 +271,7 @@ def startTest(request, i=[0]):
                 except:
                     gval='DataError'
             elif request.POST.get('ttype') == 'TA':
-                proj_list = t_tags_route.objects.filter(tag_id=request.POST.get('mainID'))
+                proj_list = t_tags_route.objects.filter(tag_id=request.POST.get('mainID'), main_id__active = True)
                 for x in proj_list:
                     #mainId = unicode(x.main_id_id)
                     #Python3 replace unicode with str
@@ -274,7 +285,7 @@ def startTest(request, i=[0]):
                 except:
                     gval = 'DataError'
             elif request.POST.get('ttype') == 'TG':
-                proj_list = t_group_test.objects.filter(id_grp=request.POST.get('mainID'))
+                proj_list = t_group_test.objects.filter(id_grp=request.POST.get('mainID'), id_temp__active = True)
                 for x in proj_list:
                     #Python3 replace unicode with str
                     #mainId = unicode(x.id_temp_id)

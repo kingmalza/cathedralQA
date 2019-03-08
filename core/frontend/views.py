@@ -8,6 +8,8 @@ import stripe
 from django.shortcuts import render
 from frontend.forms import DocumentForm
 import simplejson
+from frontend.template_export import start
+from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
 from frontend.models import temp_main, temp_case, temp_keywords, temp_library, temp_variables, temp_pers_keywords, \
@@ -272,6 +274,16 @@ def temp_assist(request, templ_id=None, **kwargs):
 
     return response
 
+
+@login_required
+def temp_clone(request, t_id=None, **kwargs):
+
+    #PASSARE ANCHE IL TENANT CORRETTO!!!
+    exp_dict = start(t_id, internal = True)
+    print("templatedict-->",exp_dict[0])
+    import_internal(json.dumps(exp_dict[0]))
+
+    return HttpResponseRedirect('/admin/frontend/temp_main/')
 
 @login_required
 def ext_lib(request, **kwargs):
