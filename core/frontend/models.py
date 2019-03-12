@@ -504,17 +504,13 @@ class t_assign(models.Model):
     t_tag = models.ForeignKey(t_threads, on_delete=models.CASCADE, related_name='thread_tag')
     id_userfor = models.ForeignKey('auth.User', related_name='u_for', on_delete=models.CASCADE)
     id_userass = models.ForeignKey('auth.User', related_name='u_ass', on_delete=models.CASCADE)
-    id_userclose = models.ForeignKey('auth.User', related_name='u_close', on_delete=models.CASCADE, null=True, blank=True)
     dopen = models.DateTimeField(auto_now=True)
-    dclose = models.DateTimeField(null=True, blank=True)
     ass_notes = models.TextField(null=True, blank=True)
-    close_notes = models.TextField(null=True, blank=True)
-
 
 
     class Meta:
         indexes = [
-            models.Index(fields=['t_tag', 'id_userfor', 'id_userass', 'id_userclose']),
+            models.Index(fields=['t_tag', 'id_userfor', 'id_userass']),
         ]
 
     def __str__(self):
