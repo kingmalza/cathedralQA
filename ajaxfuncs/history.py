@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test
+from django.contrib.auth.models import User
 
 import django
 
@@ -143,6 +144,29 @@ def histrefresh(request, lorder='-id'):
 
         json = simplejson.dumps(response)
         #print(json)
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
+
+
+@csrf_exempt
+def retUser(request):
+    if request.is_ajax():
+        totUser = User.objects.all().order_by('username')
+
+        response = []
+
+        for i in totUser:
+            vallabel = {}
+            vallabel['uID'] = i.id
+            vallabel['uUsername'] = i.username
+            response.append(vallabel)
+
+        json = simplejson.dumps(response)
+
         return HttpResponse(
             json, content_type='application/json'
         )
