@@ -29,3 +29,35 @@ function LoadUsers() {
   });
 
 }
+
+function CheckAdd(btnval, txtval, tagval) {
+
+  if (btnval == "Select user" || txtval == "") {
+    alert("Please fill both the name and text value for assign a task");
+  } else {
+
+    $.ajax({
+        type: "POST",
+        url: "addtask",
+        data: {'uVal':btnval, 'uTxt':txtval, 'uTag':tagval},
+        success: function (data) {
+
+
+            $.each(data, function (index) {
+                //If ok first clear form
+                if (data[index].message == 'OK') {
+                  document.getElementById('user_btn').innerHTML = "Select user";
+                  document.getElementById('txt_btn').value = "";
+                  document.getElementById('txt_btn').setAttribute("placeholder","Type message...");
+                } else {
+                  alert(data[index].message);
+                }
+
+            });
+
+
+        }
+    });
+  }
+
+}

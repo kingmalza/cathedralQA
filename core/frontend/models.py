@@ -46,8 +46,8 @@ class Client(TenantMixin):
     # default true, schema will be automatically created and synced when it is saved
     auto_create_schema = True
 
-    
-              
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
     website = models.URLField(blank=True)
@@ -161,7 +161,7 @@ class temp_case(models.Model):
 
     def __repr__(self):
         return self.descr
-   
+
 
 # temp_keywords
 """
@@ -208,13 +208,13 @@ class temp_variables(models.Model):
         verbose_name_plural = '3-Test Variables'
         ordering = ('main_id', 'v_key',)
 
-    
+
     def __str__(self):
         return '%s -> %s' % (str(self.main_id), self.v_key)
 
     def __repr__(self):
         return self.v_key
-    
+
 
 # temp_pers_keywords
 """
@@ -239,11 +239,11 @@ class temp_pers_keywords(models.Model):
         verbose_name_plural = '6-Keywords Link Chain'
         ordering = ('main_id', 'standard_id', 'pers_id',)
 
-    
+
     def __str__(self):
         return '%s -> %s -> %s (%s)' % (
         str(self.main_id), str(self.pers_id), str(self.standard_id), str(self.variable_val))
-    
+
 
 # temp_test_keywords
 """
@@ -267,10 +267,10 @@ class temp_test_keywords(models.Model):
         verbose_name_plural = '5-Test Cases Main Chain'
         ordering = ('main_id', 'test_id', 'key_id',)
 
-    
+
     def __str__(self):
         return '%s (%s -> %s)' % (str(self.test_id), str(self.key_id), str(self.key_val))
-    
+
 
 # temp_library
 """
@@ -293,15 +293,15 @@ class temp_library(models.Model):
         verbose_name_plural = '4-Test Settings'
         ordering = ('main_id', 'l_type',)
 
-    
+
     def __str__(self):
         return '%s -> %s (%s)' % (str(self.main_id), self.l_type, self.l_val)
-    
+
 
 # Create a TestSchedue table
 """
 id(PK)
-id_test -> Test table Foreign key 
+id_test -> Test table Foreign key
 plan_data -> First inserted data
 exec_main -> Type of execution (Done, Every)
 exec_every -> Repetition indicator (10m, 2h, 3 days)
@@ -327,7 +327,7 @@ class t_schedule(models.Model):
 # Create a Schedule repetition table
 """
 id(PK)
-id_test -> Test table Foreign key 
+id_test -> Test table Foreign key
 plan_data -> First inserted data
 exec_main -> Type of execution (Done, Every)
 exec_every -> Repetition indicator (10m, 2h, 3 days)
@@ -407,7 +407,7 @@ class t_group_test(models.Model):
 # Createtest_history table
 """
 id(PK)
-id_test -> Test table Foreign key 
+id_test -> Test table Foreign key
 exec_data -> DateTime of execution
 exec_user -> Exec user Foreign
 exec_status -> Job status (IN PROGRESS/TERMINATE)
@@ -433,7 +433,7 @@ class t_history(models.Model):
     sched_type = models.CharField(max_length=50, blank=True)
     sched_val = models.CharField(max_length=10, blank=True)
     thread_name = models.CharField(max_length=100, blank=True)
-    
+
     class Meta:
         indexes = [
             models.Index(fields=['group_id']),
@@ -467,7 +467,7 @@ class t_time(models.Model):
 # Create a threads managing table
 """
 id(PK)
-id_test -> Test table Foreign key 
+id_test -> Test table Foreign key
 thread_id -> Single test thread id
 thread_main -> Main thread of schedule (a sort of daemon)
 """
@@ -486,7 +486,7 @@ class t_threads(models.Model):
     thread_tgroup = models.CharField(max_length=50, blank=True)
     thread_stype = models.CharField(max_length=50, blank=True)
     thread_sval = models.CharField(max_length=10, blank=True)
-    
+
     class Meta:
         indexes = [
             models.Index(fields=['thread_stag', 'thread_status']),
@@ -501,7 +501,7 @@ class t_threads(models.Model):
 #------------------------------------------------------------------------------
 
 class t_assign(models.Model):
-    t_tag = models.ForeignKey(t_threads, on_delete=models.CASCADE, related_name='thread_tag')
+    t_tag = models.CharField(db_index=True, max_length=100, null=True, blank=True)
     id_userfor = models.ForeignKey('auth.User', related_name='u_for', on_delete=models.CASCADE)
     id_userass = models.ForeignKey('auth.User', related_name='u_ass', on_delete=models.CASCADE)
     dopen = models.DateTimeField(auto_now=True)
@@ -552,11 +552,11 @@ class t_tags_route(models.Model):
         verbose_name_plural = 'TAGS TEMPLATES LINK'
         ordering = ('main_id', 'tag_id', 'route_notes',)
 
-    
+
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.tag_id))
-    
+
 
 # -----------------------------------------------------------------------------
 # TEMPLATE PROJECT ASSOCIATION
@@ -595,11 +595,11 @@ class t_proj_route(models.Model):
         verbose_name_plural = 'PROJECT TEMPLATE LINK'
         ordering = ('main_id', 'proj_id', 'route_notes',)
 
-    
+
     def __str__(self):
         return '%s -> %s' % (
             str(self.main_id), str(self.proj_id))
-    
+
 
 #----------------------------------------------------
 #FILES UPLOAD
@@ -697,13 +697,13 @@ class suite_libs(models.Model):
     notes = models.TextField(null=True, blank=True)
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #owner = models.IntegerField(default=0)
-    
+
     class Meta:
         verbose_name = 'LIBRARIES'
         verbose_name_plural = 'LIBRARIES'
         ordering = ('name', 'lib_name', 'status',)
 
-    
+
     def __str__(self):
         return '%s -> %s (%s)' % (
             str(self.name), str(self.lib_name), str(self.status))
@@ -731,7 +731,7 @@ class jra_settings(models.Model):
         return '%s -> %s' % (
             str(self.j_address), str(self.j_user))
 
-        
+
 class jra_history(models.Model):
     id = models.AutoField(primary_key=True)
     j_tid = models.CharField(max_length=1000, blank=True)

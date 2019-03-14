@@ -2,12 +2,13 @@ import sys
 import os
 import simplejson
 import threading
+import datetime
 from django.http import HttpResponse
 from django.db.models import Count
 from django.db.models import Q
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
-from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test
+from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, t_assign
 from django.contrib.auth.models import User
 
 import django
@@ -165,6 +166,42 @@ def retUser(request):
             vallabel['uUsername'] = i.username
             response.append(vallabel)
 
+        json = simplejson.dumps(response)
+
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
+
+
+@csrf_exempt
+def assign_ticket(request):
+    if request.is_ajax() and request.user.is_authenticated:
+
+        uFor = User.objects.filter(username=request.POST['uVal']).only('id')
+        for i in uFor: uid = i.id
+        uAsign = request.user.id
+
+        response = []
+        vallabel = {}
+
+        try:
+            #Insert values into table and return it
+            data_i = t_assign(dopen=datetime.datetime.now(),ass_notes=request.POST['uTxt'],id_userass_id = uAsign,id_userfor_id = uid,t_tag=request.POST['uTag'])
+            data_i.save()
+
+            vallabel['dop'] = str(datetime.datetime.now())
+            vallabel['anote'] = request.POST['uTxt']
+            vallabel['uass'] = uAsign
+            vallabel['ufor'] = uid
+            vallabel['message'] = "OK"
+
+        except Exception as e:
+            vallabel['message'] = e
+
+        response.append(vallabel)
         json = simplejson.dumps(response)
 
         return HttpResponse(

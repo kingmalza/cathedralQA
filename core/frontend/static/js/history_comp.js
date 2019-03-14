@@ -56,7 +56,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
     //TIMELINE ELEMENTS
     t_line = document.getElementById("tline");
     t_lineH1 = GetElementInsideContainer("tl_tit", "tl_h4");
-    
+
     //SET WARNING FOR LOADING VISIBLE
     //stat_h.style.visibility = 'visible';
 
@@ -75,7 +75,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 dlen = data[data.length-1];
                 //dlen = data[index].OptionNumT;
                 //Create footer elements for multiple of 20
-                
+
                 //var multipler = dlen.size / 20;
                 var multipler = dlen / 20;
                 console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
@@ -342,7 +342,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
                         t_td14.setAttribute('style', 'display: none');
-                        
+
                     t_tr0.appendChild(t_td0);
                     t_tr0.appendChild(t_td10);
                     t_tr0.appendChild(t_td2);
@@ -360,7 +360,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td9);
                     t_tr0.appendChild(t_td14);
                     t_body.appendChild(t_tr0);
-                    
+
                     for (i = 0; i < data[index].SubLen; i++) {
                         //console.log(data[index]['SubThread'][i].SubVar);
                         //Create head and data table for child (multi executed elements)
@@ -459,7 +459,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         var t_td14 = document.createElement("TD");
                         t_td14.innerHTML = data[index].OptionUUID;
                         t_td14.setAttribute('style', 'display: none');
-                        
+
                         t_tr0.appendChild(t_td0);
                         t_tr0.appendChild(t_td10);
                         t_tr0.appendChild(t_td2);
@@ -478,20 +478,25 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_tr0.appendChild(t_td14);
                         t_body.appendChild(t_tr0);
                     }
-                                        
-                    
+
+
                 }
 
 
            });
 
             var rows = t_body.rows; // or table.getElementsByTagName("tr");
+            lab_proc = document.createElement("SPAN");
+            lab_proc.setAttribute("id", "id_lproc");
+            lab_proc.setAttribute("class", "label label-default");
             for (var i = 0; i < rows.length; i++) {
                 rows[i].onclick = (function () { // closure
                     var cnt = i; // save the counter to use in the function
                     return function () {
                         t_line.style.visibility = 'visible';
-                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
+                        lab_proc.innerHTML = this.cells[14].innerHTML;
+                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " //+ this.cells[0].innerHTML;
+                        t_lineH1.appendChild(lab_proc);
                         c_hold = this.cells[14].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         window.location.href = '/#tl_tit';
@@ -896,13 +901,13 @@ function getTlineHist(t_stag, f_view) {
                                 tdj3.innerHTML = data[index].j_file;
                                 tdj4.innerHTML = data[index].j_date;
                                 tdj5.innerHTML = data[index].j_err;
-                                trj.appendChild(tdj1);   
+                                trj.appendChild(tdj1);
                                 trj.appendChild(tdj2);
                                 trj.appendChild(tdj3);
                                 trj.appendChild(tdj4);
                                 trj.appendChild(tdj5);
-                                tabj.appendChild(trj);                                
-                            });    
+                                tabj.appendChild(trj);
+                            });
                         }
                     });
                     divj2.appendChild(tabj);
@@ -922,10 +927,10 @@ function getTlineHist(t_stag, f_view) {
                         jh3t.innerHTML = "Submit to jira";
                         divjh.appendChild(jh3t);
                         divj3_3.appendChild(divjh);
-                        
+
                         var jfrm = document.createElement("FORM");
                         jfrm.method = "post";
-                        
+
                         var divjf1 = document.createElement("div");
                         divjf1.setAttribute("class", "box-body");
                         var divjf2 = document.createElement("div");
@@ -974,7 +979,7 @@ function getTlineHist(t_stag, f_view) {
                         divj3_3.appendChild(jfrm);
                         divj3_2.appendChild(divj3_3);
                         divj3.appendChild(divj3_2);
-            
+
                         jfrm.addEventListener ("submit", function() {
                             postJraEvent(data[index].t_id, data[index].th_id, data[index].t_pid, document.getElementById('txt2-'+data[index].t_pid).value,document.getElementById('txt3-'+data[index].t_pid).value,document.getElementById('txt5-'+data[index].t_pid).checked);
                         });
@@ -1022,5 +1027,3 @@ function getTlineHist(t_stag, f_view) {
     });
 
 }
-
-
