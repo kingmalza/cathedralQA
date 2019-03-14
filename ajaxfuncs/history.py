@@ -210,3 +210,27 @@ def assign_ticket(request):
 
     else:
         pass
+
+@csrf_exempt
+def get_ticket(request):
+    if request.is_ajax() and request.user.is_authenticated:
+
+        uAss = t_assign.objects.filter(t_tag=request.POST['uTag'])
+        response = []
+
+        for i in uAss:
+            vallabel = {}
+            vallabel['dop'] = str("{:%Y-%m-%d %H:%M}".format(i.dopen))
+            vallabel['anotes'] = i.ass_notes
+            vallabel['usass'] = str(User.objects.get(id = int(i.id_userass_id)))
+            vallabel['usfor'] = str(User.objects.get(id = int(i.id_userfor_id)))
+            response.append(vallabel)
+
+        json = simplejson.dumps(response)
+
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
