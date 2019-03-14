@@ -192,10 +192,10 @@ def assign_ticket(request):
             data_i = t_assign(dopen=datetime.datetime.now(),ass_notes=request.POST['uTxt'],id_userass_id = uAsign,id_userfor_id = uid,t_tag=request.POST['uTag'])
             data_i.save()
 
-            vallabel['dop'] = str(datetime.datetime.now())
+            vallabel['dop'] = str("{:%Y-%m-%d %H:%M}".format(datetime.datetime.now()))
             vallabel['anote'] = request.POST['uTxt']
-            vallabel['uass'] = uAsign
-            vallabel['ufor'] = uid
+            vallabel['uass'] = str(User.objects.get(id = int(uAsign)))
+            vallabel['ufor'] = str(User.objects.get(id = int(uid)))
             vallabel['message'] = "OK"
 
         except Exception as e:
@@ -214,8 +214,8 @@ def assign_ticket(request):
 @csrf_exempt
 def get_ticket(request):
     if request.is_ajax() and request.user.is_authenticated:
-
-        uAss = t_assign.objects.filter(t_tag=request.POST['uTag'])
+        uAsign = request.user.id
+        uAss = t_assign.objects.filter(t_tag=request.POST['uTag']).order_by('-id')
         response = []
 
         for i in uAss:
@@ -224,6 +224,10 @@ def get_ticket(request):
             vallabel['anotes'] = i.ass_notes
             vallabel['usass'] = str(User.objects.get(id = int(i.id_userass_id)))
             vallabel['usfor'] = str(User.objects.get(id = int(i.id_userfor_id)))
+            if int(i.id_userfor_id) == int(uAsign):
+                vallabel['uclass'] = "offline"
+            else:
+                vallabel['uclass'] = "online"
             response.append(vallabel)
 
         json = simplejson.dumps(response)

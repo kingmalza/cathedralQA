@@ -51,8 +51,11 @@ function CheckAdd(btnval, txtval, tagval) {
                   document.getElementById('txt_btn').setAttribute("placeholder","Type message...");
 
                   //Now add new data to the existing
+                  document.getElementById("ccont").style.height = "250px";
                   dch1 = document.createElement("div");
                   dch1.setAttribute("class", "item");
+                  dch1.style.backgroundColor = "#f2f2f2";
+                  dch1.style.padding = "5px";
                   dimg1 = document.createElement("img");
                   dimg1.setAttribute("class", "online");
                   dimg1.setAttribute("src", "/static/dist/img/user4-128x128.jpg");
@@ -75,7 +78,8 @@ function CheckAdd(btnval, txtval, tagval) {
 
                   dch1.appendChild(dimg1);
                   dch1.appendChild(dp1);
-                  divchat.appendChild(dch1);
+                  //divchat.appendChild(dch1);
+                  divchat.insertBefore(dch1, divchat.childNodes[0]);
 
                 } else {
                   alert(data[index].message);

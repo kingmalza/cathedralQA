@@ -6,7 +6,12 @@ function GetElementInsideContainer(containerID, childID) {
 
 $(document).ajaxStop(function () {
     //alert('STOP');
-    document.getElementById("overlay_tass").style.display = "none";
+    try {
+      document.getElementById("overlay_tass").style.display = "none";
+    }
+    catch(err) {
+      
+    }
 });
 
 
