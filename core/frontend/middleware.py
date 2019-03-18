@@ -15,3 +15,5 @@ class XHeaderTenantMiddleware(BaseTenantMiddleware):
         schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
         #print('SCHEMA--->>',schema_name, 'SINGLE-->',request.META)
         return model.objects.get(schema_name=schema_name)
+        
+ 

@@ -68,8 +68,9 @@ def index(request, **kwargs):
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
     #response = render(request, 'base_home.html', context_dict, context)
     #For IE compatibility remove context
-    response = render(request, 'base_home.html', context_dict)
 
+    response = render(request, 'base_home.html', context_dict)
+    
     return response
 
 
@@ -156,7 +157,7 @@ def h_list(request, **kwargs):
     context = RequestContext(request)
     print("Il tuo cookie e: ",uCookie)
     context_dict = {'all_test': test_main, 'uGroup': uGroup, 'uCookie':uCookie}
-    response = render(request, 'base_history.html', context_dict, context)
+    response = render(request, 'base_history.html', context_dict)
 
     return response
 
@@ -171,7 +172,7 @@ def temp_main(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_test': test_main, 'uGroup': uGroup}
-    response = render(request, 'base_tmain.html', context_dict, context)
+    response = render(request, 'base_tmain.html', context_dict)
 
     return response
 
@@ -186,7 +187,7 @@ def temp_case(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'uGroup': uGroup}
-    response = render(request, 'base_tcase.html', context_dict, context)
+    response = render(request, 'base_tcase.html', context_dict)
 
     return response
 
@@ -201,7 +202,7 @@ def temp_group(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'uGroup': uGroup}
-    response = render(request, 'base_tgroup.html', context_dict, context)
+    response = render(request, 'base_tgroup.html', context_dict)
 
     return response
 
@@ -216,7 +217,7 @@ def temp_var(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_var': test_var, 'uGroup': uGroup}
-    response = render(request, 'base_tvar.html', context_dict, context)
+    response = render(request, 'base_tvar.html', context_dict)
 
     return response
 
@@ -231,7 +232,7 @@ def temp_lib(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_lib': test_lib, 'uGroup': uGroup}
-    response = render(request, 'base_tlib.html', context_dict, context)
+    response = render(request, 'base_tlib.html', context_dict)
 
     return response
 
@@ -246,7 +247,7 @@ def temp_lib(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'ugroup': ugroup}
-    response = render(request, 'base_tcase.html', context_dict, context)
+    response = render(request, 'base_tcase.html', context_dict)
 
     return response
 
@@ -273,7 +274,7 @@ def temp_assist(request, templ_id=None, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'tmessage': con_stat}
-    response = render(request, b_templ, context_dict, context)
+    response = render(request, b_templ, context_dict)
 
     return response
 
@@ -297,7 +298,7 @@ def ext_lib(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case}
-    response = render(request, 'base_extlib.html', context_dict, context)
+    response = render(request, 'base_extlib.html', context_dict)
 
     return response
 
@@ -309,7 +310,7 @@ def legal_terms(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case}
-    response = render(request, 'base_legal.html', context_dict, context)
+    response = render(request, 'base_legal.html', context_dict)
 
     return response
     
@@ -461,7 +462,7 @@ def lic_register(request, reg_status=None, **kwargs):
         else:
             return HttpResponseRedirect('/register/KO_USER/')
     else:
-        response = render(request, b_temp, context_dict, context)
+        response = render(request, b_temp, context_dict)
         return response
     #else:
         #return HttpResponseRedirect('/')
@@ -476,7 +477,7 @@ def sys_usage(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case}
-    response = render(request, 'base_usage.html', context_dict, context)
+    response = render(request, 'base_usage.html', context_dict)
 
     return response
 
@@ -551,7 +552,7 @@ def login_register(request, **kwargs):
         user_profile = UserProfile()
 
     return render(request, 'login.html',
-                  {'user_form': user_form, 'user_profile': user_profile, 'registered': registered}, context)
+                  {'user_form': user_form, 'user_profile': user_profile, 'registered': registered})
 
 
 def user_login(request):
@@ -560,6 +561,14 @@ def user_login(request):
     schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
     global schemaname
     schemaname = schema_name
+    
+    #check if iexplorer
+    user_agent = request.META['HTTP_USER_AGENT'].lower()
+    if 'trident' in user_agent or 'msie' in user_agent:
+        response = render(request, 'base_noie.html', {})
+        return response
+
+    
     
     if request.method == 'POST':
         username = request.POST['username']
@@ -623,7 +632,7 @@ def user_login(request):
         else:
             return HttpResponse("SITE NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Aida, \n in case there are no line problems you can contact the Aida's system administrators for more information")
     else:
-        return render(request, 'login.html', {}, context)
+        return render(request, 'login.html', {})
 
 
 @login_required
