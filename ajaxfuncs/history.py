@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.db.models import Q
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMessage
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, t_assign
 from django.contrib.auth.models import User
 
@@ -180,9 +181,12 @@ def retUser(request):
 def assign_ticket(request):
     if request.is_ajax() and request.user.is_authenticated:
 
-        uFor = User.objects.filter(username=request.POST['uVal']).only('id')
-        for i in uFor: uid = i.id
+        uFor = User.objects.filter(username=request.POST['uVal']).only('id','email')
+        for i in uFor:
+             uid = i.id
+             uEmail = i.email
         uAsign = request.user.id
+
 
         response = []
         vallabel = {}
@@ -191,6 +195,11 @@ def assign_ticket(request):
             #Insert values into table and return it
             data_i = t_assign(dopen=datetime.datetime.now(),ass_notes=request.POST['uTxt'],id_userass_id = uAsign,id_userfor_id = uid,t_tag=request.POST['uTag'])
             data_i.save()
+
+            #If all OK, send the email_demo
+            if uEmail:
+                email = EmailMessage('New ticket assignment for Test: '+request.POST['uTag'], 'Recently you have been assigned a ticket about an aida test run; This is the attached message: '+request.POST['uTxt'],'aida ticket <account@myaida.io>',to=[str(uEmail)])
+                email.send()
 
             vallabel['dop'] = str("{:%Y-%m-%d %H:%M}".format(datetime.datetime.now()))
             vallabel['anote'] = request.POST['uTxt']
