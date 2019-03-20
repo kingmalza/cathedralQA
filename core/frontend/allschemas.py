@@ -147,7 +147,8 @@ def main(schema,conn,p_force=False):
             c_stripe = stripe.Customer.retrieve(stripeid)
 
             sc = stripe.Charge.create(
-                amount=int(glob_amount*100)+(int(glob_amount*100/22)),
+                #amount=int(glob_amount*100)+(int(glob_amount*100/22)),
+                amount=int(glob_amount),
                 customer=c_stripe.id,
                 currency="eur",
                 source=c_stripe.default_source,  # obtained with Stripe.js
@@ -165,7 +166,7 @@ def main(schema,conn,p_force=False):
             stripe_in = stripe.Invoice.create(
                 customer=c_stripe.id,
                 billing='charge_automatically',
-                tax_percent=22,
+                tax_percent=0,
                 description='Myaida ondemand invoice'
             )
             

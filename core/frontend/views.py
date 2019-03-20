@@ -404,7 +404,7 @@ def lic_register(request, reg_status=None, **kwargs):
                     s_plan = getattr(settings, "PROD149_KEY", None)
                     stripe.Subscription.create(
                         customer=cus['id'],
-                        tax_percent=22.0,
+                        #tax_percent=22.0,
                         items=[
                             {
                                 "plan": s_plan,
