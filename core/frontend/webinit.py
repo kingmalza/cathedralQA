@@ -22,7 +22,7 @@ def send_html_email(to_list, subject, template_name, context, sender=settings.DE
     msg = EmailMessage(subject=subject, body=msg_html, from_email=sender, to=to_list)
     msg.content_subtype = "html"  # Main content is now text/html
     return msg.send()
-    
+
 
 def emailsend(l_sender, l_user, l_pass):
     context = {
@@ -40,28 +40,28 @@ def emailsend(l_sender, l_user, l_pass):
 
 
 def create1(t_tenant,t_name):
-    
+
     #1 Create tenant entry and populate db schema
     tenant = Client(domain_url=t_tenant+'.myaida.io', schema_name=t_tenant,name=t_name)
     tenant.save()
-    
+
     #Random password
     characters = string.ascii_letters + string.punctuation  + string.digits
     auth_pass =  "".join(choice(characters) for x in range(randint(8, 16)))
-    
+
     #Create superuser
     #echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('"+t_tenant+"', '"+u_email+"', '"+auth_pass+"')" | python manage.py tenant_command shell --schema=t_tenant
-    
+
     print('Pass is: ',auth_pass)
 
 
-def create2(t_tenant,auth_pass,u_email,paid=0.49):
-  
+def create2(t_tenant,auth_pass,u_email,strip_plan,strip_id,paid=0.49):
+
     print("PRE.Create setting table...")
     #Insert tenant value in settings table
-    tenant_insert = settings_gen(tenant_name=t_tenant, paid_feed=paid, on_trial=True, reg_email=u_email)
+    tenant_insert = settings_gen(tenant_name=t_tenant, paid_feed=paid, on_trial=True, reg_email=u_email, paid_plan=strip_plan, stripe_id=strip_id)
     tenant_insert.save()
-    
+
     print("1.Create scheduling...")
     #2 Populate schedule table
     sched1 = t_schedsettings(sched_desc='Once', sched_command='once')
@@ -74,16 +74,16 @@ def create2(t_tenant,auth_pass,u_email,paid=0.49):
     sched3.save()
     sched4.save()
     print("Scheduling OK")
-    
+
     #3 Create Keyword tale
     print("2.Create keywords...")
     global tk
     for i in tk:
         addkey = temp_keywords(descr=str(i), human=str(i), personal=False, owner_id=User.objects.get(id=1).id)
         addkey.save()
-    
+
     print("Keywords OK")
-    
+
     #4. Create Library table
     print("3.Create suite Libs...")
 
@@ -112,48 +112,48 @@ def create2(t_tenant,auth_pass,u_email,paid=0.49):
     lib11.save()
 
     print("Suite Libs OK")
-    
+
     #5. Create Helloword test
     print("4.Create helloword...")
-    
+
     dtn = datetime.datetime.now()
-    
+
     hello1 = temp_main(descr='HelloWorld', dt=str(dtn), notes='First Helloworld test', owner_id=User.objects.get(id=1).id)
     hello1.save()
-    
+
     hello2 = temp_case(descr='Test Case Hello', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello2.save()
-    
+
     hello3_1 = temp_variables(v_key='${FORM_URL}', v_val='http://aidaproject.io', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello3_2 = temp_variables(v_key='${TEXT}', v_val='Aida', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello3_1.save()
     hello3_2.save()
-    
+
     hello4_1 = temp_library(l_type='Library', l_val='Selenium2Library', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello4_2 = temp_library(l_type='Test Setup', l_val='Open Browser And Go To Page', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
-    hello4_3 = temp_library(l_type='Test Teardown', l_val='Close Browser', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)   
+    hello4_3 = temp_library(l_type='Test Teardown', l_val='Close Browser', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
     hello4_1.save()
     hello4_2.save()
     hello4_3.save()
-    
+
     hello5_1 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=178).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='When visit the page it should show the text Aida', owner_id=User.objects.get(id=1).id)
     hello5_2 = temp_test_keywords(key_id_id=temp_keywords.objects.get(id=104).id, main_id_id=temp_main.objects.get(id=1).id, test_id_id=temp_case.objects.get(id=1).id, key_val='${TEXT}', owner_id=User.objects.get(id=1).id)
     hello5_1.save()
     hello5_2.save()
-    
+
     #First add my personal key_id_id
     addkey_pers = temp_keywords(descr='Open Browser And Go To Page', human='Open Browser And Go To Page', personal=True, owner_id=User.objects.get(id=1).id)
     addkey_pers.save()
-    
+
     hello6 = temp_pers_keywords(main_id_id=temp_main.objects.get(id=1).id, pers_id_id=temp_keywords.objects.get(id=187).id, standard_id_id=temp_keywords.objects.get(id=102).id, owner_id=User.objects.get(id=1).id, variable_val='${FORM_URL}')
     hello6.save()
-    
-    
+
+
     print("Helloword OK")
-    
+
     #5a. Create project, groupping and tag
     print("4a.Create projects and tags...")
-    
+
     protag1 = t_proj(descr='First Demo Project', dt=str(dtn), proj_notes='Created for demo, you can edit data for personalization purposes', owner_id=User.objects.get(id=1).id, dt=str(dtn))
     protag1.save()
     protag2 = t_proj_route(route_notes='First Demo Project', main_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, proj_id = t_proj.objects.get(id=1).id, dt=str(dtn))
@@ -166,9 +166,9 @@ def create2(t_tenant,auth_pass,u_email,paid=0.49):
     protag5.save()
     protag6 = t_group_test(temp_ord= 1, id_grp= t_group.objects.get(id=1).id, id_temp= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, dt=str(dtn))
     protag6.save()
-    
+
     print("Projects and TAGS OK")
-    
+
     #6. Send email
     print("5.Preparing and sending welcome email...")
 

@@ -34,6 +34,7 @@ class temp_caseSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'main_id', 'descr', 'owner')
 
 
+
 class temp_keywordsSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     #highlight = serializers.HyperlinkedIdentityField(view_name='request-highlight', format='html')
