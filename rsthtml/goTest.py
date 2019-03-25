@@ -86,7 +86,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     g_id = None
     cli_id = None
     id_cli = 999
-    
+
     #client = boto3.client("lambda")
     #Time at the start
     dtime1 = str(datetime.datetime.now())
@@ -101,6 +101,9 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     mrr3 = mr(table_case.rst)
     mrr4 = mr(table_key.rst)
     mrr2 = mr(varlist_a)
+
+    #globrst = mrr2+mrr1+mrr3+mrr4
+    globrst = mrr2.rstab+mrr1.rstab+mrr3.rstab+mrr4.rstab
 
     # 3 - MakeHTML and Run test
     # We need to make this a thread then when is stopped save dta in db
@@ -128,7 +131,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
     try:
         # Cop content of xml in db
         xmlcont = parsefile(t_list[t_inst].retval['fdir'] + "output.xml")
-        
+
         if xmlcont != "":
             htmlcont = parsefile(t_list[t_inst].retval['fpath'])
             #Extract just Thread name
@@ -160,21 +163,21 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
 
 
             test_save.save()
-            
+
             # Time at the end
             dtime2 = str(datetime.datetime.now())
-            
+
             elapsed = time.time() - start_time
             test_time = t_time(history_main=t_history.objects.get(id=test_save.id), elapsed_t=elapsed, stop_data=dtime2)
             test_time.save()
-            
+
             thread_save = t_threads(id_test=t_history.objects.get(id=test_save.id), id_time=t_time.objects.get(id=test_time.id), thread_id=t_list[t_inst].getName(),
                                     thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
             thread_save.save()
 
             """
             #LAMBDA CALL FOR LIC INSERTION
-            #1 Check customer id         
+            #1 Check customer id
             #schema_name = str(settings.DATABASES['default']['SCHEMA'])
             schema_name = settings_gen.objects.get(id=1).tenant_name
 
@@ -182,13 +185,13 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                 "ev_type": "G",
                 "tenant": schema_name
             }
-            
+
             cli_id = client.invoke(
                 FunctionName='aida_lic_get',
                 InvocationType='RequestResponse',
                 Payload=json.dumps(pay_c)
             )
-            
+
 
             data1 = cli_id['Payload'].read().decode('utf-8')
             l_data = json.loads(json.loads(data1,encoding='utf-8'))
@@ -212,7 +215,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                     "elapsed_t": elapsed,
                     "bk_tenant": schema_name
                 }
-            
+
                 try:
                     client.invoke(
                         FunctionName='aida_usage_insert',
@@ -223,7 +226,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
                     print("Error use--> gotest156",er2) #print the client error info to console
 
             """
-            
+
     except Exception as e:
         print("Errore_gotest:", e.args)
 
@@ -378,11 +381,11 @@ def startTest(request, i=[0]):
 
         else:
             limitMsg = 'Concurrent threads limit reached (Max concurrent proceses allowed are 5)'
-        
+
         vallabel = {'Rmessage': limitMsg,}
         response.append(vallabel)
         json = simplejson.dumps(response)
-           
+
         return HttpResponse(
             json, content_type='application/json'
         )
