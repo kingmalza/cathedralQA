@@ -153,6 +153,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     };
                     var t_td12 = document.createElement("TD");
                     t_td12.innerHTML = 'Schedule Value'.bold();
+                    t_td12.setAttribute('class', 'sorting');
                     t_td12.onclick = function() {
                         if(j_sign == '-') {
                             refHistory('-thread_sval','+');
