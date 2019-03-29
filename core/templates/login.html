@@ -29,6 +29,9 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
+        {% if l_err %}
+          <p style="color:red;"><strong>*Username or Password wrong</strong></p>
+        {% endif %}
         <form action="/login/" method="post">
         {% csrf_token %}
         {{ user_form.errors }}

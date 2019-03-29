@@ -73,6 +73,7 @@ urlpatterns = [
                   url(r'^$', h_list, name='index'),
                   url(r'^', include(router.urls)),
                   url(r'^login/$', user_login),
+                  url(r'^login/(?P<log_err>\w+)/$', user_login),
                   url(r'^logout/$', user_logout),
                   url(r'^active$', index),
                   url(r'^legal$', legal_terms),

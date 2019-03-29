@@ -62,7 +62,7 @@ def index(request, **kwargs):
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
-     
+
     test_sched = t_schedsettings.objects.all()
 
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
@@ -70,7 +70,7 @@ def index(request, **kwargs):
     #For IE compatibility remove context
 
     response = render(request, 'base_home.html', context_dict)
-    
+
     return response
 
 
@@ -80,7 +80,7 @@ def index(request, **kwargs):
 def h_list(request, **kwargs):
     global test_main
     uCookie = request.COOKIES.get('demoF', '')
-    
+
     if request.is_ajax():
         schema_name = settings_gen.objects.get(id=1).tenant_name
         j_file = "frontend/static/out/"+request.POST['tpid']+"/log.html"
@@ -91,14 +91,14 @@ def h_list(request, **kwargs):
 
         jFile = False
         response = []
-        
+
         errarg = ""
         connData = jra_settings.objects.all()
         for i in connData:
             jadd = i.j_address.strip()
             juser = i.j_user.strip()
             jpass = i.j_pass.strip()
-        
+
         try:
             options = {'server': jadd}
             jira = JIRA(options, basic_auth=(juser, jpass))
@@ -128,14 +128,14 @@ def h_list(request, **kwargs):
         #check if error is nauthorized Access, too long for be displayed, i trunk it
         strerr = 'Unauthorized'
         if strerr in str(errarg): errarg = "(401, 'Unauthorized (401), Check Jira settings connection data.')"
-        
+
         #Now if all is ok add new line to the table
         jra_ev = jra_history(j_tid=request.POST['tid'], j_issue=request.POST['jissue'], j_comment=request.POST['jcom'], j_file=jFile, dt=str(datetime.now()), j_error=errarg)
         jra_ev.save()
-        
+
         #Query for have already inserted jira records
-        
-        
+
+
         vallabel = {}
         vallabel['csrfmiddlewaretoken'] = request.POST['csrfmiddlewaretoken']
         vallabel['j_err'] = errarg
@@ -145,7 +145,7 @@ def h_list(request, **kwargs):
 
     else:
         pass
-    
+
     #EXTRA AJAX, NORMAL BEHAVIOUR
     #First check if is first time with no threads, if is new, home redirect to active else continue
 
@@ -302,7 +302,7 @@ def ext_lib(request, **kwargs):
 
     return response
 
-    
+
 def legal_terms(request, **kwargs):
     global test_case
 
@@ -313,11 +313,11 @@ def legal_terms(request, **kwargs):
     response = render(request, 'base_legal.html', context_dict)
 
     return response
-    
-    
+
+
 def lic_register(request, reg_status=None, **kwargs):
     global test_case
-    
+
     #Retreive stripe API keys
     stripe.api_key = getattr(settings, "STRIPE_KEY", None)
     sg = settings_gen.objects.all()
@@ -555,21 +555,21 @@ def login_register(request, **kwargs):
                   {'user_form': user_form, 'user_profile': user_profile, 'registered': registered})
 
 
-def user_login(request):
+def user_login(request, log_err=None):
     context = RequestContext(request)
     client = boto3.client("lambda")
     schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
     global schemaname
     schemaname = schema_name
-    
+
     #check if iexplorer
     user_agent = request.META['HTTP_USER_AGENT'].lower()
     if 'trident' in user_agent or 'msie' in user_agent:
         response = render(request, 'base_noie.html', {})
         return response
 
-    
-    
+
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -578,21 +578,21 @@ def user_login(request):
                 "ev_type": "G",
                 "tenant": schema_name
             }
-            
+
         cli_id = client.invoke(
             FunctionName='aida_lic_get',
             InvocationType='RequestResponse',
             Payload=json.dumps(pay_c)
         )
-                
+
         #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
-        
+
         #Check if user in lic is active or if there is a connection
         try:
             site_active = json.loads(cli_id['Payload'].read().decode())[3]
         except Exception as e:
             site_active = False
-        
+
         if site_active:
             #Now check if in settings_gen table tenant_name there is tenant, otherwise add it
             t_set = settings_gen.objects.all()
@@ -628,11 +628,13 @@ def user_login(request):
                 else:
                     return HttpResponse("User not active")
             else:
-                return HttpResponse('Your user dont exist or password is wrong')
+                return HttpResponseRedirect('/login/log_error')
+                #return HttpResponse('Your user dont exist or password is wrong')
+                #return render(request, 'login.html', {'l_err': log_err})
         else:
             return HttpResponse("SITE NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Aida, \n in case there are no line problems you can contact the Aida's system administrators for more information")
     else:
-        return render(request, 'login.html', {})
+        return render(request, 'login.html', {'l_err': log_err})
 
 
 @login_required
