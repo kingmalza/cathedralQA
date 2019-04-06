@@ -82,11 +82,21 @@
                                     </div>
                                     <!-- end tab containser -->
                                 </div>
+                                <!-- select run type (sanity regression ecc ecc)-->
+                                <div class="form-group" id="div_tt"">
+                                    <label>Run as:</label>
+                                        <div class="box-header">
+                                        <select class="form-control" id="sel_ttype">
+                                        <option value="">Alpha</option>
+                                        <!-- DOM Created relative to main select -->
+                                        </select>
+                                        </div>
+                                 </div>
 
                                 <!-- Div contain values from main test set selected -->
                                 <div id="div_val" class="form-group" style="display: none;">
                                     <div class="form-group" id="div_sched">
-                                        <label>Select</label>
+                                        <label>Select execution interval</label>
                                         <div class="form-group">
                                             <select class="form-control" onChange="selSched(this);" id="sched_type">
                                                 {% for sched in t_sched %}
@@ -269,4 +279,3 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
         };
     </script>
 {% endblock %}
-        

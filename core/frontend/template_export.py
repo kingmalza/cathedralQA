@@ -6,7 +6,7 @@ Methods for export template by id and save in shared DB
 For export a template method is still manual:
 
 1.comment line 25
-2. from command line go to var/www/web/core and type python -m idlelib.idle (afetr accessed virtualenv)
+2. from command line (locally) go to /volumes/bigdata/projects/helium/web/core and type python -m idlelib.idle (afetr accessed virtualenv)
 3. from frontend.template_export import start
 4. start("<template_id>")
 5. When export finisch UNCOMMENT line 25
@@ -34,7 +34,7 @@ def start(id_templ, schema='helium', d_base='helium_web', internal = False):
         'user': 'kingmalza',
         'password': '11235813post',
     }
-  
+
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
 
@@ -50,8 +50,8 @@ def start(id_templ, schema='helium', d_base='helium_web', internal = False):
     conn.close()
 
 
-    
-       
+
+
 def main(schema, id_templ, conn, p_force=False):
 
     t_html = None
@@ -80,6 +80,7 @@ def main(schema, id_templ, conn, p_force=False):
         # retrieve the records from the database
         rec_main = cursor.fetchall()
         tmain_list.append({'t_name' : rec_main[0][1],
+                            't_type' : rec_main[0][9],
                            't_notes' : rec_main[0][2],
                            't_expected' : rec_main[0][5],
                            't_precond': rec_main[0][6],
@@ -131,14 +132,14 @@ def main(schema, id_templ, conn, p_force=False):
                             't_owner': row[6]
                             })
 
-        
+
         #Now retreive the pid from histoy (for html)
         #cursor.execute("SELECT format('%s',html_test) FROM demo.frontend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
         cursor.execute("SELECT pid FROM helium.frontend_t_history as fth WHERE fth.test_main_id = " + id_templ + "ORDER BY id DESC LIMIT 1")
         rec_main = cursor.fetchall()
         for row in rec_main:
             t_html = str(row[0])
-        
+
         j_dict = {'t_main':tmain_list, 't_case':tcase_list, 't_vars':tvar_list, 't_libs':tlib_list, 't_ttk':ttk_list, 't_tpk':tpk_list}
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])
@@ -152,7 +153,7 @@ def main(schema, id_templ, conn, p_force=False):
 
         return l_ret
 
-            
+
     except Exception as e:
         print("Error1: ",e)
 
@@ -188,7 +189,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
             print("Error Insert: ",e)
     else:
         print("TEMPLATE ALREADY UPLOADED OR HTML NOT GENERATED! No data was inserted into table")
-    
+
     ck_cursor.close()
 
 

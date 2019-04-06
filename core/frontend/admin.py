@@ -15,11 +15,12 @@ import stripe
 
 
 class temp_mainAdmin(admin.ModelAdmin):
-    
+
     form = TempMainForm
 
     #list_filter = ('main_id__descr', 'l_type')
-    list_display = ('descr', 'notes', 'dt', 'active')
+    list_filter = ('t_type',)
+    list_display = ('descr', 't_type', 'notes', 'dt', 'active')
     #ordering = ('-l_type',)
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
@@ -28,21 +29,21 @@ class temp_mainAdmin(admin.ModelAdmin):
             return True
 
         return False
-    
+
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(temp_mainAdmin, self).save_model(request, obj, form, change)
-    
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_main.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
             'oId': obj_id
         }
         return super(temp_mainAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-   
+
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
     form = TempCaseForm
@@ -58,7 +59,7 @@ class temp_caseAdmin(admin.ModelAdmin):
             return True
 
         return False
-    
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -80,11 +81,11 @@ class temp_caseAdmin(admin.ModelAdmin):
             print('Error in admin.py->45: ',e)
 
         return form
-           
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_case.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
         }
@@ -105,13 +106,13 @@ class temp_variablesAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def get_main_id(self, obj):
         return obj.main_id.descr
-    
+
     get_main_id.short_description = 'Main Template'
     get_main_id.admin_order_field = 'main_id__descr'
-    
+
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_variablesAdmin, self).get_form(request, obj, **kwargs)
 
@@ -128,11 +129,11 @@ class temp_variablesAdmin(admin.ModelAdmin):
             print('Error in admin.py->85: ',e)
 
         return form
-        
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_variables.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
         }
@@ -155,7 +156,7 @@ class color:
 class temp_libraryAdmin(admin.ModelAdmin):
 
     form = TempLibsForm
-    
+
     list_filter = ('main_id__descr', 'l_type')
     list_display = ('get_main_id', 'l_type', 'l_val', 'l_group')
     #ordering = ('-l_type',)
@@ -172,7 +173,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
 
     get_main_id.short_description = 'Main Template'
     get_main_id.admin_order_field = 'main_id__descr'
-    
+
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_libraryAdmin, self).get_form(request, obj, **kwargs)
 
@@ -205,32 +206,32 @@ class temp_libraryAdmin(admin.ModelAdmin):
         ))
 
         return form
-        
+
     def changelist_view(self, request, extra_context=None):
-        
+
         s_libs = suite_libs.objects.all()
-        
+
         extra_context = {
             'sl': s_libs,
         }
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         s_libs = suite_libs.objects.all()
         l_mod = temp_library.objects.latest('id')
-        
+
         extra_context = {
             'sl': s_libs,
             'lmod': l_mod,
         }
         return super(temp_libraryAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-        
+
 class ttkAdmin(admin.ModelAdmin):
 
     form = TtkForm
-    
+
     list_filter = ('main_id__descr', 'test_id__descr')
     list_display = ('get_main_id', 'get_test_id', 'key_id', 'key_val', 'key_group')
     #ordering = ('-l_type',)
@@ -241,7 +242,7 @@ class ttkAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -253,7 +254,7 @@ class ttkAdmin(admin.ModelAdmin):
 
     get_test_id.short_description = 'Test Case'
     get_test_id.admin_order_field = 'test_id__descr'
-       
+
     def get_form(self, request, obj=None, **kwargs):
         form = super(ttkAdmin, self).get_form(request, obj, **kwargs)
 
@@ -287,9 +288,9 @@ class ttkAdmin(admin.ModelAdmin):
         return form
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_test_keywords.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
         }
@@ -310,7 +311,7 @@ class tpk(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -335,9 +336,9 @@ class tpk(admin.ModelAdmin):
         return form
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_pers_keywords.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
         }
@@ -356,7 +357,7 @@ class t_tags_routeAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -378,14 +379,14 @@ class t_tags_routeAdmin(admin.ModelAdmin):
         }
         return super(t_tags_routeAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-    
+
 class temp_keywordsAdmin(admin.ModelAdmin):
 
     form = TempKeyForm
 
     list_filter = ('personal',)
     list_display = ('descr', 'human', 'personal')
-    
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = temp_keywords.objects.all().count()
@@ -393,18 +394,18 @@ class temp_keywordsAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     # ordering = ('-l_type',)
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        
+
         l_mod = temp_keywords.objects.latest('id')
-        
+
         extra_context = {
             'lmod': l_mod,
         }
         return super(temp_keywordsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-    
+
 
 class t_proj_routeAdmin(admin.ModelAdmin):
 
@@ -412,7 +413,7 @@ class t_proj_routeAdmin(admin.ModelAdmin):
     list_display = ('get_main_id', 'get_proj_id', 'route_notes')
 
     # ordering = ('-l_type',)
-       
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = t_proj_route.objects.all().count()
@@ -420,7 +421,7 @@ class t_proj_routeAdmin(admin.ModelAdmin):
             return True
 
         return False
-    
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -456,7 +457,7 @@ class t_projAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
         l_mod = t_proj.objects.latest('id')
 
@@ -467,10 +468,10 @@ class t_projAdmin(admin.ModelAdmin):
 
 
 class t_tagsAdmin(admin.ModelAdmin):
-    
+
     # list_filter = ('main_id__descr', 'proj_id__descr')
     list_display = ('descr',  'tag_notes')
-    
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = t_tags.objects.all().count()
@@ -478,7 +479,7 @@ class t_tagsAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
             l_mod = t_tags.objects.latest('id')
 
@@ -487,12 +488,12 @@ class t_tagsAdmin(admin.ModelAdmin):
             }
             return super(t_tagsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-            
+
 class t_groupAdmin(admin.ModelAdmin):
-    
+
     list_filter = ('active',)
     list_display = ('descr',  'g_prior', 'g_desc', 'active')
-    
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = t_group.objects.all().count()
@@ -500,7 +501,7 @@ class t_groupAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
             l_mod = t_group.objects.latest('id')
 
@@ -511,10 +512,10 @@ class t_groupAdmin(admin.ModelAdmin):
 
 
 class t_group_testAdmin(admin.ModelAdmin):
-    
+
     list_filter = ('id_grp__descr', 'id_temp__descr')
     list_display = ('id_grp',  'id_temp', 'temp_ord')
-    
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = t_group_test.objects.all().count()
@@ -522,7 +523,7 @@ class t_group_testAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
             l_mod = t_group_test.objects.latest('id')
 
@@ -535,7 +536,7 @@ class t_group_testAdmin(admin.ModelAdmin):
 
 class jra_settingsAdmin(admin.ModelAdmin):
 
-    form = jra_settingsForm  
+    form = jra_settingsForm
     #list_filter = ('j_address', 'j_user')
     list_display = ('j_address', 'j_user', 'j_notes')
 
@@ -546,8 +547,8 @@ class jra_settingsAdmin(admin.ModelAdmin):
             return True
 
         return False
-    
-    
+
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
         print("OBJ_ID--> ", obj_id)
@@ -566,7 +567,7 @@ class settings_genAdmin(admin.ModelAdmin):
     form = SettingsForm
     list_display = ('tenant_name', 'created_on', 'comp_name', 'tax_id', 'reg_email')
     readonly_fields = ['tenant_name', 'stripe_id', 'paid_plan']
-    
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = settings_gen.objects.all().count()
@@ -574,7 +575,7 @@ class settings_genAdmin(admin.ModelAdmin):
             return True
 
         return False
-        
+
     def has_add_permission(self, request):
         # if there's already an entry, do not allow adding
         count = settings_gen.objects.all().count()
@@ -612,19 +613,19 @@ class settings_genAdmin(admin.ModelAdmin):
         """
         return super(settings_genAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-            
-class APIAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        super(APIAdmin, self).save_model(request, obj, form, change)
-            
-class APIAdmin(admin.ModelAdmin):
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        super(APIAdmin, self).save_model(request, obj, form, change)
-       
 
-            
+class APIAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(APIAdmin, self).save_model(request, obj, form, change)
+
+class APIAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super(APIAdmin, self).save_model(request, obj, form, change)
+
+
+
 admin.site.site_title = 'Aida Admin'
 admin.site.site_header = 'Aida admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'

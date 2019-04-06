@@ -6,12 +6,13 @@ function seltype(varID) {
     oCssSet.innerHTML = "";
     $("#div_val").hide();
     $("#tab_div1").hide();
+    $("#div_tt").hide();
     //oTest.innerHTML = "";
     //Reset the test_set
     /*while (oTest.firstChild) {
         oTest.removeChild(oTest.firstChild);
     }*/
-    
+
     //Try to remove comment if there are
     try {
         oTnotes = document.getElementById("t_notes");
@@ -20,30 +21,30 @@ function seltype(varID) {
     catch(err) {
         console.log(err);
     }
-    
+
     $.ajax({
         type: "POST",
         url: "test_type",
         data: {selType: varID.value},
         success: function (data) {
             oCssSet.disabled = false;
-            
+
             $.each(data, function (index) {
-                
+
                 if (index == 0) {
                     var opt1 = document.createElement("option");
                     opt1.value = 1;
                     opt1.innerHTML = '-- select an option --';
                     opt1.disabled = false;
                     oCssSet.appendChild(opt1);
-                } 
-                
+                }
+
                 var opt = document.createElement("option");
                 opt.value = data[index].selID;
                 opt.innerHTML = data[index].selDescr;
-                               
+
                 oCssSet.appendChild(opt);
-                
+
             });
 
         }
@@ -116,6 +117,7 @@ function AddOptions(VarID) {
             var liclass = "active";
             $("#div_val").show();
             $("#tab_div1").show();
+            $("#div_tt").show();
             if (oType.value == "ST") {
                 $("#div_sched").show();
             } else {
@@ -132,7 +134,7 @@ function AddOptions(VarID) {
 
             $.each(data, function (index) {
 
-                                
+
                 if (index == 0) {
 
                     var li_tab = document.createElement("LI");
@@ -160,21 +162,21 @@ function AddOptions(VarID) {
                     isgroup = data[index].OptionMain;
                     tabpane = "tab-pane";
                     liclass = "";
-                    
-                    
+
+
                     if (oType.value == "ST") {
-                        //If there is a t_main description create a readonly textarea for display it 
+                        //If there is a t_main description create a readonly textarea for display it
                         console.log("Descr: "+data[index].OptionNote);
                         if (data[index].OptionNote != undefined) {
                             optNotes = document.createElement("SPAN");
                             optNotes.setAttribute("id", "t_notes");
                             optNotes.setAttribute('class', 'label label-default');
                             optNotes.innerHTML = data[index].OptionNote;
-                            oTsel.appendChild(optNotes);   
+                            oTsel.appendChild(optNotes);
                         }
                     }
                 }
-                
+
                 //Because if is undefine is related to rst values for preview in json return response
                 if (data[index].OptionID)
                 {
@@ -291,7 +293,7 @@ function inspectHTML(objID) {
 
 $(document).ajaxStop(function () {
     //alert('STOP');
-    
+
     document.getElementById("overlay_get").style.display = "none";
 });
 

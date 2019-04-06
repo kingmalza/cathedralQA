@@ -117,7 +117,14 @@ user_id -> onetoone User
 
 
 class temp_main(models.Model):
+
+    TYPE_CHOICES = (
+        ('Functional', 'Functional'),
+        ('Non-Functional', 'Non-Functional')
+    )
+
     descr = models.CharField(max_length=200, verbose_name="Description")
+    t_type = models.CharField(choices=TYPE_CHOICES, max_length=20, verbose_name="Test Type")
     precond = models.TextField(null=True, blank=True, verbose_name="Preconditions")
     steps = models.TextField(null=True, blank=True, verbose_name="Steps")
     expected = models.TextField(null=True, blank=True, verbose_name="Expected Result")

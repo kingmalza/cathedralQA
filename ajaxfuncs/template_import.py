@@ -18,6 +18,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.db.models import Count
 from django.db.models import Q
+from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -25,6 +26,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.template import RequestContext
+
 
 
 
@@ -112,6 +114,7 @@ def import_templ(request):
             try:
                 #1. Import temp_main proces and save the inseerted id
                 main_save = temp_main(descr=tmainl['t_main'][0]['t_name'],
+                                    t_type=tmainl['t_main'][0]['t_type'],
                                       notes=tmainl['t_main'][0]['t_notes'],
                                       dt=str(datetime.now()),
                                       owner_id=1,
@@ -152,7 +155,7 @@ def import_templ(request):
 
                 # 5. Import temp_test_keywords
                 for a in range(len(tmainl['t_ttk'])):
-                    #first check if key ecist in table temp keywords, otherwise add it
+                    #first check if key exist in table temp keywords, otherwise add it
                     if tmainl['t_ttk'][a]['tk_descr'] not in [x.descr for x in l_key]:
                         t_key = temp_keywords(descr=tmainl['t_ttk'][a]['tk_descr'],
                                               human=tmainl['t_ttk'][a]['tk_descr'],
@@ -222,14 +225,23 @@ def import_templ(request):
                 except Exception as etin:
                     print("IMPHIST exception-->",etin)
 
+            #Check for duplicate key error, if find it do not notify to user (because all work fine even) but print in nohup file for my inspection; otherwise get error
+            except IntegrityError as ex:
+                if ex.pgcode == '23505':
+                    print("Integration error not null->",ex)
+                    return HttpResponseRedirect('/tassist/ok')
+                else:
+                    return HttpResponseRedirect('/tassist/fail')
+
             except Exception as e:
+                #print("Import exception-> ",e)
                 return HttpResponseRedirect('/tassist/fail')
 
             return HttpResponseRedirect('/tassist/ok')
         else:
 
             return HttpResponseRedirect('/tassist/busy')
-            
+
 
         return HttpResponseRedirect('/tassist')
 
@@ -364,12 +376,3 @@ def import_internal(t_struct):
 
             except Exception as e:
                 print("internal import error->",e)
-
-
-
-
-
-
-
-
-
