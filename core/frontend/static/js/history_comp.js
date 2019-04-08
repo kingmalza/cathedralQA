@@ -170,6 +170,15 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('thread_main','-');
                         };
                     };
+                    var t_td13_run = document.createElement("TD");
+                    t_td13_run.innerHTML = 'Run Type'.bold();
+                    t_td13_run.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_runtype','+');
+                        } else {
+                            refHistory('thread_runtype','-');
+                        };
+                    };
                     var t_td3 = document.createElement("TD");
                     t_td3.innerHTML = 'Start'.bold();
                     t_td3.onclick = function() {
@@ -225,6 +234,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td11);
                     t_tr0.appendChild(t_td12);
                     t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td13_run);
                     t_tr0.appendChild(t_td3);
                     t_tr0.appendChild(t_td4);
                     t_tr0.appendChild(t_td4time);
@@ -297,6 +307,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_td12.innerHTML = data[index].OptionSval;
                         var t_td13 = document.createElement("TD");
                         t_td13.innerHTML = data[index].OptionMain;
+                        var t_td13_run = document.createElement("TD");
+                        t_td13_run.innerHTML = data[index].OptionRun;
                         var t_td10 = document.createElement("TD");
                         t_td10.innerHTML = data[index].tTest;
                         var t_td3 = document.createElement("TD");
@@ -351,6 +363,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td11);
                     t_tr0.appendChild(t_td12);
                     t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td13_run);
                     t_tr0.appendChild(t_td3);
                     t_tr0.appendChild(t_td4);
                     t_tr0.appendChild(t_td4time);
@@ -399,6 +412,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_td13.style.background="#ECF0F5";
                         var t_td10 = document.createElement("TD");
                         //t_td10.innerHTML = 'TEST';
+                        var t_td3_run = document.createElement("TD");
+                        t_td3_run.innerHTML = data[index]['SubThread'][i].SubRun;
+                        t_td3_run.style.color = "black";
+                        t_td3_run.style.background="#ECF0F5";
                         var t_td3 = document.createElement("TD");
                         t_td3.innerHTML = data[index]['SubThread'][i].SubDataStart.slice(0,-13);
                         t_td3.style.color = "black";
@@ -468,6 +485,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         t_tr0.appendChild(t_td11);
                         t_tr0.appendChild(t_td12);
                         t_tr0.appendChild(t_td13);
+                        t_tr0.appendChild(t_td3_run);
                         t_tr0.appendChild(t_td3);
                         t_tr0.appendChild(t_td4);
                         t_tr0.appendChild(t_td4time);
@@ -495,10 +513,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     var cnt = i; // save the counter to use in the function
                     return function () {
                         t_line.style.visibility = 'visible';
-                        lab_proc.innerHTML = this.cells[14].innerHTML;
+                        lab_proc.innerHTML = this.cells[15].innerHTML;
                         t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " //+ this.cells[0].innerHTML;
                         t_lineH1.appendChild(lab_proc);
-                        c_hold = this.cells[14].innerHTML;
+                        c_hold = this.cells[15].innerHTML;
                         //Now populate the t assignement area if there is anything
                         divchat = document.getElementById("chat-box");
                         document.getElementById("ccont").style.height = "0px";
@@ -509,7 +527,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         $.ajax({
                             type: "POST",
                             url: "getass",
-                            data: {'uTag':this.cells[14].innerHTML},
+                            data: {'uTag':this.cells[15].innerHTML},
                             success: function (data) {
 
                                 $.each(data, function (index) {

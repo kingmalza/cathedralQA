@@ -490,6 +490,7 @@ class t_threads(models.Model):
     thread_stopd = models.DateTimeField(auto_now=False, null=True, blank=True)
     id_time = models.ForeignKey(t_time, on_delete=models.CASCADE,)
     thread_ttype = models.CharField(max_length=5, blank=True)
+    thread_runtype = models.CharField(max_length=20, blank=True)
     thread_tgroup = models.CharField(max_length=50, blank=True)
     thread_stype = models.CharField(max_length=50, blank=True)
     thread_sval = models.CharField(max_length=10, blank=True)

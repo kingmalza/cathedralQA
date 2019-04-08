@@ -69,6 +69,8 @@ def histrefresh(request, lorder='-id'):
                     strfin = strfin + ',thread_tgroup__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'SCHEDULE':
                     strfin = strfin + ',thread_stype__contains=' + "'"+b[1].strip()+"'"
+                elif b[0].upper() == 'RUN TYPE':
+                    strfin = strfin + ',thread_runtype__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'THREAD NAME':
                     strfin = strfin + ',thread_main__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'START':
@@ -122,9 +124,9 @@ def histrefresh(request, lorder='-id'):
                 vcount = 0
                 q_sub = t_threads.objects.filter(thread_stag=i.thread_stag).filter(~Q(id=i.id)).filter(thread_status='DEAD').all().select_related()
                 for x in q_sub:
-                    valsth[vcount] = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test, 'SubTime':str("{0:.2f}".format(x.id_time.elapsed_t))}
+                    valsth[vcount] = { 'SubDataStart': str(x.thread_startd), 'SubDataStop': str(x.thread_stopd), 'SubStatus': x.id_test.exec_status, 'SubPass':x.id_test.pass_num, 'SubFail':x.id_test.fail_num, 'SubVar':x.id_test.var_test, 'SubRun':x.thread_runtype, 'SubTime':str("{0:.2f}".format(x.id_time.elapsed_t))}
                     vcount += 1
-                vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19], 'OptionTime': str("{0:.2f}".format(i.id_time.elapsed_t)),'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype,'OptionGroup': i.thread_tgroup,'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubLen': vcount, 'SubThread': valsth}
+                vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19], 'OptionTime': str("{0:.2f}".format(i.id_time.elapsed_t)),'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype, 'OptionRun': i.thread_runtype,'OptionGroup': i.thread_tgroup,'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval, 'SubLen': vcount, 'SubThread': valsth}
                 # Create inline data for pass/fail
                 p = ['1' for x in range(i.id_test.pass_num)]
                 f = ['-1' for x in range(i.id_test.fail_num)]

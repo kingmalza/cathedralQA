@@ -63,7 +63,7 @@ def mainoptions(request):
                 for i in mainTags.iterator(): t_list.append(i.main_id.id)
             except:
                 pass
-            
+
             # Now filter variables based on multiple temp main
             mainOptions = temp_variables.objects.filter(main_id__in=t_list)
 
@@ -159,6 +159,8 @@ def tabrefresh(request):
                     kwargs['thread_tgroup__contains'] = val
                 elif kw == 'SCHEDULE TYPE':
                     kwargs['thread_stype__contains'] = val
+                elif kw == 'RUN TYPE':
+                    kwargs['thread_runtype__contains'] = val
                 elif kw == 'SCHEDULE VALUE':
                     kwargs['thread_sval__contains'] = val
                 elif kw == 'THREAD':
@@ -187,6 +189,7 @@ def tabrefresh(request):
             vallabel['tID'] = i.id
             vallabel['OptionName'] = i.id_test.test_main.descr
             vallabel['OptionType'] = i.thread_ttype
+            vallabel['OptionRuntype'] = i.thread_runtype
             vallabel['OptionGroup'] = i.thread_tgroup
             vallabel['OptionSched'] = i.thread_stype
             vallabel['OptionSchedVal'] = i.thread_sval
@@ -282,7 +285,7 @@ def ecount(request):
 def tlinemgm(request):
     if request.is_ajax():
         #If request come from active form i retreive last 5 results, otherwise (History) last 20
-        if str(request.POST['fView']) == "active": 
+        if str(request.POST['fView']) == "active":
             thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:5]
         else:
             thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:20]
@@ -379,7 +382,7 @@ def tstopper(request):
     for line in out.splitlines():
         print(line)
     """
-    
+
     if request.is_ajax():
         specThread = t_threads.objects.filter(thread_stag=str(request.POST['tData']))
         for i in specThread:

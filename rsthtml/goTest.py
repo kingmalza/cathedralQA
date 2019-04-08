@@ -59,7 +59,7 @@ def randomword(length):
    return ''.join(random.choice(letters) for i in range(length))
 
 
-def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_group='NoGroup'):
+def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, run_type, tx_group='NoGroup'):
     print("Varlist---> ", varlist)
     p_oper = 'SC'
     varlist_a = deepcopy(varlist)
@@ -172,7 +172,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
             test_time.save()
 
             thread_save = t_threads(id_test=t_history.objects.get(id=test_save.id), id_time=t_time.objects.get(id=test_time.id), thread_id=t_list[t_inst].getName(),
-                                    thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
+                                    thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_runtype=run_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
             thread_save.save()
 
             """
@@ -231,8 +231,8 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, tx_gro
         print("Errore_gotest:", e.args)
 
 
-def run_threaded(job_func, P1, P2, P3, P4, P5, P6, P7, P8, P9='NoGroup'):
-    job_thread = threading.Thread(target=job_func(P1, P2, P3, P4, P5, P6, P7, P8, P9))
+def run_threaded(job_func, P1, P2, P3, P4, P5, P6, P7, P8, P8_1, P9='NoGroup'):
+    job_thread = threading.Thread(target=job_func(P1, P2, P3, P4, P5, P6, P7, P8, P8_1, P9))
     job_thread.start()
 
 
@@ -250,6 +250,7 @@ def startTest(request, i=[0]):
             sset = 'once'
             sval = ""
             reqT = request.POST.get('ttype')
+            runT = request.POST.get('runtype')
             # Decode the json from start js func
             json_string = request.POST.get('des')  # passed from JavaScript
             # Schedule settings comming from form
@@ -354,7 +355,7 @@ def startTest(request, i=[0]):
             for xl in new_one:
                     for iid in main_list:
                         try:
-                            goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, gval)
+                            goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, runT, gval)
                             time.sleep(2)
                         except Exception as e:
                             print("Exception in goproc 306: ",e.args)
@@ -367,9 +368,9 @@ def startTest(request, i=[0]):
                 # check if is every hour and set sval to None
                 #if sset == 'everyhour': sval = None
                 sched_dict = {
-                    'everymin': 'schedule.every(int(sval)).minutes.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
-                    'everyhour': 'schedule.every().hour.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))',
-                    'everyday': 'schedule.every().day.at(str(sval)).do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, gval).tag(str(stag))'}
+                    'everymin': 'schedule.every(int(sval)).minutes.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, runT, gval).tag(str(stag))',
+                    'everyhour': 'schedule.every().hour.do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, runT, gval).tag(str(stag))',
+                    'everyday': 'schedule.every().day.at(str(sval)).do(run_threaded,goProc, mainId, new_one[0], i[0], stag, reqT, int(u_id), sset, sval, runT, gval).tag(str(stag))'}
                 try:
                     eval(sched_dict[sset])
                     while 1:

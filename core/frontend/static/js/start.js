@@ -54,6 +54,7 @@ function seltype(varID) {
 function AddOptions(VarID) {
 
     oType = document.getElementById("sel_type");
+    oRun = document.getElementById("sel_ttype");
     oType.insertBefore(new Option('', ''), oType.firstChild);
     oTsel = document.getElementById("test_sel");
     oTtabs = document.getElementById("test_tabs");
@@ -79,7 +80,7 @@ function AddOptions(VarID) {
     buttonMgm.value = "START";
     buttonMgm.className = "btn btn-primary";
     buttonMgm.onclick = function () {
-        testBtn(VarID, oType.value);
+        testBtn(VarID, oType.value, oRun.value);
     }
     /*//Button for see html tab after start test
     var buttonHtml = document.createElement("input");
@@ -297,7 +298,7 @@ $(document).ajaxStop(function () {
     document.getElementById("overlay_get").style.display = "none";
 });
 
-function testBtn(VarID, t_type) {
+function testBtn(VarID, t_type, run_type) {
 
     document.getElementById("overlay").style.display = "block";
     //var divScan = GetElementInsideContainer("tab_div1","tab_div2");
@@ -323,7 +324,7 @@ function testBtn(VarID, t_type) {
         Schedval = "";
     }
 
-    console.log(" Sched: " + Schedsel.value + " val: " + Schedval.value)
+    console.log(" Sched: " + Schedsel.value + " Run: " + run_type)
 
     for (i = 0; i < descendents.length; i++) {
         e = descendents[i];
@@ -358,6 +359,7 @@ function testBtn(VarID, t_type) {
             url: "start",
             data: {
                 mainID: VarID.value,
+                runtype: run_type,
                 ttype: t_type,
                 des: json_string,
                 sched_sel: Schedsel.value,

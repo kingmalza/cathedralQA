@@ -83,14 +83,27 @@
                                     <!-- end tab containser -->
                                 </div>
                                 <!-- select run type (sanity regression ecc ecc)-->
-                                <div class="form-group" id="div_tt"">
+                                <div class="form-group" id="div_tt" style="display: none;">
                                     <label>Run as:</label>
-                                        <div class="box-header">
+                                    <div class="box-header">
                                         <select class="form-control" id="sel_ttype">
-                                        <option value="">Alpha</option>
-                                        <!-- DOM Created relative to main select -->
+                                          <option value="Ad-hoc">Ad-hoc</option>
+                                          <option value="Alpha">Alpha</option>
+                                          <option value="Beta">Beta</option>
+                                          <option value="Compatibility">Compatibility</option>
+                                          <option value="Dependency">Dependency</option>
+                                          <option value="Exploratory">Exploratory</option>
+                                          <option value="Exhaustive">Exhaustive</option>
+                                          <option value="Gorilla">Gorilla</option>
+                                          <option value="Load">Load</option>
+                                          <option value="Monkey">Monkey</option>
+                                          <option value="Performance">Performance</option>
+                                          <option value="Regression">Regression</option>
+                                          <option value="Sanity">Sanity</option>
+                                          <option value="Smoke">Smoke</option>
+                                          <option value="Stress">Stress</option>
                                         </select>
-                                        </div>
+                                    </div>
                                  </div>
 
                                 <!-- Div contain values from main test set selected -->

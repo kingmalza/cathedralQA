@@ -180,6 +180,21 @@ function refTable() {
                         }
                         ;
                     };
+                    var t_td13_run = document.createElement("TD");
+                    t_td13_run.setAttribute("style", "padding-left: 8px");
+                    t_td13_run.innerHTML = 'Run type'.bold();
+                    t_td13_run.onclick = function () {
+                        if (issearch == '-') {
+                            document.getElementById("txtsord").value = 'Optionruntype';
+                            document.getElementById("txtsign").value = '+';
+                            refTable();
+                        } else {
+                            document.getElementById("txtsord").value = 'Optionruntype';
+                            document.getElementById("txtsign").value = '-';
+                            refTable();
+                        }
+                        ;
+                    };
                     var t_td1 = document.createElement("TD");
                     t_td1.setAttribute("style", "padding-left: 8px");
                     t_td1.innerHTML = 'Thread'.bold();
@@ -272,6 +287,7 @@ function refTable() {
                     t_tr0.appendChild(t_td11);
                     t_tr0.appendChild(t_td12);
                     t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td13_run);
                     t_tr0.appendChild(t_td1);
                     t_tr0.appendChild(t_td2);
                     t_tr0.appendChild(t_td3);
@@ -304,6 +320,8 @@ function refTable() {
                 t_td12.innerHTML = data[index].OptionSched;
                 var t_td13 = document.createElement("TD");
                 t_td13.innerHTML = data[index].OptionSchedVal;
+                var t_td13_run = document.createElement("TD");
+                t_td13_run.innerHTML = data[index].OptionRuntype;
                 var t_td1 = document.createElement("TD");
                 t_td1.innerHTML = data[index].OptionID;
                 var t_td2 = document.createElement("TD");
@@ -338,6 +356,7 @@ function refTable() {
                 t_tr.appendChild(t_td11);
                 t_tr.appendChild(t_td12);
                 t_tr.appendChild(t_td13);
+                t_tr.appendChild(t_td13_run);
                 t_tr.appendChild(t_td1);
                 t_tr.appendChild(t_td5);
                 t_tr.appendChild(t_td2);
@@ -379,10 +398,10 @@ function refTable() {
                 rows[i].onclick = (function () { // closure
                     var cnt = i; // save the counter to use in the function
                     return function () {
-                        task_det(this.cells[0].innerHTML, this.cells[8].innerHTML);
+                        task_det(this.cells[0].innerHTML, this.cells[9].innerHTML);
                         t_line.style.visibility = 'visible';
                         t_lineH1.innerHTML = "LAST FIVE TIMELINE EVENTS FOR PROC. ID: " + this.cells[0].innerHTML;
-                        c_hold = this.cells[8].innerHTML;
+                        c_hold = this.cells[9].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         getTline(c_hold,'active');
                     }
@@ -694,7 +713,3 @@ function stopThread(tDet) {
         }
     });
 }
-
-
-        
-  
