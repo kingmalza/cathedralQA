@@ -30,7 +30,7 @@
                         <br><br>
                     <div>
                     <!--Button for demo account only -->
-                        <button onclick="showHide();" class="btn btn-block btn-success btn-lg">OK I UNDERSTAND</button>
+                        <button onclick="showHide();" class="btn btn-block btn-success btn-lg">GOT IT</button>
                     </div>
 
                     </div>
@@ -315,6 +315,7 @@
 
 {% endblock %}
 {% block script %}
+  <link href="{% static "plugins/daterangepicker/daterangepicker-bs3.css" %}" rel="stylesheet" type="text/css">
     <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <!-- jQuery 2.1.3 -->
     <script src="{% static "plugins/jQuery/jQuery-2.1.3.min.js" %}"></script>
@@ -398,6 +399,65 @@ window.__lc.license = 10552602;
             countElem();
             createLine();
         };
+    </script>
+    <script type="text/javascript">
+      $(function () {
+        //Datemask dd/mm/yyyy
+        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //Money Euro
+        $("[data-mask]").inputmask();
+
+        //Date range picker
+        $('#reservation').daterangepicker();
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+                {
+                  ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                    'Last 7 Days': [moment().subtract('days', 6), moment()],
+                    'Last 30 Days': [moment().subtract('days', 29), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                  },
+                  startDate: moment().subtract('days', 29),
+                  endDate: moment()
+                },
+        function (start, end) {
+          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+        );
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        //Timepicker
+        $(".timepicker").timepicker({
+          showInputs: false
+        });
+      });
     </script>
     <div class="no-print" style="padding: 10px; position: fixed; top: 70px; right: -250px; background: rgb(255, 255, 255); border: 0px solid rgb(221, 221, 221); width: 250px; z-index: 99999; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px;"><h4 class="text-light-blue" style="margin: 0 0 5px 0; border-bottom: 1px solid #ddd; padding-bottom: 15px;">Layout Options</h4><div class="form-group"><div class="checkbox"><label><input type="checkbox" onchange="change_layout(&quot;fixed&quot;);"> Fixed layout</label></div></div><div class="form-group"><div class="checkbox"><label><input type="checkbox" onchange="change_layout(&quot;layout-boxed&quot;);"> Boxed Layout</label></div></div><div class="form-group"><div class="checkbox"><label><input type="checkbox" onchange="change_layout(&quot;sidebar-collapse&quot;);"> Collapsed Sidebar</label></div></div><h4 class="text-light-blue" style="margin: 0 0 5px 0; border-bottom: 1px solid #ddd; padding-bottom: 15px;">Skins</h4><ul class="list-unstyled"><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-blue&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div><span style="display:block; width: 20%; float: left; height: 10px; background: #367fa9;"></span><span class="bg-light-blue" style="display:block; width: 80%; float: left; height: 10px;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Blue</p></a></li><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-black&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display:block; width: 20%; float: left; height: 10px; background: #fefefe;"></span><span style="display:block; width: 80%; float: left; height: 10px; background: #fefefe;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Black</p></a></li><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-purple&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div><span style="display:block; width: 20%; float: left; height: 10px;" class="bg-purple-active"></span><span class="bg-purple" style="display:block; width: 80%; float: left; height: 10px;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Purple</p></a></li><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-green&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div><span style="display:block; width: 20%; float: left; height: 10px;" class="bg-green-active"></span><span class="bg-green" style="display:block; width: 80%; float: left; height: 10px;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Green</p></a></li><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-red&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div><span style="display:block; width: 20%; float: left; height: 10px;" class="bg-red-active"></span><span class="bg-red" style="display:block; width: 80%; float: left; height: 10px;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Red</p></a></li><li style="float:left; width: 50%; padding: 5px;"><a href="#" onclick="change_skin(&quot;skin-yellow&quot;)" style="display: block; box-shadow: -1px 1px 2px rgba(0,0,0,0.0);" class="clearfix full-opacity-hover"><div><span style="display:block; width: 20%; float: left; height: 10px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display:block; width: 80%; float: left; height: 10px;"></span></div><div><span style="display:block; width: 20%; float: left; height: 40px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 40px; background: #f4f5f7;"></span></div><p class="text-center">Skin Yellow</p></a></li></ul></div>
     <div class="daterangepicker dropdown-menu opensleft" style="top: 218px; right: 25px; left: auto; display: none;"><div class="calendar left" style="display: block;"><div class="calendar-date"><table class="table-condensed"><thead><tr><th class="prev available"><i class="icon-arrow-left glyphicon glyphicon-arrow-left"></i></th><th colspan="5" style="width: auto">Apr 2019</th><th class="next available"><i class="icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="available off" data-title="r0c0">31</td><td class="available" data-title="r0c1">1</td><td class="available" data-title="r0c2">2</td><td class="available" data-title="r0c3">3</td><td class="available" data-title="r0c4">4</td><td class="available" data-title="r0c5">5</td><td class="available" data-title="r0c6">6</td></tr><tr><td class="available" data-title="r1c0">7</td><td class="available" data-title="r1c1">8</td><td class="available" data-title="r1c2">9</td><td class="available" data-title="r1c3">10</td><td class="available" data-title="r1c4">11</td><td class="available" data-title="r1c5">12</td><td class="available" data-title="r1c6">13</td></tr><tr><td class="available" data-title="r2c0">14</td><td class="available" data-title="r2c1">15</td><td class="available active start-date end-date" data-title="r2c2">16</td><td class="available" data-title="r2c3">17</td><td class="available" data-title="r2c4">18</td><td class="available" data-title="r2c5">19</td><td class="available" data-title="r2c6">20</td></tr><tr><td class="available" data-title="r3c0">21</td><td class="available" data-title="r3c1">22</td><td class="available" data-title="r3c2">23</td><td class="available" data-title="r3c3">24</td><td class="available" data-title="r3c4">25</td><td class="available" data-title="r3c5">26</td><td class="available" data-title="r3c6">27</td></tr><tr><td class="available" data-title="r4c0">28</td><td class="available" data-title="r4c1">29</td><td class="available" data-title="r4c2">30</td><td class="available off" data-title="r4c3">1</td><td class="available off" data-title="r4c4">2</td><td class="available off" data-title="r4c5">3</td><td class="available off" data-title="r4c6">4</td></tr><tr><td class="available off" data-title="r5c0">5</td><td class="available off" data-title="r5c1">6</td><td class="available off" data-title="r5c2">7</td><td class="available off" data-title="r5c3">8</td><td class="available off" data-title="r5c4">9</td><td class="available off" data-title="r5c5">10</td><td class="available off" data-title="r5c6">11</td></tr></tbody></table></div></div><div class="calendar right" style="display: block;"><div class="calendar-date"><table class="table-condensed"><thead><tr><th></th><th colspan="5" style="width: auto">Apr 2019</th><th class="next available"><i class="icon-arrow-right glyphicon glyphicon-arrow-right"></i></th></tr><tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr></thead><tbody><tr><td class="off disabled" data-title="r0c0">31</td><td class="off disabled" data-title="r0c1">1</td><td class="off disabled" data-title="r0c2">2</td><td class="off disabled" data-title="r0c3">3</td><td class="off disabled" data-title="r0c4">4</td><td class="off disabled" data-title="r0c5">5</td><td class="off disabled" data-title="r0c6">6</td></tr><tr><td class="off disabled" data-title="r1c0">7</td><td class="off disabled" data-title="r1c1">8</td><td class="off disabled" data-title="r1c2">9</td><td class="off disabled" data-title="r1c3">10</td><td class="off disabled" data-title="r1c4">11</td><td class="off disabled" data-title="r1c5">12</td><td class="off disabled" data-title="r1c6">13</td></tr><tr><td class="off disabled" data-title="r2c0">14</td><td class="off disabled" data-title="r2c1">15</td><td class="available active start-date end-date" data-title="r2c2">16</td><td class="available" data-title="r2c3">17</td><td class="available" data-title="r2c4">18</td><td class="available" data-title="r2c5">19</td><td class="available" data-title="r2c6">20</td></tr><tr><td class="available" data-title="r3c0">21</td><td class="available" data-title="r3c1">22</td><td class="available" data-title="r3c2">23</td><td class="available" data-title="r3c3">24</td><td class="available" data-title="r3c4">25</td><td class="available" data-title="r3c5">26</td><td class="available" data-title="r3c6">27</td></tr><tr><td class="available" data-title="r4c0">28</td><td class="available" data-title="r4c1">29</td><td class="available" data-title="r4c2">30</td><td class="available off" data-title="r4c3">1</td><td class="available off" data-title="r4c4">2</td><td class="available off" data-title="r4c5">3</td><td class="available off" data-title="r4c6">4</td></tr><tr><td class="available off" data-title="r5c0">5</td><td class="available off" data-title="r5c1">6</td><td class="available off" data-title="r5c2">7</td><td class="available off" data-title="r5c3">8</td><td class="available off" data-title="r5c4">9</td><td class="available off" data-title="r5c5">10</td><td class="available off" data-title="r5c6">11</td></tr></tbody></table></div></div><div class="ranges"><div class="range_inputs"><div class="daterangepicker_start_input" style="float: left"><label for="daterangepicker_start">From</label><input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled"></div><div class="daterangepicker_end_input" style="float: left; padding-left: 11px"><label for="daterangepicker_end">To</label><input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled"></div><button class="btn-success applyBtn btn btn-small">Apply</button>&nbsp;<button class="btn-default cancelBtn btn btn-small">Cancel</button></div></div></div>
