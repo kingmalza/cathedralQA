@@ -798,6 +798,35 @@ function empty(inpval) {
     };
 }
 
+
+//Function for create an populate timeline
+function fil_filters(f_name) {
+
+    sel_call = document.getElementById(f_name);
+    sel_call.options.length = 0;
+    var x = document.createElement("OPTION");
+    x.text = "..All";
+    x.value = "..All";
+    sel_call.appendChild(x);
+
+    $.ajax({
+            type: "POST",
+            url: "filter_data",
+            data: {
+                selid: f_name
+            },
+            success: function (data) {
+                $.each(data, function (index) {
+                    var x = document.createElement("OPTION");
+                    x.text = data[index].sDescr+"( "+data[index].sActive+" )";
+                    x.value = data[index].sDescr;
+                    sel_call.appendChild(x);
+                });
+            }
+        });
+
+}
+
 //Function for create an populate timeline
 function getTlineHist(t_stag, f_view) {
     //main ul for contain dynamic constructors

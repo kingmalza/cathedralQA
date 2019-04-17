@@ -135,12 +135,8 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
                       <label>Test Name:</label>
-                      <select class="form-control">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
+                      <select class="form-control" id="f_tname" onfocus="fil_filters('f_tname')">
+                        <option>..All</option>
                       </select>
                     </div>
                 </div>
@@ -198,7 +194,7 @@
             <div class="box-footer">
               <div class="row">
                 <div class="col-lg-6" style="max-width:210px;">
-                  <button class="btn btn-block btn-success" style="max-width:200px;">Search</button>
+                  <button class="btn btn-block btn-primary" style="max-width:200px;">Search</button>
                 </div>
                 <div class="col-lg-6">
                   <button class="btn btn-block btn-danger" style="max-width:200px;">Reset</button>

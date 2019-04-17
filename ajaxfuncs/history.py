@@ -179,6 +179,32 @@ def retUser(request):
         pass
 
 
+
+@csrf_exempt
+def hfilter(request):
+    if request.is_ajax():
+
+        if request.POST['selid'] == 'f_tname':
+            sfill = temp_main.objects.all().order_by('descr')
+
+        response = []
+
+        for i in sfill:
+            vallabel = {}
+            vallabel['sDescr'] = i.descr,
+            vallabel['sActive'] = i.active
+            response.append(vallabel)
+
+        json = simplejson.dumps(response)
+
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
+
+
 @csrf_exempt
 def assign_ticket(request):
     if request.is_ajax() and request.user.is_authenticated:
