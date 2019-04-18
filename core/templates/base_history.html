@@ -124,7 +124,7 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
                       <label>Templte Type:</label>
-                      <select class="form-control">
+                      <select class="form-control" id="ftype">
                           <option value="..All">..All</option>
                         <option value="Functional">Functional</option>
                         <option value="Non Functional">Non Functional</option>
@@ -144,7 +144,7 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
                       <label>Group type:</label>
-                      <select class="form-control">
+                      <select class="form-control" id="ftgroup">
                         <option value="..All">..All</option>
                         <option value="Test Group">Test Group</option>
                         <option value="TAG Aggregation">TAG Aggregation</option>
@@ -156,7 +156,7 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
                       <label>Run Type:</label>
-                      <select class="form-control">
+                      <select class="form-control" id="frun">
                           <option value="..All">..All</option>
                         <option value="Ad-hoc">Ad-hoc</option>
                         <option value="Alpha">Alpha</option>
@@ -190,7 +190,7 @@
             <div class="box-footer">
               <div class="row">
                 <div class="col-lg-6" style="max-width:210px;">
-                  <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter();">Filter</button>
+                  <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter(document.getElementById('reservation').innerHTML,document.getElementById('reservation').value,document.getElementById('ftype').value, document.getElementById('f_tname').value, document.getElementById('ftgroup').value, document.getElementById('frun').value, document.getElementById('sel_user').value);">Filter</button>
                 </div>
                 <div class="col-lg-6">
                   <button class="btn btn-block btn-danger" style="max-width:200px;" onclick="window.location.href = '/';">Reset</button>

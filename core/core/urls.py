@@ -26,7 +26,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost
-from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter
+from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter, hstartfilter
 from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
 from rsthtml.goTest import startTest
@@ -87,6 +87,7 @@ urlpatterns = [
                   url(r'^getass$', get_ticket),
                   url(r'^tline_mgm$', tlinemgm),
                 url(r'^filter_data$', hfilter),
+                url(r'^startfilter$', hstartfilter),
                   url(r'^thread_stopper$', tstopper),
                   url(r'^test_type$', tselect),
                   url(r'^start$', startTest),

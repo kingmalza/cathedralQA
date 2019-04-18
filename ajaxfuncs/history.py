@@ -206,6 +206,23 @@ def hfilter(request):
 
 
 @csrf_exempt
+def hstartfilter(request):
+    if request.is_ajax():
+
+        response = []
+
+
+        json = simplejson.dumps(response)
+
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
+
+
+@csrf_exempt
 def assign_ticket(request):
     if request.is_ajax() and request.user.is_authenticated:
 

@@ -859,10 +859,25 @@ function SelUsers() {
 }
 
 //function called from Filter button in history home
-function startFilter() {
+function startFilter(f1,f2,f3,f4,f5,f6) {
     sData = document.getElementById('reservation');
     if (sData.value.length > 0) {
-        alert("OKK");
+        $.ajax({
+            type: "POST",
+            url: "startfilter",
+            data: {fData: f1,
+                fType: f2,
+                fName: f3,
+                fGroup: f4,
+                fRun: f5,
+                fUser: f6},
+            success: function (data) {
+                console.log(f1+f2+f3+f4+f5+f6);
+                $.each(data, function (index) {
+
+                });
+            }
+        });
     } else {
         alert("Insert a data range");
     }
