@@ -125,9 +125,9 @@
                   <div class="form-group">
                       <label>Templte Type:</label>
                       <select class="form-control">
+                          <option value="..All">..All</option>
                         <option value="Functional">Functional</option>
                         <option value="Non Functional">Non Functional</option>
-                        <option value="Both">Both</option>
                       </select>
                     </div>
                 </div>
@@ -143,13 +143,12 @@
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                      <label>Test Group:</label>
+                      <label>Group type:</label>
                       <select class="form-control">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
+                        <option value="..All">..All</option>
+                        <option value="Test Group">Test Group</option>
+                        <option value="TAG Aggregation">TAG Aggregation</option>
+                        <option value="Project Aggregation">Project Aggregation</option>
                       </select>
                     </div>
                 </div>
@@ -158,6 +157,7 @@
                   <div class="form-group">
                       <label>Run Type:</label>
                       <select class="form-control">
+                          <option value="..All">..All</option>
                         <option value="Ad-hoc">Ad-hoc</option>
                         <option value="Alpha">Alpha</option>
                         <option value="Beta">Beta</option>
@@ -180,12 +180,8 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
                       <label>User:</label>
-                      <select class="form-control">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
+                      <select class="form-control" id="sel_user" onfocus="javascript:SelUsers();">
+                          <option>..All</option>
                       </select>
                     </div>
                 </div>
@@ -194,10 +190,10 @@
             <div class="box-footer">
               <div class="row">
                 <div class="col-lg-6" style="max-width:210px;">
-                  <button class="btn btn-block btn-primary" style="max-width:200px;">Search</button>
+                  <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter();">Filter</button>
                 </div>
                 <div class="col-lg-6">
-                  <button class="btn btn-block btn-danger" style="max-width:200px;">Reset</button>
+                  <button class="btn btn-block btn-danger" style="max-width:200px;" onclick="window.location.href = '/';">Reset</button>
                 </div>
               </div>
             </div><!-- /.box-footer-->

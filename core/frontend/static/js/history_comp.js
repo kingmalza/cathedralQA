@@ -818,13 +818,54 @@ function fil_filters(f_name) {
             success: function (data) {
                 $.each(data, function (index) {
                     var x = document.createElement("OPTION");
-                    x.text = data[index].sDescr+"( "+data[index].sActive+" )";
+                    x.text = data[index].sDescr;
                     x.value = data[index].sDescr;
                     sel_call.appendChild(x);
+
                 });
+
             }
         });
 
+}
+
+
+function SelUsers() {
+
+  uluser = document.getElementById('sel_user');
+  uluser.options.length = 0;
+    var x = document.createElement("OPTION");
+    x.text = "..All";
+    x.value = "..All";
+    uluser.appendChild(x);
+
+  $.ajax({
+      type: "POST",
+      url: "getuser",
+      data: {},
+      success: function (data) {
+
+          $.each(data, function (index) {
+              var x = document.createElement("OPTION");
+              x.text = data[index].uUsername;
+              x.value = data[index].uUsername;
+              uluser.appendChild(x);
+          });
+
+
+      }
+  });
+
+}
+
+//function called from Filter button in history home
+function startFilter() {
+    sData = document.getElementById('reservation');
+    if (sData.value.length > 0) {
+        alert("OKK");
+    } else {
+        alert("Insert a data range");
+    }
 }
 
 //Function for create an populate timeline
