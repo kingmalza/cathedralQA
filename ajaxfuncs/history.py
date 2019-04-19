@@ -20,7 +20,7 @@ django.setup()
 
 
 @csrf_exempt
-def histrefresh(request, lorder='-id'):
+def histrefresh(request, lorder='-id', filter={'thread_status': 'DEAD'}):
     l = threading.enumerate()
 
     if request.is_ajax():
@@ -44,7 +44,10 @@ def histrefresh(request, lorder='-id'):
         fnum = of['fail_num__sum']
         # First check if is typed a search term
         if request.POST['tab_search'] == 'noSearch':
-            ordered = t_threads.objects.filter(thread_status='DEAD').select_related().order_by(lorder)[x:y]
+            #ordered = t_threads.objects.filter(**{'thread_status': 'DEAD', 'thread_tgroup': 'NoGroup', 'thread_stype': 'everymin'}).select_related().order_by(lorder)[x:y]
+            ordered = t_threads.objects.filter(**filter).select_related().order_by(lorder)[x:y]
+
+
             #Here i create a list of distinct thread_main values for calculate and manage in js the history threads list
             a = set(t_threads.objects.values_list('thread_stag'))
             dis_thread = []
