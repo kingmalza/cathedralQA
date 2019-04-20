@@ -20,7 +20,7 @@ django.setup()
 
 
 @csrf_exempt
-def histrefresh(request, lorder='-id', filter={'thread_status': 'DEAD'}):
+def histrefresh(request, lorder='-id'):
     l = threading.enumerate()
 
     if request.is_ajax():
@@ -44,8 +44,34 @@ def histrefresh(request, lorder='-id', filter={'thread_status': 'DEAD'}):
         fnum = of['fail_num__sum']
         # First check if is typed a search term
         if request.POST['tab_search'] == 'noSearch':
-            #ordered = t_threads.objects.filter(**{'thread_status': 'DEAD', 'thread_tgroup': 'NoGroup', 'thread_stype': 'everymin'}).select_related().order_by(lorder)[x:y]
-            ordered = t_threads.objects.filter(**filter).select_related().order_by(lorder)[x:y]
+
+            #Here we check if request come from filtering or general
+            try:
+                pData = request.POST['fData']
+                pType = request.POST['fType']
+                pName = request.POST['fName']
+                pGroup = request.POST['fGroup']
+                pRun = request.POST['fRun']
+                pUser = request.POST['fUser']
+
+
+                #Now create the dict for search
+                fdict = {}
+
+                #Skip data search for now
+                if pType != '..All': fdict['id_test__t_type'] = pType
+                if pName != '..All': fdict['id_test__test_main_id'] = pName
+                if pGroup != '..All': fdict['thread_ttype'] = pGroup
+                if pRun != '..All': fdict['thread_runtype'] = pRun
+                if pUser != '..All': fdict['id_test__user_id'] = pUser
+
+                print("FDICT-> ",fdict)
+                ordered = t_threads.objects.filter(**fdict).select_related().order_by(lorder)[x:y]
+
+                print(ordered)
+
+            except Exception:
+                ordered = t_threads.objects.filter(**{'thread_status': 'DEAD'}).select_related().order_by(lorder)[x:y]
 
 
             #Here i create a list of distinct thread_main values for calculate and manage in js the history threads list
@@ -194,6 +220,7 @@ def hfilter(request):
 
         for i in sfill:
             vallabel = {}
+            vallabel['sId'] = i.id,
             vallabel['sDescr'] = i.descr,
             vallabel['sActive'] = i.active
             response.append(vallabel)

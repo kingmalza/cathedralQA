@@ -819,7 +819,7 @@ function fil_filters(f_name) {
                 $.each(data, function (index) {
                     var x = document.createElement("OPTION");
                     x.text = data[index].sDescr;
-                    x.value = data[index].sDescr;
+                    x.value = data[index].sId;
                     sel_call.appendChild(x);
 
                 });
@@ -848,7 +848,7 @@ function SelUsers() {
           $.each(data, function (index) {
               var x = document.createElement("OPTION");
               x.text = data[index].uUsername;
-              x.value = data[index].uUsername;
+              x.value = data[index].uID;
               uluser.appendChild(x);
           });
 
@@ -861,11 +861,16 @@ function SelUsers() {
 //function called from Filter button in history home
 function startFilter(f1,f2,f3,f4,f5,f6) {
     sData = document.getElementById('reservation');
+
     if (sData.value.length > 0) {
         $.ajax({
             type: "POST",
-            url: "startfilter",
-            data: {fData: f1,
+            url: "hrefresh",
+            data: {tab_slice:1,
+                tab_ord: '-id',
+                tab_search: 'noSearch',
+                isearch: 0,
+                fData: f1,
                 fType: f2,
                 fName: f3,
                 fGroup: f4,

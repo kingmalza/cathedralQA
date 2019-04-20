@@ -146,9 +146,10 @@
                       <label>Group type:</label>
                       <select class="form-control" id="ftgroup">
                         <option value="..All">..All</option>
-                        <option value="Test Group">Test Group</option>
-                        <option value="TAG Aggregation">TAG Aggregation</option>
-                        <option value="Project Aggregation">Project Aggregation</option>
+                          <option value="ST">Single Template</option>
+                        <option value="TG">Test Group</option>
+                        <option value="TA">TAG Aggregation</option>
+                        <option value="PA">Project Aggregation</option>
                       </select>
                     </div>
                 </div>
@@ -190,7 +191,7 @@
             <div class="box-footer">
               <div class="row">
                 <div class="col-lg-6" style="max-width:210px;">
-                  <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter(document.getElementById('reservation').innerHTML,document.getElementById('reservation').value,document.getElementById('ftype').value, document.getElementById('f_tname').value, document.getElementById('ftgroup').value, document.getElementById('frun').value, document.getElementById('sel_user').value);">Filter</button>
+                  <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter(document.getElementById('reservation').value,document.getElementById('ftype').value, document.getElementById('f_tname').value, document.getElementById('ftgroup').value, document.getElementById('frun').value, document.getElementById('sel_user').value);">Filter</button>
                 </div>
                 <div class="col-lg-6">
                   <button class="btn btn-block btn-danger" style="max-width:200px;" onclick="window.location.href = '/';">Reset</button>
