@@ -58,7 +58,14 @@ def histrefresh(request, lorder='-id'):
                 #Now create the dict for search
                 fdict = {}
 
-                #Skip data search for now
+                #Modify data format
+                delim = '-'
+                dstop = pData[pData.index(delim) + len(delim):].strip()
+                dstart = pData[:pData.index(delim)].strip()
+                dstart_conv = datetime.datetime.strptime(dstart, '%m/%d/%Y').strftime('%Y-%m-%d')
+                dstop_conv = datetime.datetime.strptime(dstop, '%m/%d/%Y').strftime('%Y-%m-%d')
+                #print("DATA IS-> ",dstart_conv,'--',dstop_conv)
+                fdict['thread_startd__range'] = [dstart_conv,dstop_conv]
                 if pType != '..All': fdict['id_test__t_type'] = pType
                 if pName != '..All': fdict['id_test__test_main_id'] = pName
                 if pGroup != '..All': fdict['thread_ttype'] = pGroup
@@ -66,7 +73,7 @@ def histrefresh(request, lorder='-id'):
                 if pUser != '..All': fdict['id_test__user_id'] = pUser
 
                 print("FDICT-> ",fdict)
-                ordered = t_threads.objects.filter(**fdict).select_related().order_by(lorder)[x:y]
+                ordered = t_threads.objects.filter(**fdict).select_related().order_by(lorder)
 
                 print(ordered)
 
@@ -215,6 +222,7 @@ def hfilter(request):
 
         if request.POST['selid'] == 'f_tname':
             sfill = temp_main.objects.all().order_by('descr')
+
 
         response = []
 
