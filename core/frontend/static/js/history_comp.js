@@ -804,6 +804,7 @@ function fil_filters(f_name) {
 
     sel_call = document.getElementById(f_name);
     sel_call.options.length = 0;
+    //console.log(GetElementInsideContainer(divTtype, ftype).text);
     var x = document.createElement("OPTION");
     x.text = "..All";
     x.value = "..All";
