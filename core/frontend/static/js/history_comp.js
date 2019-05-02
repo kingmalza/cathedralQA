@@ -17,7 +17,9 @@ function GetElementInsideContainer(containerID, childID) {
 
 
 function CreateHisTable(data,index) {
-                    if (index == 0) {
+    t_body = document.getElementById("h_tab");
+
+    if (index == 0) {
                     var t_tr0 = document.createElement("TR");
                     var t_td0 = document.createElement("TD");
                     t_td0.innerHTML = 'ID'.bold();
@@ -1269,8 +1271,9 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
 
     if (sData.value.length > 0) {
         //Clear table on frontend
-        var row = document.getElementsByTagName('tbody')[0];
-        row.parentNode.removeChild(row);
+        //var row = document.getElementsByTagName('tbody')[0];
+        //row.parentNode.removeChild(row);
+        t_body.innerHTML = "";
         var ul = document.getElementById("ul_group");
         while(ul.firstChild) ul.removeChild(ul.firstChild);
         $.ajax({
@@ -1288,29 +1291,9 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
                 fUser: f6},
             success: function (data) {
                 console.log(f1+f2+f3+f4+f5+f6);
-                            //Var for check if a row is double or not
+                //Var for check if a row is double or not
                 var noDouble = "";
-                t_body.innerHTML = "";
                 //stat_h.style.visibility = 'hidden';
-                if (data) {
-                    t_group.innerHTML = "";
-                    //dlen = (data + '').length;
-                    dlen = data[data.length-1];
-                    //dlen = data[index].OptionNumT;
-                    //Create footer elements for multiple of 20
-
-                    //var multipler = dlen.size / 20;
-                    var multipler = dlen / 20;
-                    console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
-                    for (i = 0; i < multipler; i++) {
-                        var li_0 = document.createElement("LI");
-                        newlink = document.createElement('a');
-                        newlink.innerHTML = i + 1;
-                        li_0.appendChild(newlink)
-                        t_group.appendChild(li_0);
-                    }
-
-                }
 
                 if (data[0].TotData != undefined) {
                     t_box1.innerHTML = data[0].TotData;
@@ -1326,6 +1309,85 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
                 $.each(data, function (index) {
                     CreateHisTable(data,index);
                 });
+
+                var rows = t_body.rows; // or table.getElementsByTagName("tr");
+            lab_proc = document.createElement("SPAN");
+            lab_proc.setAttribute("id", "id_lproc");
+            lab_proc.setAttribute("class", "label label-default");
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].onclick = (function () { // closure
+                    var cnt = i; // save the counter to use in the function
+                    return function () {
+                        t_line.style.visibility = 'visible';
+                        lab_proc.innerHTML = this.cells[15].innerHTML;
+                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " //+ this.cells[0].innerHTML;
+                        t_lineH1.appendChild(lab_proc);
+                        c_hold = this.cells[15].innerHTML;
+                        //Now populate the t assignement area if there is anything
+                        divchat = document.getElementById("chat-box");
+                        document.getElementById("ccont").style.height = "0px";
+
+                        while (divchat.firstChild) {
+                          divchat.removeChild(divchat.firstChild);
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "getass",
+                            data: {'uTag':this.cells[15].innerHTML},
+                            success: function (data) {
+
+                                $.each(data, function (index) {
+
+                                  document.getElementById("ccont").style.height = "250px";
+                                  dch1 = document.createElement("div");
+                                  dch1.setAttribute("class", "item");
+                                  dch1.style.padding = "5px";
+                                  dimg1 = document.createElement("img");
+                                  dimg1.setAttribute("class", data[index].uclass);
+                                  dimg1.setAttribute("src", "/static/dist/img/user4-128x128.jpg");
+                                  dp1 = document.createElement("p");
+                                  dp1.setAttribute("class", "message");
+                                  dp1.innerHTML = data[index].anotes;
+                                  dp1_1 = document.createElement("label");
+                                  dp1_1.setAttribute("class", "name");
+                                  dp1_1.innerHTML = data[index].usass+" -> "+data[index].usfor;
+                                  dp1_1_1 = document.createElement("small");
+                                  dp1_1_1.setAttribute("class", "text-muted pull-right");
+                                  dp1_1_1.innerHTML = data[index].dop;
+                                  dp1_1_1_1 = document.createElement("i");
+                                  dp1_1_1_1.setAttribute("class", "fa fa-clock-o");
+                                  //No clock icon
+                                  //dp1_1_1.appendChild(dp1_1_1_1);
+                                  dp1_1.appendChild(dp1_1_1);
+
+                                  dp1.appendChild(dp1_1);
+
+                                  dch1.appendChild(dimg1);
+                                  dch1.appendChild(dp1);
+                                  divchat.appendChild(dch1);
+
+                                });
+
+                            }
+                        });
+                        document.getElementById("overlay_proc").style.display = "block";
+                        window.location.href = '/#tl_tit';
+                        getTlineHist(c_hold, 'history');
+                    }
+                })(i);
+            }
+
+            var alink = t_group.getElementsByTagName("a");
+            for (var i = 0; i < alink.length; i++) {
+                alink[i].onclick = function fun() {
+                    t_sect = this.innerHTML;
+                    document.getElementById("overlay_proc").style.display = "block";
+                    window.location.href = '/#c_head';
+                    refHistory(j_ord,j_sign,j_search);
+
+                }
+
+            }
             }
         });
         document.getElementById("overlay_filter").style.display = "block";
