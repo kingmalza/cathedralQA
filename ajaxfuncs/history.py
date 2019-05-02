@@ -221,7 +221,11 @@ def hfilter(request):
     if request.is_ajax():
 
         if request.POST['selid'] == 'f_tname':
-            sfill = temp_main.objects.all().order_by('descr')
+            if request.POST['seltp'] == '..All':
+                sfill = temp_main.objects.all().order_by('descr')
+            else:
+                sfill = temp_main.objects.filter(t_type=request.POST['seltp']).order_by('descr')
+
 
 
         response = []

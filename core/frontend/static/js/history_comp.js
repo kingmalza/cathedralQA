@@ -12,7 +12,410 @@ function GetElementInsideContainer(containerID, childID) {
       //alert('STOP');
       document.getElementById("overlay").style.display = "none";
       document.getElementById("overlay_proc").style.display = "none";
+      document.getElementById("overlay_filter").style.display = "none";
   });
+
+
+function CreateHisTable(data,index) {
+                    if (index == 0) {
+                    var t_tr0 = document.createElement("TR");
+                    var t_td0 = document.createElement("TD");
+                    t_td0.innerHTML = 'ID'.bold();
+                    t_td0.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-id','+');
+                        } else {
+                            refHistory('id','-');
+                        };
+                    };
+                    var t_td1 = document.createElement("TD");
+                    t_td1.innerHTML = 'Test Group'.bold();
+                    t_td1.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_tgroup','+');
+                        } else {
+                            refHistory('thread_tgroup','-');
+                        };
+                    };
+                    var t_td2 = document.createElement("TD");
+                    t_td2.innerHTML = 'Test Type'.bold();
+                    t_td2.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_ttype','+');
+                        } else {
+                            refHistory('thread_ttype','-');
+                        };
+                    };
+                    var t_td10 = document.createElement("TD");
+                    t_td10.innerHTML = 'Test Name'.bold();
+                    t_td10.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-id_test__test_main','+');
+                        } else {
+                            refHistory('id_test__test_main','-');
+                        };
+                    };
+                    var t_td11 = document.createElement("TD");
+                    t_td11.innerHTML = 'Schedule'.bold();
+                    t_td11.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-ithread_stype','+');
+                        } else {
+                            refHistory('thread_stype','-');
+                        };
+                    };
+                    var t_td12 = document.createElement("TD");
+                    t_td12.innerHTML = 'Schedule Value'.bold();
+                    t_td12.setAttribute('class', 'sorting');
+                    t_td12.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_sval','+');
+                        } else {
+                            refHistory('thread_sval','-');
+                        };
+                    };
+                    var t_td13 = document.createElement("TD");
+                    t_td13.innerHTML = 'Thread Name'.bold();
+                    t_td13.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_main','+');
+                        } else {
+                            refHistory('thread_main','-');
+                        };
+                    };
+                    var t_td13_run = document.createElement("TD");
+                    t_td13_run.innerHTML = 'Run Type'.bold();
+                    t_td13_run.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_runtype','+');
+                        } else {
+                            refHistory('thread_runtype','-');
+                        };
+                    };
+                    var t_td3 = document.createElement("TD");
+                    t_td3.innerHTML = 'Start'.bold();
+                    t_td3.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_startd','+');
+                        } else {
+                            refHistory('thread_startd','-');
+                        };
+                    };
+                    var t_td4 = document.createElement("TD");
+                    t_td4.innerHTML = 'Stop'.bold();
+                    t_td4.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-thread_stopd','+');
+                        } else {
+                            refHistory('thread_stopd','-');
+                        };
+                    };
+                    var t_td4time = document.createElement("TD");
+                    t_td4time.innerHTML = 'Elapsed'.bold();
+                    t_td4time.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-id_time__elapsed_t','+');
+                        } else {
+                            refHistory('id_time__elapsed_t','-');
+                        };
+                    };
+                    var t_td5 = document.createElement("TD");
+                    t_td5.innerHTML = 'User'.bold();
+                    t_td5.onclick = function() {
+                        if(j_sign == '-') {
+                            refHistory('-id_test__user_id','+');
+                        } else {
+                            refHistory('id_test__user_id','-');
+                        };
+                    };
+                    var t_td6 = document.createElement("TD");
+                    t_td6.innerHTML = 'col1';
+                    var t_td7 = document.createElement("TD");
+                    t_td7.innerHTML = 'Passed';
+                    var t_td8 = document.createElement("TD");
+                    t_td8.innerHTML = 'Failures';
+                    var t_td9 = document.createElement("TD");
+                    t_td9.innerHTML = 'Cycles';
+                    var t_td14 = document.createElement("TD");
+                    t_td14.innerHTML = 'TAG';
+                    t_td14.setAttribute('id', 'tag_h');
+                    t_td14.style.display = 'none';
+
+                    t_tr0.appendChild(t_td0);
+                    t_tr0.appendChild(t_td10);
+                    t_tr0.appendChild(t_td2);
+                    t_tr0.appendChild(t_td1);
+                    t_tr0.appendChild(t_td11);
+                    t_tr0.appendChild(t_td12);
+                    t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td13_run);
+                    t_tr0.appendChild(t_td3);
+                    t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td4time);
+                    t_tr0.appendChild(t_td5);
+                    //t_tr0.appendChild(t_td6);
+                    t_tr0.appendChild(t_td7);
+                    t_tr0.appendChild(t_td8);
+                    t_tr0.appendChild(t_td9);
+                    t_tr0.appendChild(t_td14);
+                    t_body.appendChild(t_tr0);
+
+                    //Hide tag column, don't remove it, is for identification purposes
+                    //document.getElementById('tag_h').style.display = 'none';
+
+                }
+                if (data[index].tID != undefined) {
+                    //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
+                    //if (noDouble.trim() != data[index].OptionMain.trim()) {
+                        //label for test type
+                        if (data[index].OptionType == '') {
+                            l_ttype = 'NODATA';
+                        } else {
+                            l_ttype = data[index].OptionType;
+                        }
+                        /*
+                        switch (data[index].OptionType) {
+                            case 'ST':
+                                l_ttype = "SINGLE";
+                                break;
+                            case 'TA':
+                                l_ttype = "TAG";
+                                break;
+                            case 'PA':
+                                l_ttype = "PROJECT";
+                                break;
+                            case 'TG':
+                                l_ttype = "TEST GROUP";
+                                break;
+                            default:
+                                l_ttype = 'NODATA';
+                        }
+                        */
+                        //Create head and data table
+                        var t_tr0 = document.createElement("TR");
+                        t_tr0.style.borderStyle = 'solid';
+                        t_tr0.id = data[index].OptionMain;
+                        var t_td0 = document.createElement("TD");
+                        t_td0.innerHTML = data[index].tID;
+                        var t_td1 = document.createElement("TD");
+                        var td1_span = document.createElement("SPAN")
+                        if (data[index].OptionGroup == "NoGroup") {
+                            td1_span.setAttribute('class', 'label label-default');
+                        } else {
+                            td1_span.setAttribute('class', 'label label-primary');
+                        }
+                        td1_span.innerHTML = data[index].OptionGroup;
+                        t_td1.appendChild(td1_span);
+                        var t_td2 = document.createElement("TD");
+                        var td2_span = document.createElement("SPAN");
+                        if (l_ttype != 'NODATA') {
+                            td2_span.setAttribute('class', 'label label-warning');
+                        } else {
+                            td2_span.setAttribute('class', 'label pull-right bg-red');
+                        }
+                        td2_span.innerHTML = l_ttype;
+                        t_td2.appendChild(td2_span);
+                        var t_td11 = document.createElement("TD");
+                        t_td11.innerHTML = data[index].OptionStype;
+                        var t_td12 = document.createElement("TD");
+                        t_td12.innerHTML = data[index].OptionSval;
+                        var t_td13 = document.createElement("TD");
+                        t_td13.innerHTML = data[index].OptionMain;
+                        var t_td13_run = document.createElement("TD");
+                        t_td13_run.innerHTML = data[index].OptionRun;
+                        var t_td10 = document.createElement("TD");
+                        t_td10.innerHTML = data[index].tTest;
+                        var t_td3 = document.createElement("TD");
+                        t_td3.innerHTML = data[index].OptionSdate;
+                        var t_td4 = document.createElement("TD");
+                        if (data[index].OptionStopdate == "None") {
+                            var td4_span = document.createElement("SPAN");
+                            td4_span.setAttribute('class', 'label label-warning');
+                            td4_span.innerHTML = "SCHEDULED TERMINATION";
+                            t_td4.appendChild(td4_span);
+                        } else {
+                            t_td4.innerHTML = data[index].OptionStopdate;
+                        }
+                        var t_td4time = document.createElement("TD");
+                        t_td4time.innerHTML = data[index].OptionTime;
+                        var t_td5 = document.createElement("TD");
+                        t_td5.innerHTML = data[index].OptionUser;
+                        var t_td6 = document.createElement("TD");
+                        t_td6.innerHTML = data[index].OptionTest;
+                        var t_td7 = document.createElement("TD");
+                        //Calculate the success percentage data
+                        if (data[index].OptionPass + data[index].OptionFail != 0) {
+                            var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                            var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                        } else {
+                            var ssuc = 0;
+                            var sfail = 0;
+                        }
+
+                        var td7_span = document.createElement("SPAN");
+                        td7_span.setAttribute('class', 'badge bg-green');
+                        td7_span.innerHTML = ssuc+"%";
+                        t_td7.appendChild(td7_span);
+                        var t_td8 = document.createElement("TD");
+                        var td8_span = document.createElement("SPAN");
+                        td8_span.setAttribute('class', 'badge bg-red');
+                        td8_span.innerHTML = sfail+"%";
+                        t_td8.appendChild(td8_span);
+                        var t_td9 = document.createElement("TD");
+                        var td9_span = document.createElement("SPAN");
+                        td9_span.setAttribute('class', 'badge bg-light-blue');
+                        td9_span.innerHTML = data[index].OptionNumT;
+                        t_td9.appendChild(td9_span);
+                        var t_td14 = document.createElement("TD");
+                        t_td14.innerHTML = data[index].OptionUUID;
+                        t_td14.setAttribute('style', 'display: none');
+
+                    t_tr0.appendChild(t_td0);
+                    t_tr0.appendChild(t_td10);
+                    t_tr0.appendChild(t_td2);
+                    t_tr0.appendChild(t_td1);
+                    t_tr0.appendChild(t_td11);
+                    t_tr0.appendChild(t_td12);
+                    t_tr0.appendChild(t_td13);
+                    t_tr0.appendChild(t_td13_run);
+                    t_tr0.appendChild(t_td3);
+                    t_tr0.appendChild(t_td4);
+                    t_tr0.appendChild(t_td4time);
+                    t_tr0.appendChild(t_td5);
+                    //t_tr0.appendChild(t_td6);
+                    t_tr0.appendChild(t_td7);
+                    t_tr0.appendChild(t_td8);
+                    t_tr0.appendChild(t_td9);
+                    t_tr0.appendChild(t_td14);
+                    t_body.appendChild(t_tr0);
+
+                    for (i = 0; i < data[index].SubLen; i++) {
+                        //console.log(data[index]['SubThread'][i].SubVar);
+                        //Create head and data table for child (multi executed elements)
+                        var t_tr0 = document.createElement("TR");
+                        t_tr0.style.borderStyle = 'hidden';
+                        t_tr0.style.height = '80%';
+                        var t_td0 = document.createElement("TD");
+                        //t_td0.innerHTML = data[index].tID;
+                        var t_td1 = document.createElement("TD");
+                        /*var td1_span = document.createElement("SPAN")
+                        if (data[index].OptionGroup == "NoGroup") {
+                            td1_span.setAttribute('class', 'label label-default');
+                        } else {
+                            td1_span.setAttribute('class', 'label label-primary');
+                        }
+                        td1_span.innerHTML = data[index].OptionGroup;
+                        t_td1.appendChild(td1_span);*/
+                        var t_td2 = document.createElement("TD");
+                        /*var td2_span = document.createElement("SPAN");
+                        if (l_ttype != 'NODATA') {
+                            td2_span.setAttribute('class', 'label label-warning');
+                        } else {
+                            td2_span.setAttribute('class', 'label pull-right bg-red');
+                        }
+                        td2_span.innerHTML = l_ttype;
+                        t_td2.appendChild(td2_span);*/
+                        var t_td11 = document.createElement("TD");
+                        //t_td11.innerHTML = 'TEST';
+                        var t_td12 = document.createElement("TD");
+                        t_td12.style.background="#ECF0F5";
+                        //t_td12.innerHTML = data[index].SubVar;
+                        var t_td13 = document.createElement("TD");
+                        t_td13.innerHTML = 'Child';
+                        t_td13.style.color = "black";
+                        t_td13.style.background="#ECF0F5";
+                        var t_td10 = document.createElement("TD");
+                        //t_td10.innerHTML = 'TEST';
+                        var t_td3_run = document.createElement("TD");
+                        t_td3_run.innerHTML = data[index]['SubThread'][i].SubRun;
+                        t_td3_run.style.color = "black";
+                        t_td3_run.style.background="#ECF0F5";
+                        var t_td3 = document.createElement("TD");
+                        t_td3.innerHTML = data[index]['SubThread'][i].SubDataStart.slice(0,-13);
+                        t_td3.style.color = "black";
+                        t_td3.style.background="#ECF0F5";
+                        var t_td4 = document.createElement("TD");
+                        if (data[index].OptionStopdate == "None") {
+                            /*var td4_span = document.createElement("SPAN");
+                            td4_span.setAttribute('class', 'label label-warning');
+                            td4_span.innerHTML = "SCHEDULED TERMINATION";
+                            t_td4.appendChild(td4_span);*/
+                            t_td4.innerHTML = "SCHEDULED TERMINATION";
+                        } else {
+                            t_td4.innerHTML = data[index]['SubThread'][i].SubDataStop.slice(0,-13);
+                        }
+                        t_td4.style.color = "black";
+                        t_td4.style.background="#ECF0F5";
+                        var t_td4time = document.createElement("TD");
+                        t_td4time.innerHTML = data[index]['SubThread'][i].SubTime;
+                        t_td4time.style.color = "black";
+                        t_td4time.style.background="#ECF0F5";
+                        var t_td5 = document.createElement("TD");
+                        t_td5.innerHTML = data[index].OptionUser;
+                        t_td5.style.color = "black";
+                        t_td5.style.background="#ECF0F5";
+                        var t_td6 = document.createElement("TD");
+                        t_td6.innerHTML = data[index].OptionTest;
+                        t_td6.style.color = "black";
+                        t_td6.style.background="#ECF0F5";
+                        var t_td7 = document.createElement("TD");
+                        //Calculate the success percentage data
+                        /*if (data[index].OptionPass + data[index].OptionFail != 0) {
+                            var ssuc = Math.round(((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                            var sfail = Math.round(((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail));
+                        } else {
+                            var ssuc = 0;
+                            var sfail = 0;
+                        }*/
+
+                        var td7_span = document.createElement("SPAN");
+                        td7_span.setAttribute('class', 'badge bg-green');
+                        t_td7.innerHTML = data[index]['SubThread'][i].SubPass;
+                        t_td7.appendChild(td7_span);
+                        t_td7.style.color = "black";
+                        t_td7.style.background="#ECF0F5";
+                        var t_td8 = document.createElement("TD");
+                        var td8_span = document.createElement("SPAN");
+                        td8_span.setAttribute('class', 'badge bg-red');
+                        t_td8.innerHTML = data[index]['SubThread'][i].SubFail;
+                        t_td8.style.color = "black";
+                        t_td8.style.background="#ECF0F5";
+                        t_td8.appendChild(td8_span);
+                        var t_td9 = document.createElement("TD");
+                        var td9_span = document.createElement("SPAN");
+                        td9_span.setAttribute('class', 'badge bg-light-blue');
+                        t_td9.innerHTML = "1";
+                        t_td9.style.color = "black";
+                        t_td9.style.background="#ECF0F5";
+                        t_td9.appendChild(td9_span);
+                        var t_td14 = document.createElement("TD");
+                        t_td14.innerHTML = data[index].OptionUUID;
+                        t_td14.setAttribute('style', 'display: none');
+
+                        t_tr0.appendChild(t_td0);
+                        t_tr0.appendChild(t_td10);
+                        t_tr0.appendChild(t_td2);
+                        t_tr0.appendChild(t_td1);
+                        t_tr0.appendChild(t_td11);
+                        t_tr0.appendChild(t_td12);
+                        t_tr0.appendChild(t_td13);
+                        t_tr0.appendChild(t_td3_run);
+                        t_tr0.appendChild(t_td3);
+                        t_tr0.appendChild(t_td4);
+                        t_tr0.appendChild(t_td4time);
+                        t_tr0.appendChild(t_td5);
+                        //t_tr0.appendChild(t_td6);
+                        t_tr0.appendChild(t_td7);
+                        t_tr0.appendChild(t_td8);
+                        t_tr0.appendChild(t_td9);
+                        t_tr0.appendChild(t_td14);
+                        t_body.appendChild(t_tr0);
+                    }
+
+
+                }
+
+}
 
 
 function refHistory(j_ord, j_sign, j_search, is_search) {
@@ -804,7 +1207,7 @@ function fil_filters(f_name) {
 
     sel_call = document.getElementById(f_name);
     sel_call.options.length = 0;
-    //console.log(GetElementInsideContainer(divTtype, ftype).text);
+    console.log(GetElementInsideContainer('divTtype', 'ftype').value);
     var x = document.createElement("OPTION");
     x.text = "..All";
     x.value = "..All";
@@ -814,7 +1217,8 @@ function fil_filters(f_name) {
             type: "POST",
             url: "filter_data",
             data: {
-                selid: f_name
+                selid: f_name,
+                seltp: GetElementInsideContainer('divTtype', 'ftype').value
             },
             success: function (data) {
                 $.each(data, function (index) {
@@ -864,6 +1268,11 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
     sData = document.getElementById('reservation');
 
     if (sData.value.length > 0) {
+        //Clear table on frontend
+        var row = document.getElementsByTagName('tbody')[0];
+        row.parentNode.removeChild(row);
+        var ul = document.getElementById("ul_group");
+        while(ul.firstChild) ul.removeChild(ul.firstChild);
         $.ajax({
             type: "POST",
             url: "hrefresh",
@@ -879,11 +1288,48 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
                 fUser: f6},
             success: function (data) {
                 console.log(f1+f2+f3+f4+f5+f6);
-                $.each(data, function (index) {
+                            //Var for check if a row is double or not
+                var noDouble = "";
+                t_body.innerHTML = "";
+                //stat_h.style.visibility = 'hidden';
+                if (data) {
+                    t_group.innerHTML = "";
+                    //dlen = (data + '').length;
+                    dlen = data[data.length-1];
+                    //dlen = data[index].OptionNumT;
+                    //Create footer elements for multiple of 20
 
+                    //var multipler = dlen.size / 20;
+                    var multipler = dlen / 20;
+                    console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
+                    for (i = 0; i < multipler; i++) {
+                        var li_0 = document.createElement("LI");
+                        newlink = document.createElement('a');
+                        newlink.innerHTML = i + 1;
+                        li_0.appendChild(newlink)
+                        t_group.appendChild(li_0);
+                    }
+
+                }
+
+                if (data[0].TotData != undefined) {
+                    t_box1.innerHTML = data[0].TotData;
+                    t_box2.innerHTML = data[0].wData;
+                    t_box3.innerHTML = data[0].PercPass+"%";
+                    t_box4.innerHTML = data[0].PercFail+"%";
+                } else {
+                    t_box1.innerHTML = '0';
+                    t_box2.innerHTML = '0';
+                    t_box3.innerHTML = "0%";
+                    t_box4.innerHTML = "0%";
+                }
+                $.each(data, function (index) {
+                    CreateHisTable(data,index);
                 });
             }
         });
+        document.getElementById("overlay_filter").style.display = "block";
+
     } else {
         alert("Insert a data range");
     }

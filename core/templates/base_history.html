@@ -44,6 +44,9 @@
         <div id="overlay_proc" style="display:none">
             <div id="text"><span style="background-color: #000000; padding: 10px;"> Getting proces data...please wait </span></div>
         </div>
+        <div id="overlay_filter" style="display:none">
+            <div id="text"><span style="background-color: #000000; padding: 10px;"> Filtering data....please wait </span></div>
+        </div>
         <section class="content">
             <!-- first statistical boxes line -->
             <div class="row">
@@ -124,10 +127,10 @@
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group" id="divTtype">
                       <label>Templte Type:</label>
-                      <select class="form-control" id="ftype">
+                      <select class="form-control" id="ftype" onfocus="javascript:document.getElementById('f_tname').value='..All'">
                           <option value="..All">..All</option>
                         <option value="Functional">Functional</option>
-                        <option value="Non Functional">Non Functional</option>
+                        <option value="Non-Functional">Non Functional</option>
                       </select>
                     </div>
                 </div>
