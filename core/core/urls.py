@@ -70,12 +70,13 @@ handler500 = handler500
 
 urlpatterns = [
                   url(r'^admin/', admin.site.urls),
-                  url(r'^$', h_list, name='index'),
+                  url(r'^$', index, name='index'),
                   url(r'^', include(router.urls)),
                   url(r'^login/$', user_login),
                   url(r'^login/(?P<log_err>\w+)/$', user_login),
                   url(r'^logout/$', user_logout),
-                  url(r'^active$', index),
+                    url(r'^history$', h_list),
+                  #url(r'^active$', index),
                   url(r'^legal$', legal_terms),
                   url(r'^ajax$', mainoptions),
                   url(r'^trefresh$', tabrefresh),

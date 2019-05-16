@@ -20,77 +20,9 @@
             </ol>
             -->
         </section>
-        {% if 'demo.myaida.io' in request.build_absolute_uri and uCookie != 'Y' %}
-            <div id="overlay_demo" style="display:block">
-                <div id="text-demo">
-                    <div class="login-box-body" id="demo_slide1">
-                        <p class="login-box-msg"><strong>A VERY QUICK TUTORIAL</strong></p>
-                        <div>
-                            <img src="{% static "dist/img/demo1.png" %}"/>
-                        </div>
-                        <br>
-                        <p>Welcome to aida!<br>This is a very short tutorial that wants to show you the main areas of use.<br><br>
-                            In the left side menu there are buttons that you will need to move from one area to another of your aida testsuite, the <strong>"Run-Active"</strong> button for example will allow you to launch and monitor in real time all the tests that are running in the system .<br>
-<br>From this area you can plan, manage and monitor live activities in aida.</p>
-                        <br><br>
-                    <div>
-                    <!--Button for demo account only -->
-                        <button onclick="showHide('demo1');" class="btn btn-block btn-success btn-lg">NEXT>></button>
-                    </div>
-
-                    </div>
-                    <div class="login-box-body" id="demo_slide2" style="display:none">
-                        <p class="login-box-msg"><strong>THE HISTORY AREA</strong></p>
-                        <div>
-                            <img src="{% static "dist/img/demo2.png" %}"/>
-                        </div>
-                        <br>
-                        <p>Another very important area, which is where you are now, is the one called <strong>"History"</strong>.<br>In this page you will find all the tests that have been carried out and are finished, you can see the execution details by simply clicking on the one that interests you, ordering and filtering them using the "Search and Filter" area.<br><br>
-From this area it is therefore possible to manage everything concerning the test runs carried out to date.</p>
-                        <br><br>
-                    <div>
-                    <!--Button for demo account only -->
-                        <button onclick="showHide('demo2');" class="btn btn-block btn-success btn-lg">NEXT>></button>
-                    </div>
-
-                    </div>
-                    <div class="login-box-body" id="demo_slide3" style="display:none">
-                        <p class="login-box-msg"><strong>MANAGE TEMPLATES AND SETTINGS</strong></p>
-                        <div>
-                            <img src="{% static "dist/img/demo3.png" %}"/>
-                        </div>
-                        <br>
-                        <p>To manage and create your own templates the <strong>"Templates Manager"</strong> area is the one to use.<br>In this area, you can also manage all the main settings related to your suite.<br><br>
-This area will therefore allow you to manage everything related to your testing templates as well as the general aida settings.</p>
-                        <br><br>
-                    <div>
-                    <!--Button for demo account only -->
-                        <button onclick="showHide('demo3');" class="btn btn-block btn-success btn-lg">NEXT>></button>
-                    </div>
-
-                    </div>
-                    <div class="login-box-body" id="demo_slide4" style="display:none">
-                        <p class="login-box-msg"><strong>DOCUMENTATION</strong></p>
-                        <div>
-                            <img src="{% static "dist/img/demo4.png" %}"/>
-                        </div>
-                        <br>
-                        <p>For all your doubts you will be able to find an answer in the documentation, index and images will help you in finding and understanding the topics for which you seek support.<br><br>
-For quick answers, you can request 24/24 support chatting with the integrated aida virtual assistant.</p>
-                        <br><br>
-                    <div>
-                    <!--Button for demo account only -->
-                        <button onclick="showHide('demo4');" class="btn btn-block btn-success btn-lg">GOT IT</button>
-                    </div>
-
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div id="overlay" style="display:block">
-                <div id="text"><span style="background-color: #000000; padding: 10px;"> Fetching data from server....please wait </span></div>
-            </div>
-        {% endif %}
+        <div id="overlay" style="display:block">
+            <div id="text"><span style="background-color: #000000; padding: 10px;"> Fetching data from server....please wait </span></div>
+        </div>
         <div id="overlay_proc" style="display:none">
             <div id="text"><span style="background-color: #000000; padding: 10px;"> Getting proces data...please wait </span></div>
         </div>
@@ -164,7 +96,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!--Execution date group -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                    <label>Execution Date range:</label>
+                    <label>Execution Date range</label>
                     <div class="input-group">
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
@@ -176,7 +108,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group" id="divTtype">
-                      <label>Templte Type:</label>
+                      <label>Templte Type</label>
                       <select class="form-control" id="ftype" onfocus="javascript:document.getElementById('f_tname').value='..All'">
                           <option value="..All">..All</option>
                         <option value="Functional">Functional</option>
@@ -187,7 +119,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                      <label>Test Name:</label>
+                      <label>Test Name</label>
                       <select class="form-control" id="f_tname" onfocus="fil_filters('f_tname')">
                         <option>..All</option>
                       </select>
@@ -196,7 +128,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                      <label>Group type:</label>
+                      <label>Group type</label>
                       <select class="form-control" id="ftgroup">
                         <option value="..All">..All</option>
                           <option value="ST">Single Template</option>
@@ -209,7 +141,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                      <label>Run Type:</label>
+                      <label>Run Type</label>
                       <select class="form-control" id="frun">
                           <option value="..All">..All</option>
                         <option value="Ad-hoc">Ad-hoc</option>
@@ -233,7 +165,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                 <!-- Second element -->
                 <div class="col-lg-3 col-xs-6">
                   <div class="form-group">
-                      <label>User:</label>
+                      <label>User</label>
                       <select class="form-control" id="sel_user" onfocus="javascript:SelUsers();">
                           <option>..All</option>
                       </select>
@@ -247,7 +179,7 @@ For quick answers, you can request 24/24 support chatting with the integrated ai
                   <button class="btn btn-block btn-primary" style="max-width:200px;" onclick="startFilter(document.getElementById('reservation').value,document.getElementById('ftype').value, document.getElementById('f_tname').value, document.getElementById('ftgroup').value, document.getElementById('frun').value, document.getElementById('sel_user').value);">Filter</button>
                 </div>
                 <div class="col-lg-6">
-                  <button class="btn btn-block btn-danger" style="max-width:200px;" onclick="window.location.href = '/';">Reset</button>
+                  <button class="btn btn-block btn-danger" style="max-width:200px;" onclick="window.location.href = '/history';">Reset</button>
                 </div>
               </div>
             </div><!-- /.box-footer-->
@@ -404,55 +336,6 @@ window.__lc.license = 10552602;
 })();
 </script>
 <!-- End of LiveChat code -->
-    <script type="text/javascript">
-     function showHide(div_elem) {
-        if (div_elem == "demo1") {
-           document.getElementById("demo_slide1").style.display = "none";
-           document.getElementById("demo_slide2").style.display = "block";
-        } else if (div_elem == "demo2"){
-            document.getElementById("demo_slide2").style.display = "none";
-           document.getElementById("demo_slide3").style.display = "block";
-
-        } else if (div_elem == "demo3") {
-            document.getElementById("demo_slide3").style.display = "none";
-            document.getElementById("demo_slide4").style.display = "block";
-
-        } else {
-            document.getElementById("overlay_demo").style.display = "none";
-        }
-
-
-        var x = getCookie('demoF');
-        if (x === null) {
-            setCookie('demoF','Y',7);
-        }
-     }
-    </script>
-    <!-- Script x la gestione dei cookies primo accesso -->
-    <script>
-        function setCookie(name,value,days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days*24*60*60*1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-        }
-        function getCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0;i < ca.length;i++) {
-                var c = ca[i];
-                while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-            }
-            return null;
-        }
-        function eraseCookie(name) {
-            document.cookie = name+'=; Max-Age=-99999999;';
-        }
-    </script>
     <script>
         document.body.onload = function () {
             refHistory();

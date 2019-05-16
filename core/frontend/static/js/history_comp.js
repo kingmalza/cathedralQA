@@ -970,7 +970,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             }
                         });
                         document.getElementById("overlay_proc").style.display = "block";
-                        window.location.href = '/#tl_tit';
+                        window.location.href = '/history#tl_tit';
                         getTlineHist(c_hold, 'history');
                     }
                 })(i);
@@ -981,7 +981,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                 alink[i].onclick = function fun() {
                     t_sect = this.innerHTML;
                     document.getElementById("overlay_proc").style.display = "block";
-                    window.location.href = '/#c_head';
+                    window.location.href = '/history#c_head';
                     refHistory(j_ord,j_sign,j_search);
 
                 }
@@ -1371,7 +1371,7 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
                             }
                         });
                         document.getElementById("overlay_proc").style.display = "block";
-                        window.location.href = '/#tl_tit';
+                        window.location.href = '/history#tl_tit';
                         getTlineHist(c_hold, 'history');
                     }
                 })(i);
@@ -1382,7 +1382,7 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
                 alink[i].onclick = function fun() {
                     t_sect = this.innerHTML;
                     document.getElementById("overlay_proc").style.display = "block";
-                    window.location.href = '/#c_head';
+                    window.location.href = '/history#c_head';
                     refHistory(j_ord,j_sign,j_search);
 
                 }

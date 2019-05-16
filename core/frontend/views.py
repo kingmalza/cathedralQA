@@ -59,13 +59,14 @@ def handler500(request):
 @login_required
 def index(request, **kwargs):
     global test_main
+    uCookie = request.COOKIES.get('demoF', '')
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
     test_sched = t_schedsettings.objects.all()
 
-    context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
+    context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup, 'uCookie':uCookie}
     #response = render(request, 'base_home.html', context_dict, context)
     #For IE compatibility remove context
 
@@ -79,7 +80,6 @@ def index(request, **kwargs):
 # Viev for history threads list
 def h_list(request, **kwargs):
     global test_main
-    uCookie = request.COOKIES.get('demoF', '')
 
     if request.is_ajax():
         schema_name = settings_gen.objects.get(id=1).tenant_name
@@ -155,8 +155,7 @@ def h_list(request, **kwargs):
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
-    print("Il tuo cookie e: ",uCookie)
-    context_dict = {'all_test': test_main, 'uGroup': uGroup, 'uCookie':uCookie}
+    context_dict = {'all_test': test_main, 'uGroup': uGroup}
     response = render(request, 'base_history.html', context_dict)
 
     return response
