@@ -63,7 +63,10 @@ def histrefresh(request, lorder='-id'):
                 dstop = pData[pData.index(delim) + len(delim):].strip()
                 dstart = pData[:pData.index(delim)].strip()
                 dstart_conv = datetime.datetime.strptime(dstart, '%m/%d/%Y').strftime('%Y-%m-%d')
-                dstop_conv = datetime.datetime.strptime(dstop, '%m/%d/%Y').strftime('%Y-%m-%d')
+                #Now i have to add 1 day to stop date
+                dstop_conv = datetime.datetime.strptime(dstop, '%m/%d/%Y') + datetime.timedelta(days=1)
+                dstop_conv = dstop_conv.strftime('%Y-%m-%d')
+                #dstop_conv = datetime.datetime.strptime(dstop, '%m/%d/%Y').strftime('%Y-%m-%d')
                 #print("DATA IS-> ",dstart_conv,'--',dstop_conv)
                 fdict['thread_startd__range'] = [dstart_conv,dstop_conv]
                 if pType != '..All': fdict['id_test__t_type'] = pType

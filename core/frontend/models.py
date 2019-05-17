@@ -151,7 +151,7 @@ TestCase table
 
 class temp_case(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, null=True, blank=True, related_name="tm_tc", on_delete=models.SET_NULL,)
+    main_id = models.ForeignKey(temp_main, related_name="tm_tc", on_delete=models.CASCADE)
     descr = models.CharField(max_length=200, verbose_name="Case description")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
