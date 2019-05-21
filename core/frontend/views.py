@@ -150,7 +150,7 @@ def h_list(request, **kwargs):
     #First check if is first time with no threads, if is new, home redirect to active else continue
 
     a = t_threads.objects.all()[:1]
-    if not a : return HttpResponseRedirect('/active')
+    #if not a : return HttpResponseRedirect('/')
 
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']

@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 
 from frontend.models import Client
 from frontend.models import t_schedsettings, settings_gen
-from frontend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, suite_libs
+from frontend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, suite_libs, \
+    t_proj, t_proj_route, t_tags, t_tags_route, t_group, t_group_test
 
 import datetime
 import string
@@ -118,7 +119,7 @@ def create2(t_tenant,auth_pass,u_email,strip_plan,strip_id,paid=0.49):
 
     dtn = datetime.datetime.now()
 
-    hello1 = temp_main(descr='HelloWorld', dt=str(dtn), notes='First Helloworld test', owner_id=User.objects.get(id=1).id)
+    hello1 = temp_main(descr='HelloWorld', t_type='alpha', dt=str(dtn), notes='First Helloworld test', owner_id=User.objects.get(id=1).id)
     hello1.save()
 
     hello2 = temp_case(descr='Test Case Hello', main_id_id=temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id)
@@ -154,17 +155,17 @@ def create2(t_tenant,auth_pass,u_email,strip_plan,strip_id,paid=0.49):
     #5a. Create project, groupping and tag
     print("4a.Create projects and tags...")
 
-    protag1 = t_proj(descr='First Demo Project', dt=str(dtn), proj_notes='Created for demo, you can edit data for personalization purposes', owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag1 = t_proj(descr='First Demo Project', dt=str(dtn), proj_notes='Created for demo, you can edit data for personalization purposes', owner_id=User.objects.get(id=1).id)
     protag1.save()
-    protag2 = t_proj_route(route_notes='First Demo Project', main_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, proj_id = t_proj.objects.get(id=1).id, dt=str(dtn))
+    protag2 = t_proj_route(route_notes='First Demo Project', main_id_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, proj_id_id = t_proj.objects.get(id=1).id, dt=str(dtn))
     protag2.save()
     protag3 = t_tags(descr='First Demo TAG', tag_notes= "Demo tag, you can modify it.", owner_id=User.objects.get(id=1).id, dt=str(dtn))
     protag3.save()
-    protag4 = t_tags_route(route_notes='First Demo TAG', main_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, tag_id= t_tags.objects.get(id=1).id, dt=str(dtn))
+    protag4 = t_tags_route(route_notes='First Demo TAG', main_id_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, tag_id_id= t_tags.objects.get(id=1).id, dt=str(dtn))
     protag4.save()
     protag5 = t_group(descr='First Demo Group', g_prior= 1, active = True, owner_id=User.objects.get(id=1).id, dt=str(dtn))
     protag5.save()
-    protag6 = t_group_test(temp_ord= 1, id_grp= t_group.objects.get(id=1).id, id_temp= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, dt=str(dtn))
+    protag6 = t_group_test(temp_ord= 1, id_grp_id= t_group.objects.get(id=1).id, id_temp_id= temp_main.objects.get(id=1).id, owner_id=User.objects.get(id=1).id, dt=str(dtn))
     protag6.save()
 
     print("Projects and TAGS OK")
