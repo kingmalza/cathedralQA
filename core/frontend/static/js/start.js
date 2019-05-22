@@ -352,7 +352,7 @@ function testBtn(VarID, t_type, run_type) {
 
         //Stringhify the array for pass to python and then decode it
         var json_string = JSON.stringify(res);
-        window.location.href = '/active#act_th';
+        window.location.href = '/#act_th';
 
         $.ajax({
             type: "POST",
