@@ -99,6 +99,21 @@ def create2(t_tenant,auth_pass,u_email,strip_plan,strip_id,paid=0.49):
     lib9 = suite_libs(name='HTTP library (Requests)', descr='Library for HTTP level testing using Request internally.', lib_name='RequestsLibrary', status='ACTIVE', docs='http://bulkan.github.io/robotframework-requests/')
     lib10 = suite_libs(name='TFTPLibrary', descr='Library for interacting over Trivial File Transfer Portocol.', lib_name='TftpLibrary', status='ACTIVE', docs='https://kowalpy.github.io/Robot-Framework-TFTP-Library/TftpLibrary.html')
     lib11 = suite_libs(name='AppiumLibrary', descr='Library for Android- and iOS-testing.', lib_name='AppiumLibrary', status='ACTIVE',docs='http://serhatbolsu.github.io/robotframework-appiumlibrary/AppiumLibrary.html')
+    lib12 = suite_libs(name='Selenium', descr='Selenium2Library is a web testing library.', lib_name='SeleniumLibrary',
+                       status='ACTIVE',
+                       docs='http://robotframework.org/Selenium2Library/Selenium2Library.html')
+    lib13 = suite_libs(name='Database Library', descr='Allow you to query your database, compatible* with any Database API Specification 2.0 module.', lib_name='DatabaseLibrary',
+                       status='ACTIVE',
+                       docs='https://www.python.org/dev/peps/pep-0249/')
+    lib14 = suite_libs(name='JayDeBeApi', descr='Allows to connect from Python code to databases using Java JDBC', lib_name='SeleniumLibrary',
+                       status='ACTIVE',
+                       docs='https://github.com/baztian/jaydebeapi#id2')
+    lib15 = suite_libs(name='HttpLibrary.HTTP', descr='HttpLibrary for Robot Framework', lib_name='HttpLibrary.HTTP',
+                       status='ACTIVE',
+                       docs='http://peritus.github.io/robotframework-httplibrary/HttpLibrary.html')
+    lib16 = suite_libs(name='RequestsLibrary', descr='RequestsLibrary is a test library that uses the Requests HTTP client.', lib_name='RequestsLibrary',
+                       status='ACTIVE',
+                       docs='http://bulkan.github.io/robotframework-requests/')
 
     lib1.save()
     lib2.save()
@@ -111,6 +126,11 @@ def create2(t_tenant,auth_pass,u_email,strip_plan,strip_id,paid=0.49):
     lib9.save()
     lib10.save()
     lib11.save()
+    lib12.save()
+    lib13.save()
+    lib14.save()
+    lib15.save()
+    lib16.save()
 
     print("Suite Libs OK")
 
