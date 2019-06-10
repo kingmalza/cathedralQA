@@ -205,16 +205,18 @@ def ret_list(request):
         'password': '11235813post',
     }
 
-
     #First retreive all template already imported by user
     alist = []
     alimp = import_his.objects.all()
     for x in alimp: alist.append(x.imp_template)
 
+    print("Start db connection")
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
     cursor = conn.cursor()
+    print("Stop db connection")
 
+    print("Execute db select")
     cursor.execute("SELECT * FROM public.aida_export ORDER BY id DESC")
     rec_tot = cursor.fetchall()
     for row in rec_tot:
@@ -232,7 +234,7 @@ def ret_list(request):
                             'rl_already': alvar
                          })
         alvar="N"
-
+    print("Stop db select")
 
     cursor.close()
     conn.close()
