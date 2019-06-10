@@ -264,15 +264,26 @@
                         <li class="treeview active">
                                     <a href="#">
                                         <i class="fa fa-files-o"></i>
-                                        <span>Templates</span>
+                                        <span>Test Administration</span>
                                         <span class="label label-primary pull-right" id="tcnum"></span>
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </a>
                                     <ul class="treeview-menu">
                                         <li><a href="/admin"><i class="fa fa-circle-o text-danger"></i>Templates Manager</a></li>
                                         <li><a href="/tgroup"><i class="fa fa-circle-o"></i>Templates Groups</a></li>
+                                    </ul>
+                                </li>
+                        <li>
+                        <li class="treeview active">
+                                    <a href="#">
+                                        <i class="fa fa-files-o"></i>
+                                        <span>Templates Store</span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
                                         <small class="label pull-right bg-yellow" id="asnum"></small>
-                                        <li><a href="/tassist"><i class="fa fa-circle-o"></i>Aida Assist</a></li>
+                                        <li><a href="/tassist"><i class="fa fa-circle-o"></i>Add Template</a></li>
+                                        <li><a href="/tpublish"><i class="fa fa-circle-o"></i>Publish Template</a></li>
                                     </ul>
                                 </li>
                         <li>
@@ -293,7 +304,6 @@
                                         {% endif %}
                                     </ul>
                                 </li>
-                        <!-- DEACTIVATE FOR ONLINE VERSION, TO REACTIVATE FOR STANDALONE
                         <li>
                             <a href="/files/">
                                 <i class="fa fa-laptop"></i>
@@ -301,7 +311,6 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                         </li>
-                        -->
                         <!-- API schema -->
                         <li>
                             <a href="/schema/">

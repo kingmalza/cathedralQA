@@ -279,6 +279,22 @@ def temp_assist(request, templ_id=None, **kwargs):
 
 
 @login_required
+def temp_publish(request, **kwargs):
+
+    global test_case
+    uGroup = request.user.groups.all()
+    # Back home if no Teatadmin group for that user
+    #if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case, 'uGroup': uGroup}
+    response = render(request, 'base_tpublish.html', context_dict)
+
+    return response
+
+
+@login_required
 def temp_clone(request, t_id=None, **kwargs):
 
     try:
