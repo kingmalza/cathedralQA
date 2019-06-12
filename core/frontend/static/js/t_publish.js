@@ -4,7 +4,7 @@ function seltemp() {
 
     $.ajax({
         type: "POST",
-        url: "ajax",
+        url: "test_type",
         data: {selType: "ST"},
         success: function (data) {
             //oCssSet.style.visibility = visible;
