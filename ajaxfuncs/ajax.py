@@ -356,6 +356,8 @@ def tselect(request):
             vallabel['selDescr'] = i.descr
             if request.POST['selType'] == "ST":
                 vallabel['OptionNote'] = i.notes
+                vallabel['OptionDt'] = i.dt
+                vallabel['OptionTtype'] = i.t_type
             vallabel['selType'] = request.POST['selType']
             response.append(vallabel)
         json = simplejson.dumps(response)
