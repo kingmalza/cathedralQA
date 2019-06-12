@@ -29,21 +29,21 @@
          </div>
          <!-- /.box-header -->
          <!-- form start -->
-         <form role="form">
+         <form onsubmit="isempty();" role="form">
             <div class="box-body">
                <div class="form-group">
                   <label for="t_select" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Select Template <strong>(?)</strong></label>
-                  <select id="t_select" onChange="clicktemp(this);" class="form-control">
+                  <select id="t_select" onChange="clicktemp(this.value);" class="form-control">
                         <option>Please select...</option>
                       </select>
                </div>
                <div class="form-group">
-                  <label for="exampleInputPassword1">Store description</label>
-                  <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                  <label for="t_descr">Store description</label>
+                  <textarea id="t_descr" class="form-control" rows="3" placeholder="Enter ..."></textarea>
                </div>
                <div class="form-group">
-                  <label for="exampleInputEmail1">Test coverage area</label>
-                  <select id="t_select" class="form-control">
+                  <label for="t_cover">Test coverage area</label>
+                  <select id="t_cover" class="form-control">
                         <option>Database</option>
                         <option>Software</option>
                         <option>API</option>
@@ -52,8 +52,8 @@
                       </select>
                </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Test credits price</label>
-                  <select id="t_select" class="form-control">
+                  <label for="t_price">Test credits price</label>
+                  <select id="t_price" class="form-control">
                         <option>3</option>
                         <option>6</option>
                         <option>9</option>
@@ -82,7 +82,7 @@
                     </div>
                <div class="checkbox">
                   <label>
-                      <input type="checkbox"> I agree the <a href="">Terms of Services</a>
+                      <input id="t_terms" type="checkbox"> I agree the <a href="">Terms of Services</a>
                   </label>
                </div>
             </div>
@@ -93,13 +93,15 @@
          </form>
       </div>
    </div>
-</div>
+
 <!-- RIGHT AREA DISPLAYNG TEMPLATE SELECTION DETAILS (FILL DATA AFTER TEMPLATE SELECTION FROM COMBO t_select IN LEFT AREA)-->
 <div id="t_details" style="visibility:hidden" class="col-md-6">
     <div class="box box-primary">
          <div class="box-header">
             <h3 class="box-title">Template Details (internal)</h3>
          </div>
+        <form role="form">
+            <div class="box-body">
         <div class="form-group">
             <label>Template Description</label>
             <textarea id="det_descr" class="form-control" rows="3" disabled=""></textarea>
@@ -112,25 +114,22 @@
                   </div>
                 </div>
                 <div class="box-body">
-                  Box class: <code>.box.box-solid.box-primary</code>
-                  <p>
-                    amber, microbrewery abbey hydrometer, brewpub ale lauter tun saccharification oxidized barrel.
-                    berliner weisse wort chiller adjunct hydrometer alcohol aau!
-                    sour/acidic sour/acidic chocolate malt ipa ipa hydrometer.
-                  </p>
+                  <p id="det_notes"></p>
                 </div><!-- /.box-body -->
         </div>
         <div class="form-group">
             <label>Creation Date</label>
-            <input type="text" class="form-control" disabled="">
+            <input id="det_dt" type="text" class="form-control" disabled="">
         </div>
         <div class="form-group">
             <label>Test Type</label>
-            <input type="text" class="form-control" disabled="">
+            <input id="det_type" type="text" class="form-control" disabled="">
         </div>
+            </div>
+        </form>
     </div>
 </div>
-
+</div>
 <!-- SECOND ROW CONTAINING TABLE ABOUT PUBLISHED TEMPLATES-->
 <div id="p_tab" class="row">
    <div class="col-xs-12">

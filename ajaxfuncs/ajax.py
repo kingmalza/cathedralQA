@@ -356,9 +356,36 @@ def tselect(request):
             vallabel['selDescr'] = i.descr
             if request.POST['selType'] == "ST":
                 vallabel['OptionNote'] = i.notes
-                vallabel['OptionDt'] = i.dt
+                vallabel['OptionDt'] = str(i.dt)
                 vallabel['OptionTtype'] = i.t_type
             vallabel['selType'] = request.POST['selType']
+            response.append(vallabel)
+        json = simplejson.dumps(response)
+
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        pass
+
+
+@csrf_exempt
+def tsingle(request):
+    l = threading.enumerate()
+    if request.is_ajax():
+
+        selData = temp_main.objects.filter(id=request.POST['idTemp'])
+
+
+        response = []
+        for i in selData:
+            vallabel = {}
+            vallabel['selID'] = i.id
+            vallabel['selDescr'] = i.descr
+            vallabel['OptionNote'] = i.notes
+            vallabel['OptionDt'] = str(i.dt)
+            vallabel['OptionTtype'] = i.t_type
             response.append(vallabel)
         json = simplejson.dumps(response)
 

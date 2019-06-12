@@ -25,7 +25,7 @@ from rest_framework.schemas import get_schema_view
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost
+from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost, tsingle
 from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter, hstartfilter
 from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
@@ -91,6 +91,7 @@ urlpatterns = [
                 url(r'^startfilter$', hstartfilter),
                   url(r'^thread_stopper$', tstopper),
                   url(r'^test_type$', tselect),
+                url(r'^test_single', tsingle),
                   url(r'^start$', startTest),
                   url(r'^tmain$', temp_main),
                   url(r'^tcase$', temp_case),
