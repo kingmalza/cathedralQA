@@ -63,36 +63,14 @@ function isempty() {
     var r_1;
     var r_2;
     var r_3;
-    var r_4;
-    var r_5;
 
 
     r_1 = document.getElementById("t_select").value;
     r_2 = document.getElementById("t_descr").value;
-    r_3 = document.getElementById("t_cover").value;
-    r_4 = document.getElementById("t_price").value;
-    r_5 = document.getElementById("t_terms").value;
-    
+    r_3 = document.getElementById("t_terms").value;
 
-    if (r_1 == "") {
-        alert("Enter a Valid Firstname");
-        return false;
-    };
-    if (r_2 == "") {
-        alert("Enter a Valid Lastname");
-        return false;
-    };
-    if (r_3 == "") {
-        alert("Enter a company name");
-        return false;
-    };
-    if (r_4 == "") {
-        alert("Enter a Valid Address");
-        return false;
-    };
-    if (r_5 == "") {
-        alert("Select an Economic Plan");
-        return false;
-    };
+    alert(r_1.value+'--'+r_3.value);
+
+
 
 }
