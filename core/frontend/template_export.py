@@ -29,7 +29,7 @@ from frontend.models import import_his
 def start(request):
 
     if request.is_ajax():
-        print("DENTOOOOO")
+
         id_templ = request.POST['idTempl']
         schema = 'helium'
         d_base = 'helium_web'
@@ -54,7 +54,7 @@ def start(request):
             conn.close()
             return pydict
         #print(json.dumps(pydict, indent=4))
-        load_data(pydict,id_templ, schema)
+        load_data(pydict,id_templ, schema, request.POST['tDescr'], request.POST['tCover'], request.POST['tPrice'])
 
         conn.close()
 
@@ -65,7 +65,7 @@ def start(request):
         )
 
     else:
-        print("FUORIIII")
+
         pass
 
 
@@ -180,7 +180,7 @@ def main(schema, id_templ, conn, p_force=False):
 
 
 
-def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
+def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium_ai'):
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -201,7 +201,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"', '"+str(now)+"', 'P');")
+            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, coverage, credits) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"', '"+str(now)+"', 'P', '"+sdescr+"', '"+scover+"', "+sprice+");")
             b_cursor.close()
         except Exception as e:
             print("Error Insert: ",e)

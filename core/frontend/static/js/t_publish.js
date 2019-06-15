@@ -69,6 +69,8 @@ function isempty() {
 
     r_1 = document.getElementById("t_select");
     r_2 = document.getElementById("t_descr");
+    r_cover = document.getElementById("t_cover");
+    r_price = document.getElementById("t_price");
     r_3 = document.getElementById("t_terms");
 
     if((r_1.value == "Please select...") || (r_2.value == "") || (r_3.checked == false)) {
@@ -80,7 +82,10 @@ function isempty() {
         $.ajax({
         type: "POST",
         url: "export_templ",
-        data: {idTempl: document.getElementById("id_test").value},
+        data: {idTempl: document.getElementById("id_test").value,
+            tDescr: r_2.value,
+            tCover: r_cover.value,
+            tPrice: r_price.value},
         success: function (data) {
 
 
