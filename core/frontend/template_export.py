@@ -25,30 +25,48 @@ from django.views.decorators.csrf import csrf_exempt
 from frontend.models import import_his
 
 
+@csrf_exempt
+def start(request):
 
-def start(id_templ, schema='helium', d_base='helium_web', internal = False):
+    if request.is_ajax():
+        print("DENTOOOOO")
+        id_templ = request.POST['idTempl']
+        schema = 'helium'
+        d_base = 'helium_web'
+        internal = False
 
-    connection_parameters = {
-        'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-        'database': d_base,
-        'user': 'kingmalza',
-        'password': '11235813post',
-    }
+        response = []
 
-    conn = psycopg2.connect(**connection_parameters)
-    conn.autocommit = True
+        connection_parameters = {
+            'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+            'database': d_base,
+            'user': 'kingmalza',
+            'password': '11235813post',
+        }
 
-    pydict = main(schema, id_templ, conn)
+        conn = psycopg2.connect(**connection_parameters)
+        conn.autocommit = True
 
-    #If this function was called from view.py temp_clone (internal) return just dict
-    if internal:
+        pydict = main(schema, id_templ, conn)
+
+        #If this function was called from view.py temp_clone (internal) return just dict
+        if internal:
+            conn.close()
+            return pydict
+        #print(json.dumps(pydict, indent=4))
+        load_data(pydict,id_templ, schema)
+
         conn.close()
-        return pydict
-    #print(json.dumps(pydict, indent=4))
-    load_data(pydict,id_templ, schema)
 
-    conn.close()
+        json = simplejson.dumps(response)
 
+        return HttpResponse(
+            json, content_type='application/json'
+        )
+
+    else:
+        print("FUORIIII")
+        pass
 
 
 
@@ -183,7 +201,7 @@ def load_data(p_struct, id_templ, schema, d_base='helium_ai'):
     if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"', '"+str(now)+"');")
+            b_cursor.execute("insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status) values ('" + json.dumps(p_struct[0]) + "','"+p_struct[1]+"', '"+ex_id+"', '"+p_struct[2][0]+"', '"+p_struct[2][1]+"', '"+p_struct[2][2]+"', '"+str(now)+"', 'P');")
             b_cursor.close()
         except Exception as e:
             print("Error Insert: ",e)

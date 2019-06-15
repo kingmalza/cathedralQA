@@ -29,7 +29,7 @@
          </div>
          <!-- /.box-header -->
          <!-- form start -->
-         <form onsubmit="isempty();" role="form">
+         <form onsubmit="return isempty();" role="form">
             <div class="box-body">
                <div class="form-group">
                   <label for="t_select" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Select Template <strong>(?)</strong></label>
@@ -82,13 +82,13 @@
                     </div>
                <div class="checkbox">
                   <label>
-                      <input id="t_terms" type="checkbox"> I agree the <a href="">Terms of Services</a>
+                      <input id="t_terms" type="checkbox"><strong> I agree the <a href="">Terms of Services</a></strong>
                   </label>
                </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-               <button type="submit" class="btn btn-primary">Request Pubblication</button>
+               <button type="submit" class="btn btn-primary">PUBLISH TEMPLATE</button>
             </div>
          </form>
       </div>
@@ -106,6 +106,10 @@
             <label>Template Description</label>
             <textarea id="det_descr" class="form-control" rows="3" disabled=""></textarea>
         </div>
+                <div class="form-group">
+            <label>Creation Date</label>
+            <input id="det_dt" type="text" class="form-control" disabled="">
+        </div>
         <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h3 class="box-title">Template Notes</h3>
@@ -118,12 +122,11 @@
                 </div><!-- /.box-body -->
         </div>
         <div class="form-group">
-            <label>Creation Date</label>
-            <input id="det_dt" type="text" class="form-control" disabled="">
-        </div>
-        <div class="form-group">
             <label>Test Type</label>
             <input id="det_type" type="text" class="form-control" disabled="">
+        </div>
+                <div class="form-group">
+            <input id="id_test" type="text" class="form-control" disabled="">
         </div>
             </div>
         </form>

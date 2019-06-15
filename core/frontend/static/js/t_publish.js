@@ -32,6 +32,7 @@ function clicktemp(tID) {
     oDetNotes = document.getElementById("det_notes");
     oDetDt = document.getElementById("det_dt");
     oDetType = document.getElementById("det_type");
+    oDetID = document.getElementById("id_test");
 
 
     $.ajax({
@@ -47,10 +48,11 @@ function clicktemp(tID) {
                 oDetDescr.innerHTML = data[index].selDescr;
                 oDetNotes.innerHTML = "";
                 oDetNotes.innerHTML = data[index].OptionNote;
-                oDetDt.innerHTML = "";
-                oDetDt.innerHTML = data[index].OptionDt;
-                oDetType.innerHTML = "";
-                oDetType.innerHTML = data[index].OptionTtype;
+                //oDetDt.innerHTML = "";
+                oDetDt.value = data[index].OptionDt;
+                oDetType.value = "";
+                oDetType.value = data[index].OptionTtype;
+                oDetID.value = tID;
 
             });
 
@@ -65,12 +67,25 @@ function isempty() {
     var r_3;
 
 
-    r_1 = document.getElementById("t_select").value;
-    r_2 = document.getElementById("t_descr").value;
-    r_3 = document.getElementById("t_terms").value;
+    r_1 = document.getElementById("t_select");
+    r_2 = document.getElementById("t_descr");
+    r_3 = document.getElementById("t_terms");
 
-    alert(r_1.value+'--'+r_3.value);
+    if((r_1.value == "Please select...") || (r_2.value == "") || (r_3.checked == false)) {
+        alert("Please fill in all the form fields including the terms of use to proceed with the publication");
+        return false;
+    } else {
+
+        //Start exporting template
+        $.ajax({
+        type: "POST",
+        url: "export_templ",
+        data: {idTempl: document.getElementById("id_test").value},
+        success: function (data) {
 
 
+            }
+        });
+    }
 
 }
