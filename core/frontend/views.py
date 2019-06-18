@@ -647,7 +647,7 @@ def user_login(request, log_err=None):
                 #return HttpResponse('Your user dont exist or password is wrong')
                 #return render(request, 'login.html', {'l_err': log_err})
         else:
-            return HttpResponse("SITE NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Aida, \n in case there are no line problems you can contact the Aida's system administrators for more information")
+            return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
     else:
         return render(request, 'login.html', {'l_err': log_err})
 

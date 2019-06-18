@@ -24,6 +24,8 @@ from django.views.decorators.csrf import csrf_exempt
 #if launch export manual from idlelib.idle, comment this
 from frontend.models import import_his
 
+from django.core.mail import send_mail
+
 
 @csrf_exempt
 def start(request):
@@ -36,6 +38,7 @@ def start(request):
         internal = False
 
         response = []
+        vallabel = {}
 
         connection_parameters = {
             'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -47,19 +50,24 @@ def start(request):
         conn = psycopg2.connect(**connection_parameters)
         conn.autocommit = True
 
-        pydict = main(schema, id_templ, conn)
+        try:
+            pydict = main(schema, id_templ, conn)
 
-        #If this function was called from view.py temp_clone (internal) return just dict
-        if internal:
+            #If this function was called from view.py temp_clone (internal) return just dict
+            if internal:
+                conn.close()
+                return pydict
+            #print(json.dumps(pydict, indent=4))
+            load_data(pydict,id_templ, schema, request.POST['tDescr'], request.POST['tCover'], request.POST['tPrice'])
+
             conn.close()
-            return pydict
-        #print(json.dumps(pydict, indent=4))
-        load_data(pydict,id_templ, schema, request.POST['tDescr'], request.POST['tCover'], request.POST['tPrice'])
+            vallabel['Error'] = ""
 
-        conn.close()
+        except Exception as e:
+            vallabel['Error'] = e
 
+        response.append(vallabel)
         json = simplejson.dumps(response)
-
         return HttpResponse(
             json, content_type='application/json'
         )

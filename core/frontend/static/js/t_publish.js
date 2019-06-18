@@ -87,7 +87,13 @@ function isempty() {
             tCover: r_cover.value,
             tPrice: r_price.value},
         success: function (data) {
-
+            $.each(data, function (index) {
+                    if (data[index].Error){
+                        alert(data[index].Error)
+                    } else {
+                        alert("Template publication Request sent correctly! You will receive a notification regarding it's publication status directly on your email address.")
+                    }
+                } );
 
             }
         });

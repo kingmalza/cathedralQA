@@ -561,12 +561,12 @@ class jra_settingsAdmin(admin.ModelAdmin):
         """
         return super(jra_settingsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-
+"""
 class settings_genAdmin(admin.ModelAdmin):
 
     form = SettingsForm
-    list_display = ('tenant_name', 'created_on', 'comp_name', 'tax_id', 'reg_email')
-    readonly_fields = ['tenant_name', 'stripe_id', 'paid_plan']
+    list_display = ('lic_num', 'comp_name', 'tax_id', 'reg_email')
+    readonly_fields = ['lic_num', 'stripe_id', 'created_on']
 
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
@@ -604,15 +604,15 @@ class settings_genAdmin(admin.ModelAdmin):
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        """
-        l_mod = jra_history.objects.latest('id')
+        
+        #l_mod = jra_history.objects.latest('id')
 
-        extra_context = {
-            'lmod': l_mod,
-        }
-        """
+        #extra_context = {
+        #    'lmod': l_mod,
+        #}
+        
         return super(settings_genAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-
+"""
 
 class APIAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
@@ -643,6 +643,6 @@ admin.site.register(t_tags_route, t_tags_routeAdmin)
 admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
 admin.site.register(t_proj, t_projAdmin, )
-admin.site.register(settings_gen, settings_genAdmin, )
+#admin.site.register(settings_gen, settings_genAdmin, )
 admin.site.register(suite_libs, )
 admin.site.register(jra_settings, jra_settingsAdmin)

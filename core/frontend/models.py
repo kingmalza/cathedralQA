@@ -637,6 +637,7 @@ class settings_gen(models.Model):
 
     id = models.AutoField(primary_key=True)
     tenant_name = models.CharField(max_length=255, blank=True, verbose_name="System Name")
+    lic_num = models.CharField(max_length=255, blank=True, verbose_name="License Number")
     created_on = models.DateTimeField(auto_now_add=True)
     on_trial = models.BooleanField(default=True)
     paid_feed = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('0.00'))
