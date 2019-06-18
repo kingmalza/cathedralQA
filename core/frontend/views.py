@@ -576,6 +576,8 @@ def user_login(request, log_err=None):
     schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
     global schemaname
     schemaname = schema_name
+    #Getting license number
+    lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
 
     #check if iexplorer
     user_agent = request.META['HTTP_USER_AGENT'].lower()
@@ -649,8 +651,28 @@ def user_login(request, log_err=None):
         else:
             return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
     else:
-        return render(request, 'login.html', {'l_err': log_err})
+        #First check if a license is present, otherwise redirect to registration page
+        if lnum:
+            #Now check if license number is correct (not modification direcly from db)
+            #code here
 
+            return render(request, 'login.html', {'l_err': log_err})
+        else:
+            response = HttpResponseRedirect('/lic_reg')
+            return response
+
+
+def regoractivate(request, **kwargs):
+    global test_case
+
+    #HERE WE'LL HAVE TO USE LAMBDA CALL FOR RETRIVE LIST OF USAGE FROM LIC_USAGE
+    # menu_list = kwargs['menu']
+    context = RequestContext(request)
+
+    context_dict = {'all_case': test_case}
+    response = render(request, 'base_activate.html', context_dict)
+
+    return response
 
 @login_required
 def user_logout(request):
