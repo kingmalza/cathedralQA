@@ -658,20 +658,22 @@ def user_login(request, log_err=None):
 
             return render(request, 'login.html', {'l_err': log_err})
         else:
-            return render(request, 'base_activate.html')
+            response = HttpResponseRedirect('/act_lic')
+            return response
 
 
 def regoractivate(request, **kwargs):
 
     global test_case
-    client = boto3.client("lambda")
 
     if request.method == 'POST':
+
+        client = boto3.client("lambda")
 
         #check for license
         pay_c = {
                 "ev_type": "G",
-                "tenant": request.POST['nLic']
+                "tenant": request.POST['nLic'].upper()
             }
 
         cli_id = client.invoke(
@@ -684,16 +686,16 @@ def regoractivate(request, **kwargs):
 
         #Check if user in lic is active or if there is a connection
         try:
-            site_active = json.loads(cli_id['Payload'].read().decode())[3]
+            site_active = json.loads(cli_id['Payload'].read().decode())
+            print("SITE ACTIVE--->",site_active)
         except Exception as e:
             site_active = False
+    else:
 
-    context = RequestContext(request)
+        context_dict = {'all_case': test_case}
+        response = render(request, 'base_activate.html', context_dict)
 
-    context_dict = {'all_case': test_case}
-    response = render(request, 'base_activate.html', context_dict)
-
-    return response
+        return response
 
 @login_required
 def user_logout(request):
