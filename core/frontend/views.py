@@ -661,7 +661,7 @@ def user_login(request, log_err=None):
             response = HttpResponseRedirect('/act_lic')
             return response
 
-
+@csrf_exempt
 def regoractivate(request, **kwargs):
 
     global test_case
@@ -686,10 +686,18 @@ def regoractivate(request, **kwargs):
 
         #Check if user in lic is active or if there is a connection
         try:
-            site_active = json.loads(cli_id['Payload'].read().decode())
-            print("SITE ACTIVE--->",site_active)
+            #site_active = json.loads(cli_id['Payload'].read().decode())[0]
+            site_active = json.loads(cli_id['Payload'].read())
+            print(site_active)
+            if site_active == "null":
+                print("License error ", site_active)
+            else:
+                #first update settings_gen table
+                settings_gen.objects.filter(id=1).update(lic_num=request.POST['nLic'].upper())
+                print("License ok ", site_active)
         except Exception as e:
-            site_active = False
+
+            return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
     else:
 
         context_dict = {'all_case': test_case}

@@ -118,7 +118,7 @@ function activate() {
         //Start exporting template
         $.ajax({
         type: "POST",
-        url: "act_lic",
+        url: "\\act_lic",
         data: {nLic: document.getElementById("act_code").value},
         success: function (data) {
             $.each(data, function (index) {

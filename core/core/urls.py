@@ -101,7 +101,7 @@ urlpatterns = [
                 url(r'^temp_clone/(?P<t_id>\w+)/$', temp_clone),
                   url(r'^register/$', lic_register),
                   url(r'^register/(?P<reg_status>\w+)/$', lic_register),
-                url(r'^act_lic/$', regoractivate),
+                url(r'^act_lic$', regoractivate),
                   url(r'^tgroup', temp_group),
                 url(r'^import_templ/$', import_templ),
                 url(r'^export_templ$', start),
