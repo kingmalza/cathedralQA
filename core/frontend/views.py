@@ -658,15 +658,36 @@ def user_login(request, log_err=None):
 
             return render(request, 'login.html', {'l_err': log_err})
         else:
-            response = HttpResponseRedirect('/lic_reg')
-            return response
+            return render(request, 'base_activate.html')
 
 
 def regoractivate(request, **kwargs):
-    global test_case
 
-    #HERE WE'LL HAVE TO USE LAMBDA CALL FOR RETRIVE LIST OF USAGE FROM LIC_USAGE
-    # menu_list = kwargs['menu']
+    global test_case
+    client = boto3.client("lambda")
+
+    if request.method == 'POST':
+
+        #check for license
+        pay_c = {
+                "ev_type": "G",
+                "tenant": request.POST['nLic']
+            }
+
+        cli_id = client.invoke(
+            FunctionName='aida_lic_get',
+            InvocationType='RequestResponse',
+            Payload=json.dumps(pay_c)
+        )
+
+        #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
+
+        #Check if user in lic is active or if there is a connection
+        try:
+            site_active = json.loads(cli_id['Payload'].read().decode())[3]
+        except Exception as e:
+            site_active = False
+
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case}

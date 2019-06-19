@@ -100,3 +100,37 @@ function isempty() {
     }
 
 }
+
+
+
+function activate() {
+
+    var a_1;
+
+    a_1 = document.getElementById("act_code");
+
+
+    if(a_1.value == "") {
+        alert("Please enter the activation number received by email");
+        return false;
+    } else {
+
+        //Start exporting template
+        $.ajax({
+        type: "POST",
+        url: "act_lic",
+        data: {nLic: document.getElementById("act_code").value},
+        success: function (data) {
+            $.each(data, function (index) {
+                    if (data[index].Error){
+                        alert(data[index].Error)
+                    } else {
+                        alert("The activation of your Cathedral took place successfully! Reconnect to the home page to use the application")
+                    }
+                } );
+
+            }
+        });
+    }
+
+}
