@@ -662,46 +662,62 @@ def user_login(request, log_err=None):
             return response
 
 @csrf_exempt
-def regoractivate(request, **kwargs):
+def regoractivate(request, reg_status=None, **kwargs):
 
     global test_case
 
+    b_temp = 'base_activate.html'
+    con_stat = ""
+    if reg_status:
+        b_temp = 'base_register_status.html'
+        if reg_status == 'OK':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your Cathedral account was successful.</strong><br><br>Your Cathedral enviroment is active. You can log-in now using the credentials received by email when you register the product at the first time.<br><br>We remind you that, as suggested, it is advisable to change the password after the first access.<br><br><br><div><a href='/'><button class='btn btn-block btn-success btn-lg'>GO TO LOGIN HOMEPAGE</button></a></div></div></div></div>"
+        elif reg_status == 'ERROR':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>FAIL!</font></strong></p><br><strong>The registration process for your new Cathedral account has not been completed successfully.</strong><br><br>Probably some of the data entered in the previous mask are not correct or there has been an internal error of the service.<br><br>Try to re-enter your license data or register your data for receive a new license number.<br><br><div><button onclick='javascript:location.href='https://54.84.90.108/licensing' class='btn btn-block btn-danger btn-lg'>REGISTER YOUR PRODUCT</button><br><a href='/act_lic/'><button class='btn btn-block btn-success btn-lg'>RETRY THE ACTIVATION PROCES</button></a></div></div></div></div>"
+        else:
+            return HttpResponseRedirect('/act_lic/')
+
     if request.method == 'POST':
 
-        client = boto3.client("lambda")
+            response = []
+            vallabel = {}
+            client = boto3.client("lambda")
 
-        #check for license
-        pay_c = {
-                "ev_type": "G",
-                "tenant": request.POST['nLic'].upper()
-            }
+            #check for license
+            pay_c = {
+                    "ev_type": "G",
+                    "tenant": request.POST.get('act_code', '').upper()
+                }
 
-        cli_id = client.invoke(
-            FunctionName='aida_lic_get',
-            InvocationType='RequestResponse',
-            Payload=json.dumps(pay_c)
-        )
+            cli_id = client.invoke(
+                FunctionName='aida_lic_get',
+                InvocationType='RequestResponse',
+                Payload=json.dumps(pay_c)
+            )
 
-        #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
+            #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
 
-        #Check if user in lic is active or if there is a connection
-        try:
-            #site_active = json.loads(cli_id['Payload'].read().decode())[0]
-            site_active = json.loads(cli_id['Payload'].read())
-            print(site_active)
-            if site_active == "null":
-                print("License error ", site_active)
-            else:
-                #first update settings_gen table
-                settings_gen.objects.filter(id=1).update(lic_num=request.POST['nLic'].upper())
-                print("License ok ", site_active)
-        except Exception as e:
+            #Check if user in lic is active or if there is a connection
+            try:
+                #site_active = json.loads(cli_id['Payload'].read().decode())[0]
+                site_active = json.loads(cli_id['Payload'].read())
 
-            return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+                if site_active == "null":
+                    vallabel['RetMsg'] = 'ERROR'
+                    return HttpResponseRedirect('/act_lic/ERROR/')
+                else:
+                    #first update settings_gen table
+                    settings_gen.objects.filter(id=1).update(lic_num=request.POST.get('act_code', '').upper())
+                    vallabel['RetMsg'] = 'OK'
+                    return HttpResponseRedirect('/act_lic/OK/')
+
+            except Exception as e:
+
+                return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER OR INTERNET CONNECTION DOWN! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
     else:
 
-        context_dict = {'all_case': test_case}
-        response = render(request, 'base_activate.html', context_dict)
+        context_dict = {'all_case': test_case, 'the_stat': con_stat}
+        response = render(request, b_temp, context_dict)
 
         return response
 
