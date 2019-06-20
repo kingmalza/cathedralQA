@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 #if launch export manual from idlelib.idle, comment this
-from frontend.models import import_his
+from frontend.models import import_his, settings_gen
 
 from django.core.mail import send_mail
 
@@ -33,7 +33,8 @@ def start(request):
     if request.is_ajax():
 
         id_templ = request.POST['idTempl']
-        schema = 'helium'
+        schema = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
+        #schema = 'helium'
         d_base = 'helium_web'
         internal = False
 

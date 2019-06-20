@@ -32,7 +32,7 @@
 </header>
 <div class="hero">
 
-    <h1><span>Cathedral Project</span><br><strong>LICENSE ACTIVATION</strong></h1>
+    <h1><span>Cathedral Project</span><br><strong>LICENSE ACTIVATOR</strong></h1>
 
     <!--<div class="mouse">
         <span></span>
@@ -46,32 +46,55 @@
    <div class="col-md-6">
       <div class="box box-primary">
          <div class="box-header">
-            <h3 class="box-title">Publication Preferences</h3>
+            <h3 class="box-title">Activate your license</h3>
          </div>
+          <div class="callout callout-info">
+              <h4>Start using Cathedral immediately</h4>
+              <p>Enter the license code you received from the product registration email in the space below and press the <strong>ACTIVATE</strong> button to immediately register and use your copy of Cathedral</p>
+          </div>
          <!-- /.box-header -->
          <!-- form start -->
          <form method="POST" role="form" onsubmit="return activate()">
              {% csrf_token %}
              {{ form }}
             <div class="box-body">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label>Activation Code</label>
+                    <input id="act_code2" name="act_code" type="text" class="form-control" value="{{form.act_code}}">
+                </div>-->
+                <label>License Code</label>
+                <div class="input-group margin">
                     <input id="act_code" name="act_code" type="text" class="form-control" value="{{form.act_code}}">
-                </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"><strong>ACTIVATE</strong></button>
+                    </span>
+                  </div>
             <!-- /.box-body -->
-            <div class="box-footer">
+            <!--<div class="box-footer">
                <button type="submit" class="btn btn-primary">ACTIVATE</button>
-            </div>
+            </div>-->
          </form>
       </div>
    </div>
 </div>
    <!-- right column -->
    <div class="col-md-6">
-      <div class="box box-primary">
+      <div class="box box-success">
          <div class="box-header">
-            <h3 class="box-title">Register new license</h3>
+            <h3 class="box-title">Register a new license</h3>
          </div>
+          <div class="box box-solid">
+                <div class="box-body">
+                  <dl>
+                    <dt>When to register</dt>
+                    <dd>The first time you try to access a new Cathedral environment, you need to register your license to activate the product.</dd>
+                    <dt>How to register</dt>
+                    <dd>Registering your copy of Cathedral is very simple; If you do not have the activation key, simply select the REGISTER NEW LICENSE button and fill in the few fields on the registration form.</dd>
+                    <dt>How to access</dt>
+                    <dd>Once the product has been registered you will receive an email containing the license key to be used for activation via the activation form on this page, once the product is activated you will be able to log in the first time using the user and password also present in the email of registration</dd>
+                  </dl>
+                </div><!-- /.box-body -->
+              </div>
          <!-- /.box-header -->
          <!-- form start -->
          <form method="POST" role="form" onsubmit="return redirect()">
@@ -79,7 +102,7 @@
              {{ form }}
             <!-- /.box-body -->
             <div class="box-footer">
-               <button type="submit" class="btn btn-primary">REGITER NEW LICENSE</button>
+               <button type="submit" class="btn btn-block btn-success btn-lg">REGITER YOUR NEW LICENSE</button>
             </div>
          </form>
       </div>
