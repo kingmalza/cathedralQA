@@ -88,7 +88,7 @@ function isempty() {
             tPrice: r_price.value},
         success: function (data) {
             $.each(data, function (index) {
-                alert(data[index].Error);
+
                 } );
 
             }
