@@ -20,6 +20,7 @@ import datetime
 import simplejson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseRedirect
 
 #if launch export manual from idlelib.idle, comment this
 from frontend.models import import_his, settings_gen
@@ -64,15 +65,19 @@ def start(request):
 
             conn.close()
             vallabel['Error'] = ""
+            #return HttpResponseRedirect('/tpublish/TOK/')
 
         except Exception as e:
             vallabel['Error'] = e
+            #return HttpResponseRedirect('/tpublish/TKO/')
+
 
         response.append(vallabel)
         json = simplejson.dumps(response)
         return HttpResponse(
             json, content_type='application/json'
         )
+
 
     else:
 

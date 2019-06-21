@@ -88,11 +88,7 @@ function isempty() {
             tPrice: r_price.value},
         success: function (data) {
             $.each(data, function (index) {
-                    if (data[index].Error){
-                        alert(data[index].Error)
-                    } else {
-                        alert("Template publication Request sent correctly! You will receive a notification regarding it's publication status directly on your email address.")
-                    }
+                alert(data[index].Error);
                 } );
 
             }
@@ -119,6 +115,6 @@ function activate() {
 
 
 function redirect() {
-  window.location.replace("https://54.84.90.108/licensing/");
+  window.location.replace("https://cathedral.ai/licensing/");
   return false;
 }
