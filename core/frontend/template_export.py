@@ -33,9 +33,10 @@ def start(request):
     if request.is_ajax():
 
         id_templ = request.POST['idTempl']
-        schema = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
-        #schema = 'helium'
+        #CHANGE THESE TO pubblic IN STANDALONE MODE!!
+        schema = 'helium'
         d_base = 'helium_web'
+
         internal = False
 
         response = []
@@ -198,7 +199,8 @@ def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium
         'password': '11235813post',
     }
 
-    ex_id = schema+"_"+str(id_templ)
+    l_num = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
+    ex_id = l_num+"_"+str(id_templ)
     now = datetime.datetime.now()
     conn = psycopg2.connect(**connection_parameters)
     conn.autocommit = True
@@ -241,7 +243,7 @@ def ret_list(request):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM public.aida_export ORDER BY id DESC")
+    cursor.execute("SELECT * FROM public.aida_export WHERE status == 'A' ORDER BY id DESC")
     rec_tot = cursor.fetchall()
     for row in rec_tot:
         if row[1] in alist: alvar = "Y"
@@ -253,8 +255,11 @@ def ret_list(request):
                          'rl_libs': row[5],
                          'rl_ndown': row[6],
                          'rl_exps': row[8],
-                         'rl_view': row[9],
-                         'rl_dt': str(row[10]),
+                         'rl_view': row[8],
+                         'rl_dt': str(row[9]),
+                         'rl_sdescr': row[11],
+                         'rl_scover': row[12],
+                         'rl_scredits': row[13],
                             'rl_already': alvar
                          })
         alvar="N"

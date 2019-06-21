@@ -97,6 +97,7 @@ urlpatterns = [
                   url(r'^tcase$', temp_case),
                 url(r'^tassist$', temp_assist),
                 url(r'^tpublish$', temp_publish),
+                  url(r'^tpublish$/(?P<reg_status>\w+)/$', temp_publish),
                   url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),
                 url(r'^temp_clone/(?P<t_id>\w+)/$', temp_clone),
                   url(r'^register/$', lic_register),

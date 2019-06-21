@@ -279,17 +279,30 @@ def temp_assist(request, templ_id=None, **kwargs):
 
 
 @login_required
-def temp_publish(request, **kwargs):
+def temp_publish(request, reg_status=None, **kwargs):
 
     global test_case
     uGroup = request.user.groups.all()
+
+    b_temp = 'base_tpublish.html'
+    con_stat = None
+    if reg_status:
+        b_temp = 'base_register_status.html'
+        if reg_status == 'OK':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your aida account was successful.</strong><br><br>Our staff will take care of your request and will proceed in the shortest possible time to carry out all the necessary operations to allow you to use aida without restrictions.<br><br>As soon as the registration procedure is complete you will receive an email to the address you specify in registration proces containing all the necessary data Using your new aida environment, if you do not receive the activation email within 24 hours, try checking your spam box.<br><br><br><div><a href='https://aidaproject.io'><button class='btn btn-block btn-success btn-lg'>GO TO AIDA PROJECT HOMEPAGE</button></a></div></div></div></div>"
+        elif reg_status == 'KO':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>FAIL!</font></strong></p><br><strong>The registration process for your new Aida account has not been completed successfully.</strong><br><br>Probably some of the data entered in the previous mask are not correct or there has been an internal error of the service.<br><br>Try to re-enter your registration data or report to our technical assistance the problem.<br><br><div><button onclick='javascript:location.href=https://aidaproject.io/contact;' class='btn btn-block btn-danger btn-lg'>REPORT THE PROBLEM</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></div></div></div></div>"
+        elif reg_status == 'KO_USER':
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>USER ALREADY REGISTERED!</font></strong></p><br><strong>The email address you are trying to register is already associated to an active user in aida.</strong><br><br>If you do not remember your user's password, you can change it from the login panel using the 'Forgot password?' Link.<br>To change the preferences related to your user, within aida it is sufficient going to the username that appears at the top right to open the account control panel.<br><br><div><button onclick='javascript:location.href='https://aidaproject.io' class='btn btn-block btn-danger btn-lg'>GO TO AIDA HOME</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></div></div></div></div>"
+        else:
+            return HttpResponseRedirect('/register/')
     # Back home if no Teatadmin group for that user
     #if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
-    context_dict = {'all_case': test_case, 'uGroup': uGroup}
-    response = render(request, 'base_tpublish.html', context_dict)
+    context_dict = {'all_case': test_case, 'uGroup': uGroup, 'the_stat': con_stat}
+    response = render(request, b_temp, context_dict)
 
     return response
 

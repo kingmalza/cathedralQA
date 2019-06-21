@@ -29,21 +29,23 @@
          </div>
          <!-- /.box-header -->
          <!-- form start -->
-         <form onsubmit="return isempty();" role="form">
+         <form method="POST" onsubmit="return isempty();" role="form">
+             {% csrf_token %}
+             {{ form }}
             <div class="box-body">
                <div class="form-group">
                   <label for="t_select" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Select Template <strong>(?)</strong></label>
-                  <select id="t_select" onChange="clicktemp(this.value);" class="form-control">
+                  <select id="t_select" name="t_select" onChange="clicktemp(this.value);" class="form-control">
                         <option>Please select...</option>
                       </select>
                </div>
                <div class="form-group">
                   <label for="t_descr">Store description</label>
-                  <textarea id="t_descr" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                  <textarea id="t_descr" name="t_descr" class="form-control" rows="3" placeholder="Enter ..."></textarea>
                </div>
                <div class="form-group">
                   <label for="t_cover">Test coverage area</label>
-                  <select id="t_cover" class="form-control">
+                  <select id="t_cover" name="t_cover" class="form-control">
                         <option>Database</option>
                         <option>Software</option>
                         <option>API</option>
@@ -53,7 +55,7 @@
                </div>
                 <div class="form-group">
                   <label for="t_price">Test credits price</label>
-                  <select id="t_price" class="form-control">
+                  <select id="t_price" name="t_price" class="form-control">
                         <option>3</option>
                         <option>6</option>
                         <option>9</option>
@@ -82,7 +84,7 @@
                     </div>
                <div class="checkbox">
                   <label>
-                      <input id="t_terms" type="checkbox"><strong> I agree the <a href="">Terms of Services</a></strong>
+                      <input id="t_terms" name="t_terms" type="checkbox"><strong> I agree the <a href="">Terms of Services</a></strong>
                   </label>
                </div>
             </div>
