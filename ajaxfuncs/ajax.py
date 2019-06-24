@@ -362,6 +362,7 @@ def tselect(request):
             response.append(vallabel)
         json = simplejson.dumps(response)
 
+
         return HttpResponse(
             json, content_type='application/json'
         )
