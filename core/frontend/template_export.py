@@ -304,6 +304,7 @@ def stop_templ(request):
     id_t = request.POST['idTemp']
     now = datetime.datetime.now()
     response = []
+    vallabel={'res': 'ERROR',}
 
     if id_t:
         connection_parameters = {
@@ -327,7 +328,10 @@ def stop_templ(request):
         cursor.close()
         conn.close()
 
+        vallabel = {'res': 'OK', }
 
+
+    response.append(vallabel)
     json = simplejson.dumps(response)
 
     return HttpResponse(

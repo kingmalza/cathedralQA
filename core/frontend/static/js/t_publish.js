@@ -85,7 +85,7 @@ function get_tab() {
                 td_exp_5.value = data[index].rl_scredits;
                 var t_td8 = document.createElement("SPAN");
                 t_td8.setAttribute('class', 'badge bg-green');
-                t_td8.innerHTML = data[index].rl_scredits;;
+                t_td8.innerHTML = data[index].rl_scredits;
                 td_exp_5.appendChild(t_td8);
 
                 td_h_1.value = data[index].rl_sdescr
@@ -169,7 +169,8 @@ function pend(a_type) {
                     //oDetTempl.style.visibility = 'visible';
 
                     $.each(data, function (index) {
-
+                        alert(data[index].res);
+                        window.location.href = '/tpublish';
                     });
 
                 }
