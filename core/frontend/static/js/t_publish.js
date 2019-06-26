@@ -45,6 +45,10 @@ function get_tab() {
                 var td_exp_4 = document.createElement("TD");
                 var td_exp_5 = document.createElement("TD");
 
+                //Hidden td for retreive in click
+                var td_h_1 = document.createElement("TD");
+                var td_h_2 = document.createElement("TD");
+
                 var t_td9 = document.createElement("SPAN");
                 t_td9.setAttribute('class', 'label label-default');
                 t_td9.innerHTML = data[index].rl_id;
@@ -84,6 +88,15 @@ function get_tab() {
                 t_td8.innerHTML = data[index].rl_scredits;;
                 td_exp_5.appendChild(t_td8);
 
+                td_h_1.value = data[index].rl_sdescr
+                if (data[index].rl_sdescr.length > 15) {
+                    td_h_1.innerHTML = data[index].rl_sdescr.substr(0, 15) + "\u2026";
+                } else {
+                    td_h_1.innerHTML = data[index].rl_sdescr;
+                }
+                td_h_2.value = data[index].rl_scover;
+                td_h_2.innerHTML = data[index].rl_scover;
+
 
                 tr_exp.appendChild(td_exp_1);
                 tr_exp.appendChild(td_exp_2);
@@ -91,6 +104,10 @@ function get_tab() {
                 tr_exp.appendChild(td_exp_3_e);
                 tr_exp.appendChild(td_exp_4);
                 tr_exp.appendChild(td_exp_5);
+
+                tr_exp.appendChild(td_h_1);
+                tr_exp.appendChild(td_h_2);
+
                 oTabData.appendChild(tr_exp);
 
             });
@@ -104,13 +121,22 @@ function get_tab() {
                         window.location.href = '/tpublish#p_det';
                         //Start create management session
                         document.getElementById("t_det").innerHTML = this.cells[0].value;
+                        document.getElementById("t_det_e").innerHTML = this.cells[6].value;
+                        document.getElementById("t_cov_e").value = this.cells[7].value;
+                        if (this.cells[4].value == 'A') {
+                            document.getElementById("t_price_e").disabled = true;
+                        } else {
+                             if ((this.cells[4].value == 'E') || (this.cells[4].value == 'R')) {
+                                document.getElementById("t_mod_but").visible = false;
+                             }
+                            document.getElementById("t_price_e").disabled = false;
+                        }
+                        document.getElementById("t_price_e").value = this.cells[5].value;
                     }
                 })(i);
             }
 
             }
-
-
     });
 }
 

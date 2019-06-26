@@ -19,6 +19,10 @@
             -->
         </section>
     <section class="content">
+        <div class="callout callout-warning">
+                    <h4>I am a warning callout!</h4>
+                    <p>This is a yellow callout.</p>
+                  </div>
 <!-- FIRST ROW CONTAINING FIELD FOR PUBLISH TEMPLATE-->
 <div id="p_main" class="row">
    <!-- left column -->
@@ -45,16 +49,18 @@
                <div class="form-group">
                   <label for="t_cover" onmouseover="nhpup.popup('<strong>The main coverage area of the template.</strong><br><br><i>Select the main coverage area of the template you want to publish on the store so that it is easier to find in relation to user\'s interest',{'class': 'pup_class3'});">Test coverage area <strong>(?)</strong></label>
                   <select id="t_cover" name="t_cover" class="form-control">
-                        <option>Database</option>
-                        <option>Software</option>
                         <option>API</option>
-                        <option>ecc</option>
-                        <option>ecc2</option>
+                        <option>Architecture</option>
+                        <option>Database</option>
+                        <option>OS</option>
+                        <option>Web</option>
+                        <option>..Other</option>
                       </select>
                </div>
                 <div class="form-group">
                   <label for="t_price" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Test credits price <strong>(?)</strong></label>
                   <select id="t_price" name="t_price" class="form-control">
+                        <option>1</option>
                         <option>3</option>
                         <option>6</option>
                         <option>9</option>
@@ -154,16 +160,13 @@
                      <tr role="row">
                         <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-
                            label="Rendering engine: activate to sort column descending">Store ID</th>
-                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1"
-                           colspan="1" aria-label="Browser: activate to sort column ascending">Test Name</th>
-                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1"
-                           colspan="1" aria-label="Platform(s): activate to sort column ascending">Publish Data</th>
-                         <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1"
-                           colspan="1" aria-label="Platform(s): activate to sort column ascending">End Data</th>
-                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2"
-                           rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Status</th>
-                        <th class="sorting" role="columnheader" tabindex="0" aria-
-                           controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Credits</th>
+                        <th>Test Name</th>
+                        <th>Publish Data</th>
+                         <th>End Data</th>
+                        <th>Status</th>
+                        <th>Credits</th>
+                         <th>Description</th>
+                         <th>Coverage</th>
                      </tr>
                   </thead>
                   <!--
@@ -221,12 +224,46 @@
             <h3 class="box-title">Template publication management ID <span id="t_det" class="label label-default"></span></h3>
          </div>
          <div class="box-body">
-            <input class="form-control input-lg" type="text" placeholder=".input-lg">
-            <br>
-            <input class="form-control" type="text" placeholder="Default input">
-            <br>
-            <input class="form-control input-sm" type="text" placeholder=".input-sm">
+            <div class="form-group">
+                <label>Store Description</label>
+                <textarea id="t_det_e" class="form-control" rows="3" ></textarea>
+            </div>
+             <div class="form-group">
+                 <label>Test coverage</label>
+                 <select id="t_cov_e" class="form-control">
+                        <option>API</option>
+                        <option>Architecture</option>
+                        <option>Database</option>
+                        <option>OS</option>
+                        <option>Web</option>
+                        <option>..Other</option>
+                 </select>
+             </div>
+             <div class="form-group">
+                 <label>Credits (Price)</label>
+                 <select id="t_price_e" class="form-control">
+                        <option>1</option>
+                        <option>3</option>
+                        <option>6</option>
+                        <option>9</option>
+                        <option>12</option>
+                 </select>
+             </div>
+             <div class="callout callout-info">
+                    <h4>I am an info callout!</h4>
+                    <p>Follow the steps to continue to payment.</p>
+                  </div>
          </div>
+          <div id="t_mod_but" class="box-body">
+                  <div class="row">
+                    <div class="col-xs-3">
+                      <button class="btn btn-block btn-success btn-lg">UPDATE</button>
+                    </div>
+                    <div class="col-xs-3">
+                      <button class="btn btn-block btn-danger btn-lg">END PUBLICATION</button>
+                    </div>
+                  </div>
+          </div>
          <!-- /.box-body -->
       </div>
    </div>
