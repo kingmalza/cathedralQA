@@ -231,7 +231,7 @@ def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium
 
 
 @csrf_exempt
-def ret_list(request):
+def ret_list(request, t_status = "A"):
     response = []
     alvar = "N"
 
@@ -251,7 +251,7 @@ def ret_list(request):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM public.aida_export WHERE status == 'A' ORDER BY id DESC")
+    cursor.execute("SELECT * FROM public.aida_export WHERE status = '"+t_status+"' ORDER BY id DESC")
     rec_tot = cursor.fetchall()
     for row in rec_tot:
         if row[1] in alist: alvar = "Y"
@@ -276,6 +276,7 @@ def ret_list(request):
     conn.close()
 
     json = simplejson.dumps(response)
+    print(json);
     return HttpResponse(
         json, content_type='application/json'
     )

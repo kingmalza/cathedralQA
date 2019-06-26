@@ -24,6 +24,27 @@ function seltemp() {
     });
 }
 
+
+function get_tab() {
+
+    oTabData = document.getElementById("tab_export");
+
+    $.ajax({
+        type: "POST",
+        url: "getassist",
+        data: {},
+        success: function (data) {
+            //oCssSet.style.visibility = visible;
+
+            $.each(data, function (index) {
+
+
+            });
+
+        }
+    });
+}
+
 function clicktemp(tID) {
 
     oDetTempl = document.getElementById("t_details");

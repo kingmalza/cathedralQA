@@ -283,7 +283,6 @@ def temp_publish(request, reg_status=None, **kwargs):
 
     global test_case
     uGroup = request.user.groups.all()
-    print("RRRRR->",reg_status)
 
     b_temp = 'base_tpublish.html'
     con_stat = None
