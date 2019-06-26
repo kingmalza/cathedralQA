@@ -126,8 +126,10 @@ function get_tab() {
                         if (this.cells[4].value == 'A') {
                             document.getElementById("t_price_e").disabled = true;
                         } else {
-                             if ((this.cells[4].value == 'E') || (this.cells[4].value == 'R')) {
-                                document.getElementById("t_mod_but").visible = false;
+                             if (this.cells[4].value == 'E' || this.cells[4].value == 'R') {
+                                document.getElementById("t_mod_but").style.visibility = 'hidden';
+                             } else {
+                                 document.getElementById("t_mod_but").style.visibility = 'visible';
                              }
                             document.getElementById("t_price_e").disabled = false;
                         }
@@ -138,6 +140,41 @@ function get_tab() {
 
             }
     });
+}
+
+
+function pend(a_type) {
+
+    idT = document.getElementById("t_det").innerHTML;
+    t_descr = document.getElementById("t_det_e").value;
+    t_cover = document.getElementById("t_cov_e").value;
+    t_credit = document.getElementById("t_price_e").value;
+    if (a_type == 'end') {
+        conf_msg = 'Are you sure you want to END this template pubblication?';
+    } else {
+        conf_msg = 'Are you sure you want to UPDATE this template pubblication data?'
+    }
+
+
+        if (confirm(conf_msg)) {
+            $.ajax({
+                type: "POST",
+                url: "end_templ",
+                data: {idTemp: idT,
+                    atype: a_type,
+                    tdescr: t_descr,
+                    tcover: t_cover,
+                    tcredit: t_credit},
+                success: function (data) {
+                    //oDetTempl.style.visibility = 'visible';
+
+                    $.each(data, function (index) {
+
+                    });
+
+                }
+            });
+        }
 }
 
 function clicktemp(tID) {

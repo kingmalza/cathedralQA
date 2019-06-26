@@ -234,7 +234,7 @@ def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium
 def ret_list(request, t_status="A"):
     response = []
     alvar = "N"
-    var_dtend = ""
+
     l_num = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
     try:
         t_status = str(request.POST['t_status'])
@@ -266,6 +266,7 @@ def ret_list(request, t_status="A"):
     cursor.execute(s_exec)
     rec_tot = cursor.fetchall()
     for row in rec_tot:
+        var_dtend = None
         if row[14]: var_dtend = str("{:%Y-%m-%d %H:%M}".format(row[14]))
 
         if row[1] in alist: alvar = "Y"
@@ -290,6 +291,42 @@ def ret_list(request, t_status="A"):
 
     cursor.close()
     conn.close()
+
+    json = simplejson.dumps(response)
+
+    return HttpResponse(
+        json, content_type='application/json'
+    )
+
+@csrf_exempt
+def stop_templ(request):
+
+    id_t = request.POST['idTemp']
+    now = datetime.datetime.now()
+    response = []
+
+    if id_t:
+        connection_parameters = {
+            'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+            'database': 'helium_ai',
+            'user': 'kingmalza',
+            'password': '11235813post',
+        }
+
+        conn = psycopg2.connect(**connection_parameters)
+        conn.autocommit = True
+        cursor = conn.cursor()
+
+        if request.POST['atype'] == 'end':
+            s_exec = "UPDATE public.aida_export SET status='E', dt_end='"+str(now)+"' WHERE ID="+id_t+""
+        else:
+            s_exec = "UPDATE public.aida_export SET status='P', store_descr='" + request.POST['tdescr'] + "', coverage='"+request.POST['tcover']+"', credits="+request.POST['tcredit']+" WHERE ID=" + id_t + ""
+
+        cursor.execute(s_exec)
+
+        cursor.close()
+        conn.close()
+
 
     json = simplejson.dumps(response)
 
