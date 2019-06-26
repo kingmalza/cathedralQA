@@ -158,6 +158,8 @@
                            colspan="1" aria-label="Browser: activate to sort column ascending">Test Name</th>
                         <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1"
                            colspan="1" aria-label="Platform(s): activate to sort column ascending">Publish Data</th>
+                         <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1"
+                           colspan="1" aria-label="Platform(s): activate to sort column ascending">End Data</th>
                         <th class="sorting" role="columnheader" tabindex="0" aria-controls="example2"
                            rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Status</th>
                         <th class="sorting" role="columnheader" tabindex="0" aria-
@@ -175,77 +177,8 @@
                      </tr>
                   </tfoot>
                   -->
-                  <tbody role="alert" aria-live="polite" aria-relevant="all">
-                     <tr class="odd">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Firefox 1.0</td>
-                        <td class=" ">Win 98+ / OSX.2+</td>
-                        <td class=" ">1.7</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="even">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Firefox 1.5</td>
-                        <td class=" ">Win 98+ / OSX.2+</td>
-                        <td class=" ">1.8</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="odd">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Firefox 2.0</td>
-                        <td class=" ">Win 98+ / OSX.2+</td>
-                        <td class=" ">1.8</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="even">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Firefox 3.0</td>
-                        <td class=" ">Win 2k+ / OSX.3+</td>
-                        <td class=" ">1.9</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="odd">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Camino 1.0</td>
-                        <td class=" ">OSX.2+</td>
-                        <td class=" ">1.8</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="even">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Camino 1.5</td>
-                        <td class=" ">OSX.3+</td>
-                        <td class=" ">1.8</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="odd">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Netscape 7.2</td>
-                        <td class=" ">Win 95+ / Mac OS 8.6-9.2</td>
-                        <td class=" ">1.7</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="even">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Netscape Browser 8</td>
-                        <td class=" ">Win 98SE+</td>
-                        <td class=" ">1.7</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="odd">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Netscape Navigator 9</td>
-                        <td class=" ">Win 98+ / OSX.2+</td>
-                        <td class=" ">1.8</td>
-                        <td class=" ">A</td>
-                     </tr>
-                     <tr class="even">
-                        <td class="  sorting_1">Gecko</td>
-                        <td class=" ">Mozilla 1.0</td>
-                        <td class=" ">Win 95+ / OSX.1+</td>
-                        <td class=" ">1</td>
-                        <td class=" ">A</td>
-                     </tr>
+                  <tbody id="tab_body" role="alert" aria-live="polite" aria-relevant="all">
+                     <!--Ajax in t_publish.js get_tab-->
                   </tbody>
                </table>
                 <!--
@@ -285,7 +218,7 @@
    <div class="col-xs-12">
       <div class="box box-success">
          <div class="box-header">
-            <h3 class="box-title">Different Height</h3>
+            <h3 class="box-title">Template publication management ID <span id="t_det" class="label label-default"></span></h3>
          </div>
          <div class="box-body">
             <input class="form-control input-lg" type="text" placeholder=".input-lg">

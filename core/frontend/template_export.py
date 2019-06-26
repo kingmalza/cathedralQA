@@ -231,9 +231,15 @@ def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium
 
 
 @csrf_exempt
-def ret_list(request, t_status = "A"):
+def ret_list(request, t_status="A"):
     response = []
     alvar = "N"
+    var_dtend = ""
+    l_num = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
+    try:
+        t_status = str(request.POST['t_status'])
+    except:
+        pass
 
     connection_parameters = {
         'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -251,9 +257,17 @@ def ret_list(request, t_status = "A"):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM public.aida_export WHERE status = '"+t_status+"' ORDER BY id DESC")
+    #Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza
+    if t_status == "A":
+        s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' ORDER BY id DESC"
+    else:
+        s_exec = "SELECT * FROM public.aida_export WHERE export_id like '"+l_num+"%' ORDER BY id DESC"
+
+    cursor.execute(s_exec)
     rec_tot = cursor.fetchall()
     for row in rec_tot:
+        if row[14]: var_dtend = str("{:%Y-%m-%d %H:%M}".format(row[14]))
+
         if row[1] in alist: alvar = "Y"
         response.append({'rl_py': row[0],
                          'rl_id': row[1],
@@ -264,10 +278,12 @@ def ret_list(request, t_status = "A"):
                          'rl_ndown': row[6],
                          'rl_exps': row[8],
                          'rl_view': row[8],
-                         'rl_dt': str(row[9]),
+                         'rl_dt': str("{:%Y-%m-%d %H:%M}".format(row[9])),
+                         'rl_dt_end': var_dtend,
                          'rl_sdescr': row[11],
                          'rl_scover': row[12],
                          'rl_scredits': row[13],
+                         'rl_status': row[10],
                          'rl_already': alvar
                          })
         alvar = "N"
@@ -276,7 +292,7 @@ def ret_list(request, t_status = "A"):
     conn.close()
 
     json = simplejson.dumps(response)
-    print(json);
+
     return HttpResponse(
         json, content_type='application/json'
     )
