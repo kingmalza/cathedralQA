@@ -157,24 +157,31 @@ function pend(a_type) {
 
 
         if (confirm(conf_msg)) {
-            $.ajax({
-                type: "POST",
-                url: "end_templ",
-                data: {idTemp: idT,
-                    atype: a_type,
-                    tdescr: t_descr,
-                    tcover: t_cover,
-                    tcredit: t_credit},
-                success: function (data) {
-                    //oDetTempl.style.visibility = 'visible';
+            if (document.getElementById("t_det_e").value !="" && t_cover != "" && t_credit != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "end_templ",
+                    data: {
+                        idTemp: idT,
+                        atype: a_type,
+                        tdescr: t_descr,
+                        tcover: t_cover,
+                        tcredit: t_credit
+                    },
+                    success: function (data) {
+                        //oDetTempl.style.visibility = 'visible';
 
-                    $.each(data, function (index) {
-                        alert(data[index].res);
-                        window.location.href = '/tpublish';
-                    });
+                        $.each(data, function (index) {
+                            alert(data[index].res);
+                            window.location.href = '/tpublish';
+                        });
 
-                }
-            });
+                    }
+                });
+            } else {
+                alert("Please fill all form fields for update subscription.");
+                return false;
+            }
         }
 }
 
