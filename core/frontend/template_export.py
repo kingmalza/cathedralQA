@@ -304,7 +304,7 @@ def stop_templ(request):
     id_t = request.POST['idTemp']
     now = datetime.datetime.now()
     response = []
-    vallabel={'res': 'ERROR',}
+    vallabel={'res': 'Something went wrong, try reloading the page.',}
 
     if id_t:
         connection_parameters = {
@@ -323,12 +323,15 @@ def stop_templ(request):
         else:
             s_exec = "UPDATE public.aida_export SET status='P', store_descr='" + request.POST['tdescr'] + "', coverage='"+request.POST['tcover']+"', credits="+request.POST['tcredit']+" WHERE ID=" + id_t + ""
 
-        cursor.execute(s_exec)
+        try:
+            cursor.execute(s_exec)
 
-        cursor.close()
-        conn.close()
+            cursor.close()
+            conn.close()
+        except Exception as e:
+            vallabel = {'res': e, }
 
-        vallabel = {'res': 'OK', }
+        vallabel = {'res': 'The changes have been made correctly.', }
 
 
     response.append(vallabel)

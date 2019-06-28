@@ -157,7 +157,7 @@ function pend(a_type) {
 
 
         if (confirm(conf_msg)) {
-            if (document.getElementById("t_det_e").value !="" && t_cover != "" && t_credit != "") {
+            if ((document.getElementById("t_det_e").value !="" && t_cover != "" && t_credit != "")||(a_type == 'end')) {
                 $.ajax({
                     type: "POST",
                     url: "end_templ",
