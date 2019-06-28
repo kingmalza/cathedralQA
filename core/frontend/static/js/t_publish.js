@@ -134,6 +134,28 @@ function get_tab() {
                             document.getElementById("t_price_e").disabled = false;
                         }
                         document.getElementById("t_price_e").value = this.cells[5].value;
+
+                        //Change message in callout regarding the template status
+                        //First clena div
+                        e = document.getElementById("pub_msg");
+                        var child = e.lastElementChild;
+                        while (child) {
+                            e.removeChild(child);
+                            child = e.lastElementChild;
+                        }
+
+                        var th_4 = document.createElement("H4");
+                        var p_1 = document.createElement("P");
+
+                        if (this.cells[4].value.trim() == 'E') {
+                            th_4.innerHTML = "template rejected";
+                            p_1.innerHTML = "Perche ta set mia bu";
+                        } else if (this.cells[4].value.trim() == 'P') {
+                           th_4.innerHTML = "template Pending";
+                           p_1.innerHTML = "We are waiting to review your template";
+                        }
+                        e.appendChild(th_4);
+                        e.appendChild(p_1);
                     }
                 })(i);
             }

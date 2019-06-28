@@ -68,10 +68,10 @@
                       </select>
                </div>
                 <div class="form-group">
-                    <label for="t_radio" onmouseover="nhpup.popup('<strong>What other users will read in the store about your test.</strong><br><br><i>Single Template</i> Description of the template displayed in the store, it is important to summarize the main characteristics of the test.',{'class': 'pup_class3'});">Additional information <strong>(?)</strong></label>
+                    <label for="t_radio" onmouseover="nhpup.popup('For what kind of test your template is more suitable? This information is for internal use only and do not will be published on the store.',{'class': 'pup_class3'});">Additional information <strong>(?)</strong></label>
                       <div class="radio" id="t_radio">
                         <label>
-                          <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                          <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
                           This template is more suitable for functional tests
                         </label>
                       </div>
@@ -83,7 +83,7 @@
                       </div>
                       <div class="radio">
                         <label>
-                          <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled="">
+                          <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" checked="">
                           It is possible to apply this template to any type of test
                         </label>
                       </div>
@@ -96,7 +96,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-               <button type="submit" class="btn btn-primary">PUBLISH TEMPLATE</button>
+               <button type="submit" class="btn btn-block btn-primary btn-lg">PUBLISH TEMPLATE</button>
             </div>
          </form>
       </div>
@@ -133,7 +133,7 @@
             <label>Test Type</label>
             <input id="det_type" type="text" class="form-control" disabled="">
         </div>
-                <div class="form-group">
+                <div class="form-group" style="visibility: hidden">
             <input id="id_test" type="text" class="form-control" disabled="">
         </div>
             </div>
@@ -146,7 +146,7 @@
    <div class="col-xs-12">
       <div class="box">
          <div class="box-header">
-            <h3 class="box-title">Hover Data Table</h3>
+            <h3 class="box-title">Publication requests status</h3>
          </div>
          <!-- /.box-header -->
          <div class="box-body">
@@ -159,8 +159,7 @@
                <table id="tab_export" class="table table-bordered table-hover dataTable" aria-describedby="example2_info">
                   <thead>
                      <tr role="row">
-                        <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-
-                           label="Rendering engine: activate to sort column descending">Store ID</th>
+                        <th>Store ID</th>
                         <th>Test Name</th>
                         <th>Publish Data</th>
                          <th>End Data</th>
@@ -250,10 +249,9 @@
                         <option>12</option>
                  </select>
              </div>
-             <div class="callout callout-info">
-                    <h4>I am an info callout!</h4>
-                    <p>Follow the steps to continue to payment.</p>
-                  </div>
+             <div id="pub_msg" class="callout callout-info">
+                <!--Ajax-->
+             </div>
          </div>
           <div id="t_mod_but" class="box-body">
                   <div class="row">
