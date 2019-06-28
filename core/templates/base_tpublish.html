@@ -20,8 +20,8 @@
         </section>
     <section class="content">
         <div class="callout callout-warning">
-                    <h4>I am a warning callout!</h4>
-                    <p>This is a yellow callout.</p>
+                    <h4>Welcome to the Cathedral publishing area.</h4>
+            <p>From this mask you can go to publish your templates on the Cathedral Test Store. In this way, every Cathedral user can import your template into his suite and use it for better implement his own testing strategy.<br><strong>Important:</strong> When publishing your template, remember that the associated variables are also exported, so make sure you have not entered sensitive data in the default variables such as passwords or credit card numbers.<br><br>To view all the details regarding the publication and use of the Cathedral marketplace you can consult our Terms of Use</p>
                   </div>
 <!-- FIRST ROW CONTAINING FIELD FOR PUBLISH TEMPLATE-->
 <div id="p_main" class="row">
@@ -37,7 +37,7 @@
             {% csrf_token %}
             <div class="box-body">
                <div class="form-group">
-                  <label for="t_select" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Select Template <strong>(?)</strong></label>
+                  <label for="t_select" onmouseover="nhpup.popup('<strong>The template you want to publish.</strong><br><br>Select the template that you intend to publish on the store, if you want to publish more templates you will need to carry out the publication procedure for each template.',{'class': 'pup_class3'});">Select template <strong>(?)</strong></label>
                   <select id="t_select" name="t_select" onChange="clicktemp(this.value);" class="form-control">
                         <option>Please select...</option>
                       </select>
@@ -58,7 +58,7 @@
                       </select>
                </div>
                 <div class="form-group">
-                  <label for="t_price" onmouseover="nhpup.popup('<strong>The different types of templates aggregation to chose.</strong><br><br><i>Single Template</i> allows you to perform the run starting from the choise of a single template while the other options refer to previously defined groupings of templates',{'class': 'pup_class3'});">Test credits price <strong>(?)</strong></label>
+                  <label for="t_price" onmouseover="nhpup.popup('<strong>The price you want to assign to the template.</strong><br><br>In this area you can decide how many credits to charge for your template. This value refers to credits (each credit is worth 0.50 euros) that will be recognized to you each time an user download your template from the Cathedral test Store. For more info about our pricing policy, please read the Cathedral contract terms.',{'class': 'pup_class3'});">Template credits price <strong>(?)</strong></label>
                   <select id="t_price" name="t_price" class="form-control">
                         <option>1</option>
                         <option>3</option>
@@ -68,22 +68,23 @@
                       </select>
                </div>
                 <div class="form-group">
-                      <div class="radio">
+                    <label for="t_radio" onmouseover="nhpup.popup('<strong>What other users will read in the store about your test.</strong><br><br><i>Single Template</i> Description of the template displayed in the store, it is important to summarize the main characteristics of the test.',{'class': 'pup_class3'});">Additional information <strong>(?)</strong></label>
+                      <div class="radio" id="t_radio">
                         <label>
                           <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                          Option one is this and that—be sure to include why it's great
+                          This template is more suitable for functional tests
                         </label>
                       </div>
                       <div class="radio">
                         <label>
                           <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                          Option two can be something else and selecting it will deselect option one
+                          This template is more suitable for NON-functional tests
                         </label>
                       </div>
                       <div class="radio">
                         <label>
                           <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled="">
-                          Option three is disabled
+                          It is possible to apply this template to any type of test
                         </label>
                       </div>
                     </div>

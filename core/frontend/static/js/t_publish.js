@@ -122,7 +122,7 @@ function get_tab() {
                         //Start create management session
                         document.getElementById("t_det").innerHTML = this.cells[0].value;
                         document.getElementById("t_det_e").innerHTML = this.cells[6].value;
-                        document.getElementById("t_cov_e").value = this.cells[7].value;
+                        document.getElementById("t_cov_e").value = this.cells[7].value.trim();
                         if (this.cells[4].value == 'A') {
                             document.getElementById("t_price_e").disabled = true;
                         } else {
