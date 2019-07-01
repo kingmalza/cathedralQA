@@ -257,11 +257,13 @@ def ret_list(request, t_status="A"):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    #Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza
+    #Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza, se in alternativa dalla maschera della lista dei template viene selezionato uno in stato R (rejected) viene chiamata quest funzione passando id del template per estrarre le note di disapprovazione
     if t_status == "A":
         s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' ORDER BY id DESC"
-    else:
+    elif t_status == "E":
         s_exec = "SELECT * FROM public.aida_export WHERE export_id like '"+l_num+"%' ORDER BY id DESC"
+    else:
+        s_exec = "SELECT * FROM public.aida_export WHERE id =" + t_status
 
     cursor.execute(s_exec)
     rec_tot = cursor.fetchall()
@@ -285,7 +287,8 @@ def ret_list(request, t_status="A"):
                          'rl_scover': row[12],
                          'rl_scredits': row[13],
                          'rl_status': row[10],
-                         'rl_already': alvar
+                         'rl_already': alvar,
+                         'rl_staffn': row[15]
                          })
         alvar = "N"
 

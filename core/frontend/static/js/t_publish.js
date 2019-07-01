@@ -147,12 +147,39 @@ function get_tab() {
                         var th_4 = document.createElement("H4");
                         var p_1 = document.createElement("P");
 
+                        var snotes = "";
+
                         if (this.cells[4].value.trim() == 'E') {
-                            th_4.innerHTML = "template rejected";
-                            p_1.innerHTML = "Perche ta set mia bu";
+                            th_4.innerHTML = "TEMPLATE ENDED";
+                            p_1.innerHTML = "This template is not active on the Cathedral marketplace and can no longer be managed because it is terminated by the user.<br>To be able to publish it again on the marketplace it is necessary to carry out a new publication procedure.";
                         } else if (this.cells[4].value.trim() == 'P') {
-                           th_4.innerHTML = "template Pending";
-                           p_1.innerHTML = "We are waiting to review your template";
+                           th_4.innerHTML = "APPROVAL PENDING";
+                           p_1.innerHTML = "The template is being approved by the technical staff of Cathedral.<br>You can modify or end the publication of the template at any time.";
+                        } else if (this.cells[4].value.trim() == 'A') {
+                           th_4.innerHTML = "TEMPLATE ACTIVE ON MARKETPLACE";
+                           p_1.innerHTML = "The template is currently active and can be purchased from the Cathedral marketplace.<br>You can modify the publication data of the template with the exception of the price but the template will return to Pending status for validation by the CAthedral staff and will not be present on the marketplace until further approval.<br><br><strong>To change the price of your template it is necessary to end the publication and proceed with a new publication choosing the new price associated with the template.</strong>";
+                        } else if (this.cells[4].value.trim() == 'R') {
+                            //Ajax call for retreice rejected notes
+                            $.ajax({
+                                type: "POST",
+                                url: "test_type",
+                                data: {t_status: this.cells[0].value.trim()},
+                                success: function (data) {
+                                    //oCssSet.style.visibility = visible;
+
+                                    $.each(data, function (index) {
+
+                                        var snotes = data[index].rl_staffn;
+
+                                    });
+
+                                }
+                            });
+                           th_4.innerHTML = "PUBLICATION REJECTED";
+                           p_1.innerHTML = "The publication of the template has been rejected for the following reason:<br>"+snotes;
+                        } else {
+                            th_4.innerHTML = "...OTHER";
+                           p_1.innerHTML = "The selected template is being investigated by the Cathedral staff.";
                         }
                         e.appendChild(th_4);
                         e.appendChild(p_1);
