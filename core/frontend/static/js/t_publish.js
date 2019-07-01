@@ -125,6 +125,7 @@ function get_tab() {
                         document.getElementById("t_cov_e").value = this.cells[7].value.trim();
                         if (this.cells[4].value == 'A') {
                             document.getElementById("t_price_e").disabled = true;
+                            document.getElementById("t_mod_but").style.visibility = 'visible';
                         } else {
                              if (this.cells[4].value == 'E' || this.cells[4].value == 'R') {
                                 document.getElementById("t_mod_but").style.visibility = 'hidden';
@@ -162,21 +163,22 @@ function get_tab() {
                             //Ajax call for retreice rejected notes
                             $.ajax({
                                 type: "POST",
-                                url: "test_type",
-                                data: {t_status: this.cells[0].value.trim()},
+                                url: "getassist",
+                                data: {t_status: this.cells[0].value},
                                 success: function (data) {
                                     //oCssSet.style.visibility = visible;
 
                                     $.each(data, function (index) {
 
                                         var snotes = data[index].rl_staffn;
+                                        th_4.innerHTML = "PUBLICATION REJECTED";
+                                        p_1.innerHTML = "The publication of the template has been rejected for the following reason:<br><strong>"+snotes+"</strong>";
 
                                     });
 
                                 }
                             });
-                           th_4.innerHTML = "PUBLICATION REJECTED";
-                           p_1.innerHTML = "The publication of the template has been rejected for the following reason:<br>"+snotes;
+
                         } else {
                             th_4.innerHTML = "...OTHER";
                            p_1.innerHTML = "The selected template is being investigated by the Cathedral staff.";
