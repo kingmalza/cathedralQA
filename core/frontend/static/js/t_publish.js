@@ -71,7 +71,7 @@ function get_tab() {
                     t_td7.innerHTML = 'APPROVED';
                     td_exp_4.appendChild(t_td7);
                 } else if (data[index].rl_status == 'R') {
-                    t_td7.setAttribute('class', 'label pull-right bg-red');
+                    t_td7.setAttribute('class', 'label label-danger');
                     t_td7.innerHTML = 'REJECTED';
                     td_exp_4.appendChild(t_td7);
                 } else if (data[index].rl_status == 'E') {
