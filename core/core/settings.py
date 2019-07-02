@@ -126,6 +126,14 @@ DATABASES = {
 }
 
 
+#Connection Parameters for aida_lic table
+LIC_PARAM = {
+    'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'database': 'aida_lic',
+    'user': 'kingmalza',
+    'password': '11235813post',
+}
+
 """
 #For local use only (Poli)
 DATABASES = {

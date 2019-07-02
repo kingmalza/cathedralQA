@@ -20,6 +20,7 @@ import simplejson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
+from frontend.getdata import get_lic
 
 # if launch export manual from idlelib.idle, comment this
 from frontend.models import import_his, settings_gen
@@ -31,56 +32,67 @@ from django.core.mail import send_mail
 def start(request):
     if request.is_ajax():
 
-        id_templ = request.POST['idTempl']
-        # CHANGE THESE TO pubblic IN STANDALONE MODE!!
-        schema = 'helium'
-        d_base = 'helium_web'
+        #First of all check if user have stripe_id, otherwise redirect to cthedral card registration form
+        ck_stripe = get_lic()
 
-        internal = False
+        if (ck_stripe['LDATA'][9]):
 
-        response = []
-        vallabel = {}
+            id_templ = request.POST['idTempl']
+            # CHANGE THESE TO pubblic IN STANDALONE MODE!!
+            schema = 'helium'
+            d_base = 'helium_web'
 
-        connection_parameters = {
-            'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-            'database': d_base,
-            'user': 'kingmalza',
-            'password': '11235813post',
-        }
+            internal = False
 
-        conn = psycopg2.connect(**connection_parameters)
-        conn.autocommit = True
+            response = []
+            vallabel = {}
 
-        try:
-            pydict = main(schema, id_templ, conn)
+            connection_parameters = {
+                'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+                'database': d_base,
+                'user': 'kingmalza',
+                'password': '11235813post',
+            }
 
-            # If this function was called from view.py temp_clone (internal) return just dict
-            if internal:
+            conn = psycopg2.connect(**connection_parameters)
+            conn.autocommit = True
+
+            try:
+                pydict = main(schema, id_templ, conn)
+
+                # If this function was called from view.py temp_clone (internal) return just dict
+                if internal:
+                    conn.close()
+                    return pydict
+                # print(json.dumps(pydict, indent=4))
+                rload = load_data(pydict, id_templ, schema, request.POST['tDescr'], request.POST['tCover'],
+                                  request.POST['tPrice'])
+
                 conn.close()
-                return pydict
-            # print(json.dumps(pydict, indent=4))
-            rload = load_data(pydict, id_templ, schema, request.POST['tDescr'], request.POST['tCover'],
-                              request.POST['tPrice'])
+                vallabel['Error'] = rload
+                # return HttpResponseRedirect('/tpublish/TOK/')
 
-            conn.close()
-            vallabel['Error'] = rload
-            # return HttpResponseRedirect('/tpublish/TOK/')
+            except Exception as e:
+                vallabel['Error'] = e
+                # return HttpResponseRedirect('/tpublish/TKO/')
 
-        except Exception as e:
-            vallabel['Error'] = e
-            # return HttpResponseRedirect('/tpublish/TKO/')
+            response.append(vallabel)
+            jsonret = simplejson.dumps(response)
 
-        response.append(vallabel)
-        jsonret = simplejson.dumps(response)
+            return HttpResponse(
+                jsonret, content_type='application/json'
+            )
+        else:
+            #There is no stripe_id param so i redirect to cathedral credit card registration view then page
+            l_data = ck_stripe['LDATA']
+            return HttpResponseRedirect('/gocard/'+l_data[0]+'/')
 
-        return HttpResponse(
-            jsonret, content_type='application/json'
-        )
 
 
     else:
 
         pass
+
 
 
 def main(schema, id_templ, conn, p_force=False):

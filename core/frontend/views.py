@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import os
 import shutil
 import stripe
+import requests
 
 from django.shortcuts import render
 from frontend.forms import DocumentForm
@@ -276,6 +277,13 @@ def temp_assist(request, templ_id=None, **kwargs):
     response = render(request, b_templ, context_dict)
 
     return response
+
+
+@login_required
+def go_ccredit(request, lic_num=None, **kwargs):
+
+    #requests.post('https://www.cathedral.ai/test', data={'lid':lic_num,})
+    return HttpResponseRedirect('https://www.cathedral.ai')
 
 
 @login_required
