@@ -281,30 +281,39 @@ function isempty() {
 
     r_1 = document.getElementById("t_select");
     r_2 = document.getElementById("t_descr");
+    r_2_l = document.getElementById("t_descr_l");
     r_cover = document.getElementById("t_cover");
     r_price = document.getElementById("t_price");
     r_3 = document.getElementById("t_terms");
 
-    if((r_1.value == "Please select...") || (r_2.value == "") || (r_3.checked == false)) {
+    if((r_1.value == "Please select...") || (r_2.value == "") || (r_2_l.value == "") || (r_3.checked == false)) {
         alert("Please fill in all the form fields including the terms of use to proceed with the publication");
         return false;
     } else {
+        //Check the lenght of the descriptions
+        if ((r_2.value.length < 30) || (r_2_l.value.length < 200)){
+            alert("The length of the template descriptions for the marketplace is too short; Check that you have entered both the minimum required characters (title 30, description 200) in the title and description fields.");
+            return false;
+        } else {
+            //Start exporting template
+            $.ajax({
+            type: "POST",
+            url: "export_templ",
+            data: {idTempl: document.getElementById("id_test").value,
+                tDescr: r_2.value,
+                tDescrl: r_2_l.value,
+                tCover: r_cover.value,
+                tPrice: r_price.value},
+            success: function (data) {
+                $.each(data, function (index) {
 
-        //Start exporting template
-        $.ajax({
-        type: "POST",
-        url: "export_templ",
-        data: {idTempl: document.getElementById("id_test").value,
-            tDescr: r_2.value,
-            tCover: r_cover.value,
-            tPrice: r_price.value},
-        success: function (data) {
-            $.each(data, function (index) {
+                    } );
 
-                } );
+                }
+            });
+        }
 
-            }
-        });
+
     }
 
 }

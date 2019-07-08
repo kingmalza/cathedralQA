@@ -65,8 +65,7 @@ def start(request):
                     conn.close()
                     return pydict
                 # print(json.dumps(pydict, indent=4))
-                rload = load_data(pydict, id_templ, schema, request.POST['tDescr'], request.POST['tCover'],
-                                  request.POST['tPrice'])
+                rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700], request.POST['tCover'], request.POST['tPrice'])
 
                 conn.close()
                 vallabel['Error'] = rload
@@ -200,7 +199,7 @@ def main(schema, id_templ, conn, p_force=False):
     cursor.close()
 
 
-def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium_ai'):
+def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_base='helium_ai'):
     r_msg = ""
 
     connection_parameters = {
@@ -224,10 +223,10 @@ def load_data(p_struct, id_templ, schema, sdescr, scover, sprice, d_base='helium
         try:
             b_cursor = conn.cursor()
             b_cursor.execute(
-                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, coverage, credits) values ('" + json.dumps(
+                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(
                     p_struct[0]) + "','" + p_struct[1] + "', '" + ex_id + "', '" + p_struct[2][0] + "', '" +
                 p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
-                    now) + "', 'P', '" + sdescr + "', '" + scover + "', " + sprice + ");")
+                    now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', " + sprice + ");")
             b_cursor.close()
             r_msg = "OK"
         except Exception as e:
