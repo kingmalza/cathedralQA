@@ -202,9 +202,14 @@ def main(schema, id_templ, conn, p_force=False):
         #Encode json for touple dict ec
         enc = MultiDimensionalArrayEncoder()
         ttk_list_enc = enc.encode(ttk_list).replace("'","")
+        tmain_list_enc = enc.encode(tmain_list).replace("'", "")
+        tcase_list_enc = enc.encode(tcase_list).replace("'", "")
+        tvar_list_enc = enc.encode(tvar_list).replace("'", "")
+        tlib_list_enc = enc.encode(tlib_list).replace("'", "")
+        tpk_list_enc = enc.encode(tpk_list).replace("'", "")
 
-        j_dict = {'t_main': tmain_list, 't_case': tcase_list, 't_vars': tvar_list, 't_libs': tlib_list,
-                  't_ttk': ttk_list_enc, 't_tpk': tpk_list}
+        j_dict = {'t_main': tmain_list_enc, 't_case': tcase_list_enc, 't_vars': tvar_list_enc, 't_libs': tlib_list_enc,
+                  't_ttk': ttk_list_enc, 't_tpk': tpk_list_enc}
 
 
         t_descr.append(tmain_list[0]['t_name'])
