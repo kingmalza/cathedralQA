@@ -28,6 +28,27 @@ from frontend.models import import_his, settings_gen
 from django.core.mail import send_mail
 
 
+class MultiDimensionalArrayEncoder(json.JSONEncoder):
+    def encode(self, obj):
+        def hint_tuples(item):
+            if isinstance(item, tuple):
+                return {'__tuple__': True, 'items': item}
+            if isinstance(item, list):
+                return [hint_tuples(e) for e in item]
+            if isinstance(item, dict):
+                return {key: hint_tuples(value) for key, value in item.items()}
+            else:
+                return item
+
+        return super(MultiDimensionalArrayEncoder, self).encode(hint_tuples(obj))
+
+def hinted_tuple_hook(obj):
+    if '__tuple__' in obj:
+        return tuple(obj['items'])
+    else:
+        return obj
+
+
 @csrf_exempt
 def start(request):
     if request.is_ajax():
@@ -178,8 +199,14 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             t_html = str(row[0])
 
+        #Encode json for touple dict ec
+        enc = MultiDimensionalArrayEncoder()
+        ttk_list_enc = enc.encode(ttk_list).replace("'","")
+
         j_dict = {'t_main': tmain_list, 't_case': tcase_list, 't_vars': tvar_list, 't_libs': tlib_list,
-                  't_ttk': ttk_list, 't_tpk': tpk_list}
+                  't_ttk': ttk_list_enc, 't_tpk': tpk_list}
+
+
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])
         for i in list(t_ulib):
@@ -223,9 +250,7 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_bas
         try:
             b_cursor = conn.cursor()
             b_cursor.execute(
-                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(
-                    p_struct[0]) + "','" + p_struct[1] + "', '" + ex_id + "', '" + p_struct[2][0] + "', '" +
-                p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
+                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(p_struct[0], default=hinted_tuple_hook) + "','" + p_struct[1] + "', '" + ex_id + "', '" + p_struct[2][0] + "', '" +p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
                     now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', " + sprice + ");")
             b_cursor.close()
             r_msg = "OK"
