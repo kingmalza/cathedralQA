@@ -277,6 +277,8 @@ function isempty() {
     var r_1;
     var r_2;
     var r_3;
+    var r_err="";
+    var r_lic="";
 
 
     r_1 = document.getElementById("t_select");
@@ -304,17 +306,34 @@ function isempty() {
                 tDescrl: r_2_l.value,
                 tCover: r_cover.value,
                 tPrice: r_price.value},
-            success: function (data) {
-                $.each(data, function (index) {
+                success: function (data) {
 
+                    $.each(data, function (index) {
+                        
+                        r_err = data[index].Error;
+                        try {
+                            r_lic = data[index].LNUM;
+                        }
+                        catch(err) {}
+                        //window.location.href = 'https://newurl.com';
                     } );
 
+                    if (r_err == "Nostripe") {
+                        window.open('https://cathedral.ai/gocard/'+r_lic,'_blank');
+                    } else {
+                        alert(r_err);
+                    }
+                },
+                error: function(jqxhr, status, exception) {
+                    alert(exception);
                 }
             });
+
         }
-
-
     }
+
+
+    return false;
 
 }
 

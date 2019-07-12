@@ -56,6 +56,9 @@ def start(request):
         #First of all check if user have stripe_id, otherwise redirect to cthedral card registration form
         ck_stripe = get_lic()
 
+        response = []
+        vallabel = {}
+
         if (ck_stripe['LDATA'][9]):
 
             id_templ = request.POST['idTempl']
@@ -64,9 +67,6 @@ def start(request):
             d_base = 'helium_web'
 
             internal = False
-
-            response = []
-            vallabel = {}
 
             connection_parameters = {
                 'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
@@ -105,7 +105,18 @@ def start(request):
         else:
             #There is no stripe_id param so i redirect to cathedral credit card registration view then page
             l_data = ck_stripe['LDATA']
-            return HttpResponseRedirect('/gocard/'+l_data[0]+'/')
+            #return HttpResponseRedirect('/gocard/'+l_data[0]+'/')
+            l_num = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
+            vallabel['LNUM'] = l_num
+            vallabel['Error'] = 'Nostripe'
+            # return HttpResponseRedirect('/tpublish/TKO/')
+
+            response.append(vallabel)
+            jsonret = simplejson.dumps(response)
+
+            return HttpResponse(
+                jsonret, content_type='application/json'
+            )
 
 
 
