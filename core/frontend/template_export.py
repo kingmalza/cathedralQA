@@ -260,7 +260,7 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_bas
     # First check if original_id already exist (meand that template was already charged)
     # IMPORTANT IN FUTURE IF I WHANT  THAT ANYONE CAN PUBLISH YOUR TEMPLATE LEAVE THIS CHECK
     ck_cursor = conn.cursor()
-    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper() + "'")
+    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper() + "' AND (aie.status = 'A' OR aie.status = 'P') ")
     ck_old = ck_cursor.fetchone()
     if not ck_old and p_struct[1]:
         try:
@@ -274,7 +274,6 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_bas
             print("Error Insert: ", e)
             r_msg = e
     else:
-        print("TEMPLATE ALREADY UPLOADED OR HTML NOT GENERATED! No data was inserted into table")
         r_msg = "BUSY"
 
     ck_cursor.close()
@@ -336,6 +335,7 @@ def ret_list(request, t_status="A"):
                          'rl_dt': str("{:%Y-%m-%d %H:%M}".format(row[9])),
                          'rl_dt_end': var_dtend,
                          'rl_sdescr': row[11],
+                         'rl_sdescrl': row[16],
                          'rl_scover': row[12],
                          'rl_scredits': row[13],
                          'rl_status': row[10],

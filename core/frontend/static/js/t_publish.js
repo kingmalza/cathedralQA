@@ -309,7 +309,7 @@ function isempty() {
                 success: function (data) {
 
                     $.each(data, function (index) {
-                        
+
                         r_err = data[index].Error;
                         try {
                             r_lic = data[index].LNUM;
@@ -320,8 +320,14 @@ function isempty() {
 
                     if (r_err == "Nostripe") {
                         window.open('https://cathedral.ai/gocard/'+r_lic,'_blank');
+                    } else if (r_err == "BUSY") {
+                        alert('The template you are trying to upload is already present to the marketplace or the request is being approved. To reload the template again you must first stop the publication of the previous one.');
+                    } else if (r_err == "OK"){
+                        alert('The request to publish the template has been correctly inserted in our database. Our staff will proceed to the evaluation of your template. As soon as the approval process is completed you will receive a confirmation email.');
+                        window.location.href = '/tpublish';
                     } else {
-                        alert(r_err);
+                        alert('Something went wrong! Check the correctness of the data in your template or contact our technical support for assistance.');
+                        window.open('https://cathedral.ai/#contactus','_blank');
                     }
                 },
                 error: function(jqxhr, status, exception) {
