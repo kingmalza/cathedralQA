@@ -59,10 +59,6 @@ function createLine() {
 
                 $.each(data, function (index) {
 
-                    //var div_row = document.createElement("div");
-                    //div_row.setAttribute('class', 'row');
-                    //div_row.style.paddingBottom = '30px';
-                    //First create box info
                     var div_inf1 = document.createElement("div");
                     div_inf1.setAttribute('class', 'col-md-4');
                     div_inf1.style.paddingBottom = '40px';
@@ -70,6 +66,50 @@ function createLine() {
                     div_inf2.setAttribute('class', 'box2 box-info');
                     var div_inf3 = document.createElement("div");
                     div_inf3.setAttribute('class', 'box-header');
+
+                    //Modal window for display template details
+                    var div_supermodal = document.createElement("div");
+                    div_supermodal.setAttribute('class', 'modal');
+                    div_supermodal.setAttribute('id','myModal');
+
+                    var div_modal = document.createElement("div");
+                    div_modal.setAttribute('class', 'modal-content');
+
+                    var div_modal_h = document.createElement("div");
+                    div_modal_h.setAttribute('class', 'modal-header');
+                    var span_modal_h = document.createElement("span");
+                    span_modal_h.setAttribute('class', 'close');
+                    span_modal_h.innerHTML = '&times;';
+                    var h2_modal_h = document.createElement("h2");
+                    h2_modal_h.innerHTML = 'Modal Header';
+                    div_modal_h.appendChild(span_modal_h);
+                    div_modal_h.appendChild(h2_modal_h);
+
+                    var div_modal_b = document.createElement("div");
+                    div_modal_b.setAttribute('class', 'modal-body');
+                    var p_modal_b = document.createElement("p");
+                    p_modal_b.innerHTML = data[index].rl_sdescrl;
+                    div_modal_b.appendChild(p_modal_b);
+
+                    var div_modal_f = document.createElement("div");
+                    div_modal_f.setAttribute('class', 'modal-footer');
+                    var h3_modal_f = document.createElement("h3");
+                    h3_modal_f.innerHTML = 'Modal footer';
+                    div_modal_f.appendChild(h3_modal_f);
+
+                    div_modal.appendChild(div_modal_h);
+                    div_modal.appendChild(div_modal_b);
+                    div_modal.appendChild(div_modal_f);
+                    div_supermodal.appendChild(div_modal);
+                    div_inf2.appendChild(div_supermodal);
+                    //End modal window
+
+
+                    //var div_row = document.createElement("div");
+                    //div_row.setAttribute('class', 'row');
+                    //div_row.style.paddingBottom = '30px';
+                    //First create box info
+
                     //var createH = document.createElement('a');
                     //createH.setAttribute('href', '/static/out/'+data[index].rl_html+'/'+data[index].rl_html+'_TC.html');
                     //createH.target = "_blank";
@@ -81,7 +121,7 @@ function createLine() {
                     var ibut = document.createElement("I");
                     ibut.setAttribute('class', 'fa fa-search');
                     buthtview.appendChild(ibut);
-                    buthtview.onclick = function() {modal.style.display = "block";};
+                    buthtview.onclick = function() {document.getElementById('myModal').style.display = 'block';};
                     //createH.appendChild(buthtview);
                     var h3_1 = document.createElement("h3");
                     h3_1.innerHTML = data[index].rl_desc;
@@ -112,44 +152,6 @@ function createLine() {
                     div_inf2b.appendChild(text_inf2b);
                     div_inf2.appendChild(div_inf2b);
 
-                    /*
-                    //Modal window for display template details
-                    var div_supermodal = document.createElement("div");
-                    div_supermodal.setAttribute('class', 'modal');
-                    div_supermodal.setAttribute('id','myModal');
-
-                    var div_modal = document.createElement("div");
-                    div_modal.setAttribute('class', 'modal-content');
-
-                    var div_modal_h = document.createElement("div");
-                    div_modal_h.setAttribute('class', 'modal-header');
-                    var span_modal_h = document.createElement("span");
-                    span_modal_h.setAttribute('class', 'close');
-                    span_modal_h.innerHTML = '&times;';
-                    var h2_modal_h = document.createElement("h2");
-                    h2_modal_h.innerHTML = 'Modal Header';
-                    div_modal_h.appendChild(span_modal_h);
-                    div_modal_h.appendChild(h2_modal_h);
-
-                    var div_modal_b = document.createElement("div");
-                    div_modal_b.setAttribute('class', 'modal-body');
-                    var p_modal_b = document.createElement("p");
-                    p_modal_b.innerHTML = 'Modal body';
-                    div_modal_b.appendChild(p_modal_b);
-
-                    var div_modal_f = document.createElement("div");
-                    div_modal_f.setAttribute('class', 'modal-footer');
-                    var h3_modal_f = document.createElement("h3");
-                    h3_modal_f.innerHTML = 'Modal footer';
-                    div_modal_f.appendChild(h3_modal_f);
-
-                    div_modal.appendChild(div_modal_h);
-                    div_modal.appendChild(div_modal_b);
-                    div_modal.appendChild(div_modal_f);
-                    div_supermodal.appendChild(div_modal);
-                    div_inf2.appendChild(div_supermodal);
-                    //End modal window
-                    */
 
                     //Div for display data like category, download numbers ecc
                     var div_inf2b_data = document.createElement("div");
