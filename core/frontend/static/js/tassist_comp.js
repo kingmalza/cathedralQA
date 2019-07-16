@@ -64,45 +64,9 @@ function createLine() {
                     div_inf1.style.paddingBottom = '40px';
                     var div_inf2 = document.createElement("div");
                     div_inf2.setAttribute('class', 'box2 box-info');
+                    div_inf2.setAttribute('id','dcoll');
                     var div_inf3 = document.createElement("div");
                     div_inf3.setAttribute('class', 'box-header');
-
-                    //Modal window for display template details
-                    var div_supermodal = document.createElement("div");
-                    div_supermodal.setAttribute('class', 'modal');
-                    div_supermodal.setAttribute('id','myModal');
-
-                    var div_modal = document.createElement("div");
-                    div_modal.setAttribute('class', 'modal-content');
-
-                    var div_modal_h = document.createElement("div");
-                    div_modal_h.setAttribute('class', 'modal-header');
-                    var span_modal_h = document.createElement("span");
-                    span_modal_h.setAttribute('class', 'close');
-                    span_modal_h.innerHTML = '&times;';
-                    var h2_modal_h = document.createElement("h2");
-                    h2_modal_h.innerHTML = 'Modal Header';
-                    div_modal_h.appendChild(span_modal_h);
-                    div_modal_h.appendChild(h2_modal_h);
-
-                    var div_modal_b = document.createElement("div");
-                    div_modal_b.setAttribute('class', 'modal-body');
-                    var p_modal_b = document.createElement("p");
-                    p_modal_b.innerHTML = data[index].rl_sdescrl;
-                    div_modal_b.appendChild(p_modal_b);
-
-                    var div_modal_f = document.createElement("div");
-                    div_modal_f.setAttribute('class', 'modal-footer');
-                    var h3_modal_f = document.createElement("h3");
-                    h3_modal_f.innerHTML = 'Modal footer';
-                    div_modal_f.appendChild(h3_modal_f);
-
-                    div_modal.appendChild(div_modal_h);
-                    div_modal.appendChild(div_modal_b);
-                    div_modal.appendChild(div_modal_f);
-                    div_supermodal.appendChild(div_modal);
-                    div_inf2.appendChild(div_supermodal);
-                    //End modal window
 
 
                     //var div_row = document.createElement("div");
@@ -117,11 +81,13 @@ function createLine() {
                     buthtview.type = "button";
                     buthtview.className = "btn btn-default";
                     buthtview.setAttribute('id','myBtn');
+                    buthtview.setAttribute('name', data[index].rl_id);
                     //buthtview.addEventListener("click", function(){modal.style.display = "block";});
                     var ibut = document.createElement("I");
                     ibut.setAttribute('class', 'fa fa-search');
                     buthtview.appendChild(ibut);
-                    buthtview.onclick = function() {document.getElementById('myModal').style.display = 'block';};
+                    //buthtview.onclick = function() {document.getElementById('myModal').style.display = 'block';};
+                    buthtview.onclick = function() {get_t_data(this.name);};
                     //createH.appendChild(buthtview);
                     var h3_1 = document.createElement("h3");
                     h3_1.innerHTML = data[index].rl_desc;
@@ -157,7 +123,22 @@ function createLine() {
                     var div_inf2b_data = document.createElement("div");
                     div_inf2b_data.setAttribute('class', 'box-body');
                     div_inf2b_data.style.height = '20%';
-                    div_inf2b_data.style.backgroundColor = "#999";
+                    var div_inf2b_data_r = document.createElement("div");
+                    div_inf2b_data_r.setAttribute('class', 'row');
+                    var div_inf2b_data_r1 = document.createElement("div");
+                    div_inf2b_data_r1.setAttribute('class', 'col-md-4');
+                    var span1 = document.createElement("SPAN");
+                    span1.setAttribute('class', 'label label-warning');
+                    span1.innerHTML=data[index].rl_scover.toUpperCase();
+                    div_inf2b_data_r1.appendChild(span1);
+                    var div_inf2b_data_r2 = document.createElement("div");
+                    div_inf2b_data_r2.setAttribute('class', 'col-md-4');
+                    var div_inf2b_data_r3 = document.createElement("div");
+                    div_inf2b_data_r3.setAttribute('class', 'col-md-4');
+                    div_inf2b_data_r.appendChild(div_inf2b_data_r1);
+                    div_inf2b_data_r.appendChild(div_inf2b_data_r2);
+                    div_inf2b_data_r.appendChild(div_inf2b_data_r3);
+                    div_inf2b_data.appendChild(div_inf2b_data_r);
                     div_inf2.appendChild(div_inf2b_data);
 
                     var div_inf2c = document.createElement("div");
@@ -197,6 +178,73 @@ function createLine() {
                 });
 
             document.getElementById("asnum").innerHTML = templ_count;
+
+        }
+    });
+}
+
+
+function removeElement(elementId) {
+    // Removes an element from the document
+    var element = document.getElementById(elementId);
+    element.parentNode.removeChild(element);
+}
+
+
+function get_t_data(id_teml) {
+
+    try {
+        removeElement('myModal');
+    } catch (e) {}
+
+  $.ajax({
+        type: "POST",
+        url: "mpdata",
+        data: {idt: id_teml},
+        success: function (data) {
+            $.each(data, function (index) {
+
+                    //Modal window for display template details
+                    var div_supermodal = document.createElement("div");
+                    div_supermodal.setAttribute('class', 'modal');
+                    div_supermodal.setAttribute('id','myModal');
+                    div_supermodal.style.display = 'block';
+
+                    var div_modal = document.createElement("div");
+                    div_modal.setAttribute('class', 'modal-content');
+
+                    var div_modal_h = document.createElement("div");
+                    div_modal_h.setAttribute('class', 'modal-header');
+                    var span_modal_h = document.createElement("span");
+                    span_modal_h.setAttribute('class', 'close');
+                    span_modal_h.innerHTML = '&times;';
+                    //span_modal_h.addEventListener("click", function(){document.getElementById('myModal').style.display = "none";});
+                    var h2_modal_h = document.createElement("h2");
+                    h2_modal_h.innerHTML = data[index].TTITLE;
+                    div_modal_h.appendChild(span_modal_h);
+                    div_modal_h.appendChild(h2_modal_h);
+
+                    var div_modal_b = document.createElement("div");
+                    div_modal_b.setAttribute('class', 'modal-body');
+                    var p_modal_b = document.createElement("p");
+                    p_modal_b.innerHTML = data[index].TDESCRL;
+                    div_modal_b.appendChild(p_modal_b);
+
+                    /*
+                    var div_modal_f = document.createElement("div");
+                    div_modal_f.setAttribute('class', 'modal-footer');
+                    var h3_modal_f = document.createElement("h3");
+                    h3_modal_f.innerHTML = 'Modal footer';
+                    div_modal_f.appendChild(h3_modal_f);*/
+
+                    div_modal.appendChild(div_modal_h);
+                    div_modal.appendChild(div_modal_b);
+                    //div_modal.appendChild(div_modal_f);
+                    div_supermodal.appendChild(div_modal);
+                    document.getElementById('dcoll').appendChild(div_supermodal);
+                    span_modal_h.addEventListener("click", function(){document.getElementById('myModal').style.display = "none";});
+                    //End modal window
+            });
 
         }
     });

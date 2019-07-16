@@ -126,10 +126,17 @@ DATABASES = {
 }
 
 
-#Connection Parameters for aida_lic table
+#Connection Parameters for aida_lic table and marketplace
 LIC_PARAM = {
     'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
     'database': 'aida_lic',
+    'user': 'kingmalza',
+    'password': '11235813post',
+}
+
+EXPORT_PARAM = {
+    'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'database': 'helium_ai',
     'user': 'kingmalza',
     'password': '11235813post',
 }

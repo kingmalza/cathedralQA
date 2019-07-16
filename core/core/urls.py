@@ -39,6 +39,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     handler500, temp_clone, temp_publish, regoractivate, go_ccredit
 
 from frontend.template_export import ret_list, start, stop_templ
+from frontend.getdata import market_data
 
 schema_view = get_schema_view(title='Aida API')
 
@@ -96,6 +97,7 @@ urlpatterns = [
                   url(r'^tmain$', temp_main),
                   url(r'^tcase$', temp_case),
                 url(r'^tassist$', temp_assist),
+                url(r'^mpdata$', market_data),
                 url(r'^tpublish$', temp_publish),
                   url(r'^tpublish/(?P<reg_status>\w+)/$', temp_publish),
                   url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),

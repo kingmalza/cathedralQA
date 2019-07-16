@@ -279,6 +279,7 @@ def temp_assist(request, templ_id=None, **kwargs):
     return response
 
 
+
 @login_required
 def go_ccredit(request, lic_num=None, **kwargs):
 
