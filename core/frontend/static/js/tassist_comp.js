@@ -128,13 +128,32 @@ function createLine() {
                     var div_inf2b_data_r1 = document.createElement("div");
                     div_inf2b_data_r1.setAttribute('class', 'col-md-4');
                     var span1 = document.createElement("SPAN");
-                    span1.setAttribute('class', 'label label-warning');
+                    /*span1.setAttribute('class', 'label label-warning');
                     span1.innerHTML=data[index].rl_scover.toUpperCase();
-                    div_inf2b_data_r1.appendChild(span1);
+                    div_inf2b_data_r1.appendChild(span1);*/
                     var div_inf2b_data_r2 = document.createElement("div");
                     div_inf2b_data_r2.setAttribute('class', 'col-md-4');
                     var div_inf2b_data_r3 = document.createElement("div");
                     div_inf2b_data_r3.setAttribute('class', 'col-md-4');
+                    div_inf2b_data_r3.style.textAlign = 'right';
+                     var span3 = document.createElement("SPAN");
+                    if(data[index].rl_scredits <= 2) {
+                        span3.setAttribute('class', 'label label-success');
+                        if (data[index].rl_scredits == 1) {
+                            span3.innerHTML = data[index].rl_scredits + ' Credit';
+                        } else {
+                            span3.innerHTML = data[index].rl_scredits + ' Credits';
+                        }
+                    } else if (data[index].rl_scredits > 2 && data[index].rl_scredits <= 6) {
+                        span3.setAttribute('class', 'label label-primary');
+                        span3.innerHTML = data[index].rl_scredits + ' Credits';
+                    } else {
+                       span3.setAttribute('class', 'label label-danger');
+                       span3.innerHTML = data[index].rl_scredits + ' Credits';
+                    }
+
+                    div_inf2b_data_r3.appendChild(span3);
+
                     div_inf2b_data_r.appendChild(div_inf2b_data_r1);
                     div_inf2b_data_r.appendChild(div_inf2b_data_r2);
                     div_inf2b_data_r.appendChild(div_inf2b_data_r3);
@@ -158,7 +177,7 @@ function createLine() {
                     var buthtml = document.createElement("input");
                     buthtml.type = "submit";
                     buthtml.value = "IMPORT THIS TEMPLATE";
-                    buthtml.className = "btn btn-block btn-primary btn-sm";
+                    buthtml.className = "btn btn-block btn-primary btn-lg";
                     impform.appendChild(IDinput);
                     impform.appendChild(buthtml);
                     div_inf2c.appendChild(impform);
@@ -225,10 +244,22 @@ function get_t_data(id_teml) {
                     div_modal_h.appendChild(h2_modal_h);
 
                     var div_modal_b = document.createElement("div");
+                    var div_html = document.createElement("div");
+                    var div_callout = document.createElement("div");
+                    div_html.style.paddingBottom = '20px';
+                    var div_h3 = document.createElement("div");
+                    div_h3.style.backgroundColor = '#ecf0f5';
+                    div_h3.style.paddingLeft = '5px';
                     div_modal_b.setAttribute('class', 'modal-body');
                     var p_modal_b = document.createElement("p");
                     p_modal_b.innerHTML = data[index].TDESCRL;
+                    var h_modal_b = document.createElement("H3");
+                    h_modal_b.innerHTML = "Test Template Structure";
+                    div_h3.appendChild(h_modal_b);
+                    div_html.innerHTML = data[index].THTML;
                     div_modal_b.appendChild(p_modal_b);
+                    div_modal_b.appendChild(div_h3);
+                    div_modal_b.appendChild(div_html);
 
                     /*
                     var div_modal_f = document.createElement("div");

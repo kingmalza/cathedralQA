@@ -6,6 +6,7 @@ from django.conf import settings
 from frontend.models import settings_gen
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from json2html import *
 
 
 def myconverter(o):
@@ -59,10 +60,15 @@ def market_data(request):
         s_query = "SELECT py_dict,store_descr_long,descr FROM aida_export WHERE id='%s';" % id_template
         cur.execute(s_query)
         A = cur.fetchone()
+        #advanced
+        #py_html = json2html.convert(json=A[0], table_attributes="id=\"info-table\" class=\"table table-bordered table-hover\"")
+        #Basic
+        py_html = json2html.convert(json=A[0])
 
         vallabel['TSTRUCT'] = A[0]
         vallabel['TDESCRL'] = A[1]
         vallabel['TTITLE'] = A[2]
+        vallabel['THTML'] = py_html
 
 
         response.append(vallabel)
