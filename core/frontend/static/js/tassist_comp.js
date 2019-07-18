@@ -174,11 +174,17 @@ function createLine() {
                     IDinput.setAttribute("id", "idimp");
                     IDinput.setAttribute("name", "idimp");
                     IDinput.setAttribute("value", data[index].rl_id);
+                    var IDprice = document.createElement("input");
+                    IDprice.setAttribute("type", "hidden");
+                    IDprice.setAttribute("id", "tprice");
+                    IDprice.setAttribute("name", "tprice");
+                    IDprice.setAttribute("value", data[index].rl_scredits);
                     var buthtml = document.createElement("input");
                     buthtml.type = "submit";
                     buthtml.value = "IMPORT THIS TEMPLATE";
                     buthtml.className = "btn btn-block btn-primary btn-lg";
                     impform.appendChild(IDinput);
+                    impform.appendChild(IDprice);
                     impform.appendChild(buthtml);
                     div_inf2c.appendChild(impform);
                     div_inf2.appendChild(div_inf2c);
