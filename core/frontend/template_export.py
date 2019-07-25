@@ -42,6 +42,7 @@ class MultiDimensionalArrayEncoder(json.JSONEncoder):
 
         return super(MultiDimensionalArrayEncoder, self).encode(hint_tuples(obj))
 
+
 def hinted_tuple_hook(obj):
     if '__tuple__' in obj:
         return tuple(obj['items'])
@@ -53,77 +54,55 @@ def hinted_tuple_hook(obj):
 def start(request):
     if request.is_ajax():
 
-        #First of all check if user have stripe_id, otherwise redirect to cthedral card registration form
-        ck_stripe = get_lic()
-
         response = []
         vallabel = {}
 
-        if (ck_stripe['LDATA'][9]):
+        id_templ = request.POST['idTempl']
+        # CHANGE THESE TO pubblic IN STANDALONE MODE!!
+        schema = 'helium'
+        d_base = 'helium_web'
 
-            id_templ = request.POST['idTempl']
-            # CHANGE THESE TO pubblic IN STANDALONE MODE!!
-            schema = 'helium'
-            d_base = 'helium_web'
+        internal = False
 
-            internal = False
+        connection_parameters = {
+            'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+            'database': d_base,
+            'user': 'kingmalza',
+            'password': '11235813post',
+        }
 
-            connection_parameters = {
-                'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-                'database': d_base,
-                'user': 'kingmalza',
-                'password': '11235813post',
-            }
+        conn = psycopg2.connect(**connection_parameters)
+        conn.autocommit = True
 
-            conn = psycopg2.connect(**connection_parameters)
-            conn.autocommit = True
+        try:
+            pydict = main(schema, id_templ, conn)
 
-            try:
-                pydict = main(schema, id_templ, conn)
-
-                # If this function was called from view.py temp_clone (internal) return just dict
-                if internal:
-                    conn.close()
-                    return pydict
-                # print(json.dumps(pydict, indent=4))
-                rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700], request.POST['tCover'], request.POST['tPrice'])
-
+            # If this function was called from view.py temp_clone (internal) return just dict
+            if internal:
                 conn.close()
-                vallabel['Error'] = rload
-                # return HttpResponseRedirect('/tpublish/TOK/')
+                return pydict
+            # print(json.dumps(pydict, indent=4))
+            rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700],
+                              request.POST['tCover'], request.POST['tPrice'])
 
-            except Exception as e:
-                vallabel['Error'] = e
-                # return HttpResponseRedirect('/tpublish/TKO/')
+            conn.close()
+            vallabel['Error'] = rload
+            # return HttpResponseRedirect('/tpublish/TOK/')
 
-            response.append(vallabel)
-            jsonret = simplejson.dumps(response)
-
-            return HttpResponse(
-                jsonret, content_type='application/json'
-            )
-        else:
-            #There is no stripe_id param so i redirect to cathedral credit card registration view then page
-            l_data = ck_stripe['LDATA']
-            #return HttpResponseRedirect('/gocard/'+l_data[0]+'/')
-            l_num = settings_gen.objects.values_list('lic_num', flat=True).get(id=1)
-            vallabel['LNUM'] = l_num
-            vallabel['Error'] = 'Nostripe'
+        except Exception as e:
+            vallabel['Error'] = e
             # return HttpResponseRedirect('/tpublish/TKO/')
 
-            response.append(vallabel)
-            jsonret = simplejson.dumps(response)
+        response.append(vallabel)
+        jsonret = simplejson.dumps(response)
 
-            return HttpResponse(
-                jsonret, content_type='application/json'
-            )
-
-
+        return HttpResponse(
+            jsonret, content_type='application/json'
+        )
 
     else:
 
         pass
-
 
 
 def main(schema, id_templ, conn, p_force=False):
@@ -210,9 +189,9 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             t_html = str(row[0])
 
-        #Encode json for touple dict ec
+        # Encode json for touple dict ec
         enc = MultiDimensionalArrayEncoder()
-        ttk_list_enc = enc.encode(ttk_list).replace("'","")
+        ttk_list_enc = enc.encode(ttk_list).replace("'", "")
         tmain_list_enc = enc.encode(tmain_list).replace("'", "")
         tcase_list_enc = enc.encode(tcase_list).replace("'", "")
         tvar_list_enc = enc.encode(tvar_list).replace("'", "")
@@ -221,7 +200,6 @@ def main(schema, id_templ, conn, p_force=False):
 
         j_dict = {'t_main': tmain_list_enc, 't_case': tcase_list_enc, 't_vars': tvar_list_enc, 't_libs': tlib_list_enc,
                   't_ttk': ttk_list_enc, 't_tpk': tpk_list_enc}
-
 
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])
@@ -260,13 +238,16 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_bas
     # First check if original_id already exist (meand that template was already charged)
     # IMPORTANT IN FUTURE IF I WHANT  THAT ANYONE CAN PUBLISH YOUR TEMPLATE LEAVE THIS CHECK
     ck_cursor = conn.cursor()
-    ck_cursor.execute("SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper() + "' AND (aie.status = 'A' OR aie.status = 'P') ")
+    ck_cursor.execute(
+        "SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper() + "' AND (aie.status = 'A' OR aie.status = 'P') ")
     ck_old = ck_cursor.fetchone()
     if not ck_old and p_struct[1]:
         try:
             b_cursor = conn.cursor()
             b_cursor.execute(
-                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(p_struct[0], default=hinted_tuple_hook) + "','" + p_struct[1] + "', '" + ex_id + "', '" + p_struct[2][0] + "', '" +p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
+                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(
+                    p_struct[0], default=hinted_tuple_hook) + "','" + p_struct[1] + "', '" + ex_id + "', '" +
+                p_struct[2][0] + "', '" + p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
                     now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', " + sprice + ");")
             b_cursor.close()
             r_msg = "OK"
@@ -308,11 +289,11 @@ def ret_list(request, t_status="A"):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    #Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza, se in alternativa dalla maschera della lista dei template viene selezionato uno in stato R (rejected) viene chiamata quest funzione passando id del template per estrarre le note di disapprovazione
+    # Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza, se in alternativa dalla maschera della lista dei template viene selezionato uno in stato R (rejected) viene chiamata quest funzione passando id del template per estrarre le note di disapprovazione
     if t_status == "A":
         s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' ORDER BY id DESC"
     elif t_status == "E":
-        s_exec = "SELECT * FROM public.aida_export WHERE export_id like '"+l_num+"%' ORDER BY id DESC"
+        s_exec = "SELECT * FROM public.aida_export WHERE export_id like '" + l_num + "%' ORDER BY id DESC"
     else:
         s_exec = "SELECT * FROM public.aida_export WHERE id =" + t_status
 
@@ -353,13 +334,13 @@ def ret_list(request, t_status="A"):
         json, content_type='application/json'
     )
 
+
 @csrf_exempt
 def stop_templ(request):
-
     id_t = request.POST['idTemp']
     now = datetime.datetime.now()
     response = []
-    vallabel={'res': 'Something went wrong, try reloading the page.',}
+    vallabel = {'res': 'Something went wrong, try reloading the page.', }
 
     if id_t:
         connection_parameters = {
@@ -374,9 +355,11 @@ def stop_templ(request):
         cursor = conn.cursor()
 
         if request.POST['atype'] == 'end':
-            s_exec = "UPDATE public.aida_export SET status='E', dt_end='"+str(now)+"' WHERE ID="+id_t+""
+            s_exec = "UPDATE public.aida_export SET status='E', dt_end='" + str(now) + "' WHERE ID=" + id_t + ""
         else:
-            s_exec = "UPDATE public.aida_export SET status='P', store_descr='" + request.POST['tdescr'] + "', coverage='"+request.POST['tcover']+"', credits="+request.POST['tcredit']+" WHERE ID=" + id_t + ""
+            s_exec = "UPDATE public.aida_export SET status='P', store_descr='" + request.POST[
+                'tdescr'] + "', coverage='" + request.POST['tcover'] + "', credits=" + request.POST[
+                         'tcredit'] + " WHERE ID=" + id_t + ""
 
         try:
             cursor.execute(s_exec)
@@ -387,7 +370,6 @@ def stop_templ(request):
             vallabel = {'res': e, }
 
         vallabel = {'res': 'The changes have been made correctly.', }
-
 
     response.append(vallabel)
     json = simplejson.dumps(response)

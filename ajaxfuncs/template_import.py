@@ -95,7 +95,6 @@ def import_templ(request):
         #First check if user has activate account (credit card and stripe id is present)
         ck_stripe = get_lic()
 
-
         if (ck_stripe['LDATA'][9]):
 
             #Now check if associated stripe customer has a monthly or yearli plan associated
