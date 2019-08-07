@@ -137,7 +137,9 @@ function createLine() {
                     div_inf2b_data_r3.setAttribute('class', 'col-md-4');
                     div_inf2b_data_r3.style.textAlign = 'right';
                      var span3 = document.createElement("SPAN");
-                    if(data[index].rl_scredits <= 2) {
+                     span3.setAttribute('class', 'label label-success');
+                     span3.innerHTML = '#'+data[index].rl_scover.toUpperCase();
+                    /*if(data[index].rl_scredits <= 2) {
                         span3.setAttribute('class', 'label label-success');
                         if (data[index].rl_scredits == 1) {
                             span3.innerHTML = data[index].rl_scredits + ' Credit';
@@ -150,7 +152,7 @@ function createLine() {
                     } else {
                        span3.setAttribute('class', 'label label-danger');
                        span3.innerHTML = data[index].rl_scredits + ' Credits';
-                    }
+                    }*/
 
                     div_inf2b_data_r3.appendChild(span3);
 
