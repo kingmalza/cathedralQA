@@ -136,8 +136,8 @@ function createLine() {
                     var div_inf2b_data_r3 = document.createElement("div");
                     div_inf2b_data_r3.setAttribute('class', 'col-md-4');
                     div_inf2b_data_r3.style.textAlign = 'right';
-                     var span3 = document.createElement("SPAN");
-                     span3.setAttribute('class', 'label label-success');
+                     var span3 = document.createElement("CODE");
+                     //span3.setAttribute('class', 'label label-success');
                      span3.innerHTML = '#'+data[index].rl_scover.toUpperCase();
                     /*if(data[index].rl_scredits <= 2) {
                         span3.setAttribute('class', 'label label-success');
@@ -261,10 +261,18 @@ function get_t_data(id_teml) {
                     div_modal_b.setAttribute('class', 'modal-body');
                     var p_modal_b = document.createElement("p");
                     p_modal_b.innerHTML = data[index].TDESCRL;
+                    var p_lic_b = document.createElement("p");
+                    p_lic_b.setAttribute('id','mylic');
+                    p_lic_b.innerHTML = data[index].LICN;
                     var h_modal_b = document.createElement("H3");
                     h_modal_b.innerHTML = "Test Template Structure";
                     div_h3.appendChild(h_modal_b);
-                    div_html.innerHTML = data[index].THTML;
+                    div_modal_b.appendChild(p_lic_b);
+                    if (data[index].SID != null) {
+                        div_html.innerHTML = data[index].THTML;
+                    } else {
+                        div_html.innerHTML = data[index].THTML+"<div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your aida account was successful.</strong><br><br>Our staff will take care of your request and will proceed in the shortest possible time to carry out all the necessary operations to allow you to use aida without restrictions.<br><br>As soon as the registration procedure is complete you will receive an email to the address you specify in registration proces containing all the necessary data Using your new aida environment, if you do not receive the activation email within 24 hours, try checking your spam box.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>GO TO AIDA PROJECT HOMEPAGE</button></a></div></div></div>";
+                    }
                     div_modal_b.appendChild(p_modal_b);
                     div_modal_b.appendChild(div_h3);
                     div_modal_b.appendChild(div_html);

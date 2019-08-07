@@ -52,6 +52,9 @@ def market_data(request):
     if request.is_ajax() and id_template:
         cparam = getattr(settings, "EXPORT_PARAM", None)
 
+        #Get stripe_id from lic table if present
+        sid = get_lic()
+
         conn = psycopg2.connect(**cparam)
         conn.autocommit = True
 
@@ -69,6 +72,8 @@ def market_data(request):
         vallabel['TDESCRL'] = A[1]
         vallabel['TTITLE'] = A[2]
         vallabel['THTML'] = py_html
+        vallabel['SID'] = sid['LDATA'][9]
+        vallabel['LICN'] = sid['LDATA'][0]
 
 
         response.append(vallabel)
