@@ -263,7 +263,8 @@ function get_t_data(id_teml) {
                     p_modal_b.innerHTML = data[index].TDESCRL;
                     var p_lic_b = document.createElement("p");
                     p_lic_b.setAttribute('id','mylic');
-                    p_lic_b.innerHTML = data[index].LICN;
+                    p_lic_b.innerHTML = 'License Id: '+data[index].LICN;
+                    p_lic_b.style.color = '#999';
                     var h_modal_b = document.createElement("H3");
                     h_modal_b.innerHTML = "Test Template Structure";
                     div_h3.appendChild(h_modal_b);
@@ -271,7 +272,7 @@ function get_t_data(id_teml) {
                     if (data[index].SID != null) {
                         div_html.innerHTML = data[index].THTML;
                     } else {
-                        div_html.innerHTML = data[index].THTML+"<div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>SUCCESS!</font></strong></p><br><strong>The registration request of your aida account was successful.</strong><br><br>Our staff will take care of your request and will proceed in the shortest possible time to carry out all the necessary operations to allow you to use aida without restrictions.<br><br>As soon as the registration procedure is complete you will receive an email to the address you specify in registration proces containing all the necessary data Using your new aida environment, if you do not receive the activation email within 24 hours, try checking your spam box.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>GO TO AIDA PROJECT HOMEPAGE</button></a></div></div></div>";
+                        div_html.innerHTML = data[index].THTML+"<div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>ALMOST DONE!</font></strong></p><br><strong>You only need just one step to activate your access to the cathedral marketplace</strong><br><br>Register your license to use the cathedral marketplace, you can access new test cases every day to import and use directly in your Cathedral suite in order to optimize your company testing strategy, saving time and increasing the quality of the your products.<br><br>Importing and managing the Cathedral professional tests is quick and easy, click on the ACTIVATE NOW button below, enter the required data and you will have immediate access from your environment to the entire present and future test templates database.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>ACTIVATE NOW</button></a></div></div></div>";
                     }
                     div_modal_b.appendChild(p_modal_b);
                     div_modal_b.appendChild(div_h3);
