@@ -291,7 +291,11 @@ def ret_list(request, t_status="A"):
 
     # Se chiamata da marketplace deve estrarre tutti i template pubblicati in stato attivo mentre se chiamata per popolare la tabella nella sessione export deve chiamare tutti i template con quella licenza, se in alternativa dalla maschera della lista dei template viene selezionato uno in stato R (rejected) viene chiamata quest funzione passando id del template per estrarre le note di disapprovazione
     if t_status == "A":
-        s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' ORDER BY id DESC"
+        if request.POST['ssel'] == 'ALL':
+            s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' AND (store_descr LIKE '%"+request.POST['stext']+"%' OR store_descr_long LIKE '%"+request.POST['stext']+"%') ORDER BY id DESC"
+        else:
+            print("Stext->",request.POST['stext'])
+            s_exec = "SELECT * FROM public.aida_export WHERE status = 'A' AND coverage = '"+request.POST['ssel']+"' AND (store_descr LIKE '%"+request.POST['stext']+"%' OR store_descr_long LIKE '%"+request.POST['stext']+"%') ORDER BY id DESC"
     elif t_status == "E":
         s_exec = "SELECT * FROM public.aida_export WHERE export_id like '" + l_num + "%' ORDER BY id DESC"
     else:

@@ -36,7 +36,7 @@ function startTab() {
         url: "groupmain",
         data: {},
         success: function (data) {
-
+            t_main_2 = document.getElementById("h_tab");
             $.each(data, function (index) {
 
                 var tr2 = document.createElement("TR");
@@ -58,10 +58,14 @@ function startTab() {
                 tr2.appendChild(th24);
                 tr2.appendChild(th25);
                 tr2.appendChild(th26);
-                t_main.appendChild(tr2);
+                try {
+                    t_main_2.appendChild(tr2);
+                } catch (e) {
+                    console.log(e);
+                }
             });
 
-            var rows = t_main.rows; // or table.getElementsByTagName("tr");
+            var rows = t_main_2.rows; // or table.getElementsByTagName("tr");
             for (var i = 0; i < rows.length; i++) {
                 rows[i].onclick = (function () { // closure
                     return function () {
@@ -147,7 +151,7 @@ function ckSub(tId) {
             for (var i = 0; i < rows.length; i++) {
                 rows[i].onclick = (function () { // closure
                     return function () {
-                        window.open("/","_self")
+                        window.open("/history","_self")
                     }
                 })(i);
             }

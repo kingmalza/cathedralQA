@@ -36,7 +36,7 @@ function importLine() {
 }
 
 
-function createLine() {
+function createLine(f_text="", f_sel="ALL") {
 
     try {
         t_main = document.getElementById("tass");
@@ -51,7 +51,8 @@ function createLine() {
     $.ajax({
         type: "POST",
         url: "getassist",
-        data: {},
+        data: {"stext":f_text,
+        "ssel":f_sel},
         success: function (data) {
 
             var templ_count = 0;
@@ -205,6 +206,12 @@ function createLine() {
                 });
 
             document.getElementById("asnum").innerHTML = templ_count;
+            if (data.length == 0) {
+                alert('No data found for this filter criteria. Please try another combination.')
+                document.getElementById('se_text').innerHTML = '';
+                document.getElementById('se_text').value = '';
+                createLine();
+            }
 
         }
     });
@@ -263,8 +270,8 @@ function get_t_data(id_teml) {
                     p_modal_b.innerHTML = data[index].TDESCRL;
                     var p_lic_b = document.createElement("p");
                     p_lic_b.setAttribute('id','mylic');
-                    p_lic_b.innerHTML = 'License Id: '+data[index].LICN;
-                    p_lic_b.style.color = '#999';
+                    p_lic_b.innerHTML = data[index].LICN;
+                    p_lic_b.style.color = '#FFF';
                     var h_modal_b = document.createElement("H3");
                     h_modal_b.innerHTML = "Test Template Structure";
                     div_h3.appendChild(h_modal_b);
@@ -272,7 +279,7 @@ function get_t_data(id_teml) {
                     if (data[index].SID != null) {
                         div_html.innerHTML = data[index].THTML;
                     } else {
-                        div_html.innerHTML = data[index].THTML+"<div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>ALMOST DONE!</font></strong></p><br><strong>You only need just one step to activate your access to the cathedral marketplace</strong><br><br>Register your license to use the cathedral marketplace, you can access new test cases every day to import and use directly in your Cathedral suite in order to optimize your company testing strategy, saving time and increasing the quality of the your products.<br><br>Importing and managing the Cathedral professional tests is quick and easy, click on the ACTIVATE NOW button below, enter the required data and you will have immediate access from your environment to the entire present and future test templates database.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>ACTIVATE NOW</button></a></div></div></div>";
+                        div_html.innerHTML = data[index].THTML+"<div id='text-demo' style='box-shadow: 8px 8px #888888'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>ALMOST DONE!</font></strong></p><br><strong>You only need just one step to activate your access to the CathedralStudio marketplace</strong><br><br>Register your license to use the cathedral marketplace, you can access new test cases every day to import and use directly in your Cathedral suite in order to optimize your company testing strategy, saving time and increasing the quality of the your products.<br><br>Importing and managing the Cathedral professional tests is quick and easy, click on the ACTIVATE NOW button below, enter the required data and you will have immediate access from your environment to the entire present and future test templates database.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>ACTIVATE NOW</button></a></div></div></div>";
                     }
                     div_modal_b.appendChild(p_modal_b);
                     div_modal_b.appendChild(div_h3);
