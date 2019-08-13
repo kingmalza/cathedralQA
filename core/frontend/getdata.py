@@ -60,7 +60,7 @@ def market_data(request):
 
         cur = conn.cursor()
 
-        s_query = "SELECT py_dict,store_descr_long,descr FROM aida_export WHERE id='%s';" % id_template
+        s_query = "SELECT py_dict,store_descr_long,descr,adv_img,adv_desc,adv_url FROM aida_export WHERE id='%s';" % id_template
         cur.execute(s_query)
         A = cur.fetchone()
         #advanced
@@ -71,6 +71,9 @@ def market_data(request):
         vallabel['TSTRUCT'] = A[0]
         vallabel['TDESCRL'] = A[1]
         vallabel['TTITLE'] = A[2]
+        vallabel['ADSIMG'] = A[3]
+        vallabel['ADSDESC'] = A[4]
+        vallabel['ADSURL'] = A[5]
         vallabel['THTML'] = py_html
         vallabel['SID'] = sid['LDATA'][9]
         vallabel['LICN'] = sid['LDATA'][0]

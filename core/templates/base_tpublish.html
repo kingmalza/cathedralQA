@@ -60,17 +60,6 @@
                       </select>
                </div>
                 <div class="form-group">
-                  <label for="t_price" onmouseover="nhpup.popup('<strong>The price you want to assign to the template.</strong><br><br>In this area you can decide how many credits to charge for your template. This value refers to credits (each credit is worth 0.50 euros) that will be recognized to you each time an user download your template from the Cathedral test Store. For more info about our pricing policy, please read the Cathedral contract terms.',{'class': 'pup_class3'});">Template credits price <strong>(?)</strong></label>
-                     <select id="t_price" class="form-control">
-                        <option value="1">€ 0.50 (1 Credit)</option>
-                         <option value="2">€ 1.00 (2 Credits)</option>
-                        <option value="3">€ 1.50 (3 Credits)</option>
-                        <option value="6">€ 3.00 (6 Credits)</option>
-                        <option value="9">€ 4.50 (9 Credits)</option>
-                        <option value="12">€ 6.00 (12 Credits)</option>
-                    </select>
-               </div>
-                <div class="form-group">
                     <label for="t_radio" onmouseover="nhpup.popup('For what kind of test your template is more suitable? This information is for internal use only and do not will be published on the store.',{'class': 'pup_class3'});">Additional information <strong>(?)</strong></label>
                       <div class="radio" id="t_radio">
                         <label>
@@ -136,7 +125,23 @@
             <label>Test Type</label>
             <input id="det_type" type="text" class="form-control" disabled="">
         </div>
-                <div class="form-group" style="visibility: hidden">
+                <!--Part for adv pubblication-->
+                <div class="form-group">
+            <label onmouseover="nhpup.popup('<strong>Add credits for your company.</strong><br><br>Thank you for wanting to contribute to the growth of the Cathedral marketplace.<br><br>In this section you will be able to insert the credits related to your company that will be published in the detail pages of your template once approved and will be visible to all users of the store.',{'class': 'pup_class3'});">Credit Publication <strong>(?)</strong></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="far fa-image"></i></span>
+                    <input type="text" id="ads_img" class="form-control" placeholder="Add your logo url (50x50px)">
+                </div>
+                    <br>
+                    <textarea class="form-control" id="ads_desc" rows="3" placeholder="Enter a short description of your company (max. 300 chars)" style="width: 100%;"></textarea>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-globe-americas"></i></span>
+                        <input type="text" id="ads_url" class="form-control" placeholder="Insert the url for your company website">
+                  </div>
+        </div>
+                <!-- End ads pubblication -->
+                <div class="form-group" style="display: none">
             <input id="id_test" type="text" class="form-control" disabled="">
         </div>
             </div>
@@ -167,7 +172,6 @@
                         <th>Publish Data</th>
                          <th>End Data</th>
                         <th>Status</th>
-                        <th>Credits</th>
                          <th>Description</th>
                          <th>Coverage</th>
                      </tr>
@@ -242,17 +246,22 @@
                         <option>Other</option>
                  </select>
              </div>
+             <!-- ADV area -->
              <div class="form-group">
-                 <label>Credits (Price)</label>
-                     <select id="t_price_e" class="form-control">
-                        <option value="1">€ 0.50 (1 Credit)</option>
-                         <option value="2">€ 1.00 (2 Credits)</option>
-                        <option value="3">€ 1.50 (3 Credits)</option>
-                        <option value="6">€ 3.00 (6 Credits)</option>
-                        <option value="9">€ 4.50 (9 Credits)</option>
-                        <option value="12">€ 6.00 (12 Credits)</option>
-                    </select>
+                 <label onmouseover="nhpup.popup('<strong>Replace your company credits for the selected template.</strong><br><br>In this mask you can decide to modify the data related to the credits you want to associate with the published template, once inserted the new data these will overwrite the previous ones and the template will come back in the approval phase.',{'class': 'pup_class3'});"><strong>NEW</strong> Credit Pubblication <strong>(?)</strong></label>
+                 <div class="input-group">
+                    <span class="input-group-addon"><i class="far fa-image"></i></span>
+                    <input type="text" id="t_adv_img" class="form-control" placeholder="Add your logo url (50x50px)">
+                </div>
+                    <br>
+                    <textarea class="form-control" id="t_adv_desc" rows="3" placeholder="Enter a short description of your company (max. 300 chars)" style="width: 100%;"></textarea>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-globe-americas"></i></span>
+                        <input type="text" id="t_adv_url" class="form-control" placeholder="Insert the url for your company website">
+                  </div>
              </div>
+             <!-- end ADV area -->
              <div id="pub_msg" class="mycallout mycallout-info">
                 <!--Ajax-->
              </div>

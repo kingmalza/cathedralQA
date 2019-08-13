@@ -82,11 +82,6 @@ function get_tab() {
                     td_exp_4.innerHTML = 'UNKNOWN';
                 }
 
-                td_exp_5.value = data[index].rl_scredits;
-                var t_td8 = document.createElement("SPAN");
-                t_td8.setAttribute('class', 'badge bg-green');
-                t_td8.innerHTML = data[index].rl_scredits;
-                td_exp_5.appendChild(t_td8);
 
                 td_h_1.value = data[index].rl_sdescr
                 if (data[index].rl_sdescr.length > 15) {
@@ -103,7 +98,6 @@ function get_tab() {
                 tr_exp.appendChild(td_exp_3);
                 tr_exp.appendChild(td_exp_3_e);
                 tr_exp.appendChild(td_exp_4);
-                tr_exp.appendChild(td_exp_5);
 
                 tr_exp.appendChild(td_h_1);
                 tr_exp.appendChild(td_h_2);
@@ -121,10 +115,9 @@ function get_tab() {
                         window.location.href = '/tpublish#p_det';
                         //Start create management session
                         document.getElementById("t_det").innerHTML = this.cells[0].value;
-                        document.getElementById("t_det_e").innerHTML = this.cells[6].value;
-                        document.getElementById("t_cov_e").value = this.cells[7].value.trim();
+                        document.getElementById("t_det_e").innerHTML = this.cells[5].value;
+                        document.getElementById("t_cov_e").value = this.cells[6].value.trim();
                         if (this.cells[4].value == 'A') {
-                            document.getElementById("t_price_e").disabled = true;
                             document.getElementById("t_mod_but").style.visibility = 'visible';
                         } else {
                              if (this.cells[4].value == 'E' || this.cells[4].value == 'R') {
@@ -132,9 +125,7 @@ function get_tab() {
                              } else {
                                  document.getElementById("t_mod_but").style.visibility = 'visible';
                              }
-                            document.getElementById("t_price_e").disabled = false;
                         }
-                        document.getElementById("t_price_e").value = this.cells[5].value;
 
                         //Change message in callout regarding the template status
                         //First clena div
@@ -158,7 +149,7 @@ function get_tab() {
                            p_1.innerHTML = "The template is being approved by the technical staff of Cathedral.<br>You can modify or end the publication of the template at any time.";
                         } else if (this.cells[4].value.trim() == 'A') {
                            th_4.innerHTML = "TEMPLATE ACTIVE ON MARKETPLACE";
-                           p_1.innerHTML = "The template is currently active and can be purchased from the Cathedral marketplace.<br>You can modify the publication data of the template with the exception of the price but the template will return to Pending status for validation by the CAthedral staff and will not be present on the marketplace until further approval.<br><br><strong>To change the price of your template it is necessary to end the publication and proceed with a new publication choosing the new price associated with the template.</strong>";
+                           p_1.innerHTML = "The template is currently active and can be purchased from the Cathedral marketplace.<br>You can modify the publication data of the template but the template will return to Pending status for validation by the Cathedral staff and will not be present on the marketplace until further approval.";
                         } else if (this.cells[4].value.trim() == 'R') {
                             //Ajax call for retreice rejected notes
                             $.ajax({
@@ -199,7 +190,6 @@ function pend(a_type) {
     idT = document.getElementById("t_det").innerHTML;
     t_descr = document.getElementById("t_det_e").value;
     t_cover = document.getElementById("t_cov_e").value;
-    t_credit = document.getElementById("t_price_e").value;
     if (a_type == 'end') {
         conf_msg = 'Are you sure you want to END this template pubblication?';
     } else {
@@ -208,7 +198,7 @@ function pend(a_type) {
 
 
         if (confirm(conf_msg)) {
-            if ((document.getElementById("t_det_e").value !="" && t_cover != "" && t_credit != "")||(a_type == 'end')) {
+            if ((document.getElementById("t_det_e").value !="" && t_cover != "")||(a_type == 'end')) {
                 $.ajax({
                     type: "POST",
                     url: "end_templ",
@@ -217,7 +207,9 @@ function pend(a_type) {
                         atype: a_type,
                         tdescr: t_descr,
                         tcover: t_cover,
-                        tcredit: t_credit
+                        tadvimg: document.getElementById("t_adv_img").value,
+                        tadvdesc: document.getElementById("t_adv_desc").value.substring(0,200),
+                        tadvurl: document.getElementById("t_adv_url").value
                     },
                     success: function (data) {
                         //oDetTempl.style.visibility = 'visible';
@@ -285,7 +277,7 @@ function isempty() {
     r_2 = document.getElementById("t_descr");
     r_2_l = document.getElementById("t_descr_l");
     r_cover = document.getElementById("t_cover");
-    r_price = document.getElementById("t_price");
+
     r_3 = document.getElementById("t_terms");
 
     if((r_1.value == "Please select...") || (r_2.value == "") || (r_2_l.value == "") || (r_3.checked == false)) {
@@ -305,21 +297,24 @@ function isempty() {
                 tDescr: r_2.value,
                 tDescrl: r_2_l.value,
                 tCover: r_cover.value,
-                tPrice: r_price.value},
+                tAdvImg: document.getElementById("ads_img").value,
+                tAdvDesc: document.getElementById("ads_desc").value.substring(0,200),
+                tAdvUrl: document.getElementById("ads_url").value
+            },
                 success: function (data) {
 
                     $.each(data, function (index) {
 
                         r_err = data[index].Error;
                         try {
-                            r_lic = data[index].LNUM;
+                            r_lic = data[index].lic;
                         }
                         catch(err) {}
                         //window.location.href = 'https://newurl.com';
                     } );
 
                     if (r_err == "Nostripe") {
-                        window.open('https://cathedral.ai/gocard/'+r_lic,'_blank');
+                        window.open('https://cathedral.ai/gocard/'+r_lic);
                     } else if (r_err == "BUSY") {
                         alert('The template you are trying to upload is already present to the marketplace or the request is being approved. To reload the template again you must first stop the publication of the previous one.');
                     } else if (r_err == "OK"){
@@ -331,7 +326,7 @@ function isempty() {
                     }
                 },
                 error: function(jqxhr, status, exception) {
-                    alert(exception);
+                    alert('Error '+exception);
                 }
             });
 

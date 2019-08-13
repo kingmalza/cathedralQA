@@ -17,10 +17,12 @@ import psycopg2
 import json
 import datetime
 import simplejson
+import stripe
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
 from frontend.getdata import get_lic
+from django.conf import settings
 
 # if launch export manual from idlelib.idle, comment this
 from frontend.models import import_his, settings_gen
@@ -53,45 +55,55 @@ def hinted_tuple_hook(obj):
 @csrf_exempt
 def start(request):
     if request.is_ajax():
-
+        stripe.api_key = getattr(settings, "STRIPE_KEY", None)
+        # First check if user has activate account (credit card and stripe id is present)
+        ck_stripe = get_lic()
         response = []
         vallabel = {}
 
-        id_templ = request.POST['idTempl']
-        # CHANGE THESE TO pubblic IN STANDALONE MODE!!
-        schema = 'helium'
-        d_base = 'helium_web'
+        if (ck_stripe['LDATA'][9]):
 
-        internal = False
 
-        connection_parameters = {
-            'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-            'database': d_base,
-            'user': 'kingmalza',
-            'password': '11235813post',
-        }
+            id_templ = request.POST['idTempl']
+            # CHANGE THESE TO pubblic IN STANDALONE MODE!!
+            schema = 'helium'
+            d_base = 'helium_web'
 
-        conn = psycopg2.connect(**connection_parameters)
-        conn.autocommit = True
+            internal = False
 
-        try:
-            pydict = main(schema, id_templ, conn)
+            connection_parameters = {
+                'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+                'database': d_base,
+                'user': 'kingmalza',
+                'password': '11235813post',
+            }
 
-            # If this function was called from view.py temp_clone (internal) return just dict
-            if internal:
+            conn = psycopg2.connect(**connection_parameters)
+            conn.autocommit = True
+
+            try:
+                pydict = main(schema, id_templ, conn)
+
+                # If this function was called from view.py temp_clone (internal) return just dict
+                if internal:
+                    conn.close()
+                    return pydict
+                # print(json.dumps(pydict, indent=4))
+                rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700],
+                                  request.POST['tCover'], request.POST['tAdvImg'], request.POST['tAdvDesc'], request.POST['tAdvUrl'])
+
                 conn.close()
-                return pydict
-            # print(json.dumps(pydict, indent=4))
-            rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700],
-                              request.POST['tCover'], request.POST['tPrice'])
+                vallabel['Error'] = rload
+                # return HttpResponseRedirect('/tpublish/TOK/')
 
-            conn.close()
-            vallabel['Error'] = rload
-            # return HttpResponseRedirect('/tpublish/TOK/')
+            except Exception as e:
+                vallabel['Error'] = e
+                # return HttpResponseRedirect('/tpublish/TKO/')
 
-        except Exception as e:
-            vallabel['Error'] = e
-            # return HttpResponseRedirect('/tpublish/TKO/')
+
+        else:
+            vallabel['Error'] = 'Nostripe'
+            vallabel['lic'] = ck_stripe['LDATA'][0]
 
         response.append(vallabel)
         jsonret = simplejson.dumps(response)
@@ -220,7 +232,7 @@ def main(schema, id_templ, conn, p_force=False):
     cursor.close()
 
 
-def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_base='helium_ai'):
+def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sadvimg, sadvdesc, sadvurl, d_base='helium_ai'):
     r_msg = ""
 
     connection_parameters = {
@@ -245,10 +257,10 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sprice, d_bas
         try:
             b_cursor = conn.cursor()
             b_cursor.execute(
-                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, credits) values ('" + json.dumps(
+                "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, adv_img, adv_desc, adv_url) values ('" + json.dumps(
                     p_struct[0], default=hinted_tuple_hook) + "','" + p_struct[1] + "', '" + ex_id + "', '" +
                 p_struct[2][0] + "', '" + p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
-                    now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', " + sprice + ");")
+                    now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', '" + sadvimg + "', '" + sadvdesc + "', '" + sadvurl+ "');")
             b_cursor.close()
             r_msg = "OK"
         except Exception as e:
@@ -362,8 +374,7 @@ def stop_templ(request):
             s_exec = "UPDATE public.aida_export SET status='E', dt_end='" + str(now) + "' WHERE ID=" + id_t + ""
         else:
             s_exec = "UPDATE public.aida_export SET status='P', store_descr='" + request.POST[
-                'tdescr'] + "', coverage='" + request.POST['tcover'] + "', credits=" + request.POST[
-                         'tcredit'] + " WHERE ID=" + id_t + ""
+                'tdescr'] + "', coverage='" + request.POST['tcover'] + "', adv_img='" + request.POST['tadvimg'] +"', adv_desc='" + request.POST['tadvdesc'] +"', adv_url='" + request.POST['tadvurl']+"' WHERE ID=" + id_t + ""
 
         try:
             cursor.execute(s_exec)
