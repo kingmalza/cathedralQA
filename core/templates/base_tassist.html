@@ -113,8 +113,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Aida Assist
-                <small>import and manage templates</small>
+                Catherdral Marketplace
+                <small>import and manage templates faster</small>
             </h1>
             {% autoescape off %}{{ t_message }}{% endautoescape %}
             <!--
@@ -142,13 +142,13 @@
                     <div class="input-group-btn">
                       <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Filter <span class="fa fa-caret-down"></span></button>
                       <ul class="dropdown-menu">
-                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='API')">API</a></li>
-                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='Architecture')">Architecture</a></li>
-                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='Database')">Database</a></li>
-                          <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='OS')">OS</a></li>
-                          <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='Web')">Web</a></li>
+                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='API')">API</a></li>
+                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='Architecture')">Architecture</a></li>
+                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='Database')">Database</a></li>
+                          <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='OS')">OS</a></li>
+                          <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='Web')">Web</a></li>
                         <li class="divider"></li>
-                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value, f_sel='ALL')">ALL</a></li>
+                        <li><a href="#" onClick="createLine(f_text=document.getElementById('se_text').value.toUpperCase(), f_sel='ALL')">ALL</a></li>
                       </ul>
                     </div><!-- /btn-group -->
                   </div>
@@ -156,8 +156,10 @@
             </div>
         </section>
         <!--END Search and filter-->
-        <section class="content" id="tass">
+        <section class="content">
+            <div class="row" id="tass">
               <!--HERE START AJAX DOM CREATION USING STATIC/JS/TASSIST_COMP.JS-->
+            </div>
         </section>
 
     </div>

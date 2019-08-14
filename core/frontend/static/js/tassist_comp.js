@@ -15,6 +15,26 @@ $(document).ajaxStop(function () {
 });
 
 
+//check an URL is valid or broken
+function ckUrl(purl) {
+    var request = new XMLHttpRequest();
+    var status;
+    var statusText;
+    request.open("GET", purl, true);
+    request.send();
+    request.onload = function(){
+        status = request.status;
+        statusText = request.statusText;
+    }
+    if(status == 200) //if(statusText == OK)
+        {
+            return 'OK';
+        } else{
+            return 'FAIL';
+        }
+}
+
+
 function submitHandler(e) {
     document.getElementById("iform").submit();
     //e.preventDefault();
@@ -63,6 +83,7 @@ function createLine(f_text="", f_sel="ALL") {
                     var div_inf1 = document.createElement("div");
                     div_inf1.setAttribute('class', 'col-md-4');
                     div_inf1.style.paddingBottom = '40px';
+                    div_inf1.style.paddingTop = '25px';
                     var div_inf2 = document.createElement("div");
                     div_inf2.setAttribute('class', 'box2 box-info');
                     div_inf2.setAttribute('id','dcoll');
@@ -258,6 +279,68 @@ function get_t_data(id_teml) {
                     div_modal_h.appendChild(span_modal_h);
                     div_modal_h.appendChild(h2_modal_h);
 
+                    //Part relative to credits if present
+                    var div_crh = document.createElement("div");
+                    div_crh.setAttribute('class', 'box-body chat');
+                    div_crh.style.paddingTop = "10px";
+                    if (data[index].ADSDESC != null && data[index].ADSURL != null) {
+                        div_crh.style.display = "auto";
+                    } else {
+                        div_crh.style.display = "none";
+                    }
+
+                    var lab_crh = document.createElement("LABEL");
+                    lab_crh.innerHTML = 'This Template is Powered by:';
+                    lab_crh.style.fontStyle = "italic";
+                    lab_crh.style.color = "#999";
+
+                    var div_critem = document.createElement("div");
+                    div_critem.setAttribute('class', 'item');
+                    div_critem.style.padding = "5px";
+                    div_critem.style.backgroundColor = "rgb(236, 240, 245)";
+                    div_critem.style.borderRadius = "10px";
+
+                    var img_critem = document.createElement("IMG");
+                    //check an URL is valid or broken
+                    vlink = ckUrl(data[index].ADSIMG);
+                    if(vlink == 'OK')
+                    {
+                        img_critem.src = data[index].ADSIMG;
+                    }
+                    else{
+                       img_critem.src = 'https://cathedral.ai/static/img/nocredit.png';
+                    }
+
+
+                    img_critem.height = '50';
+                    img_critem.width = '50';
+                    img_critem.setAttribute('class', 'online');
+
+                    var p_critem = document.createElement("P");
+                    p_critem.setAttribute('class', 'message');
+                    var a_critem = document.createElement("A");
+                    a_critem.setAttribute('class', 'name');
+                    a_critem.href = data[index].ADSURL;
+                    a_critem.setAttribute('target', '_blank');
+                    var p_ina = document.createElement("P");
+                    p_ina.style.margin = "0px 0px 0px";
+                    p_ina.innerHTML = data[index].ADSURL;
+                    var p_out = document.createElement("P");
+                    p_out.innerHTML = data[index].ADSDESC;
+
+                    a_critem.appendChild(p_ina);
+
+                    p_critem.appendChild(a_critem);
+                    p_critem.appendChild(p_out);
+
+                    div_critem.appendChild(img_critem);
+                    div_critem.appendChild(p_critem);
+
+                    div_crh.appendChild(lab_crh);
+                    div_crh.appendChild(div_critem);
+
+                    //END Credits
+
                     var div_modal_b = document.createElement("div");
                     var div_html = document.createElement("div");
                     var div_callout = document.createElement("div");
@@ -293,6 +376,7 @@ function get_t_data(id_teml) {
                     div_modal_f.appendChild(h3_modal_f);*/
 
                     div_modal.appendChild(div_modal_h);
+                    div_modal.appendChild(div_crh);
                     div_modal.appendChild(div_modal_b);
                     //div_modal.appendChild(div_modal_f);
                     div_supermodal.appendChild(div_modal);
