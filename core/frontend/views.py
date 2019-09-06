@@ -33,6 +33,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
+from frontend.getdata import get_lic
 
 from jira import JIRA
 
@@ -622,14 +623,20 @@ def user_login(request, log_err=None):
             }
 
         try:
+
+            cli_id = get_lic()
+            """
+            #Using AWS Lambda...avoided
             cli_id = client.invoke(
                 FunctionName='aida_lic_get',
                 InvocationType='RequestResponse',
                 Payload=json.dumps(pay_c)
             )
+            """
 
             try:
-                site_active = json.loads(cli_id['Payload'].read().decode())[3]
+                #site_active = json.loads(cli_id['Payload'].read().decode())[3]
+                site_active = cli_id['LDATA'][1]
             except Exception as e:
                 site_active = False
 

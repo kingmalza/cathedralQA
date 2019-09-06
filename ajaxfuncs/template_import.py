@@ -17,6 +17,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from frontend.getdata import get_lic
 from django.conf import settings
 
+import logging
+
 from frontend.models import import_his
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
@@ -108,7 +110,9 @@ def import_templ(request):
                     local_t = temp_main.objects.all()
                     for t in local_t: tlocal.append(t.descr.upper())
                     # if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
+                    print("TMAINL-> ", tmainl['t_main'])
                     temp_name = tmainl['t_main'][0]['t_name']
+
                     #try 100 times if the template name already exist add copy and number
                     for x in range(1, 100):
                         if temp_name.upper() in [l.descr.upper() for l in local_t]:
@@ -250,7 +254,7 @@ def import_templ(request):
                     sredirect = 'https://cathedral.ai/charge/' + ck_stripe['LDATA'][0]
                     return HttpResponseRedirect(sredirect)
             except Exception as e:
-                print("Error->",e)
+                logging.exception("message")
                 return HttpResponseRedirect('/tassist/fail/')
 
         else:
