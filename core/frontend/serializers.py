@@ -1,5 +1,5 @@
-from frontend.models import t_test, temp_main, temp_case, temp_keywords, temp_variables, temp_pers_keywords, \
-    temp_test_keywords, temp_library, t_schedule, t_group, t_group_test, t_history, t_threads, t_tags, t_tags_route
+from frontend.models import t_test, t_schedule, t_group, t_group_test, t_history, t_threads, t_tags, t_tags_route
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 from rest_framework import serializers
 from django.contrib.auth.models import User
 

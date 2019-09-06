@@ -13,8 +13,8 @@ from frontend.template_export import start
 from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
-from frontend.models import temp_main, temp_case, temp_keywords, temp_library, temp_variables, temp_pers_keywords, \
-    temp_test_keywords, t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
+from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
     temp_variablesSerializer, temp_pers_keywordsSerializer, temp_test_keywordsSerializer, temp_librarySerializer, t_scheduleSerializer, \
@@ -593,11 +593,16 @@ def login_register(request, **kwargs):
 def user_login(request, log_err=None):
     context = RequestContext(request)
     client = boto3.client("lambda")
-    schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+    #For tenant use only
+    #schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+    schema_name = 'public'
     global schemaname
     schemaname = schema_name
     #Getting license number
-    lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
+    try:
+        lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
+    except Exception as e:
+        lnum = None
 
     #check if iexplorer
     user_agent = request.META['HTTP_USER_AGENT'].lower()
@@ -616,60 +621,70 @@ def user_login(request, log_err=None):
                 "tenant": schema_name
             }
 
-        cli_id = client.invoke(
-            FunctionName='aida_lic_get',
-            InvocationType='RequestResponse',
-            Payload=json.dumps(pay_c)
-        )
+        try:
+            cli_id = client.invoke(
+                FunctionName='aida_lic_get',
+                InvocationType='RequestResponse',
+                Payload=json.dumps(pay_c)
+            )
+
+            try:
+                site_active = json.loads(cli_id['Payload'].read().decode())[3]
+            except Exception as e:
+                site_active = False
+
+            if site_active:
+                # Now check if in settings_gen table tenant_name there is tenant, otherwise add it
+                t_set = settings_gen.objects.all()
+
+                if not t_set:
+                    # ten_add = settings_gen(tenant_name = schema_name)
+                    # ten_add.save()
+                    return HttpResponse(
+                        "General license not active.\n\n Please contact support@myaida.io for more details.")
+
+                dact = ""
+                istrial = False
+                for x in t_set:
+                    dact = x.created_on
+                    istrial = x.on_trial
+
+                """
+                # Now check if user is in trial mode after 30 days, if yes redirect to register page otherwise continue
+                d0 = date.today().strftime("%Y-%m-%d")
+                d0 = datetime.strptime(d0, '%Y-%m-%d')
+                d1 = datetime.strptime(str(dact.date()), '%Y-%m-%d')
+                delta = (d0 - d1)
+
+                # Disabled because we decide to keep demo account every open
+                
+                if delta.days > 30 and istrial:
+                    return HttpResponseRedirect('/register')
+                """
+
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        return HttpResponseRedirect('/')
+                    else:
+                        return HttpResponse("User not active")
+                else:
+                    return HttpResponseRedirect('/login/log_error')
+                    # return HttpResponse('Your user dont exist or password is wrong')
+                    # return render(request, 'login.html', {'l_err': log_err})
+            else:
+                return HttpResponse(
+                    "ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+        except Exception as awerr:
+            print(awerr)
+            return HttpResponse("INTERNET CONNETCTION NOT WORKING! We remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+
 
         #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
 
         #Check if user in lic is active or if there is a connection
-        try:
-            site_active = json.loads(cli_id['Payload'].read().decode())[3]
-        except Exception as e:
-            site_active = False
 
-        if site_active:
-            #Now check if in settings_gen table tenant_name there is tenant, otherwise add it
-            t_set = settings_gen.objects.all()
-
-            if not t_set:
-                #ten_add = settings_gen(tenant_name = schema_name)
-                #ten_add.save()
-                return HttpResponse("General license not active.\n\n Please contact support@myaida.io for more details.")
-
-            dact = ""
-            istrial = False
-            for x in t_set:
-                dact = x.created_on
-                istrial = x.on_trial
-
-            #Now check if user is in trial mode after 30 days, if yes redirect to register page otherwise continue
-            d0 = date.today().strftime("%Y-%m-%d")
-            d0 = datetime.strptime(d0, '%Y-%m-%d')
-            d1 = datetime.strptime(str(dact.date()), '%Y-%m-%d')
-            delta = (d0-d1)
-
-            #Disabled because we decide to keep demo account every open
-            """
-            if delta.days > 30 and istrial:
-                return HttpResponseRedirect('/register')
-            """
-
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect('/')
-                else:
-                    return HttpResponse("User not active")
-            else:
-                return HttpResponseRedirect('/login/log_error')
-                #return HttpResponse('Your user dont exist or password is wrong')
-                #return render(request, 'login.html', {'l_err': log_err})
-        else:
-            return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
     else:
         #First check if a license is present, otherwise redirect to registration page
         if lnum:

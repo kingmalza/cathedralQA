@@ -20,8 +20,10 @@ import lxml.etree as etree
 
 from jira import JIRA
 
-from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test, \
+from frontend.models import t_threads, t_history, t_group, t_group_test, \
     t_tags, t_tags_route, t_proj, t_proj_route, Document, jra_settings, jra_history
+
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
 sys.path.append('core')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'

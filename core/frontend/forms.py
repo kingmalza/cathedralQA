@@ -1,6 +1,7 @@
 from django.forms import ModelForm, PasswordInput
 from django import forms
-from .models import temp_pers_keywords, temp_keywords, Document, jra_settings, settings_gen, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+from frontend.models import Document, jra_settings, settings_gen
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
 
 class SelectMain(ModelForm):

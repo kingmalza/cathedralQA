@@ -17,8 +17,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from frontend.getdata import get_lic
 from django.conf import settings
 
-from frontend.models import temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_keywords, \
-    temp_pers_keywords, import_his
+from frontend.models import import_his
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
 sys.path.append('core')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
