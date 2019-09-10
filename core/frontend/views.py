@@ -9,6 +9,7 @@ import requests
 from django.shortcuts import render
 from frontend.forms import DocumentForm
 import simplejson
+import logging
 from frontend.template_export import start
 from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
@@ -326,7 +327,7 @@ def temp_clone(request, t_id=None, **kwargs):
         exp_dict = start(request, internal='yes')
         import_internal(json.dumps(exp_dict[0]))
     except Exception as e:
-        print(e)
+        logging.error("Exception occurred", exc_info=True)
         return HttpResponseRedirect('/logout')
 
     return HttpResponseRedirect('/admin/frontend/temp_main/')

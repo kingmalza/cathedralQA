@@ -284,6 +284,7 @@ def import_internal(t_struct):
     local_t = temp_main.objects.all()
     for t in local_t: tlocal.append(t.descr.upper())
     # if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
+    print("tmain-->",tmainl['t_main'])
     if tmainl['t_main'][0]['t_name'].upper() + '_CLONE' not in [l.descr.upper() for l in local_t]:
         try:
             # 1. Import temp_main proces and save the inseerted id

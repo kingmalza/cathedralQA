@@ -72,19 +72,20 @@ class temp_caseAdmin(admin.ModelAdmin):
 
         return form
 
-    """
+
     def changeform_view(self, request, obj_id, form_url='', extra_context=None):
 
         try:
             l_mod = temp_case.objects.latest('id')
+        except Exception:
+            l_mod = None
 
             extra_context = {
                 'lmod': l_mod,
             }
             return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-        except Exception:
-            pass
-    """
+
+
 
 class temp_variablesAdmin(admin.ModelAdmin):
 
@@ -117,16 +118,19 @@ class temp_variablesAdmin(admin.ModelAdmin):
 
         return form
 
-    """
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        l_mod = temp_variables.objects.latest('id')
+        try:
+            l_mod = temp_variables.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
         }
         return super(temp_variablesAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-    """
+
 
 
 class temp_libraryAdmin(admin.ModelAdmin):
@@ -135,14 +139,6 @@ class temp_libraryAdmin(admin.ModelAdmin):
 
     list_filter = ('main_id__descr', 'l_type')
     list_display = ('get_main_id', 'l_type', 'l_val', 'l_group')
-    #ordering = ('-l_type',)
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_library.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -153,9 +149,9 @@ class temp_libraryAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_libraryAdmin, self).get_form(request, obj, **kwargs)
 
-        # Check if last insertion was made within 1 min otherwise form is blank
-        latest_object = temp_library.objects.latest('id')
         try:
+            # Check if last insertion was made within 1 min otherwise form is blank
+            latest_object = temp_library.objects.latest('id')
             d1 = datetime.now(timezone.utc)
             # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
             d2 = latest_object.dt
@@ -195,7 +191,10 @@ class temp_libraryAdmin(admin.ModelAdmin):
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
         s_libs = suite_libs.objects.all()
-        l_mod = temp_library.objects.latest('id')
+        try:
+            l_mod = temp_library.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'sl': s_libs,
@@ -257,16 +256,18 @@ class ttkAdmin(admin.ModelAdmin):
         ))
         return form
 
-    """
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        l_mod = temp_test_keywords.objects.latest('id')
+        try:
+            l_mod = temp_test_keywords.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
         }
         return super(ttkAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-    """
 
 
 # Model page field using custom forms
@@ -275,15 +276,6 @@ class tpk(admin.ModelAdmin):
 
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'standard_id', 'pers_id', 'variable_val')
-    #ordering = ('-l_type',)
-
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_pers_keywords.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -294,9 +286,9 @@ class tpk(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(tpk, self).get_form(request, obj, **kwargs)
 
-        # Check if last insertion was made within 1 min otherwise form is blank
-        latest_object = temp_pers_keywords.objects.latest('id')
         try:
+            # Check if last insertion was made within 1 min otherwise form is blank
+            latest_object = temp_pers_keywords.objects.latest('id')
             d1 = datetime.now(timezone.utc)
             # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
             d2 = latest_object.dt
@@ -310,7 +302,10 @@ class tpk(admin.ModelAdmin):
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        l_mod = temp_pers_keywords.objects.latest('id')
+        try:
+            l_mod = temp_pers_keywords.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,

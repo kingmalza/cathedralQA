@@ -30,15 +30,6 @@ class t_tags_routeAdmin(admin.ModelAdmin):
     list_filter = ('main_id__descr', 'tag_id__descr')
     list_display = ('get_main_id', 'get_tag_id', 'route_notes')
 
-    # ordering = ('-l_type',)
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_tags_route.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -53,7 +44,11 @@ class t_tags_routeAdmin(admin.ModelAdmin):
 
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        l_mod = t_tags_route.objects.latest('id')
+
+        try:
+            l_mod = t_tags_route.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
@@ -66,16 +61,6 @@ class t_proj_routeAdmin(admin.ModelAdmin):
 
     list_filter = ('main_id__descr', 'proj_id__descr')
     list_display = ('get_main_id', 'get_proj_id', 'route_notes')
-
-    # ordering = ('-l_type',)
-
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_proj_route.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -92,7 +77,10 @@ class t_proj_routeAdmin(admin.ModelAdmin):
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
-        l_mod = t_proj_route.objects.latest('id')
+        try:
+            l_mod = t_proj_route.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
@@ -105,16 +93,12 @@ class t_projAdmin(admin.ModelAdmin):
     #list_filter = ('main_id__descr', 'proj_id__descr')
     list_display = ('descr', 'proj_start', 'proj_stop', 'proj_actors', 'proj_notes')
 
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_proj.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-        l_mod = t_proj.objects.latest('id')
+
+        try:
+            l_mod = t_proj.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
@@ -127,16 +111,12 @@ class t_tagsAdmin(admin.ModelAdmin):
     # list_filter = ('main_id__descr', 'proj_id__descr')
     list_display = ('descr',  'tag_notes')
 
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_tags.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-            l_mod = t_tags.objects.latest('id')
+
+            try:
+                l_mod = t_tags.objects.latest('id')
+            except Exception:
+                l_mod = None
 
             extra_context = {
                 'lmod': l_mod,
@@ -149,16 +129,12 @@ class t_groupAdmin(admin.ModelAdmin):
     list_filter = ('active',)
     list_display = ('descr',  'g_prior', 'g_desc', 'active')
 
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_group.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-            l_mod = t_group.objects.latest('id')
+
+            try:
+                l_mod = t_group.objects.latest('id')
+            except Exception:
+                l_mod = None
 
             extra_context = {
                 'lmod': l_mod,
@@ -171,16 +147,12 @@ class t_group_testAdmin(admin.ModelAdmin):
     list_filter = ('id_grp__descr', 'id_temp__descr')
     list_display = ('id_grp',  'id_temp', 'temp_ord')
 
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = t_group_test.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
-            l_mod = t_group_test.objects.latest('id')
+
+            try:
+                l_mod = t_group_test.objects.latest('id')
+            except Exception:
+                l_mod = None
 
             extra_context = {
                 'lmod': l_mod,
@@ -194,15 +166,6 @@ class jra_settingsAdmin(admin.ModelAdmin):
     form = jra_settingsForm
     #list_filter = ('j_address', 'j_user')
     list_display = ('j_address', 'j_user', 'j_notes')
-
-    def has_add_permission(self, request):
-        # if there's already an entry, do not allow adding
-        count = jra_settings.objects.all().count()
-        if count == 0:
-            return True
-
-        return False
-
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 

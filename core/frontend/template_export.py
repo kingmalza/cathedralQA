@@ -69,7 +69,7 @@ def start(request, internal=None):
             schema = 'public'
             d_base = 'cath_local'
 
-            internal = False
+            #internal = False
 
             connection_parameters = {
                 'host': '127.0.0.1',
@@ -83,11 +83,11 @@ def start(request, internal=None):
 
             try:
                 pydict = main(schema, id_templ, conn)
-                print('pydict->',pydict)
 
                 # If this function was called from view.py temp_clone (internal) return just dict
                 if internal:
                     conn.close()
+                    print("internal pydict->",pydict)
                     return pydict
                 # print(json.dumps(pydict, indent=4))
                 rload = load_data(pydict, id_templ, schema, request.POST['tDescr'][0:200], request.POST['tDescrl'][0:700],
