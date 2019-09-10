@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.0 on darwin)" generated="20190909 11:39:10.899">
+<suite id="s1" name="4427552752 TC" source="/Volumes/BIGDATA/Project/helium/web/core/frontend/static/out/4427552752/4427552752_TC.html">
+<test id="s1-t1" name="Test tftp">
+<kw name="Tftp Upload">
+<arguments>
+<arg>${file_name_02}</arg>
+</arguments>
+<msg timestamp="20190909 11:39:10.978" level="FAIL">No keyword with name 'Tftp Upload' found.</msg>
+<status status="FAIL" starttime="20190909 11:39:10.978" endtime="20190909 11:39:10.978"></status>
+</kw>
+<status status="FAIL" starttime="20190909 11:39:10.975" endtime="20190909 11:39:10.978" critical="yes">No keyword with name 'Tftp Upload' found.</status>
+</test>
+<status status="FAIL" starttime="20190909 11:39:10.903" endtime="20190909 11:39:11.032"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="4427552752 TC">4427552752 TC</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20190909 11:39:10.973" level="ERROR">Error in file '/Volumes/BIGDATA/Project/helium/web/core/frontend/static/out/4427552752/4427552752_TC.html': Importing test library 'TftpLibrary' failed: ModuleNotFoundError: No module named 'TftpLibrary'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  /Volumes/BIGDATA/Project/helium/web/core
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python36.zip
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6/lib-dynload
+  /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6/site-packages</msg>
+</errors>
+</robot>

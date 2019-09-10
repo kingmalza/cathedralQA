@@ -97,6 +97,9 @@ DATABASES = {
         'PASSWORD': '11235813post',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
 

@@ -319,9 +319,14 @@ def temp_publish(request, reg_status=None, **kwargs):
 def temp_clone(request, t_id=None, **kwargs):
 
     try:
-        exp_dict = start(t_id, schema=schemaname, internal = True)
+        if not request.POST._mutable:
+            request.POST._mutable = True
+
+        request.POST['idTempl'] = t_id
+        exp_dict = start(request, internal='yes')
         import_internal(json.dumps(exp_dict[0]))
-    except Exception:
+    except Exception as e:
+        print(e)
         return HttpResponseRedirect('/logout')
 
     return HttpResponseRedirect('/admin/frontend/temp_main/')

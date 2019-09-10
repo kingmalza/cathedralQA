@@ -2,6 +2,10 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.forms import Select
+import datetime
+from django.utils import timezone
+
 from frontend.forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
@@ -15,27 +19,27 @@ class temp_mainAdmin(admin.ModelAdmin):
     list_filter = ('t_type',)
     list_display = ('descr', 't_type', 'notes', 'dt', 'active')
     #ordering = ('-l_type',)
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_main.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(temp_mainAdmin, self).save_model(request, obj, form, change)
 
-    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+    def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
 
-        l_mod = temp_main.objects.latest('id')
+        try:
+            l_mod = temp_main.objects.latest('id')
+        except Exception:
+            l_mod = None
 
         extra_context = {
             'lmod': l_mod,
             'oId': obj_id
         }
-        return super(temp_mainAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+        try:
+            return super(temp_mainAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+        except Exception:
+            pass
+
 
 # Here i try an admin model for populate fields with latest values inserted
 class temp_caseAdmin(admin.ModelAdmin):
@@ -45,14 +49,6 @@ class temp_caseAdmin(admin.ModelAdmin):
     list_display = ('get_main_id', 'descr')
     #ordering = ('-l_type',)
 
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_case.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
-
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -61,9 +57,10 @@ class temp_caseAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_caseAdmin, self).get_form(request, obj, **kwargs)
-        # Check if last insertion was made within 1 min otherwise form is blank
-        latest_object = temp_case.objects.latest('id')
         try:
+            # Check if last insertion was made within 1 min otherwise form is blank
+            latest_object = temp_case.objects.latest('id')
+
             d1 = datetime.now(timezone.utc)
             # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
             d2 = latest_object.dt
@@ -75,15 +72,19 @@ class temp_caseAdmin(admin.ModelAdmin):
 
         return form
 
-    def changeform_view(self, request, obj_id, form_url, extra_context=None):
+    """
+    def changeform_view(self, request, obj_id, form_url='', extra_context=None):
 
-        l_mod = temp_case.objects.latest('id')
+        try:
+            l_mod = temp_case.objects.latest('id')
 
-        extra_context = {
-            'lmod': l_mod,
-        }
-        return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-
+            extra_context = {
+                'lmod': l_mod,
+            }
+            return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+        except Exception:
+            pass
+    """
 
 class temp_variablesAdmin(admin.ModelAdmin):
 
@@ -92,13 +93,6 @@ class temp_variablesAdmin(admin.ModelAdmin):
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'v_key', 'v_val')
     #ordering = ('-l_type',)
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_variables.objects.all().count()
-        if count > 1:
-            return True
-
-        return False
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -109,9 +103,9 @@ class temp_variablesAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(temp_variablesAdmin, self).get_form(request, obj, **kwargs)
 
-        # Check if last insertion was made within 1 min otherwise form is blank
-        latest_object = temp_variables.objects.latest('id')
         try:
+            # Check if last insertion was made within 1 min otherwise form is blank
+            latest_object = temp_variables.objects.latest('id')
             d1 = datetime.now(timezone.utc)
             # d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
             d2 = latest_object.dt
@@ -123,6 +117,7 @@ class temp_variablesAdmin(admin.ModelAdmin):
 
         return form
 
+    """
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
         l_mod = temp_variables.objects.latest('id')
@@ -131,7 +126,7 @@ class temp_variablesAdmin(admin.ModelAdmin):
             'lmod': l_mod,
         }
         return super(temp_variablesAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
-
+    """
 
 
 class temp_libraryAdmin(admin.ModelAdmin):
@@ -216,13 +211,7 @@ class ttkAdmin(admin.ModelAdmin):
     list_filter = ('main_id__descr', 'test_id__descr')
     list_display = ('get_main_id', 'get_test_id', 'key_id', 'key_val', 'key_group')
     #ordering = ('-l_type',)
-    def has_delete_permission(self, request, obj=None):
-        # if there's just an entry don't allow deletion
-        count = temp_test_keywords.objects.all().count()
-        if count > 1:
-            return True
 
-        return False
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -239,9 +228,9 @@ class ttkAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(ttkAdmin, self).get_form(request, obj, **kwargs)
 
-        #Check if last insertion was made within 1 min otherwise form is blank
-        latest_object = temp_test_keywords.objects.latest('id')
         try:
+            #Check if last insertion was made within 1 min otherwise form is blank
+            latest_object = temp_test_keywords.objects.latest('id')
             d1 = datetime.now(timezone.utc)
             #d2 = datetime.strptime(latest_object.dt, '%Y-%m-%d %H:%M:%S')
             d2 = latest_object.dt
@@ -268,6 +257,7 @@ class ttkAdmin(admin.ModelAdmin):
         ))
         return form
 
+    """
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
         l_mod = temp_test_keywords.objects.latest('id')
@@ -276,6 +266,7 @@ class ttkAdmin(admin.ModelAdmin):
             'lmod': l_mod,
         }
         return super(ttkAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+    """
 
 
 # Model page field using custom forms
@@ -285,6 +276,7 @@ class tpk(admin.ModelAdmin):
     list_filter = ('main_id__descr',)
     list_display = ('get_main_id', 'standard_id', 'pers_id', 'variable_val')
     #ordering = ('-l_type',)
+
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = temp_pers_keywords.objects.all().count()
@@ -333,6 +325,7 @@ class temp_keywordsAdmin(admin.ModelAdmin):
     list_filter = ('personal',)
     list_display = ('descr', 'human', 'personal')
 
+    """
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
         count = temp_keywords.objects.all().count()
@@ -340,16 +333,7 @@ class temp_keywordsAdmin(admin.ModelAdmin):
             return True
 
         return False
-
-    # ordering = ('-l_type',)
-    def changeform_view(self, request, obj_id, form_url, extra_context=None):
-
-        l_mod = temp_keywords.objects.latest('id')
-
-        extra_context = {
-            'lmod': l_mod,
-        }
-        return super(temp_keywordsAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+    """
 
 
 admin.site.site_title = 'cathedral Backend Admin'
@@ -357,6 +341,7 @@ admin.site.site_header = 'Backend admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
 
 admin.site.register(temp_main, temp_mainAdmin, )
+#admin.site.register(temp_main,)
 admin.site.register(temp_case, temp_caseAdmin, )
 admin.site.register(temp_keywords, temp_keywordsAdmin)
 admin.site.register(temp_variables, temp_variablesAdmin, )

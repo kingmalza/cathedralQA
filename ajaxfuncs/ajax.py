@@ -132,6 +132,7 @@ def tabrefresh(request):
     if request.is_ajax():
 
         activeThreads = t_threads.objects.filter(~Q(thread_status='DEAD'))
+        print("Active->",activeThreads)
         # activeThreads = t_threads.objects.all().values('thread_stag').annotate(total=Count(
         # 'thread_stag')).order_by('thread_status') Check if threads are active instead change the alive val from table
         for i in activeThreads:

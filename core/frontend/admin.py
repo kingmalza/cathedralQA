@@ -5,7 +5,6 @@ from django.contrib import admin
 from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
 from frontend.models import t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
     t_time, t_history, settings_gen
-from django.forms import Select
 from django.conf import settings
 from datetime import datetime, timezone
 import stripe

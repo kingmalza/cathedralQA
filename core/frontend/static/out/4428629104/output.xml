@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.0 on darwin)" generated="20190909 05:02:55.881">
+<suite id="s1" name="4428629104 TC" source="/Volumes/BIGDATA/Project/helium/web/core/frontend/static/out/4428629104/4428629104_TC.html">
+<test id="s1-t1" name="Get Requests">
+<kw name="/users/kingmalza">
+<arguments>
+<arg>github</arg>
+<arg>Get Request</arg>
+</arguments>
+<assign>
+<var>${resp}=</var>
+</assign>
+<msg timestamp="20190909 05:02:55.959" level="FAIL">No keyword with name '/users/kingmalza' found.</msg>
+<status status="FAIL" starttime="20190909 05:02:55.958" endtime="20190909 05:02:55.959"></status>
+</kw>
+<status status="FAIL" starttime="20190909 05:02:55.954" endtime="20190909 05:02:55.959" critical="yes">No keyword with name '/users/kingmalza' found.</status>
+</test>
+<status status="FAIL" starttime="20190909 05:02:55.887" endtime="20190909 05:02:55.960"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="4428629104 TC">4428629104 TC</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20190909 05:02:55.887" level="ERROR">Error in file '/Volumes/BIGDATA/Project/helium/web/core/frontend/static/out/4428629104/4428629104_TC.html': Setting variable 'noData' failed: Invalid variable name 'noData'.</msg>
+<msg timestamp="20190909 05:02:55.953" level="ERROR">Error in file '/Volumes/BIGDATA/Project/helium/web/core/frontend/static/out/4428629104/4428629104_TC.html': Importing test library 'RequestsLibrary' failed: ModuleNotFoundError: No module named 'RequestsLibrary'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  /Volumes/BIGDATA/Project/helium/web/core
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python36.zip
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6/lib-dynload
+  /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6
+  /Volumes/BIGDATA/Project/helium/.venv/lib/python3.6/site-packages</msg>
+</errors>
+</robot>

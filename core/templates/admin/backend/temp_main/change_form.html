@@ -33,21 +33,7 @@
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
-<!-- Start of LiveChat (www.livechatinc.com) code -->
-<script type="text/javascript">
-window.__lc = window.__lc || {};
-window.__lc.license = 10552602;
-(function() {
-  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-})();
-</script>
-<noscript>
-<a href="https://www.livechatinc.com/chat-with/10552602/" rel="nofollow">Chat with us</a>,
-powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a>
-</noscript>
-<!-- End of LiveChat code -->
+
 {{ media }}
 {% endblock %}
 
@@ -115,14 +101,14 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
 
     {% submit_row %}
             {% if oId %}
-    <div class="submit-row">
-        <p class="deletelink-box"><a href="/temp_clone/{{ oId }}" class="deletelink">Clone this template</a></p>
-        <p class="deletelink-box" style="padding-left: 10px;"><a href="/tpublish" class="deletelink">Publish on Marketplace</a></p>
+                <div class="submit-row">
+                <p class="deletelink-box"><a href="/temp_clone/{{ oId }}" class="deletelink">Clone this template</a></p>
+                <p class="deletelink-box" style="padding-left: 10px;"><a href="/tpublish" class="deletelink">Publish on Marketplace</a></p>
         <!--<a href="/temp_clone/{{ oId }}" style="padding-left: 15px; padding-bottom: 10px;">
             <strong>CLONE THIS TEMPLATE</strong>
         </a>-->
-    </div>
-    {% endif %}
+            </div>
+        {% endif %}
     {% endblock %}
 
 {% block admin_change_form_document_ready %}

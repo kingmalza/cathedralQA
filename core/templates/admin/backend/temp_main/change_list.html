@@ -96,22 +96,6 @@ a.button3:hover{
 {{ block.super }}
 {{ media.js }}
 
-<!-- Start of LiveChat (www.livechatinc.com) code -->
-<script type="text/javascript">
-window.__lc = window.__lc || {};
-window.__lc.license = 10552602;
-(function() {
-  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-})();
-</script>
-<noscript>
-<a href="https://www.livechatinc.com/chat-with/10552602/" rel="nofollow">Chat with us</a>,
-powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a>
-</noscript>
-<!-- End of LiveChat code -->
-
 {% endblock %}
 
 {% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
@@ -186,7 +170,7 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
     <table style="width:100%">
         <tr>
             <td>
-                <span class='t_right'><a href="/admin/frontend/temp_case/" class="button3" style="color:#fff;">Go to Testcase <span class="nexprev">>></span></a></span>
+                <span class='t_right'><a href="/admin/backend/temp_case/" class="button3" style="color:#fff;">Go to Testcase <span class="nexprev">>></span></a></span>
                 <!--<span class='t_left'><a href="/admin/frontend/temp_case/" class="button3" style="color:#fff;"><strong><</strong> Prev: prev</a></span>-->
             </td>
         </tr>

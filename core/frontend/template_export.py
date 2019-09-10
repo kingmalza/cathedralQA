@@ -18,6 +18,7 @@ import json
 import datetime
 import simplejson
 import stripe
+import logging
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
@@ -53,28 +54,27 @@ def hinted_tuple_hook(obj):
 
 
 @csrf_exempt
-def start(request):
-    if request.is_ajax():
+def start(request, internal=None):
+    if request.is_ajax() or internal:
         stripe.api_key = getattr(settings, "STRIPE_KEY", None)
         # First check if user has activate account (credit card and stripe id is present)
         ck_stripe = get_lic()
         response = []
         vallabel = {}
 
-        if (ck_stripe['LDATA'][9]):
-
+        if (ck_stripe['LDATA'][9] or internal):
 
             id_templ = request.POST['idTempl']
             # CHANGE THESE TO pubblic IN STANDALONE MODE!!
-            schema = 'helium'
-            d_base = 'helium_web'
+            schema = 'public'
+            d_base = 'cath_local'
 
             internal = False
 
             connection_parameters = {
-                'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+                'host': '127.0.0.1',
                 'database': d_base,
-                'user': 'kingmalza',
+                'user': 'postgres',
                 'password': '11235813post',
             }
 
@@ -83,6 +83,7 @@ def start(request):
 
             try:
                 pydict = main(schema, id_templ, conn)
+                print('pydict->',pydict)
 
                 # If this function was called from view.py temp_clone (internal) return just dict
                 if internal:
@@ -97,6 +98,7 @@ def start(request):
                 # return HttpResponseRedirect('/tpublish/TOK/')
 
             except Exception as e:
+                print('e_startexport->',e)
                 vallabel['Error'] = e
                 # return HttpResponseRedirect('/tpublish/TKO/')
 
@@ -131,10 +133,10 @@ def main(schema, id_templ, conn, p_force=False):
     ttk_list = []
     tpk_list = []
     # schema tab
-    t_main = schema + '.frontend_temp_main'
-    t_case = schema + '.frontend_temp_case'
-    t_var = schema + '.frontend_temp_variables'
-    t_libs = schema + '.frontend_temp_library'
+    t_main = schema + '.backend_temp_main'
+    t_case = schema + '.backend_temp_case'
+    t_var = schema + '.backend_temp_variables'
+    t_libs = schema + '.backend_temp_library'
 
     # execute our Query
     try:
@@ -143,11 +145,11 @@ def main(schema, id_templ, conn, p_force=False):
         # retrieve the records from the database
         rec_main = cursor.fetchall()
         tmain_list.append({'t_name': rec_main[0][1],
-                           't_type': rec_main[0][9],
-                           't_notes': rec_main[0][2],
+                           't_type': rec_main[0][2],
+                           't_notes': rec_main[0][6],
                            't_expected': rec_main[0][5],
-                           't_precond': rec_main[0][6],
-                           't_steps': rec_main[0][7]})
+                           't_precond': rec_main[0][3],
+                           't_steps': rec_main[0][4]})
 
         cursor.execute("SELECT * FROM " + t_case + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
@@ -174,7 +176,7 @@ def main(schema, id_templ, conn, p_force=False):
             if row[1] == 'Library': t_ulib.add(row[2])
 
         cursor.execute(
-            "SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr, ftk.owner_id FROM helium.frontend_temp_test_keywords as ftt, helium.frontend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+            "SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr, ftk.owner_id FROM backend_temp_test_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in reversed(rec_main):
             ttk_list.append({'tk_kval': row[0],
@@ -184,7 +186,7 @@ def main(schema, id_templ, conn, p_force=False):
                              })
 
         cursor.execute(
-            "SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val, t.owner_id FROM helium.frontend_temp_pers_keywords t LEFT JOIN helium.frontend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN helium.frontend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
+            "SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val, t.owner_id FROM backend_temp_pers_keywords t LEFT JOIN backend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN backend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             tpk_list.append({'tp_key1': row[3],
@@ -194,9 +196,9 @@ def main(schema, id_templ, conn, p_force=False):
                              })
 
         # Now retreive the pid from histoy (for html)
-        # cursor.execute("SELECT format('%s',html_test) FROM demo.frontend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
+        # cursor.execute("SELECT format('%s',html_test) FROM demo.backend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
         cursor.execute(
-            "SELECT pid FROM helium.frontend_t_history as fth WHERE fth.test_main_id = " + id_templ + "ORDER BY id DESC LIMIT 1")
+            "SELECT pid FROM frontend_t_history as fth WHERE fth.test_main_id = " + id_templ + "ORDER BY id DESC LIMIT 1")
         rec_main = cursor.fetchall()
         for row in rec_main:
             t_html = str(row[0])
@@ -227,7 +229,7 @@ def main(schema, id_templ, conn, p_force=False):
 
 
     except Exception as e:
-        print("Error1: ", e)
+        logging.error("Exception occurred", exc_info=True)
 
     cursor.close()
 

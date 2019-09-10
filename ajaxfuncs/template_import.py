@@ -165,7 +165,8 @@ def import_templ(request):
                         # 5. Import temp_test_keywords
                         for a in range(len(tmainl['t_ttk'])):
                             # first check if key exist in table temp keywords, otherwise add it
-                            if tmainl['t_ttk'][a]['tk_descr'] not in [x.descr for x in l_key]:
+                            if tmainl['t_ttk'][a]['tk_descr'].strip() not in [x.descr.strip() for x in l_key]:
+                                print("Key->",[x.descr.strip() for x in l_key])
                                 t_key = temp_keywords(descr=tmainl['t_ttk'][a]['tk_descr'],
                                                       human=tmainl['t_ttk'][a]['tk_descr'],
                                                       personal=True,
