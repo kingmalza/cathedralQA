@@ -110,7 +110,7 @@ def import_templ(request):
                     local_t = temp_main.objects.all()
                     for t in local_t: tlocal.append(t.descr.upper())
                     # if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
-                    print("TMAINL-> ", tmainl['t_main'])
+
                     temp_name = tmainl['t_main'][0]['t_name']
 
                     #try 100 times if the template name already exist add copy and number
@@ -172,8 +172,11 @@ def import_templ(request):
                                                       personal=True,
                                                       owner_id=1,
                                                       dt=str(datetime.now()))
-                                t_key.save()
-                                last_key = t_key.id
+                                try:
+                                    t_key.save()
+                                    last_key = t_key.id
+                                except Exception:
+                                    pass
                             else:
                                 qa = temp_keywords.objects.filter(descr=tmainl['t_ttk'][a]['tk_descr']).only('id')
                                 for q in qa: last_key = q.id
@@ -236,13 +239,15 @@ def import_templ(request):
 
                     # Check for duplicate key error, if find it do not notify to user (because all work fine even) but print in nohup file for my inspection; otherwise get error
                     except IntegrityError as ex:
+                        print('EX___>',ex)
+                        """
                         if ex.pgcode == '23505':
                             print("Integration error not null->", ex)
                             return HttpResponseRedirect('/tassist/ok')
                         else:
                             print("Import exception-> ", ex)
                             return HttpResponseRedirect('/tassist/fail')
-
+                        """
                     except Exception as e:
                         print("Import exception-> ",e)
                         return HttpResponseRedirect('/tassist/fail')
@@ -331,6 +336,7 @@ def import_internal(t_struct):
             # 5. Import temp_test_keywords
             for a in range(len(tmainl['t_ttk'])):
                 # first check if key ecist in table temp keywords, otherwise add it
+                l_key = temp_keywords.objects.all()
                 if tmainl['t_ttk'][a]['tk_descr'] not in [x.descr for x in l_key]:
                     t_key = temp_keywords(descr=tmainl['t_ttk'][a]['tk_descr'],
                                           human=tmainl['t_ttk'][a]['tk_descr'],
@@ -356,6 +362,7 @@ def import_internal(t_struct):
             # 6. Import temp_pers_keywords
             for a in range(len(tmainl['t_tpk'])):
                 # Check if exist first key then second
+                l_key = temp_keywords.objects.all()
                 if tmainl['t_tpk'][a]['tp_key1'] not in [x.descr for x in l_key]:
                     t_key = temp_keywords(descr=tmainl['t_tpk'][a]['tp_key1'],
                                           human=tmainl['t_tpk'][a]['tp_key1'],
