@@ -20,6 +20,14 @@ class temp_mainAdmin(admin.ModelAdmin):
     list_display = ('descr', 't_type', 'notes', 'dt', 'active')
     #ordering = ('-l_type',)
 
+    def has_delete_permission(self, request, obj=None):
+        # if there's just an entry don't allow deletion
+        #count = temp_main.objects.all().count()
+        #if count > 1:
+        #    return True
+
+        return False
+
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(temp_mainAdmin, self).save_model(request, obj, form, change)

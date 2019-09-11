@@ -334,30 +334,36 @@ def import_internal(t_struct):
                 lib_save.save()
 
             # 5. Import temp_test_keywords
-            for a in range(len(tmainl['t_ttk'])):
+            for a in range(len(tmainl['t_ttk'])-1):
                 # first check if key ecist in table temp keywords, otherwise add it
                 l_key = temp_keywords.objects.all()
-                if tmainl['t_ttk'][a]['tk_descr'] not in [x.descr for x in l_key]:
-                    t_key = temp_keywords(descr=tmainl['t_ttk'][a]['tk_descr'],
-                                          human=tmainl['t_ttk'][a]['tk_descr'],
+                print('lkeyy--->',eval(tmainl['t_ttk']))
+                try:
+                    t_key = temp_keywords(descr=eval(tmainl['t_ttk'])[a]['tk_descr'],
+                                          human=eval(tmainl['t_ttk'])[a]['tk_descr'],
                                           personal=True,
-                                          owner_id=tmainl['t_ttk'][a]['t_owner'],
+                                          owner_id=eval(tmainl['t_ttk'])[a]['t_owner'],
                                           dt=str(datetime.now()))
                     t_key.save()
                     last_key = t_key.id
-                else:
-                    qa = temp_keywords.objects.filter(descr=tmainl['t_ttk'][a]['tk_descr']).only('id')
+                except IntegrityError:
+                    qa = temp_keywords.objects.filter(descr=eval(tmainl['t_ttk'])[a]['tk_descr']).only('id')
                     for q in qa: last_key = q.id
+                except Exception:
+                    pass
 
-                ttk_save = temp_test_keywords(key_val=tmainl['t_ttk'][a]['tk_kval'],
-                                              key_group=tmainl['t_ttk'][a]['tk_kgroup'],
+                try:
+                    ttk_save = temp_test_keywords(key_val=eval(tmainl['t_ttk'])[a]['tk_kval'],
+                                              key_group=eval(tmainl['t_ttk'])[a]['tk_kgroup'],
                                               key_id_id=last_key,
                                               main_id_id=main_id,
                                               test_id_id=case_id,
-                                              owner_id=tmainl['t_ttk'][a]['t_owner'],
+                                              owner_id=eval(tmainl['t_ttk'])[a]['t_owner'],
                                               dt=str(datetime.now()))
 
-                ttk_save.save()
+                    ttk_save.save()
+                except Exception:
+                    pass
 
             # 6. Import temp_pers_keywords
             for a in range(len(tmainl['t_tpk'])):
@@ -397,4 +403,5 @@ def import_internal(t_struct):
                 tpk_save.save()
 
         except Exception as e:
+            logging.exception("message import")
             print("internal import error->", e)

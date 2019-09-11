@@ -330,7 +330,7 @@ def temp_clone(request, t_id=None, **kwargs):
         logging.error("Exception occurred", exc_info=True)
         return HttpResponseRedirect('/logout')
 
-    return HttpResponseRedirect('/admin/frontend/temp_main/')
+    return HttpResponseRedirect('/admin/backend/temp_main/')
 
 @login_required
 def ext_lib(request, **kwargs):

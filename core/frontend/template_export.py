@@ -38,9 +38,9 @@ class MultiDimensionalArrayEncoder(json.JSONEncoder):
             if isinstance(item, tuple):
                 return {'__tuple__': True, 'items': item}
             if isinstance(item, list):
-                return [hint_tuples(e) for e in item]
+                return [hint_tuples(e) if e is not None else 'None' for e in item]
             if isinstance(item, dict):
-                return {key: hint_tuples(value) for key, value in item.items()}
+                return {key: hint_tuples(value) if value is not None else 'None' for key, value in item.items()}
             else:
                 return item
 
@@ -163,15 +163,15 @@ def main(schema, id_templ, conn, p_force=False):
         for row in rec_main:
             tvar_list.append({'tv_key': row[1],
                               'tv_val': row[2],
-                              't_owner': row[4]})
+                              't_owner': row[5]})
 
         cursor.execute("SELECT * FROM " + t_libs + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             tlib_list.append({'tl_type': row[1],
                               'tl_val': row[2],
-                              'tl_group': row[6],
-                              't_owner': row[4]
+                              'tl_group': row[3],
+                              't_owner': row[6]
                               })
 
             if row[1] == 'Library': t_ulib.add(row[2])
