@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from frontend.forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
-
+from frontend.models import suite_libs
 
 
 class temp_mainAdmin(admin.ModelAdmin):
