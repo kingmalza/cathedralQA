@@ -19,6 +19,7 @@ import datetime
 import simplejson
 import stripe
 import logging
+import ast
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
@@ -155,7 +156,7 @@ def main(schema, id_templ, conn, p_force=False):
         rec_main = cursor.fetchall()
         for row in rec_main:
             tcase_list.append({'tc_desr': row[1],
-                               't_owner': row[3]})
+                               't_owner': row[4]})
 
         cursor.execute("SELECT * FROM " + t_var + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
@@ -212,8 +213,20 @@ def main(schema, id_templ, conn, p_force=False):
         tlib_list_enc = enc.encode(tlib_list).replace("'", "")
         tpk_list_enc = enc.encode(tpk_list).replace("'", "")
 
-        j_dict = {'t_main': tmain_list_enc, 't_case': tcase_list_enc, 't_vars': tvar_list_enc, 't_libs': tlib_list_enc,
-                  't_ttk': ttk_list_enc, 't_tpk': tpk_list_enc}
+        #Convert to list
+        print("TTK-->",ttk_list_enc)
+        #if ttk_list_enc: ttk_list_enc = ast.literal_eval(ttk_list_enc)
+        if tmain_list_enc: tmain_list_enc = ast.literal_eval(tmain_list_enc)
+        if tcase_list_enc: tcase_list_enc = ast.literal_eval(tcase_list_enc)
+        if tvar_list_enc: tvar_list_enc = ast.literal_eval(tvar_list_enc)
+        if tlib_list_enc: tlib_list_enc = ast.literal_eval(tlib_list_enc)
+        if tpk_list_enc: tpk_list_enc = ast.literal_eval(tpk_list_enc)
+
+        print("type->",type(tmain_list_enc))
+
+        j_dict = {'t_main': tmain_list_enc, 't_case': tcase_list_enc, 't_vars': tvar_list_enc, 't_libs': tlib_list_enc, 't_ttk': ttk_list_enc, 't_tpk': tpk_list_enc}
+
+        print('tmain_list--->', j_dict)
 
         t_descr.append(tmain_list[0]['t_name'])
         t_descr.append(tmain_list[0]['t_notes'])

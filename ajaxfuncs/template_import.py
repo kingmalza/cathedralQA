@@ -289,6 +289,7 @@ def import_internal(t_struct):
         try:
             # 1. Import temp_main proces and save the inseerted id
             main_save = temp_main(descr=tmainl['t_main'][0]['t_name'] + "_Clone",
+                                  t_type=tmainl['t_main'][0]['t_type'],
                                   notes=tmainl['t_main'][0]['t_notes'],
                                   dt=str(datetime.now()),
                                   owner_id=1,

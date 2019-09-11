@@ -72,7 +72,6 @@ class temp_caseAdmin(admin.ModelAdmin):
 
         return form
 
-
     def changeform_view(self, request, obj_id, form_url='', extra_context=None):
 
         try:
@@ -80,10 +79,10 @@ class temp_caseAdmin(admin.ModelAdmin):
         except Exception:
             l_mod = None
 
-            extra_context = {
-                'lmod': l_mod,
-            }
-            return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+        extra_context = {
+            'lmod': l_mod,
+        }
+        return super(temp_caseAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
 
 
