@@ -1,14 +1,41 @@
 version: '3'
 
+networks:
+  mynetwork:
+    driver: bridge
+
 services:
+
   db:
     image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 11235813post
+
   web:
     build: .
+    networks:
+      - mynetwork
+    links:
+      - db
+    environment:
+      SEQ_DB: cath_local
+      SEQ_USER: postgres
+      SEQ_PW: 11235813post
+      PORT: 5432
+      DATABASE_URL: postgres://postgres:11235813post@db:5432/cath_local
+
     command: python manage.py runserver 0.0.0.0:8000
+
     volumes:
       - .:/code
+
     ports:
       - "8000:8000"
+
     depends_on:
       - db
