@@ -35,6 +35,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
 from frontend.getdata import get_lic
+from dal import autocomplete
 
 from jira import JIRA
 
@@ -876,6 +877,7 @@ class temp_pers_keywordsViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
+
 class temp_test_keywordsViewSet(viewsets.ModelViewSet):
 
     queryset = temp_test_keywords.objects.all()
@@ -890,6 +892,18 @@ class temp_test_keywordsViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+#The autocomplete class for temp_test, then registered in urls and in forms
+class temp_test_keywordsAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = temp_keywords.objects.all()
+
+        if self.q:
+            qs = qs.filter(human__istartswith=self.q)
+
+        return qs
 
 
 class temp_libraryViewSet(viewsets.ModelViewSet):

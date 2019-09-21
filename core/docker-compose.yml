@@ -8,6 +8,7 @@ services:
 
   db:
     image: postgres
+    restart: always
     ports:
       - "5432:5432"
     networks:
@@ -15,21 +16,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 11235813post
+      POSTGRES_DB: cath_local
+    volumes:
+      - ./data:/var/lib/postgresql/data
 
   web:
     build: .
     networks:
       - mynetwork
-    links:
-      - db
-    environment:
-      SEQ_DB: cath_local
-      SEQ_USER: postgres
-      SEQ_PW: 11235813post
-      PORT: 5432
-      DATABASE_URL: postgres://postgres:11235813post@db:5432/cath_local
-
-    command: python manage.py runserver 0.0.0.0:8000
 
     volumes:
       - .:/code

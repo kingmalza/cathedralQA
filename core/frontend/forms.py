@@ -1,5 +1,6 @@
 from django.forms import ModelForm, PasswordInput
 from django import forms
+from dal import autocomplete
 from frontend.models import Document, jra_settings, settings_gen
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 
@@ -32,6 +33,10 @@ class CustomBarModelForm(ModelForm):
     class Meta:
         model = temp_pers_keywords
         fields = '__all__'
+        widgets = {
+            'pers_id': autocomplete.ModelSelect2(url='tpk-autocomplete'),
+            'standard_id': autocomplete.ModelSelect2(url='tpk-autocomplete')
+        }
         help_texts = {'main_id': "Main template to which to connect the keyword",
                       'pers_id': 'Sub-keyword connected to the primary key',
                       'standard_id': 'Primary keyword connected to the template',
@@ -127,6 +132,9 @@ class TtkForm(forms.ModelForm):
     class Meta:
         model = temp_test_keywords
         fields = '__all__'
+        widgets = {
+            'key_id': autocomplete.ModelSelect2(url='ttk-autocomplete')
+        }
         help_texts = {'main_id': "Main template to which to connect the keyword",
                       'test_id': 'Main testcase to which to connect',
                       'key_id': 'Standard keyword connected to testcase',
