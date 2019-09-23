@@ -129,14 +129,18 @@ class TempLibsForm(forms.ModelForm):
 
 
 class TtkForm(forms.ModelForm):
+    #continent = forms.ChoiceField(choices=MAIN_ID_CHOICES)
+
     class Meta:
         model = temp_test_keywords
         fields = '__all__'
         widgets = {
-            'key_id': autocomplete.ModelSelect2(url='ttk-autocomplete')
+            'key_id': autocomplete.ModelSelect2(url='ttk-autocomplete'),
+            'test_id': autocomplete.ModelSelect2(url='ttk-tc-autocomplete', forward=['main_id'])
         }
         help_texts = {'main_id': "Main template to which to connect the keyword",
                       'test_id': 'Main testcase to which to connect',
                       'key_id': 'Standard keyword connected to testcase',
                       'key_val': 'Value for the key',
                       'key_group': 'Grouping or not of keywords values'}
+

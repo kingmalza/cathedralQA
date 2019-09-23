@@ -15,7 +15,7 @@ from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
 from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
-from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+from backend.models import temp_keywords, temp_main, temp_case as tct, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
     temp_variablesSerializer, temp_pers_keywordsSerializer, temp_test_keywordsSerializer, temp_librarySerializer, t_scheduleSerializer, \
@@ -49,7 +49,7 @@ from tenant_schemas.utils import (get_tenant_model, remove_www,
 
 
 test_main = temp_main.objects.all()
-test_case = temp_case.objects.all()
+test_case = tct.objects.all()
 test_var = temp_variables.objects.all()
 test_lib = temp_library.objects.all()
 
@@ -902,6 +902,22 @@ class temp_test_keywordsAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(human__istartswith=self.q)
+
+        return qs
+
+#The autocomplete class for temp_test, then registered in urls and in forms
+class temp_test_keywords_tc_Autocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = tct.objects.all()
+
+        tmain = self.forwarded.get('main_id', None)
+
+        if tmain:
+            qs = qs.filter(main_id=tmain)
+
+        if self.q:
+            qs = qs.filter(descr__istartswith=self.q)
 
         return qs
 

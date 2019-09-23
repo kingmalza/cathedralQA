@@ -72,7 +72,7 @@ TestCase table
 
 class temp_case(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, related_name="tm_tc", on_delete=models.CASCADE)
+    main_id = models.ForeignKey(temp_main, related_name="tm_tc", on_delete=models.CASCADE, verbose_name="Main Template")
     descr = models.CharField(max_length=200, verbose_name="Case description")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
@@ -84,7 +84,8 @@ class temp_case(models.Model):
         ordering = ('descr',)
 
     def __str__(self):
-        return '%s -> %s' % (str(self.main_id), self.descr)
+        #return '%s -> %s' % (str(self.main_id), self.descr)
+        return str(self.descr)
 
     def __repr__(self):
         return self.descr
@@ -151,9 +152,9 @@ Table for define keywords for testcases
 
 class temp_test_keywords(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_ttk')
-    test_id = models.ForeignKey(temp_case, on_delete=models.CASCADE, related_name='tc_ttk')
-    key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='tk_ttk')
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_ttk', verbose_name="Template")
+    test_id = models.ForeignKey(temp_case, on_delete=models.CASCADE, related_name='tc_ttk', verbose_name="Test Case")
+    key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='tk_ttk', verbose_name="Keyword")
     key_val = models.CharField(max_length=200, null=True, blank=True, verbose_name='Value')
     key_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
