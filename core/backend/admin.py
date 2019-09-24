@@ -262,6 +262,7 @@ class ttkAdmin(SortableAdminMixin, admin.ModelAdmin):
             ('----------', 'Group9'),
             ('-----------', 'Group10'),
         ))
+
         return form
 
 
@@ -277,8 +278,13 @@ class ttkAdmin(SortableAdminMixin, admin.ModelAdmin):
         }
         return super(ttkAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-    class Meta:
-        js = ("frontend/js/admin.js",)
+
+    class Media:
+        js = (
+            '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js',  # jquery
+            'js/admin.js',       # project static folder
+        )
+
 
 
 # Model page field using custom forms

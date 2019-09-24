@@ -18,7 +18,19 @@ $(document).ready(function() {
     });
 });*/
 
-​document.onclick = function(){
- // your code
- console.log("Dentro in admin.js");
-}​
+
+(function($) {
+    $(document).ready(function() {
+        $("select#id_main_id").change(function() {
+            console.log($("select#id_key_id").val());
+            //$("select#id_test_id").prop('selectedIndex',-1);
+            if ($("select#id_test_id").val() && $("select#id_key_id").val() === "") {
+                location.reload();
+            } else if ($("select#id_test_id").val() && $("select#id_key_id").val()) {
+                alert("You cannot change your template ID selection in assist mode; Wait for 60 seconds and then ADD a new Test Case.");
+                window.open('/admin/backend/temp_test_keywords/', '_self')
+            }
+
+        });
+    });
+})(django.jQuery);
