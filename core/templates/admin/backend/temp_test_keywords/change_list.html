@@ -95,21 +95,7 @@ a.button3:hover{
 {% block extrahead %}
 {{ block.super }}
 {{ media.js }}
-<!-- Start of LiveChat (www.livechatinc.com) code -->
-<script type="text/javascript">
-window.__lc = window.__lc || {};
-window.__lc.license = 10552602;
-(function() {
-  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-})();
-</script>
-<noscript>
-<a href="https://www.livechatinc.com/chat-with/10552602/" rel="nofollow">Chat with us</a>,
-powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a>
-</noscript>
-<!-- End of LiveChat code -->
+
 {% endblock %}
 
 {% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
@@ -181,11 +167,11 @@ powered by <a href="https://www.livechatinc.com/?welcome" rel="noopener nofollow
 {% endblock %}
 {% block footer %}
 <div class="foo">
-    <table style="width:100%">
+    <table style="width:80%">
         <tr>
             <td>
-                <span class='t_left'><a href="/admin/frontend/temp_library/" class="button3" style="color:#fff;"><span class="nexprev"><<</span> Back to test settings</a></span>
-                <span class='t_right'><a href="/admin/frontend/temp_pers_keywords/" class="button3" style="color:#fff;">Go to key assignments <span class="nexprev">>></span></a></span>
+                <span class='t_left'><a href="/admin/backend/temp_library/" class="button3" style="color:#fff;"><span class="nexprev"><<</span> Back to test settings</a></span>
+                <span class='t_right'><a href="/admin/backend/temp_pers_keywords/" class="button3" style="color:#fff;">Go to key assignments <span class="nexprev">>></span></a></span>
             </td>
         </tr>
     </table>

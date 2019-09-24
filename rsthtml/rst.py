@@ -83,7 +83,7 @@ class PrepareRst:
             ltouple += (l1,)
 
             # Query for extract keywords, values
-            kv = temp_test_keywords.objects.filter(main_id=test_id).order_by('id').select_related()
+            kv = temp_test_keywords.objects.filter(main_id=test_id).order_by('my_order', 'id').select_related()
 
             vkey = ""
             skey = ""

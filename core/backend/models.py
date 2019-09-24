@@ -108,8 +108,8 @@ class temp_variables(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tvar_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '3-Test Variable'
-        verbose_name_plural = '3-Test Variables'
+        verbose_name = '2-Test Variable'
+        verbose_name_plural = '2-Test Variables'
         ordering = ('main_id', 'v_key',)
 
     def __str__(self):
@@ -136,8 +136,8 @@ class temp_library(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tlib_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '4-Test Setting'
-        verbose_name_plural = '4-Test Settings'
+        verbose_name = '3-Test Setting'
+        verbose_name_plural = '3-Test Settings'
         ordering = ('main_id', 'l_type',)
 
     def __str__(self):
@@ -160,11 +160,13 @@ class temp_test_keywords(models.Model):
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttestkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
-    class Meta:
-        verbose_name = '5-Test Case Main Chain'
-        verbose_name_plural = '5-Test Cases Main Chain'
-        ordering = ('main_id', 'test_id', 'key_id',)
+    class Meta(object):
+        verbose_name = '4-Test Case Main Chain'
+        verbose_name_plural = '4-Test Cases Main Chain'
+        #ordering = ('my_order', 'main_id', 'test_id', 'key_id',)
+        ordering = ['my_order']
 
     def __str__(self):
         return '%s (%s -> %s)' % (str(self.test_id), str(self.key_id), str(self.key_val))
@@ -190,8 +192,8 @@ class temp_pers_keywords(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tperskey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '6-Keyword Link Chain'
-        verbose_name_plural = '6-Keywords Link Chain'
+        verbose_name = '5-Keyword Link Chain'
+        verbose_name_plural = '5-Keywords Link Chain'
         ordering = ('main_id', 'standard_id', 'pers_id',)
 
     def __str__(self):

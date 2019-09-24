@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin
 from django.forms import Select
 from datetime import datetime, timezone
 from django.utils import timezone
@@ -209,8 +210,8 @@ class temp_libraryAdmin(admin.ModelAdmin):
         }
         return super(temp_libraryAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
 
-
-class ttkAdmin(admin.ModelAdmin):
+#@admin.register(temp_test_keywords)
+class ttkAdmin(SortableAdminMixin, admin.ModelAdmin):
 
     form = TtkForm
 
@@ -275,6 +276,9 @@ class ttkAdmin(admin.ModelAdmin):
             'lmod': l_mod,
         }
         return super(ttkAdmin, self).changeform_view(request, obj_id, form_url, extra_context=extra_context)
+
+    class Meta:
+        js = ("frontend/js/admin.js",)
 
 
 # Model page field using custom forms
@@ -344,7 +348,7 @@ admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
 
 admin.site.register(temp_main, temp_mainAdmin, )
 #admin.site.register(temp_main,)
-admin.site.register(temp_case, temp_caseAdmin, )
+#admin.site.register(temp_case, temp_caseAdmin, )
 admin.site.register(temp_keywords, temp_keywordsAdmin)
 admin.site.register(temp_variables, temp_variablesAdmin, )
 admin.site.register(temp_library, temp_libraryAdmin, )
