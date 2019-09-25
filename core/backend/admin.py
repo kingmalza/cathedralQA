@@ -58,6 +58,10 @@ class temp_caseAdmin(admin.ModelAdmin):
     list_display = ('get_main_id', 'descr')
     #ordering = ('-l_type',)
 
+    #Hide link from link list in app but maintain model still manageable with add edit option
+    def get_model_perms(self, request):
+        return {}
+
     def get_main_id(self, obj):
         return obj.main_id.descr
 
@@ -337,6 +341,10 @@ class temp_keywordsAdmin(admin.ModelAdmin):
     list_filter = ('personal',)
     list_display = ('descr', 'human', 'personal')
 
+    #Hide link from link list in app but maintain model still manageable with add edit option
+    def get_model_perms(self, request):
+        return {}
+
     """
     def has_delete_permission(self, request, obj=None):
         # if there's just an entry don't allow deletion
@@ -354,7 +362,7 @@ admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
 
 admin.site.register(temp_main, temp_mainAdmin, )
 #admin.site.register(temp_main,)
-#admin.site.register(temp_case, temp_caseAdmin, )
+admin.site.register(temp_case, temp_caseAdmin, )
 admin.site.register(temp_keywords, temp_keywordsAdmin)
 admin.site.register(temp_variables, temp_variablesAdmin, )
 admin.site.register(temp_library, temp_libraryAdmin, )
