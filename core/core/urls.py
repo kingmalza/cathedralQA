@@ -37,7 +37,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     t_group_testViewSet, \
     t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms, \
     handler500, temp_clone, temp_publish, regoractivate, go_ccredit, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
-    one_time_startup
+    one_time_startup, temp_libraryAutocomplete
 
 from frontend.template_export import ret_list, start, stop_templ
 from frontend.getdata import market_data
@@ -93,6 +93,7 @@ urlpatterns = [
                 url(r'^ttk-autocomplete/$',temp_test_keywordsAutocomplete.as_view(), name='ttk-autocomplete'),
                 url(r'^tpk-autocomplete/$',temp_test_keywordsAutocomplete.as_view(), name='tpk-autocomplete'),
                 url(r'^ttk-tc-autocomplete/$',temp_test_keywords_tc_Autocomplete.as_view(), name='ttk-tc-autocomplete'),
+                url(r'^tl-autocomplete/$',temp_libraryAutocomplete.as_view(), name='tl-autocomplete'),
                   url(r'^tline_mgm$', tlinemgm),
                 url(r'^filter_data$', hfilter),
                 url(r'^startfilter$', hstartfilter),

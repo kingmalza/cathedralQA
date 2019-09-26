@@ -3,8 +3,9 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from .forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
-from frontend.models import t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, suite_libs, jra_settings, jra_history, \
+from frontend.models import t_group, t_group_test, t_tags_route, t_tags, t_proj, t_proj_route, jra_settings, jra_history, \
     t_time, t_history, settings_gen
+from backend.models import suite_libs
 from django.conf import settings
 from datetime import datetime, timezone
 import stripe
@@ -255,5 +256,5 @@ admin.site.register(t_tags, t_tagsAdmin, )
 admin.site.register(t_proj_route, t_proj_routeAdmin )
 admin.site.register(t_proj, t_projAdmin, )
 #admin.site.register(settings_gen, settings_genAdmin, )
-admin.site.register(suite_libs, )
+#admin.site.register(suite_libs, )
 admin.site.register(jra_settings, jra_settingsAdmin)

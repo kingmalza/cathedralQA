@@ -8,8 +8,8 @@ from datetime import datetime, timezone
 from django.utils import timezone
 
 from frontend.forms import CustomBarModelForm, jra_settingsForm, SettingsForm, TempMainForm, TempCaseForm, TempVarsForm, TempLibsForm, TtkForm, TempKeyForm
-from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
-from frontend.models import suite_libs
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, suite_libs
+
 
 
 class temp_mainAdmin(admin.ModelAdmin):
@@ -356,6 +356,14 @@ class temp_keywordsAdmin(admin.ModelAdmin):
     """
 
 
+class suite_libsAdmin(admin.ModelAdmin):
+
+
+    #Hide link from link list in app but maintain model still manageable with add edit option
+    def get_model_perms(self, request):
+        return {}
+
+
 admin.site.site_title = 'cathedral Backend Admin'
 admin.site.site_header = 'Backend admin console'
 admin.site.index_title = 'TEST ADMIN ADMINISTRATION'
@@ -368,3 +376,4 @@ admin.site.register(temp_variables, temp_variablesAdmin, )
 admin.site.register(temp_library, temp_libraryAdmin, )
 admin.site.register(temp_pers_keywords, tpk, )
 admin.site.register(temp_test_keywords, ttkAdmin, )
+admin.site.register(suite_libs, suite_libsAdmin, )

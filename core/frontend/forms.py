@@ -122,6 +122,9 @@ class TempLibsForm(forms.ModelForm):
     class Meta:
         model = temp_library
         fields = '__all__'
+        widgets = {
+            'l_val': autocomplete.ModelSelect2(url='tl-autocomplete')
+        }
         help_texts = {'main_id': "Main template to which to connect the variable Key/Val",
                       'l_type': 'Type of library (Example Documentation, Library, Test Setup, etc.)',
                       'l_val': 'Value of the chosen library type',

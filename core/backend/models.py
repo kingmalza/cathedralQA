@@ -2,6 +2,15 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+
+
+def validate_fsize(in_file):
+    file_size = in_file.file.size
+    limit_kb = 150
+    if file_size > limit_kb * 1024:
+        raise ValidationError("Max size of file is %s KB" % limit_kb)
 
 
 # temp_keywords
@@ -119,6 +128,34 @@ class temp_variables(models.Model):
         return self.v_key
 
 
+#----------------------------------------------------
+#SUITE LIBRARIES
+#TODO: Mettere default value pending a field status e capire come toglierlo dalla pagina admin in add
+#----------------------------------------------------
+
+class suite_libs(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, blank=True)
+    descr = models.TextField(null=True, blank=True)
+    docs = models.TextField(null=True, blank=True, editable= False)
+    lib_name = models.CharField(max_length=255, blank=True)
+    status = models.CharField(max_length=10, default='PENDING', editable= False)
+    f_lib = models.FileField(upload_to='libs/', blank=True, validators=[FileExtensionValidator(['py']),validate_fsize], verbose_name="File ( .py Max 150Kb )")
+    notes = models.TextField(null=True, blank=True)
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
+    #owner = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'LIBRARIES'
+        verbose_name_plural = 'LIBRARIES'
+        ordering = ('name', 'lib_name', 'status',)
+
+
+    def __str__(self):
+        return '%s' % (str(self.lib_name))
+
+
+
 # temp_library
 """
 Table for libraries
@@ -129,7 +166,8 @@ class temp_library(models.Model):
     id = models.AutoField(primary_key=True)
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tl')
     l_type = models.CharField(max_length=50, verbose_name='Type')
-    l_val = models.CharField(max_length=100, verbose_name='Value')
+    #l_val = models.CharField(max_length=100, verbose_name='Value')
+    l_val = models.ForeignKey(suite_libs, on_delete=models.CASCADE, related_name='li_val', verbose_name="Library")
     l_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
