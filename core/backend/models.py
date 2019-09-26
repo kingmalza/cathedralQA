@@ -18,7 +18,7 @@ class temp_keywords(models.Model):
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #personal = models.IntegerField(default=1, verbose_name="Linked variable")
     #Fields for API permissions
-    owner = models.ForeignKey('auth.User', related_name='tkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
+    owner = models.ForeignKey('auth.User', related_name='tkey_owner', on_delete=models.CASCADE, verbose_name="API Owner", null=True, blank=True,)
 
     class Meta:
         verbose_name = 'KEYWORD'

@@ -36,10 +36,13 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
     t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms, \
-    handler500, temp_clone, temp_publish, regoractivate, go_ccredit, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete
+    handler500, temp_clone, temp_publish, regoractivate, go_ccredit, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
+    one_time_startup
 
 from frontend.template_export import ret_list, start, stop_templ
 from frontend.getdata import market_data
+
+one_time_startup()
 
 schema_view = get_schema_view(title='Aida API')
 
@@ -128,3 +131,4 @@ urlpatterns = [
                   url(r'^users/$', user_list, name='user-list'),
                   url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

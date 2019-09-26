@@ -7,6 +7,7 @@ import stripe
 import requests
 
 from django.shortcuts import render
+from django.core.management import call_command
 from frontend.forms import DocumentForm
 import simplejson
 import logging
@@ -14,7 +15,7 @@ from frontend.template_export import start
 from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
-from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
+from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history, suite_libs
 from backend.models import temp_keywords, temp_main, temp_case as tct, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
@@ -44,8 +45,7 @@ from botocore.exceptions import ClientError
 import json
 import hashlib
 
-from tenant_schemas.utils import (get_tenant_model, remove_www,
-                                  get_public_schema_name)
+from tenant_schemas.utils import (get_tenant_model, remove_www, get_public_schema_name)
 
 
 test_main = temp_main.objects.all()
@@ -56,12 +56,15 @@ test_lib = temp_library.objects.all()
 #Global schema variable populated on login (row 553)
 schemaname = None;
 
+tk = ['Add Cookie','Add Location Strategy','Alert Should Be Present','Alert Should Not Be Present','Assign Id To Element','Capture Page Screenshot','Checkbox Should Be Selected','Checkbox Should Not Be Selected','Choose Cancel On Next Confirmation','Choose File','Choose Ok On Next Confirmation','Clear Element Text','Click Button','Click Element','Click Element At Coordinates','Click Image','Click Link','Close All Browsers','Close Browser','Close Window','Confirm Action','Create Webdriver','Current Frame Contains','Current Frame Should Contain','Current Frame Should Not Contain','Delete All Cookies','Delete Cookie','Dismiss Alert','Double Click Element','Drag And Drop','Drag And Drop By Offset','Element Should Be Disabled','Element Should Be Enabled','Element Should Be Focused','Element Should Be Visible','Element Should Contain','Element Should Not Be Visible','Element Should Not Contain','Element Text Should Be','Execute Async Javascript','Execute Javascript','Focus','Frame Should Contain','Get Alert Message','Get All Links','Get Cookie','Get Cookie Value','Get Cookies','Get Element Attribute','Get Element Count','Get Element Size','Get Horizontal Position','Get List Items','Get Location','Get Locations','Get Matching Xpath Count','Get Selected List Label','Get Selected List Labels','Get Selected List Value','Get Selected List Values','Get Selenium Implicit Wait','Get Selenium Speed','Get Selenium Timeout','Get Source','Get Table Cell','Get Text','Get Title','Get Value','Get Vertical Position','Get WebElement','Get WebElements','Get Window Handles','Get Window Identifiers','Get Window Names','Get Window Position','Get Window Size','Get Window Titles','Go Back','Go To','Handle Alert','Input Password','Input Text','Input Text Into Alert','Input Text Into Prompt','List Selection Should Be','List Should Have No Selections','List Windows','Location Should Be','Location Should Contain','Locator Should Match X Times','Log','Log Location','Log Source','Log Title','Maximize Browser Window','Mouse Down','Mouse Down On Image','Mouse Down On Link','Mouse Out','Mouse Over','Mouse Up','Open Browser','Open Context Menu','Page Should Contain','Page Should Contain Button','Page Should Contain Checkbox','Page Should Contain Element','Page Should Contain Image','Page Should Contain Link','Page Should Contain List','Page Should Contain Radio Button','Page Should Contain Textfield','Page Should Not Contain','Page Should Not Contain Button','Page Should Not Contain Checkbox','Page Should Not Contain Element','Page Should Not Contain Image','Page Should Not Contain Link','Page Should Not Contain List','Page Should Not Contain Radio Button','Page Should Not Contain Textfield','Press Key','Radio Button Should Be Set To','Radio Button Should Not Be Selected','Register Keyword To Run On Failure','Reload Page','Remove Location Strategy','Select All From List','Select Checkbox','Select Frame','Select From List','Select From List By Index','Select From List By Label','Select From List By Value','Select Radio Button','Select Window','Set Browser Implicit Wait','Set Focus To Element','Set Screenshot Directory','Set Selenium Implicit Wait','Set Selenium Speed','Set Selenium Timeout','Set Window Position','Set Window Size','Simulate','Simulate Event','Submit Form','Switch Browser','Table Cell Should Contain','Table Column Should Contain','Table Footer Should Contain','Table Header Should Contain','Table Row Should Contain','Table Should Contain','Textarea Should Contain','Textarea Value Should Be','Textfield Should Contain','Textfield Value Should Be','Title Should Be','Unselect All From List','Unselect Checkbox','Unselect Frame','Unselect From List','Unselect From List By Index','Unselect From List By Label','Unselect From List By Value','Wait For Condition','Wait Until Element Contains','Wait Until Element Does Not Contain','Wait Until Element Is Enabled','Wait Until Element Is Not Visible','Wait Until Element Is Visible','Wait Until Page Contains','Wait Until Page Contains Element','Wait Until Page Does Not Contain','Wait Until Page Does Not Contain Element','Xpath Should Match X Times','[Documentation]','Sleep','Pause Execution',':FOR','\\','Directory Should Exist','Should Be Equal','[Arguments]','...']
+
 
 def handler500(request):
     return render(request, '500.html', status=500)
 
 @login_required
 def index(request, **kwargs):
+
     global test_main
     uCookie = request.COOKIES.get('demoF', '')
     uGroup = request.user.groups.all()
@@ -1056,3 +1059,104 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+#Execute this command before startup, method call in urls
+def one_time_startup():
+    call_command('makemigrations')
+    call_command('migrate')
+    #Check if there are records in temp_keywords, otherwise insert
+    ct = temp_keywords.objects.all().count()
+    if ct == 0:
+        global tk
+        for i in tk:
+            addkey = temp_keywords(descr=str(i), human=str(i), personal=False, owner_id=None)
+            addkey.save()
+
+    ts = t_schedsettings.objects.all().count()
+    if ts == 0:
+        sched1 = t_schedsettings(sched_desc='Once', sched_command='once')
+        sched2 = t_schedsettings(sched_desc='Every minutes', sched_command='everymin')
+        sched3 = t_schedsettings(sched_desc='Every hour', sched_command='everyhour')
+        sched4 = t_schedsettings(sched_desc='Every day', sched_command='everyday')
+
+        sched1.save()
+        sched2.save()
+        sched3.save()
+        sched4.save()
+
+    sl = suite_libs.objects.all().count()
+    if sl == 0:
+        lib1 = suite_libs(name='Buit-In', descr='Robot Framework buitin libraries', lib_name='', status='ACTIVE',
+                          docs='http://robotframework.org/robotframework/latest/libraries/BuiltIn.html')
+        lib2 = suite_libs(name='Archive library', descr='Library for handling zip- and tar-archives',
+                          lib_name='ArchiveLibrary', status='ACTIVE',
+                          docs='http://bulkan.github.io/robotframework-archivelibrary/')
+        lib3 = suite_libs(name='Django Library', descr='Library for Django, a Python web framework',
+                          lib_name='DjangoLibrary', status='ACTIVE',
+                          docs='https://kitconcept.github.io/robotframework-djangolibrary/')
+        lib4 = suite_libs(name='FTP library', descr='Library for testing and using FTP server', lib_name='FtpLibrary',
+                          status='ACTIVE', docs='https://kowalpy.github.io/Robot-Framework-FTP-Library/FtpLibrary.html')
+        lib5 = suite_libs(name='RESTinstance', descr='Test library for HTTP JSON APIs', lib_name='REST',
+                          status='ACTIVE', docs='https://asyrjasalo.github.io/RESTinstance/')
+        lib6 = suite_libs(name='SSHLibrary',
+                          descr='Enables executing commands on remote machines over an SSH connection. Also supports transfering files using SFTP',
+                          lib_name='SSHLibrary', status='ACTIVE',
+                          docs='https://github.com/robotframework/SSHLibrary#usage')
+        lib7 = suite_libs(name='Diff Library', descr='Library to diff two files together', lib_name='DiffLibrary',
+                          status='ACTIVE', docs='https://bulkan.github.io/robotframework-difflibrary/')
+        lib8 = suite_libs(name='robotframework-faker', descr='Library for Faker, a fake test data generator',
+                          lib_name='FakerLibrary', status='ACTIVE',
+                          docs='https://guykisel.github.io/robotframework-faker/')
+        lib9 = suite_libs(name='HTTP library (Requests)',
+                          descr='Library for HTTP level testing using Request internally.', lib_name='RequestsLibrary',
+                          status='ACTIVE', docs='http://bulkan.github.io/robotframework-requests/')
+        lib10 = suite_libs(name='TFTPLibrary', descr='Library for interacting over Trivial File Transfer Portocol.',
+                           lib_name='TftpLibrary', status='ACTIVE',
+                           docs='https://kowalpy.github.io/Robot-Framework-TFTP-Library/TftpLibrary.html')
+        lib11 = suite_libs(name='AppiumLibrary', descr='Library for Android- and iOS-testing.',
+                           lib_name='AppiumLibrary', status='ACTIVE',
+                           docs='http://serhatbolsu.github.io/robotframework-appiumlibrary/AppiumLibrary.html')
+        lib12 = suite_libs(name='Selenium', descr='Selenium2Library is a web testing library.',
+                           lib_name='SeleniumLibrary',
+                           status='ACTIVE',
+                           docs='http://robotframework.org/Selenium2Library/Selenium2Library.html')
+        lib13 = suite_libs(name='Database Library',
+                           descr='Allow you to query your database, compatible* with any Database API Specification 2.0 module.',
+                           lib_name='DatabaseLibrary',
+                           status='ACTIVE',
+                           docs='https://www.python.org/dev/peps/pep-0249/')
+        lib14 = suite_libs(name='JayDeBeApi', descr='Allows to connect from Python code to databases using Java JDBC',
+                           lib_name='SeleniumLibrary',
+                           status='ACTIVE',
+                           docs='https://github.com/baztian/jaydebeapi#id2')
+        lib15 = suite_libs(name='HttpLibrary.HTTP', descr='HttpLibrary for Robot Framework',
+                           lib_name='HttpLibrary.HTTP',
+                           status='ACTIVE',
+                           docs='http://peritus.github.io/robotframework-httplibrary/HttpLibrary.html')
+        lib16 = suite_libs(name='RequestsLibrary',
+                           descr='RequestsLibrary is a test library that uses the Requests HTTP client.',
+                           lib_name='RequestsLibrary',
+                           status='ACTIVE',
+                           docs='http://bulkan.github.io/robotframework-requests/')
+
+        lib1.save()
+        lib2.save()
+        lib3.save()
+        lib4.save()
+        lib5.save()
+        lib6.save()
+        lib7.save()
+        lib8.save()
+        lib9.save()
+        lib10.save()
+        lib11.save()
+        lib12.save()
+        lib13.save()
+        lib14.save()
+        lib15.save()
+        lib16.save()
+
+    #Check if almeno a use exist otherwise create one
+    us = User.objects.all().count()
+    if us == 0:
+        User.objects.create_superuser('cathedral', '', 'Ca17653bu!');
