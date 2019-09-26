@@ -149,8 +149,8 @@ class temp_libraryAdmin(admin.ModelAdmin):
 
     form = TempLibsForm
 
-    list_filter = ('main_id__descr', 'l_type')
-    list_display = ('get_main_id', 'l_type', 'l_val', 'l_group')
+    list_filter = ('main_id__descr', 'l_val')
+    list_display = ('get_main_id', 'l_val', 'l_group')
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -170,7 +170,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
             i_sec = (d1 - d2).total_seconds()
             if i_sec < 60:
                 form.base_fields['main_id'].initial = latest_object.main_id
-                form.base_fields['l_type'].initial = latest_object.l_type
+                #form.base_fields['l_type'].initial = latest_object.l_type
         except Exception as e:
             print('Error in admin.py->124: ',e)
 

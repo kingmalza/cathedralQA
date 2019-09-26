@@ -54,8 +54,11 @@ class temp_main(models.Model):
         ('Non-Functional', 'Non-Functional')
     )
 
-    descr = models.CharField(max_length=200, verbose_name="Description")
+    descr = models.CharField(max_length=200, verbose_name="Description", unique=True)
     t_type = models.CharField(choices=TYPE_CHOICES, max_length=20, verbose_name="Test Type")
+    t_setup = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='t_set', verbose_name="Test Setup", null=True, blank=True)
+    t_teardown = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='t_ter', verbose_name="Test Teardown", null=True, blank=True)
+    t_doc = models.TextField(null=True, blank=True, verbose_name='Documentation')
     precond = models.TextField(null=True, blank=True, verbose_name="Preconditions")
     steps = models.TextField(null=True, blank=True, verbose_name="Steps")
     expected = models.TextField(null=True, blank=True, verbose_name="Expected Result")
@@ -109,7 +112,7 @@ Table vor variable collection
 
 class temp_variables(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name="tm_tv")
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name="tm_tv", verbose_name="Template")
     v_key = models.CharField(max_length=200, verbose_name="Variable")
     v_val = models.CharField(max_length=200, null=True, blank=True, verbose_name="Default Value")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
@@ -164,9 +167,9 @@ Table for libraries
 
 class temp_library(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tl')
-    l_type = models.CharField(max_length=50, verbose_name='Type')
-    #l_val = models.CharField(max_length=100, verbose_name='Value')
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tl', verbose_name="Template")
+    #l_type = models.CharField(max_length=50, verbose_name='Type')
+    #l_val = models.CharField(max_length=254, verbose_name='Value')
     l_val = models.ForeignKey(suite_libs, on_delete=models.CASCADE, related_name='li_val', verbose_name="Library")
     l_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
@@ -174,12 +177,12 @@ class temp_library(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tlib_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '3-Test Setting'
-        verbose_name_plural = '3-Test Settings'
-        ordering = ('main_id', 'l_type',)
+        verbose_name = '3-Test Library'
+        verbose_name_plural = '3-Test Libraries'
+        ordering = ('main_id', 'l_val',)
 
     def __str__(self):
-        return '%s -> %s (%s)' % (str(self.main_id), self.l_type, self.l_val)
+        return '%s -> %s' % (str(self.main_id), self.l_val)
 
 
 # temp_test_keywords
@@ -193,7 +196,7 @@ class temp_test_keywords(models.Model):
     main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_ttk', verbose_name="Template")
     test_id = models.ForeignKey(temp_case, on_delete=models.CASCADE, related_name='tc_ttk', verbose_name="Test Case")
     key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='tk_ttk', verbose_name="Keyword")
-    key_val = models.CharField(max_length=200, null=True, blank=True, verbose_name='Value')
+    key_val = models.TextField(null=True, blank=True, verbose_name='Value')
     key_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
@@ -220,7 +223,7 @@ Add standard keywords like actions for personalized key
 
 class temp_pers_keywords(models.Model):
     id = models.AutoField(primary_key=True)
-    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tpk')
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tpk', verbose_name="Template")
     standard_id = models.ForeignKey(temp_keywords, related_name='tks_tpk', on_delete=models.CASCADE, verbose_name="Keyword")
     pers_id = models.ForeignKey(temp_keywords, related_name='tk_tpk', null=True, blank=True, on_delete=models.CASCADE, verbose_name="Sub Keyword")
     variable_val = models.CharField(max_length=250, null=True, blank=True, verbose_name='Value')

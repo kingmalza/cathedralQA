@@ -86,6 +86,10 @@ class TempMainForm(forms.ModelForm):
     class Meta:
         model = temp_main
         fields = '__all__'
+        widgets = {
+            't_setup': autocomplete.ModelSelect2(url='ttk-autocomplete'),
+            't_teardown': autocomplete.ModelSelect2(url='ttk-autocomplete'),
+        }
         help_texts = {'descr': "General description for the template",
                       'precond': "The preconditions of this Project. You can reference other templates here.",
                       'steps': "The required steps to execute the template.",

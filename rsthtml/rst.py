@@ -269,6 +269,15 @@ class PrepareRst:
 
         
         tab_lib = temp_library.objects.filter(main_id=test_id).order_by("id")
+
+        #Now extract setup, teardown and documentation in present
+        set_test = temp_main.objects.filter(id=test_id).select_related()
+        for y in set_test:
+            ret_setup = y.t_setup
+            ret_teardown = y.t_teardown
+            ret_doc = y.t_doc
+
+
         l=[]
         
         #tslist = [["Settings", ""]]
@@ -292,7 +301,7 @@ class PrepareRst:
                                 for x in range(0,len_dif+1): l.append('')
                             ltouple += (l,)
                             l = []
-                        l.append(str(r.l_type))
+                        l.append('Library')
                         l.append(str(r.l_val))
                         g_id = str(r.l_group)
                 else:
@@ -301,7 +310,7 @@ class PrepareRst:
                         ltouple += (l,)
                         l = []
 
-                    l.append(str(r.l_type))
+                    l.append('Library')
                     l.append(str(r.l_val))
                     if len(l) < maxMax+1:
                                 len_dif = maxMax-len(l)
@@ -310,12 +319,24 @@ class PrepareRst:
                     l = []
 
         if l:
+
             if len(l) < maxMax+1:
                 len_dif = maxMax-len(l)
                 for x in range(0,len_dif+1): l.append('')
             ltouple += (l,)
             l = []
         tslist = [x for x in ltouple]
+
+
+        if ret_setup:
+            tslist.append(['Setup', str(ret_setup)])
+
+        if ret_teardown:
+            tslist.append(['Teardown', str(ret_teardown)])
+
+        if ret_doc:
+            tslist.append(['Documentation', str(ret_doc)])
+
         return tslist
 
     # Variables rst prep method
