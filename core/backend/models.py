@@ -202,13 +202,13 @@ class temp_test_keywords(models.Model):
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='ttestkey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
-    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False, verbose_name="Drag to reorder")
 
     class Meta(object):
         verbose_name = '4-Test Case Main Chain'
         verbose_name_plural = '4-Test Cases Main Chain'
         #ordering = ('my_order', 'main_id', 'test_id', 'key_id',)
-        ordering = ['my_order']
+        ordering = ('my_order', )
 
     def __str__(self):
         return '%s (%s -> %s)' % (str(self.test_id), str(self.key_id), str(self.key_val))
