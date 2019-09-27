@@ -133,23 +133,22 @@ class temp_variables(models.Model):
 
 #----------------------------------------------------
 #SUITE LIBRARIES
-#TODO: Mettere default value pending a field status e capire come toglierlo dalla pagina admin in add
 #----------------------------------------------------
 
 class suite_libs(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=True)
-    descr = models.TextField(null=True, blank=True)
-    docs = models.TextField(null=True, blank=True, editable= False)
-    lib_name = models.CharField(max_length=255, blank=True)
-    status = models.CharField(max_length=10, default='PENDING', editable= False)
-    f_lib = models.FileField(upload_to='libs/', blank=True, validators=[FileExtensionValidator(['py']),validate_fsize], verbose_name="File ( .py Max 150Kb )")
-    notes = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=255, verbose_name="Name")
+    descr = models.TextField(null=True, blank=True, verbose_name="Description")
+    docs = models.CharField(max_length=255, null=True, blank=True, verbose_name="Doc Link")
+    lib_name = models.CharField(max_length=255, verbose_name="Import Name")
+    status = models.CharField(max_length=10, default='ACTIVE', editable= False)
+    #f_lib = models.FileField(upload_to='libs/', blank=True, validators=[FileExtensionValidator(['py']),validate_fsize], verbose_name="File ( .py Max 150Kb )")
+    notes = models.TextField(null=True, blank=True, verbose_name="Notes")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #owner = models.IntegerField(default=0)
 
     class Meta:
-        verbose_name = 'LIBRARIES'
+        verbose_name = 'LIBRARY'
         verbose_name_plural = 'LIBRARIES'
         ordering = ('name', 'lib_name', 'status',)
 
