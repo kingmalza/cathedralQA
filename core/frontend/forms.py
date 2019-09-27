@@ -96,6 +96,10 @@ class TempMainForm(forms.ModelForm):
                       'expected': "The expected result after executing the template.",
                       'notes': 'The template notes will be displayed in the selection window on the test start screen'}
 
+    def __init__(self, *args, **kwargs):
+        super(TempMainForm, self).__init__(*args, **kwargs)
+        self.fields['t_setup'].strip = False
+        self.fields['t_teardown'].strip = False
 
 class TempCaseForm(forms.ModelForm):
     class Meta:
@@ -120,6 +124,11 @@ class TempKeyForm(forms.ModelForm):
         fields = '__all__'
         help_texts = {'descr': "Exactly key name as code defined",
                       'human': 'Alternative human friendly description, this description will be shown in template creation phases'}
+
+    def __init__(self, *args, **kwargs):
+        super(TempKeyForm, self).__init__(*args, **kwargs)
+        self.fields['descr'].strip = False
+        self.fields['human'].strip = False
 
 
 class TempLibsForm(forms.ModelForm):

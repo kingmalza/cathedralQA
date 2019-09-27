@@ -59,6 +59,8 @@ class temp_main(models.Model):
     t_setup = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='t_set', verbose_name="Test Setup", null=True, blank=True)
     t_teardown = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='t_ter', verbose_name="Test Teardown", null=True, blank=True)
     t_doc = models.TextField(null=True, blank=True, verbose_name='Documentation')
+    t_varfile = models.CharField(max_length=300, verbose_name="Variables file", null=True, blank=True)
+    t_resfile = models.CharField(max_length=300, verbose_name="Resource file", null=True, blank=True)
     precond = models.TextField(null=True, blank=True, verbose_name="Preconditions")
     steps = models.TextField(null=True, blank=True, verbose_name="Steps")
     expected = models.TextField(null=True, blank=True, verbose_name="Expected Result")

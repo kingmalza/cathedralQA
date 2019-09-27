@@ -276,6 +276,8 @@ class PrepareRst:
             ret_setup = y.t_setup
             ret_teardown = y.t_teardown
             ret_doc = y.t_doc
+            ret_vfile = y.t_varfile
+            ret_rfile = y.t_resfile
 
 
         l=[]
@@ -337,6 +339,12 @@ class PrepareRst:
         if ret_doc:
             tslist.append(['Documentation', str(ret_doc)])
 
+        if ret_vfile:
+            tslist.append(['Variables', str(ret_vfile)])
+
+        if ret_rfile:
+            tslist.append(['Resource', str(ret_rfile)])
+
         return tslist
 
     # Variables rst prep method
@@ -376,6 +384,7 @@ class MakeRst:
                 header_flag = 0
             except Exception:
                 pass
+
         return rst
 
     @staticmethod
