@@ -23,7 +23,7 @@ List of selenium, roboframeworks + personalized (flag 1 in personal) keywords an
 class temp_keywords(models.Model):
     descr = models.CharField(max_length=200, unique=True)
     human = models.CharField(max_length=200, unique=True)
-    personal = models.BooleanField(default=True, verbose_name="Personal Keyword")
+    #personal = models.BooleanField(default=True, verbose_name="Personal Keyword")
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #personal = models.IntegerField(default=1, verbose_name="Linked variable")
     #Fields for API permissions
@@ -217,9 +217,34 @@ class temp_test_keywords(models.Model):
 
 # temp_pers_keywords
 """
-Table for define actions for personalized keywords
-Add standard keywords like actions for personalized key
+Table for define keywords for testcases
 """
+
+
+class temp_pers_keywords(models.Model):
+    id = models.AutoField(primary_key=True)
+    main_id = models.ForeignKey(temp_main, on_delete=models.CASCADE, related_name='tm_tpk', verbose_name="Template")
+    key_descr = models.CharField(max_length=200, verbose_name="Key Name")
+    key_id = models.ForeignKey(temp_keywords, on_delete=models.CASCADE, related_name='tk_tpk', verbose_name="Keyword")
+    key_val = models.TextField(null=True, blank=True, verbose_name='Value')
+    key_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
+    dt = models.DateTimeField(auto_now=True, verbose_name="Created")
+    #Fields for API permissions
+    owner = models.ForeignKey('auth.User', related_name='tperskey_owner', on_delete=models.CASCADE, verbose_name="API Owner")
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False, verbose_name="Drag to reorder")
+
+    class Meta(object):
+        verbose_name = 'PERSONAL KEYWORDS'
+        verbose_name_plural = 'PERSONAL KEYWORDS'
+        #ordering = ('my_order', 'main_id', 'test_id', 'key_id',)
+        ordering = ('my_order', )
+
+    def __str__(self):
+        return '%s (%s -> %s)' % (str(self.main_id), str(self.key_id), str(self.key_val))
+
+"""
+--->>OLDEST TABLE NOW REPLACED WITH COPY OF TTK BUT WITHOUT TEST_IS (DESCR INSTEAD)<---
+# temp_pers_keywords
 
 
 class temp_pers_keywords(models.Model):
@@ -241,3 +266,4 @@ class temp_pers_keywords(models.Model):
     def __str__(self):
         return '%s -> %s -> %s (%s)' % (str(self.main_id), str(self.pers_id), str(self.standard_id), str(self.variable_val))
 
+"""

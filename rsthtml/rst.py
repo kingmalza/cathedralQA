@@ -3,6 +3,7 @@ import os
 import functools
 import django
 import errno
+import logging
 from functools import reduce
 from itertools import chain
 from docutils.core import publish_string
@@ -156,8 +157,101 @@ class PrepareRst:
 
         return tclist
 
-    # Keywords rst prep method
 
+
+    # Keywords rst prep method
+    def tk_prep(self, test_id):
+        try:
+            maxpar = temp_pers_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
+            maxMax = maxpar['total'] + 1
+
+            # Part1 list creation
+            count = 0
+            ltouple = ()
+            l1 = ["Keywords"]
+            while count < maxMax:
+                l1.append("")
+                count += 1
+            ltouple += (l1,)
+
+            # Query for extract keywords, values
+            kv = temp_pers_keywords.objects.filter(main_id=test_id).order_by('my_order', 'id').select_related()
+
+            vkey = ""
+            skey = ""
+            vcont = ""
+            l = []
+            for r in kv.iterator():
+                # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
+                # visualization
+
+                if vkey != repr(r.key_descr):
+                    if l:
+                        # Modified for empty spaces
+                        for i in range(maxMax - len(l) + 1):
+                            l.append("")
+                        ltouple += (l,)
+                        l = []
+                    l.append(repr(r.key_descr))
+
+                    if r.key_group is not None:
+                        l.append(str(r.key_group)+str(r.key_id))
+                    else:
+                        l.append(str(r.key_id))
+                    vvar = self.notNone(str(r.key_val))
+                    l.append(vvar)
+
+                else:
+                    # check if standard_id is the same or diff for create another row"
+                    if r.key_group is not None:
+                        vcont = str(r.key_group) + str(r.key_id)
+                    else:
+                        vcont = str(r.key_id)
+                    if skey != vcont:
+                        if l:
+                            # Modified for empty spaces
+                            for i in range(maxMax - len(l) + 1):
+                                l.append("")
+                            ltouple += (l,)
+                            l = []
+                        l.append("")
+                        if r.key_group is not None:
+                            l.append(str(r.key_group) + str(r.key_id))
+                        else:
+                            l.append(str(r.key_id))
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                    else:
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                vkey = repr(r.key_descr)
+                if r.key_group is not None:
+                    skey = str(r.key_group) + str(r.key_id)
+                else:
+                    skey = str(r.key_id)
+
+            # Last check after for cycle finished if l is not null (difference in last loop)
+            if l:
+                # Modified for empty spaces
+                for i in range(maxMax - len(l) + 1):
+                    l.append("")
+                ltouple += (l,)
+
+                tklist = [x for x in ltouple]
+                #Normalize the list
+                for i in range(0,len(tklist)):
+                    tklist[i][1] = self.tc_clean(tklist[i][1])
+        except Exception as e:
+            logging.exception("Exception occurred")
+            tklist = [['Keywords', '', ''], ['', '', '']]
+
+        return tklist
+
+    """
+    -->OLD METHOD FOR OLS tmp_pers_keyords MODEL<--
+    # Keywords rst prep method
     def tk_prep(self, test_id):
         # Define max variable for pers and standard keywords
         maxper = temp_pers_keywords.objects.filter(Q(main_id=test_id) & Q(pers_id__isnull=False)).values(
@@ -249,6 +343,7 @@ class PrepareRst:
             tklist = [['Keywords', '', ''], ['', '', '']]
 
         return tklist
+    """
 
     # Setting rst prep method
     def ts_prep(self, test_id):

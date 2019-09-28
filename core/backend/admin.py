@@ -292,11 +292,11 @@ class ttkAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 
 # Model page field using custom forms
-class tpk(admin.ModelAdmin):
+class tpk(SortableAdminMixin, admin.ModelAdmin):
     form = CustomBarModelForm
 
-    list_filter = ('main_id__descr',)
-    list_display = ('get_main_id', 'standard_id', 'pers_id', 'variable_val')
+    list_filter = ('main_id__descr', 'key_descr')
+    list_display = ('get_main_id', 'key_descr', 'key_id', 'key_val', 'key_group')
 
     def get_main_id(self, obj):
         return obj.main_id.descr
@@ -316,8 +316,24 @@ class tpk(admin.ModelAdmin):
             i_sec = (d1 - d2).total_seconds()
             if i_sec < 60:
                 form.base_fields['main_id'].initial = latest_object.main_id
+                form.base_fields['key_descr'].initial = latest_object.key_descr
+                form.base_fields['key_id'].initial = latest_object.key_id
         except Exception as e:
-            print('Error in admin.py->164: ',e)
+            print('Error in admin.py->184: ',e)
+
+        form.base_fields['key_group'].widget = Select(choices=(
+            (None, 'No group'),
+            ('--', 'Group1'),
+            ('---', 'Group2'),
+            ('----', 'Group3'),
+            ('-----', 'Group4'),
+            ('------', 'Group5'),
+            ('-------', 'Group6'),
+            ('--------', 'Group7'),
+            ('---------', 'Group8'),
+            ('----------', 'Group9'),
+            ('-----------', 'Group10'),
+        ))
 
         return form
 
@@ -338,8 +354,8 @@ class temp_keywordsAdmin(admin.ModelAdmin):
 
     form = TempKeyForm
 
-    list_filter = ('personal',)
-    list_display = ('descr', 'human', 'personal')
+    #list_filter = ('personal',)
+    list_display = ('descr', 'human')
 
     #Hide link from link list in app but maintain model still manageable with add edit option
     def get_model_perms(self, request):

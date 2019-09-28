@@ -41,8 +41,7 @@ from dal import autocomplete
 
 from jira import JIRA
 
-import boto3
-from botocore.exceptions import ClientError
+
 import json
 import hashlib
 
@@ -286,14 +285,6 @@ def temp_assist(request, templ_id=None, **kwargs):
     return response
 
 
-
-@login_required
-def go_ccredit(request, lic_num=None, **kwargs):
-
-    #requests.post('https://www.cathedral.ai/test', data={'lid':lic_num,})
-    return HttpResponseRedirect('https://www.cathedral.ai')
-
-
 @login_required
 def temp_publish(request, reg_status=None, **kwargs):
 
@@ -361,7 +352,7 @@ def legal_terms(request, **kwargs):
 
     return response
 
-
+"""
 def lic_register(request, reg_status=None, **kwargs):
     global test_case
 
@@ -380,18 +371,7 @@ def lic_register(request, reg_status=None, **kwargs):
             con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg'><strong><font color='red'>USER ALREADY REGISTERED!</font></strong></p><br><strong>The email address you are trying to register is already associated to an active user in aida.</strong><br><br>If you do not remember your user's password, you can change it from the login panel using the 'Forgot password?' Link.<br>To change the preferences related to your user, within aida it is sufficient going to the username that appears at the top right to open the account control panel.<br><br><div><button onclick='javascript:location.href='https://aidaproject.io' class='btn btn-block btn-danger btn-lg'>GO TO AIDA HOME</button><br><a href='/register/retry'><button class='btn btn-block btn-success btn-lg'>RETRY THE REGISTRATION PROCES</button></a></div></div></div></div>"
         else:
             return HttpResponseRedirect('/register/')
-    """
-    #First check if pay tupe field is blank, oterwise redirect to home
-    c_plan = None
-    c_tenant = None
-    sg = settings_gen.objects.all()
-    for i in sg:
-        c_plan=i.paid_plan
-        c_tenant = i.tenant_name
-        c_email = i.reg_email
 
-    if not c_plan:
-    """
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
@@ -438,16 +418,7 @@ def lic_register(request, reg_status=None, **kwargs):
                 #NOW IF IS FLAT THE CHOISE I HAVE TO CREATE AN ACTIVE MONTLY SUBSCRIPTION FOR E149
                 if request.POST['plan_type'].strip() == 'flat':
 
-                    """
-                    s_plan = stripe.Plan.create(
-                        amount=149,
-                        interval="month",
-                        product={
-                            "name": "Aida FLAT"
-                        },
-                        currency="eur",
-                    )
-                    """
+
                     s_plan = getattr(settings, "PROD149_KEY", None)
                     stripe.Subscription.create(
                         customer=cus['id'],
@@ -459,24 +430,7 @@ def lic_register(request, reg_status=None, **kwargs):
                         ]
                     )
 
-                #Then update table with informations
-                """
-                t = settings_gen.objects.get(tenant_name=c_tenant)
-                t.on_trial = 'False'
-                t.stripe_id = cus['id']
-                t.first_name = request.POST['firstname']
-                t.last_name = request.POST['lastname']
-                t.comp_name = request.POST['organisationname']
-                t.addr_1 = request.POST['address1']
-                t.addr_2 = request.POST['address2']
-                t.city = request.POST['city']
-                t.state_prov = request.POST['state']
-                t.postal_zip = request.POST['postcode']
-                t.country = request.POST['country']
-                t.tax_id = request.POST['taxid']
-                t.paid_plan = request.POST['plan_type']
-                t.save()
-                """
+
                 #If all done add to sendy customers list, redirect to homepage and send thanks email
                 client = boto3.client("lambda")
                 payload = {
@@ -511,8 +465,7 @@ def lic_register(request, reg_status=None, **kwargs):
     else:
         response = render(request, b_temp, context_dict)
         return response
-    #else:
-        #return HttpResponseRedirect('/')
+"""
 
 
 @login_required
@@ -604,7 +557,6 @@ def login_register(request, **kwargs):
 
 def user_login(request, log_err=None):
     context = RequestContext(request)
-    client = boto3.client("lambda")
     #For tenant use only
     #schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
     schema_name = 'public'
@@ -1081,7 +1033,7 @@ def one_time_startup():
     if ct == 0:
         global tk
         for i in tk:
-            addkey = temp_keywords(descr=str(i), human=str(i), personal=False, owner_id=None)
+            addkey = temp_keywords(descr=str(i), human=str(i), owner_id=None)
             addkey.save()
 
     ts = t_schedsettings.objects.all().count()

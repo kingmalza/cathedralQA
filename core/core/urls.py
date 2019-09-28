@@ -35,8 +35,8 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     temp_variablesViewSet, \
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
-    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, lic_register, legal_terms, \
-    handler500, temp_clone, temp_publish, regoractivate, go_ccredit, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
+    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, legal_terms, \
+    handler500, temp_clone, temp_publish, regoractivate, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
     one_time_startup, temp_libraryAutocomplete
 
 from frontend.template_export import ret_list, start, stop_templ
@@ -109,9 +109,9 @@ urlpatterns = [
                   url(r'^tpublish/(?P<reg_status>\w+)/$', temp_publish),
                   url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),
                 url(r'^temp_clone/(?P<t_id>\w+)/$', temp_clone),
-                  url(r'^register/$', lic_register),
-                  url(r'^register/(?P<reg_status>\w+)/$', lic_register),
-                url(r'^gocard/(?P<lic_num>\w+)/$', go_ccredit),
+                  #url(r'^register/$', lic_register),
+                  #url(r'^register/(?P<reg_status>\w+)/$', lic_register),
+                #url(r'^gocard/(?P<lic_num>\w+)/$', go_ccredit),
                 url(r'^act_lic/$', regoractivate),
                 url(r'^act_lic/(?P<reg_status>\w+)/$', regoractivate),
                   url(r'^tgroup', temp_group),

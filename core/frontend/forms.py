@@ -34,16 +34,17 @@ class CustomBarModelForm(ModelForm):
         model = temp_pers_keywords
         fields = '__all__'
         widgets = {
-            'pers_id': autocomplete.ModelSelect2(url='tpk-autocomplete'),
-            'standard_id': autocomplete.ModelSelect2(url='tpk-autocomplete')
+            'key_id': autocomplete.ModelSelect2(url='tpk-autocomplete')
         }
         help_texts = {'main_id': "Main template to which to connect the keyword",
-                      'pers_id': 'Sub-keyword connected to the primary key',
-                      'standard_id': 'Primary keyword connected to the template',
-                      'variable_val': 'Value for the keyword'}
+                      'key_descr': 'Personal Keyword description, used for link in test',
+                      'key_id': 'Standard keyword connected to testcase',
+                      'key_val': 'Value for the key',
+                      'key_group': 'Grouping or not of keywords values'}
 
     def __init__(self, *args, **kwargs):
         super(CustomBarModelForm, self).__init__(*args, **kwargs)
+        self.fields['key_val'].strip = False
         #self.fields['pers_id'].queryset = temp_keywords.objects.filter(personal=1)
         #self.fields['standard_id'].queryset = temp_keywords.objects.filter(personal=0)
 
@@ -160,3 +161,7 @@ class TtkForm(forms.ModelForm):
                       'key_val': 'Value for the key',
                       'key_group': 'Grouping or not of keywords values'}
 
+
+    def __init__(self, *args, **kwargs):
+        super(TtkForm, self).__init__(*args, **kwargs)
+        self.fields['key_val'].strip = False
