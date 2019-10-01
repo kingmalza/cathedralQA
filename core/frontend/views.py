@@ -11,6 +11,7 @@ from django.core.management import call_command
 from frontend.forms import DocumentForm
 import simplejson
 import logging
+import psycopg2
 from frontend.template_export import start
 from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
@@ -686,39 +687,54 @@ def regoractivate(request, reg_status=None, **kwargs):
 
             response = []
             vallabel = {}
-            client = boto3.client("lambda")
 
-            #check for license
-            pay_c = {
-                    "ev_type": "G",
-                    "tenant": request.POST.get('act_code', '').upper()
-                }
+            cparam = getattr(settings, "LIC_PARAM", None)
 
-            cli_id = client.invoke(
-                FunctionName='aida_lic_get',
-                InvocationType='RequestResponse',
-                Payload=json.dumps(pay_c)
-            )
+            vallabel = {}
 
-            #id_cli = cli_id['Payload'].read().decode('utf-8')[1]
 
-            #Check if user in lic is active or if there is a connection
-            try:
-                #site_active = json.loads(cli_id['Payload'].read().decode())[0]
-                site_active = json.loads(cli_id['Payload'].read())
+            conn = psycopg2.connect(**cparam)
+            conn.autocommit = True
 
-                if site_active == "null":
-                    vallabel['RetMsg'] = 'ERROR'
-                    return HttpResponseRedirect('/act_lic/ERROR/')
+            cur = conn.cursor()
+
+            s_query = "SELECT * FROM a_lic WHERE lic_num='%s';" % request.POST['act_code']
+            cur.execute(s_query)
+            A = cur.fetchone()
+
+            vallabel['LDATA'] = A
+
+            conn.commit()
+            cur.close()
+            conn.close()
+
+            if vallabel['LDATA'][2] :
+                return HttpResponse("LICENSE ALREADY REGISTERED! \n\n The license you are trying to register is already active on our systems and therefore cannot be activated again, \n For more informations you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+            else:
+                # first check if settings is already populated
+                t_set = settings_gen.objects.all()
+                if t_set:
+                    settings_gen.objects.filter(id=1).update(lic_num=vallabel['LDATA'][0])
                 else:
-                    #first update settings_gen table
-                    settings_gen.objects.filter(id=1).update(lic_num=request.POST.get('act_code', '').upper())
-                    vallabel['RetMsg'] = 'OK'
-                    return HttpResponseRedirect('/act_lic/OK/')
+                    s_ins = settings_gen(lic_num=vallabel['LDATA'][0])
+                    s_ins.save()
 
-            except Exception as e:
+                #Update a_lic activation date
+                conn = psycopg2.connect(**cparam)
+                conn.autocommit = True
 
-                return HttpResponse("ENVIROMENT NOT ACTIVE ON DATACENTER OR INTERNET CONNECTION DOWN! \n\n Your license does not seem to be active on our datacenters, we remind you that the internet connection must be working in order to use Cathedral, \n in case there are no line problems you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+                cur = conn.cursor()
+
+                u_query = "UPDATE public.a_lic SET activate_date='%s' WHERE lic_num='%s';" % (date.today().strftime("%Y-%m-%d"), vallabel['LDATA'][0])
+                cur.execute(u_query)
+
+                conn.commit()
+                cur.close()
+                conn.close()
+
+                vallabel['RetMsg'] = 'OK'
+                return HttpResponseRedirect('/act_lic/OK/')
+
     else:
 
         context_dict = {'all_case': test_case, 'the_stat': con_stat}

@@ -356,6 +356,6 @@ function activate() {
 
 
 function redirect() {
-  window.location.replace("https://cathedral.ai/licensing/");
+  window.location.replace("https://cathedral.ai/register/");
   return false;
 }
