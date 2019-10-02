@@ -153,7 +153,7 @@
                         {% if 'demo.myaida.io' in request.build_absolute_uri %}
                             <a href="javascript:alert('User profile management cannot be accessible in demo mode.');" class="dropdown-toggle" >
                         {% else %}
-                            <a href="/admin/frontend/settings_gen/" class="dropdown-toggle" >
+                            <a href="/admin/" class="dropdown-toggle" >
                         {% endif %}
                                 <img src="{% static "dist/img/SoloBrain.png" %}" class="user-image" alt="User Image"/>
                                 <span class="hidden-xs">{{ request.user.username }}</span>
