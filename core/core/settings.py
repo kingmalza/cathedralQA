@@ -115,6 +115,16 @@ LIC_PARAM = {
     'password': '11235813post',
 }
 
+
+#Connection parameters for sendy db
+SENDY_PARAM = {
+    'db_username': "ytyNyqa",
+    'db_password': "241cbfd1ad",
+    'db_name': "sendy_db",
+    'db_host': "lavaprojectdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com"
+}
+
+
 EXPORT_PARAM = {
     'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
     'database': 'helium_ai',

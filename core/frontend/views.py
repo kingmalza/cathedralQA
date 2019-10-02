@@ -13,6 +13,7 @@ import simplejson
 import logging
 import psycopg2
 from frontend.template_export import start
+from frontend import get_sendy
 from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
@@ -677,7 +678,7 @@ def regoractivate(request, reg_status=None, **kwargs):
     if reg_status:
         b_temp = 'base_register_status.html'
         if reg_status == 'OK':
-            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg' style='font-size:58px;'><font color='green'>SUCCESS!</font></p><br><strong>The registration request of your Cathedral account was successful.</strong><br><br>Your Cathedral enviroment is active. You can log-in now using the credentials received by email when you register the product at the first time.<br><br>We remind you that, as suggested, it is advisable to change the password after the first access.<br><br><br><div><a href='/'><button class='btn btn-block btn-success btn-lg'>GO TO LOGIN HOMEPAGE</button></a></div></div></div></div>"
+            con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg' style='font-size:58px;'><font color='green'>SUCCESS!</font></p><br><strong>The registration request of your Cathedral Studio account was successful.</strong><br><br>Your Cathedral enviroment is active. You can log-in now using the credentials received by email when you register the product at the first time.<br><br>We remind you that, as suggested, it is advisable to change the password after the first access.<br><br><br><div><a href='/'><button class='btn btn-block btn-success btn-lg'>GO TO LOGIN HOMEPAGE</button></a></div></div></div></div>"
         elif reg_status == 'ERROR':
             con_stat = "<div id='overlay_demo' style='display:block'><div id='text-demo'><div class='login-box-body'><p class='login-box-msg' style='font-size:58px;'><font color='red'>FAIL!</font></p><br><strong>The registration process for your new Cathedral account has not been completed successfully.</strong><br><br>Probably some of the data entered in the previous mask are not correct or there has been an internal error of the service.<br><br>Try to re-enter your license data or register your data for receive a new license number.<br><br><div><button onclick='javascript:location.href='https://54.84.90.108/licensing' class='btn btn-block btn-success btn-lg'>REGISTER YOUR PRODUCT</button><br><a href='/act_lic/'><button class='btn btn-block btn-primary btn-lg'>RETRY THE ACTIVATION PROCES</button></a></div></div></div></div>"
         else:
@@ -708,8 +709,12 @@ def regoractivate(request, reg_status=None, **kwargs):
             cur.close()
             conn.close()
 
+            #Check if license exist on server
+            if not A:
+                return HttpResponse("LICENSE DOES NOT EXIST! \n\n TThe license you are trying to activate does not exist on our database. Try going back and verify that you have typed all the characters correctly. \n For more informations you can contact the Cathedral's system administrators (4u@cathedral.ai)")
+
             if vallabel['LDATA'][2] :
-                return HttpResponse("LICENSE ALREADY REGISTERED! \n\n The license you are trying to register is already active on our systems and therefore cannot be activated again, \n For more informations you can contact the Cathedral's system administrators (4u@cathedral.ai) for more information")
+                return HttpResponse("LICENSE ALREADY REGISTERED! \n\n The license you are trying to register is already active on our systems and therefore cannot be activated again, \n For more informations you can contact the Cathedral's system administrators (4u@cathedral.ai)")
             else:
                 # first check if settings is already populated
                 t_set = settings_gen.objects.all()
@@ -731,6 +736,14 @@ def regoractivate(request, reg_status=None, **kwargs):
                 conn.commit()
                 cur.close()
                 conn.close()
+
+                #Update sendy list
+                sendy_dict = {'user_id': '1',
+                              'email': vallabel['LDATA'][10],
+                              'evtype': 'customer_activate'
+                              }
+
+                get_sendy.lambda_handler(sendy_dict)
 
                 vallabel['RetMsg'] = 'OK'
                 return HttpResponseRedirect('/act_lic/OK/')
