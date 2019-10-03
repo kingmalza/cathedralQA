@@ -154,8 +154,9 @@ def import_templ(request):
 
                         # 4. Import temp_library
                         for a in range(len(tmainl['t_libs'])):
+                            print(tmainl['t_libs'][a])
                             lib_save = temp_library(l_type=tmainl['t_libs'][a]['tl_type'],
-                                                    l_val=tmainl['t_libs'][a]['tl_val'],
+                                                    l_val_id=tmainl['t_libs'][a]['tl_val'],
                                                     main_id_id=main_id,
                                                     owner_id=1,
                                                     dt=str(datetime.now()),
@@ -265,7 +266,7 @@ def import_templ(request):
 
         else:
             # If there is'nt a stripe id redirect to gocard for registration
-            sredirect = 'https://cathedral.ai/gocard/' + ck_stripe['LDATA'][0]
+            sredirect = 'https://cathedral.ai/gocard/' + ck_stripe['LDATA'][0].strip()
             return HttpResponseRedirect(sredirect)
     else:
         return HttpResponseRedirect('/')

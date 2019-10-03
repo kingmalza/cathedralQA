@@ -168,26 +168,28 @@ def main(schema, id_templ, conn, p_force=False):
         cursor.execute("SELECT * FROM " + t_libs + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
-            tlib_list.append({'tl_type': row[1],
-                              'tl_val': row[2],
-                              'tl_group': row[3],
-                              't_owner': row[6]
+            tlib_list.append({'tl_val': row[1],
+                              'tl_group': row[2],
+                              't_owner': row[5]
                               })
 
             if row[1] == 'Library': t_ulib.add(row[2])
 
         cursor.execute(
-            "SELECT key_val, key_group, main_id_id, test_id_id, ftk.descr, ftk.owner_id FROM backend_temp_test_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+            "SELECT key_id_id, key_val, key_group, main_id_id, test_id_id, my_order, ftk.descr, ftt.owner_id FROM backend_temp_test_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in reversed(rec_main):
-            ttk_list.append({'tk_kval': row[0],
-                             'tk_kgroup': row[1],
-                             'tk_descr': row[4],
-                             't_owner': row[5]
+            ttk_list.append({'tk_kid': row[0],
+                             'tk_kval': row[1],
+                             'tk_kgroup': row[2],
+                             'tk_order': row[4],
+                             'tk_descr': row[6],
+                             't_owner': row[7]
                              })
 
+        """
         cursor.execute(
-            "SELECT t.id, t.pers_id_id, t.standard_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val, t.owner_id FROM backend_temp_pers_keywords t LEFT JOIN backend_temp_keywords l1 ON t.pers_id_id = l1.id LEFT JOIN backend_temp_keywords l2 ON t.standard_id_id = l2.id WHERE t.main_id_id = " + id_templ)
+            "SELECT t.id, t.key_id_id, l1.descr AS desc_l1,l2.descr AS desc_l2,t.variable_val, t.owner_id FROM backend_temp_pers_keywords t LEFT JOIN backend_temp_keywords l1 ON t.key_id_id = l1.id LEFT JOIN backend_temp_keywords l2 ON t.key_id_id = l2.id WHERE t.main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
         for row in rec_main:
             tpk_list.append({'tp_key1': row[3],
@@ -195,6 +197,19 @@ def main(schema, id_templ, conn, p_force=False):
                              'tp_kval': row[5],
                              't_owner': row[6]
                              })
+        """
+        cursor.execute(
+            "SELECT key_id_id, key_val, key_descr, key_group, main_id_id, my_order, ftk.descr, ftt.owner_id FROM backend_temp_pers_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+        rec_main = cursor.fetchall()
+        for row in reversed(rec_main):
+            ttk_list.append({'tp_kid': row[0],
+                             'tp_kval': row[1],
+                             'tp_descr': row[2],
+                             'tp_kgroup': row[3],
+                             'tp_order': row[5],
+                             't_owner': row[7]
+                             })
+
 
         # Now retreive the pid from histoy (for html)
         # cursor.execute("SELECT format('%s',html_test) FROM demo.backend_t_history as fth WHERE fth.html_test ~* '[^a-z0-9]' AND fth.test_main_id = " + id_templ + " LIMIT 1")
@@ -203,6 +218,8 @@ def main(schema, id_templ, conn, p_force=False):
         rec_main = cursor.fetchall()
         for row in rec_main:
             t_html = str(row[0])
+
+        if not t_html: t_html = '0'
 
         # Encode json for touple dict ec
         enc = MultiDimensionalArrayEncoder()
@@ -268,14 +285,20 @@ def load_data(p_struct, id_templ, schema, sdescr, sdescrl, scover, sadvimg, sadv
     ck_cursor.execute(
         "SELECT * FROM public.aida_export as aie WHERE upper(aie.export_id) = '" + ex_id.upper() + "' AND (aie.status = 'A' OR aie.status = 'P') ")
     ck_old = ck_cursor.fetchone()
-    if not ck_old and p_struct[1]:
+    print("PUBLISH--> ",ck_old, ' -- ', p_struct)
+
+    if not ck_old and p_struct[0]:
         try:
             b_cursor = conn.cursor()
-            b_cursor.execute(
+            try:
+                b_cursor.execute(
                 "insert into aida_export (py_dict,html_test, export_id, descr, notes, u_libs, dt, status, store_descr, store_descr_long, coverage, adv_img, adv_desc, adv_url) values ('" + json.dumps(
                     p_struct[0], default=hinted_tuple_hook) + "','" + p_struct[1] + "', '" + ex_id + "', '" +
                 p_struct[2][0] + "', '" + p_struct[2][1] + "', '" + p_struct[2][2] + "', '" + str(
                     now) + "', 'P', '" + sdescr + "', '" + sdescrl + "', '" + scover + "', '" + sadvimg + "', '" + sadvdesc + "', '" + sadvurl+ "');")
+            except Exception as e:
+                logging.error("Exception occurred", exc_info=True)
+
             b_cursor.close()
             r_msg = "OK"
         except Exception as e:
