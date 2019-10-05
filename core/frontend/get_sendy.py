@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 try:
     conn = pymysql.connect(rds_host['db_host'], user=rds_host['db_username'], passwd=rds_host['db_password'], db=rds_host['db_name'], connect_timeout=5)
 except:
-    logger.error("ERROR: Unexpected error: Could not connect to MySQL instance.")
+    logger.error("ERROR: Unexpected error: Could not connect to Internet....Quit")
     sys.exit()
 
 logger.info("SUCCESS: Connection to RDS MySQL instance succeeded")

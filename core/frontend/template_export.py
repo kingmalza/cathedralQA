@@ -150,7 +150,13 @@ def main(schema, id_templ, conn, p_force=False):
                            't_notes': rec_main[0][6],
                            't_expected': rec_main[0][5],
                            't_precond': rec_main[0][3],
-                           't_steps': rec_main[0][4]})
+                           't_steps': rec_main[0][4],
+                           't_doc': rec_main[0][10],
+                           't_setup_id': rec_main[0][11],
+                           't_teardown_id': rec_main[0][12],
+                           't_resfile': rec_main[0][13],
+                           't_varfile': rec_main[0][14],
+                           't_owner': rec_main[0][9]})
 
         cursor.execute("SELECT * FROM " + t_case + " WHERE main_id_id = " + id_templ)
         rec_main = cursor.fetchall()
@@ -176,15 +182,15 @@ def main(schema, id_templ, conn, p_force=False):
             if row[1] == 'Library': t_ulib.add(row[2])
 
         cursor.execute(
-            "SELECT key_id_id, key_val, key_group, main_id_id, test_id_id, my_order, ftk.descr, ftt.owner_id FROM backend_temp_test_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+            "SELECT key_id_id, key_val, key_group, main_id_id, test_id_id, my_order, ftt.owner_id, bk.descr FROM backend_temp_test_keywords as ftt, backend_temp_keywords as bk WHERE ftt.key_id_id = bk.id AND ftt.main_id_id = " + id_templ + "ORDER BY ftt.my_order ASC")
         rec_main = cursor.fetchall()
-        for row in reversed(rec_main):
+        for row in rec_main:
             ttk_list.append({'tk_kid': row[0],
                              'tk_kval': row[1],
                              'tk_kgroup': row[2],
-                             'tk_order': row[4],
-                             'tk_descr': row[6],
-                             't_owner': row[7]
+                             'tk_descr': row[7],
+                             'tk_order': row[5],
+                             't_owner': row[6]
                              })
 
         """
@@ -199,15 +205,16 @@ def main(schema, id_templ, conn, p_force=False):
                              })
         """
         cursor.execute(
-            "SELECT key_id_id, key_val, key_descr, key_group, main_id_id, my_order, ftk.descr, ftt.owner_id FROM backend_temp_pers_keywords as ftt, backend_temp_keywords as ftk WHERE ftt.key_id_id = ftk.id AND ftt.main_id_id = " + id_templ)
+            "SELECT key_id_id, key_val, key_descr, key_group, main_id_id, my_order, ftt.owner_id, bk.descr FROM backend_temp_pers_keywords as ftt, backend_temp_keywords as bk WHERE ftt.key_id_id = bk.id AND ftt.main_id_id = " + id_templ + "ORDER BY ftt.my_order ASC")
         rec_main = cursor.fetchall()
-        for row in reversed(rec_main):
-            ttk_list.append({'tp_kid': row[0],
+        for row in rec_main:
+            tpk_list.append({'tp_kid': row[0],
                              'tp_kval': row[1],
                              'tp_descr': row[2],
+                             'tp_kdescr': row[7],
                              'tp_kgroup': row[3],
                              'tp_order': row[5],
-                             't_owner': row[7]
+                             't_owner': row[6]
                              })
 
 
