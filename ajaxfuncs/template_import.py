@@ -124,25 +124,25 @@ def import_templ(request):
                     try:
                         # 1. Import temp_main proces and save the inseerted id
                         main_save = temp_main(descr=temp_name,
-                                              t_type=eval(tmainl['t_main'])[0]['t_type'] if eval(tmainl['t_main'])[0]['t_type'] != 'None' else None,
-                                              notes=eval(tmainl['t_main'])[0]['t_notes'] if eval(tmainl['t_main'])[0]['t_notes'] != 'None' else None,
+                                              t_type=tmainl['t_main'][0]['t_type'] if tmainl['t_main'][0]['t_type'] != 'None' else None,
+                                              notes=tmainl['t_main'][0]['t_notes'] if tmainl['t_main'][0]['t_notes'] != 'None' else None,
                                               dt=str(datetime.now()),
                                               owner_id=1,
-                                              expected=eval(tmainl['t_main'])[0]['t_expected'] if eval(tmainl['t_main'])[0]['t_expected'] != 'None' else None,
-                                              precond=eval(tmainl['t_main'])[0]['t_precond'] if eval(tmainl['t_main'])[0]['t_precond'] != 'None' else None,
-                                              steps=eval(tmainl['t_main'])[0]['t_steps'] if eval(tmainl['t_main'])[0]['t_steps'] != 'None' else None,
-                                              t_doc=eval(tmainl['t_main'])[0]['t_doc'] if eval(tmainl['t_main'])[0]['t_doc'] != 'None' else None,
-                                              t_setup_id=eval(tmainl['t_main'])[0]['t_setup_id'] if eval(tmainl['t_main'])[0]['t_setup_id'] != 'None' else None,
-                                              t_teardown_id=eval(tmainl['t_main'])[0]['t_teardown_id'] if eval(tmainl['t_main'])[0]['t_teardown_id'] != 'None' else None,
-                                              t_resfile=eval(tmainl['t_main'])[0]['t_resfile'] if eval(tmainl['t_main'])[0]['t_resfile'] != 'None' else None,
-                                              t_varfile=eval(tmainl['t_main'])[0]['t_varfile'] if eval(tmainl['t_main'])[0]['t_varfile'] != 'None' else None)
+                                              expected=tmainl['t_main'][0]['t_expected'] if tmainl['t_main'][0]['t_expected'] != 'None' else None,
+                                              precond=tmainl['t_main'][0]['t_precond'] if tmainl['t_main'][0]['t_precond'] != 'None' else None,
+                                              steps=tmainl['t_main'][0]['t_steps'] if tmainl['t_main'][0]['t_steps'] != 'None' else None,
+                                              t_doc=tmainl['t_main'][0]['t_doc'] if tmainl['t_main'][0]['t_doc'] != 'None' else None,
+                                              t_setup_id=tmainl['t_main'][0]['t_setup_id'] if tmainl['t_main'][0]['t_setup_id'] != 'None' else None,
+                                              t_teardown_id=tmainl['t_main'][0]['t_teardown_id'] if tmainl['t_main'][0]['t_teardown_id'] != 'None' else None,
+                                              t_resfile=tmainl['t_main'][0]['t_resfile'] if tmainl['t_main'][0]['t_resfile'] != 'None' else None,
+                                              t_varfile=tmainl['t_main'][0]['t_varfile'] if tmainl['t_main'][0]['t_varfile'] != 'None' else None)
 
                         main_save.save()
                         main_id = main_save.id
 
                         # 2. Import test case
-                        for a in range(len(eval(tmainl['t_case']))):
-                            case_save = temp_case(eval(descr=tmainl['t_case'])[a]['tc_desr'] if eval(descr=tmainl['t_case'])[a]['tc_desr'] != 'None' else None,
+                        for a in range(len(tmainl['t_case'])):
+                            case_save = temp_case(descr=tmainl['t_case'][a]['tc_desr'] if tmainl['t_case'][a]['tc_desr'] != 'None' else None,
                                                   main_id_id=main_id,
                                                   owner_id=1,
                                                   dt=str(datetime.now()))
@@ -150,22 +150,22 @@ def import_templ(request):
                             case_id = case_save.id
 
                         # 3. Import variables
-                        for a in range(len(eval(tmainl['t_vars']))):
-                            var_save = temp_variables(v_key=eval(tmainl['t_vars'])[a]['tv_key'] if eval(tmainl['t_vars'])[a]['tv_key'] != 'None' else None,
-                                                      v_val=eval(tmainl['t_vars'])[a]['tv_val'] if eval(tmainl['t_vars'])[a]['tv_val'] != 'None' else None,
+                        for a in range(len(tmainl['t_vars'])):
+                            var_save = temp_variables(v_key=tmainl['t_vars'][a]['tv_key'] if tmainl['t_vars'][a]['tv_key'] != 'None' else None,
+                                                      v_val=tmainl['t_vars'][a]['tv_val'] if tmainl['t_vars'][a]['tv_val'] != 'None' else None,
                                                       main_id_id=main_id,
                                                       owner_id=1,
                                                       dt=str(datetime.now()))
                             var_save.save()
 
                         # 4. Import temp_library
-                        for a in range(len(eval(tmainl['t_libs']))):
+                        for a in range(len(tmainl['t_libs'])):
 
-                            lib_save = temp_library(l_val_id=eval(tmainl['t_libs'])[a]['tl_val'] if eval(tmainl['t_libs'])[a]['tl_val'] != 'None' else None,
+                            lib_save = temp_library(l_val_id=tmainl['t_libs'][a]['tl_val'] if tmainl['t_libs'][a]['tl_val'] != 'None' else None,
                                                     main_id_id=main_id,
                                                     owner_id=1,
                                                     dt=str(datetime.now()),
-                                                    l_group=eval(tmainl['t_libs'])[a]['tl_group'] if eval(tmainl['t_libs'])[a]['tl_group'] != 'None' else None)
+                                                    l_group=tmainl['t_libs'][a]['tl_group'] if tmainl['t_libs'][a]['tl_group'] != 'None' else None)
                             lib_save.save()
 
                         # 5. Import temp_test_keywords
@@ -344,117 +344,143 @@ def import_internal(t_struct):
     for t in local_t: tlocal.append(t.descr.upper())
     # if tmainl['t_main'][0]['t_name'].upper() not in tlocal:
     print("tmain-->",tmainl['t_main'])
+
     if tmainl['t_main'][0]['t_name'].upper() + '_CLONE' not in [l.descr.upper() for l in local_t]:
         try:
+            temp_name = tmainl['t_main'][0]['t_name'] + '_CLONE'
             # 1. Import temp_main proces and save the inseerted id
-            main_save = temp_main(descr=tmainl['t_main'][0]['t_name'] + "_Clone",
-                                  t_type=tmainl['t_main'][0]['t_type'],
-                                  notes=tmainl['t_main'][0]['t_notes'],
+            main_save = temp_main(descr=temp_name,
+                                  t_type=tmainl['t_main'][0]['t_type'] if tmainl['t_main'][0][
+                                                                              't_type'] != 'None' else None,
+                                  notes=tmainl['t_main'][0]['t_notes'] if tmainl['t_main'][0][
+                                                                              't_notes'] != 'None' else None,
                                   dt=str(datetime.now()),
                                   owner_id=1,
-                                  expected=tmainl['t_main'][0]['t_expected'],
-                                  precond=tmainl['t_main'][0]['t_precond'],
-                                  steps=tmainl['t_main'][0]['t_steps'])
+                                  expected=tmainl['t_main'][0]['t_expected'] if tmainl['t_main'][0][
+                                                                                    't_expected'] != 'None' else None,
+                                  precond=tmainl['t_main'][0]['t_precond'] if tmainl['t_main'][0][
+                                                                                  't_precond'] != 'None' else None,
+                                  steps=tmainl['t_main'][0]['t_steps'] if tmainl['t_main'][0][
+                                                                              't_steps'] != 'None' else None,
+                                  t_doc=tmainl['t_main'][0]['t_doc'] if tmainl['t_main'][0][
+                                                                            't_doc'] != 'None' else None,
+                                  t_setup_id=tmainl['t_main'][0]['t_setup_id'] if tmainl['t_main'][0][
+                                                                                      't_setup_id'] != 'None' else None,
+                                  t_teardown_id=tmainl['t_main'][0]['t_teardown_id'] if tmainl['t_main'][0][
+                                                                                            't_teardown_id'] != 'None' else None,
+                                  t_resfile=tmainl['t_main'][0]['t_resfile'] if tmainl['t_main'][0][
+                                                                                    't_resfile'] != 'None' else None,
+                                  t_varfile=tmainl['t_main'][0]['t_varfile'] if tmainl['t_main'][0][
+                                                                                    't_varfile'] != 'None' else None)
 
             main_save.save()
             main_id = main_save.id
 
             # 2. Import test case
             for a in range(len(tmainl['t_case'])):
-                case_save = temp_case(descr=tmainl['t_case'][a]['tc_desr'],
-                                      main_id_id=main_id,
-                                      owner_id=tmainl['t_case'][a]['t_owner'],
-                                      dt=str(datetime.now()))
+                case_save = temp_case(
+                    descr=tmainl['t_case'][a]['tc_desr'] if tmainl['t_case'][a]['tc_desr'] != 'None' else None,
+                    main_id_id=main_id,
+                    owner_id=1,
+                    dt=str(datetime.now()))
                 case_save.save()
                 case_id = case_save.id
 
             # 3. Import variables
             for a in range(len(tmainl['t_vars'])):
-                var_save = temp_variables(v_key=tmainl['t_vars'][a]['tv_key'],
-                                          v_val=tmainl['t_vars'][a]['tv_val'],
-                                          main_id_id=main_id,
-                                          owner_id=tmainl['t_vars'][a]['t_owner'],
-                                          dt=str(datetime.now()))
+                var_save = temp_variables(
+                    v_key=tmainl['t_vars'][a]['tv_key'] if tmainl['t_vars'][a]['tv_key'] != 'None' else None,
+                    v_val=tmainl['t_vars'][a]['tv_val'] if tmainl['t_vars'][a]['tv_val'] != 'None' else None,
+                    main_id_id=main_id,
+                    owner_id=1,
+                    dt=str(datetime.now()))
                 var_save.save()
 
             # 4. Import temp_library
             for a in range(len(tmainl['t_libs'])):
-                lib_save = temp_library(l_type=tmainl['t_libs'][a]['tl_type'],
-                                        l_val=tmainl['t_libs'][a]['tl_val'],
-                                        main_id_id=main_id,
-                                        owner_id=tmainl['t_libs'][a]['t_owner'],
-                                        dt=str(datetime.now()),
-                                        l_group=tmainl['t_libs'][a]['tl_group'])
+                lib_save = temp_library(
+                    l_val_id=tmainl['t_libs'][a]['tl_val'] if tmainl['t_libs'][a]['tl_val'] != 'None' else None,
+                    main_id_id=main_id,
+                    owner_id=1,
+                    dt=str(datetime.now()),
+                    l_group=tmainl['t_libs'][a]['tl_group'] if tmainl['t_libs'][a]['tl_group'] != 'None' else None)
                 lib_save.save()
 
             # 5. Import temp_test_keywords
-            for a in range(len(tmainl['t_ttk'])-1):
-                # first check if key ecist in table temp keywords, otherwise add it
-                l_key = temp_keywords.objects.all()
-                print('lkeyy--->',eval(tmainl['t_ttk']))
-                try:
+            for a in range(len(eval(tmainl['t_ttk']))):
+
+                # first check if key exist in table temp keywords, otherwise add it
+                if eval(tmainl['t_ttk'])[a]['tk_descr'].strip() not in [x.descr.strip() for x in l_key]:
+
                     t_key = temp_keywords(descr=eval(tmainl['t_ttk'])[a]['tk_descr'],
                                           human=eval(tmainl['t_ttk'])[a]['tk_descr'],
-                                          personal=True,
-                                          owner_id=eval(tmainl['t_ttk'])[a]['t_owner'],
+                                          owner_id=1,
                                           dt=str(datetime.now()))
-                    t_key.save()
-                    last_key = t_key.id
-                except IntegrityError:
+                    try:
+                        t_key.save()
+                        last_key = t_key.id
+                    except Exception:
+                        pass
+                else:
                     qa = temp_keywords.objects.filter(descr=eval(tmainl['t_ttk'])[a]['tk_descr']).only('id')
                     for q in qa: last_key = q.id
-                except Exception:
-                    pass
 
-                try:
-                    ttk_save = temp_test_keywords(key_val=eval(tmainl['t_ttk'])[a]['tk_kval'],
-                                              key_group=eval(tmainl['t_ttk'])[a]['tk_kgroup'],
+                # Check max my_order num
+                max_order = temp_test_keywords.objects.aggregate(Max('my_order'))
+                print("MAX: ", max_order['my_order__max'])
+
+                ttk_save = temp_test_keywords(key_val=eval(tmainl['t_ttk'])[a]['tk_kval'] if eval(tmainl['t_ttk'])[a][
+                                                                                                 'tk_kval'] != 'None' else None,
+                                              key_group=eval(tmainl['t_ttk'])[a]['tk_kgroup'] if
+                                              eval(tmainl['t_ttk'])[a]['tk_kgroup'] != 'None' else None,
                                               key_id_id=last_key,
                                               main_id_id=main_id,
                                               test_id_id=case_id,
-                                              owner_id=eval(tmainl['t_ttk'])[a]['t_owner'],
+                                              my_order=max_order['my_order__max'] + 1,
+                                              owner_id=1,
                                               dt=str(datetime.now()))
 
-                    ttk_save.save()
-                except Exception:
-                    pass
+                ttk_save.save()
 
             # 6. Import temp_pers_keywords
-            for a in range(len(tmainl['t_tpk'])):
-                # Check if exist first key then second
-                l_key = temp_keywords.objects.all()
-                if tmainl['t_tpk'][a]['tp_key1'] not in [x.descr for x in l_key]:
-                    t_key = temp_keywords(descr=tmainl['t_tpk'][a]['tp_key1'],
-                                          human=tmainl['t_tpk'][a]['tp_key1'],
-                                          personal=True,
-                                          owner_id=tmainl['t_tpk'][a]['t_owner'],
-                                          dt=str(datetime.now()))
-                    t_key.save()
-                    first_key = t_key.id
-                else:
-                    qa = temp_keywords.objects.filter(descr=tmainl['t_tpk'][a]['tp_key1']).only('id')
-                    for q in qa: first_key = q.id
-                # Second
-                if tmainl['t_tpk'][a]['tp_key2'] not in [x.descr for x in l_key]:
-                    t_key = temp_keywords(descr=tmainl['t_tpk'][a]['tp_key2'],
-                                          human=tmainl['t_tpk'][a]['tp_key2'],
-                                          personal=False,
-                                          owner_id=tmainl['t_tpk'][a]['t_owner'],
-                                          dt=str(datetime.now()))
-                    t_key.save()
-                    second_key = t_key.id
-                else:
-                    qa = temp_keywords.objects.filter(descr=tmainl['t_tpk'][a]['tp_key2']).only('id')
-                    for q in qa: second_key = q.id
+            try:
+                for a in range(len(eval(tmainl['t_tpk']))):
 
-                tpk_save = temp_pers_keywords(pers_id_id=first_key,
-                                              strd_id_id=second_key,
-                                              variable_val=tmainl['t_tpk'][a]['tp_kval'],
-                                              main_id_id=main_id,
-                                              owner_id=tmainl['t_tpk'][a]['t_owner'],
+                    # first check if key exist in table temp keywords, otherwise add it
+                    if eval(tmainl['t_tpk'])[a]['tp_kdescr'].strip() not in [x.descr.strip() for x in l_key]:
+
+                        t_key = temp_keywords(descr=eval(tmainl['t_tpk'])[a]['tp_kdescr'],
+                                              human=eval(tmainl['t_tpk'])[a]['tp_kdescr'],
+                                              owner_id=1,
                                               dt=str(datetime.now()))
+                        try:
+                            t_key.save()
+                            last_key = t_key.id
+                        except Exception:
+                            pass
+                    else:
+                        qa = temp_keywords.objects.filter(descr=eval(tmainl['t_tpk'])[a]['tp_kdescr']).only('id')
+                        for q in qa: last_key = q.id
 
-                tpk_save.save()
+                    # Check max my_order num
+                    max_order = temp_pers_keywords.objects.aggregate(Max('my_order'))
+
+                    tpk_save = temp_pers_keywords(
+                        key_val=eval(tmainl['t_tpk'])[a]['tp_kval'] if eval(tmainl['t_tpk'])[a][
+                                                                           'tp_kval'] != 'None' else None,
+                        key_group=eval(tmainl['t_tpk'])[a]['tp_kgroup'] if eval(tmainl['t_tpk'])[a][
+                                                                               'tp_kgroup'] != 'None' else None,
+                        key_id_id=last_key,
+                        main_id_id=main_id,
+                        key_descr=eval(tmainl['t_tpk'])[a]['tp_descr'] if eval(tmainl['t_tpk'])[a][
+                                                                              'tp_descr'] != 'None' else None,
+                        my_order=max_order['my_order__max'] + 1,
+                        owner_id=1,
+                        dt=str(datetime.now()))
+
+                    tpk_save.save()
+            except Exception:
+                pass
 
         except Exception as e:
             logging.exception("message import")
