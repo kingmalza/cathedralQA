@@ -150,7 +150,7 @@ class temp_libraryAdmin(admin.ModelAdmin):
     form = TempLibsForm
 
     list_filter = ('main_id__descr', 'l_val')
-    list_display = ('get_main_id', 'l_val', 'l_group')
+    list_display = ('get_main_id', 'l_val', 'l_param', 'l_group')
 
     def get_main_id(self, obj):
         return obj.main_id.descr

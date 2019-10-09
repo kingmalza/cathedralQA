@@ -122,9 +122,9 @@ class temp_variables(models.Model):
     owner = models.ForeignKey('auth.User', related_name='tvar_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '2-Test Variable'
-        verbose_name_plural = '2-Test Variables'
-        ordering = ('main_id', 'v_key',)
+        verbose_name = '3-Test Variable'
+        verbose_name_plural = '3-Test Variables'
+        #ordering = ('main_id', 'v_key',)
 
     def __str__(self):
         return '%s -> %s' % (str(self.main_id), self.v_key)
@@ -172,15 +172,16 @@ class temp_library(models.Model):
     #l_type = models.CharField(max_length=50, verbose_name='Type')
     #l_val = models.CharField(max_length=254, verbose_name='Value')
     l_val = models.ForeignKey(suite_libs, on_delete=models.CASCADE, related_name='li_val', verbose_name="Library")
+    l_param = models.CharField(max_length=250, null=True, blank=True, verbose_name='Parameter')
     l_group = models.CharField(max_length=200, null=True, blank=True, verbose_name='Group')
     dt = models.DateTimeField(auto_now=True, verbose_name="Created")
     #Fields for API permissions
     owner = models.ForeignKey('auth.User', related_name='tlib_owner', on_delete=models.CASCADE, verbose_name="API Owner")
 
     class Meta:
-        verbose_name = '3-Test Library'
-        verbose_name_plural = '3-Test Libraries'
-        ordering = ('main_id', 'l_val',)
+        verbose_name = '2-Test Library'
+        verbose_name_plural = '2-Test Libraries'
+        #ordering = ('main_id', 'l_val',)
 
     def __str__(self):
         return '%s -> %s' % (str(self.main_id), self.l_val)

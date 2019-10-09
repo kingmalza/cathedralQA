@@ -175,6 +175,7 @@ def main(schema, id_templ, conn, p_force=False):
         rec_main = cursor.fetchall()
         for row in rec_main:
             tlib_list.append({'tl_val': row[1],
+                              'tl_param': row[6],
                               'tl_group': row[2],
                               't_owner': row[5]
                               })

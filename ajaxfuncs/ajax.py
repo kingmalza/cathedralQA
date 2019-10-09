@@ -344,7 +344,7 @@ def tselect(request):
     l = threading.enumerate()
     if request.is_ajax():
         if request.POST['selType'] == "ST":
-            selData = temp_main.objects.filter(active=True)
+            selData = temp_main.objects.filter(active=True).order_by('descr')
         elif request.POST['selType'] == "TG":
             selData = t_group.objects.all()
         elif request.POST['selType'] == "TA":

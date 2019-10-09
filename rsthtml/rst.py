@@ -192,7 +192,7 @@ class PrepareRst:
                             l.append("")
                         ltouple += (l,)
                         l = []
-                    l.append(repr(r.key_descr))
+                    l.append(str(r.key_descr))
 
                     if r.key_group is not None:
                         l.append(str(r.key_group)+str(r.key_id))
@@ -388,7 +388,8 @@ class PrepareRst:
                 #tslist.append([str(r.l_type), str(r.l_val)])
                 if r.l_group:
                     if r.l_group == g_id:
-                        l.append(str(r.l_val))
+                        #l.append(str(r.l_val))
+                        if str(r.l_param) != 'None':l.append(str(r.l_param))
                         g_id = str(r.l_group)
                     else:
                         if l:
@@ -400,6 +401,7 @@ class PrepareRst:
                             l = []
                         l.append('Library')
                         l.append(str(r.l_val))
+                        if str(r.l_param) != 'None':l.append(str(r.l_param))
                         g_id = str(r.l_group)
                 else:
 
@@ -409,6 +411,7 @@ class PrepareRst:
 
                     l.append('Library')
                     l.append(str(r.l_val))
+                    if str(r.l_param) != 'None': l.append(str(r.l_param))
                     if len(l) < maxMax+1:
                                 len_dif = maxMax-len(l)
                                 for x in range(0,len_dif+1): l.append('')

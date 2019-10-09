@@ -136,8 +136,9 @@ function createLine(f_text="", f_sel="ALL") {
                     var div_inf2b = document.createElement("div");
                     div_inf2b.setAttribute('class', 'box-body');
                     div_inf2b.style.height = '50%';
-                    var text_inf2b = document.createTextNode(data[index].rl_sdescr);
-                    div_inf2b.appendChild(text_inf2b);
+                    var span_inf2b = document.createElement("SPAN");
+                    span_inf2b.innerHTML = data[index].rl_sdescr;
+                    div_inf2b.appendChild(span_inf2b);
                     div_inf2.appendChild(div_inf2b);
 
 

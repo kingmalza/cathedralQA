@@ -18,7 +18,7 @@ from ajaxfuncs.template_import import import_internal
 from selenium import webdriver
 from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
 from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
-from backend.models import temp_keywords, temp_main, temp_case as tct, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, \
+from backend.models import temp_keywords, temp_main as tmt, temp_case as tct, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, \
     suite_libs
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
@@ -50,7 +50,7 @@ import hashlib
 from tenant_schemas.utils import (get_tenant_model, remove_www, get_public_schema_name)
 
 
-test_main = temp_main.objects.all()
+test_main = tmt.objects.all()
 test_case = tct.objects.all()
 test_var = temp_variables.objects.all()
 test_lib = temp_library.objects.all()
@@ -796,6 +796,18 @@ class temp_mainViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+#The autocomplete class for temp_test, then registered in urls and in forms
+class temp_mainAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = tmt.objects.all()
+
+        if self.q:
+            qs = qs.filter(descr__istartswith=self.q).order_by('descr')
+
+        return qs
 
 
 class temp_caseViewSet(viewsets.ModelViewSet):

@@ -34,6 +34,7 @@ class CustomBarModelForm(ModelForm):
         model = temp_pers_keywords
         fields = '__all__'
         widgets = {
+            'main_id': autocomplete.ModelSelect2(url='tm-autocomplete'),
             'key_id': autocomplete.ModelSelect2(url='tpk-autocomplete')
         }
         help_texts = {'main_id': "Main template to which to connect the keyword",
@@ -106,6 +107,9 @@ class TempCaseForm(forms.ModelForm):
     class Meta:
         model = temp_case
         fields = '__all__'
+        widgets = {
+            'main_id': autocomplete.ModelSelect2(url='tm-autocomplete')
+        }
         help_texts = {'main_id': "Main template to which to connect the testcase",
                       'descr': 'The name of the test case that will be shown in the test structure'}
 
@@ -114,6 +118,9 @@ class TempVarsForm(forms.ModelForm):
     class Meta:
         model = temp_variables
         fields = '__all__'
+        widgets = {
+            'main_id': autocomplete.ModelSelect2(url='tm-autocomplete'),
+        }
         help_texts = {'main_id': "Main template to which to connect the variable Key/Val",
                       'v_key': 'Variable name',
                       'v_val': 'Optional, initial value shown on the test start screen'}
@@ -137,6 +144,7 @@ class TempLibsForm(forms.ModelForm):
         model = temp_library
         fields = '__all__'
         widgets = {
+            'main_id': autocomplete.ModelSelect2(url='tm-autocomplete'),
             'l_val': autocomplete.ModelSelect2(url='tl-autocomplete')
         }
         help_texts = {'main_id': "Main template to which to connect the variable Key/Val",
@@ -152,6 +160,7 @@ class TtkForm(forms.ModelForm):
         model = temp_test_keywords
         fields = '__all__'
         widgets = {
+            'main_id': autocomplete.ModelSelect2(url='tm-autocomplete'),
             'key_id': autocomplete.ModelSelect2(url='ttk-autocomplete'),
             'test_id': autocomplete.ModelSelect2(url='ttk-tc-autocomplete', forward=['main_id'])
         }
