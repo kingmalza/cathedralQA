@@ -33,6 +33,9 @@ class temp_mainAdmin(admin.ModelAdmin):
         obj.user = request.user
         super(temp_mainAdmin, self).save_model(request, obj, form, change)
 
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
+
     def changeform_view(self, request, obj_id=None, form_url='', extra_context=None):
 
         try:
@@ -85,6 +88,9 @@ class temp_caseAdmin(admin.ModelAdmin):
 
         return form
 
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
+
     def changeform_view(self, request, obj_id, form_url='', extra_context=None):
 
         try:
@@ -130,6 +136,9 @@ class temp_variablesAdmin(admin.ModelAdmin):
 
         return form
 
+
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
@@ -199,6 +208,9 @@ class temp_libraryAdmin(admin.ModelAdmin):
             'sl': s_libs,
         }
         return super(temp_libraryAdmin, self).changelist_view(request, extra_context=extra_context)
+
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
@@ -270,6 +282,9 @@ class ttkAdmin(SortableAdminMixin, admin.ModelAdmin):
         return form
 
 
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
+
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 
         try:
@@ -336,6 +351,9 @@ class tpk(SortableAdminMixin, admin.ModelAdmin):
         ))
 
         return form
+
+    def get_changeform_initial_data(self, request):
+        return {'owner': request.user}
 
     def changeform_view(self, request, obj_id, form_url, extra_context=None):
 

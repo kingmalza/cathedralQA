@@ -112,7 +112,9 @@ function createLine(f_text="", f_sel="ALL") {
                     buthtview.onclick = function() {get_t_data(this.name);};
                     //createH.appendChild(buthtview);
                     var h3_1 = document.createElement("h3");
-                    h3_1.innerHTML = data[index].rl_desc;
+                    var h3_strong = document.createElement("STRONG")
+                    h3_strong.innerText = data[index].rl_desc;
+                    h3_1.appendChild(h3_strong);
                     h3_1.setAttribute('class', 'box-title');
                     h3_1.style.paddingLeft = '10px';
                     div_inf3.appendChild(buthtview);
@@ -136,7 +138,7 @@ function createLine(f_text="", f_sel="ALL") {
                     var div_inf2b = document.createElement("div");
                     div_inf2b.setAttribute('class', 'box-body');
                     div_inf2b.style.height = '50%';
-                    var span_inf2b = document.createElement("SPAN");
+                    var span_inf2b = document.createElement("P");
                     span_inf2b.innerHTML = data[index].rl_sdescr;
                     div_inf2b.appendChild(span_inf2b);
                     div_inf2.appendChild(div_inf2b);
