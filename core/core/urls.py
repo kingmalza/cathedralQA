@@ -37,7 +37,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
     t_group_testViewSet, \
     t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, legal_terms, \
     handler500, temp_clone, temp_publish, regoractivate, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
-    one_time_startup, temp_libraryAutocomplete, temp_mainAutocomplete
+    one_time_startup, temp_libraryAutocomplete, temp_mainAutocomplete, ask_template
 
 from frontend.template_export import ret_list, start, stop_templ
 from frontend.getdata import market_data
@@ -87,6 +87,7 @@ urlpatterns = [
                   url(r'^files/frefresh$', filerefresh),
                   url(r'^hrefresh$', histrefresh),
                   url(r'^elemcount$', ecount),
+                    url(r'^ask$', ask_template),
                   url(r'^getuser$', retUser),
                   url(r'^addtask$', assign_ticket),
                   url(r'^getass$', get_ticket),

@@ -483,6 +483,24 @@ def sys_usage(request, **kwargs):
 
     return response
 
+
+@login_required
+def ask_template(request, **kwargs):
+
+    #GET settings_gen stripe_id if present
+    try:
+        cli_id = get_lic()
+        lic_buy = cli_id['LDATA'][9]
+        if cli_id['LDATA'][9]:
+            context_dict = {'licnum': lic_buy.strip()}
+            response = render(request, 'base_ask.html', context_dict)
+        else:
+            return HttpResponseRedirect('https://cathedral.ai/gocard/'+cli_id['LDATA'][0].strip())
+        return response
+    except Exception:
+        return HttpResponseRedirect('https://cathedral.ai/#contactus')
+
+
 @login_required
 def f_upload(request, **kwargs):
     current_user = request.user
