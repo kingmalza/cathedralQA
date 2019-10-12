@@ -26,6 +26,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost, tsingle
+from ajfuncs.asktempl import askinsert
 from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter, hstartfilter
 from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
@@ -107,6 +108,7 @@ urlpatterns = [
                   url(r'^tcase$', temp_case),
                 url(r'^tassist$', temp_assist),
                 url(r'^mpdata$', market_data),
+                url(r'^ask_templ$', askinsert),
                 url(r'^tpublish$', temp_publish),
                   url(r'^tpublish/(?P<reg_status>\w+)/$', temp_publish),
                   url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),
