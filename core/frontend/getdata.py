@@ -43,6 +43,28 @@ def get_lic():
     #return json.dumps(response, default = myconverter)
 
 
+def ins_ask(ask_data):
+    cparam = getattr(settings, "LIC_PARAM", None)
+
+    try:
+        conn = psycopg2.connect(**cparam)
+        conn.autocommit = True
+
+        cur = conn.cursor()
+
+        s_query = "INSERT INTO a_ask (lnum,datar,ttype,precond,steps,expres,scode,tdescr,evaluated) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','N');" % (ask_data['lnum'],str(datetime.datetime.now()),ask_data['ttype'],ask_data['precond'],ask_data['steps'],ask_data['expres'],ask_data['scode'],ask_data['tdescr'])
+        cur.execute(s_query)
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return 'OK'
+    except Exception as e:
+        print("Errorrr->",e)
+        return e
+
+
 @csrf_exempt
 def market_data(request):
     response = []

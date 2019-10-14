@@ -286,10 +286,9 @@ function get_t_data(id_teml) {
                     var div_crh = document.createElement("div");
                     div_crh.setAttribute('class', 'box-body chat');
                     div_crh.style.paddingTop = "10px";
+                    div_crh.style.display = "none";
                     if (data[index].ADSDESC != null && data[index].ADSURL != null) {
                         div_crh.style.display = "auto";
-                    } else {
-                        div_crh.style.display = "none";
                     }
 
                     var lab_crh = document.createElement("LABEL");
@@ -365,7 +364,7 @@ function get_t_data(id_teml) {
                     if (data[index].SID != null) {
                         div_html.innerHTML = data[index].THTML;
                     } else {
-                        div_html.innerHTML = data[index].THTML+"<div id='text-demo' style='box-shadow: 8px 8px #888888'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>ALMOST DONE!</font></strong></p><br><strong>You only need just one step to activate your access to the CathedralStudio marketplace</strong><br><br>Register your license to use the cathedral marketplace, you can access new test cases every day to import and use directly in your Cathedral suite in order to optimize your company testing strategy, saving time and increasing the quality of the your products.<br><br>Importing and managing the Cathedral professional tests is quick and easy, click on the ACTIVATE NOW button below, enter the required data and you will have immediate access from your environment to the entire present and future test templates database.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>ACTIVATE NOW</button></a></div></div></div>";
+                        div_html.innerHTML = data[index].THTML+"<div id='text-demo' style='box-shadow: 8px 8px #888888'><div class='login-box-body'><p class='login-box-msg'><strong><font color='green'>ALMOST DONE!</font></strong></p><br><strong>You only need just one step to activate your access to the CathedralStudio marketplace</strong><br><br>Register your license to use the cathedral marketplace, you can access new test cases every day to import and use directly in your Cathedral suite in order to optimize your company testing strategy, saving time and increasing the quality of the your products.<br><br>Importing and managing the Cathedral professional tests is quick and easy, click on the <strong>ACTIVATE NOW</strong> button below, enter the required data and you will have immediate access from your environment to the entire present and future test templates database.<br><br><br><div><a href='#' onclick=window.location.href='https://cathedral.ai/gocard/'+document.getElementById('mylic').innerText><button class='btn btn-block btn-success btn-lg'>ACTIVATE NOW</button></a></div></div></div>";
                     }
                     div_modal_b.appendChild(p_modal_b);
                     div_modal_b.appendChild(div_h3);

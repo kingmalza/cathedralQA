@@ -265,7 +265,23 @@ function clicktemp(tID) {
 }
 
 
+function HTMLEncode(str) {
+    var i = str.length,
+        aRet = [];
+
+    while (i--) {
+        var iC = str[i].charCodeAt();
+        if (iC < 65 || iC > 127 || (iC>90 && iC<97)) {
+            aRet[i] = '&#'+iC+';';
+        } else {
+            aRet[i] = str[i];
+        }
+    }
+    return aRet.join('');
+}
+
 function isempty() {
+
     var r_1;
     var r_2;
     var r_3;
@@ -290,34 +306,19 @@ function isempty() {
             url: "ask_templ",
             data: {idLic: document.getElementById("licnum").value,
                 tType: document.getElementById("t_type").value,
-                tPre: r_1.value,
-                tSteps: r_2.value,
-                tExpect: r_3.value,
-                tCode: document.getElementById("t_code").value,
-                tDesc: r_4.value,
-                tLib: document.getElementById("t_lib").value
+                tPre: r_1.value.substring(0, 1000),
+                tSteps: r_2.value.substring(0, 1000),
+                tExpect: r_3.value.substring(0, 1000),
+                tCode: HTMLEncode(document.getElementById("t_code").value).substring(0, 1000),
+                tDesc: r_4.value.substring(0, 1000)
             },
                 success: function (data) {
 
-                    $.each(data, function (index) {
-
-                        r_err = data[index].Error;
-                        try {
-                            r_lic = data[index].lic;
-                        }
-                        catch(err) {}
-                        //window.location.href = 'https://newurl.com';
-                    } );
-
-                    if (r_err == "Nostripe") {
-                        window.open('https://cathedral.ai/gocard/'+r_lic);
-                    } else if (r_err == "BUSY") {
-                        alert('The template you are trying to upload is already present to the marketplace or the request is being approved. To reload the template again you must first stop the publication of the previous one.');
-                    } else if (r_err == "OK"){
-                        alert('The request to publish the template has been correctly inserted in our database. Our staff will proceed to the evaluation of your template. As soon as the approval process is completed you will receive a confirmation email.');
-                        window.location.href = '/tpublish';
+                    if (data == "OK"){
+                        alert('The request to create your template has been correctly inserted in our database. Our staff will proceed to the evaluation of your data. As soon as the approval process is completed your new template will be inserted into our Cathedral Studio new Marketplace Templates update newsletter.');
+                        window.location.href = '/tassist';
                     } else {
-                        alert('Something went wrong! Check the correctness of the data in your template or contact our technical support for assistance.');
+                        alert('Something went wrong! Check the correctness of the data in your request or contact our technical support for assistance.');
                         window.open('https://cathedral.ai/#contactus','_blank');
                     }
                 },
@@ -325,12 +326,7 @@ function isempty() {
                     alert('Error '+exception);
                 }
             });
-
-        }
     }
-
-
-    return false;
 
 }
 

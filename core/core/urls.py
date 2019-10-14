@@ -26,7 +26,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost, tsingle
-from ajfuncs.asktempl import askinsert
+from ajaxfuncs.asktempl import askinsert
 from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter, hstartfilter
 from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
