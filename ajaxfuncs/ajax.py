@@ -16,8 +16,6 @@ from rsthtml.rst import MakeRst as mr
 from rsthtml.rst import MakeHtml as mh
 from rsthtml.goTest import parsefile
 
-import lxml.etree as etree
-
 from jira import JIRA
 
 from frontend.models import t_threads, t_history, t_group, t_group_test, \

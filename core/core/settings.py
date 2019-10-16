@@ -91,14 +91,14 @@ DATABASES = {
 }
 """
 
-#For local use only (Poli)
+#For local use only
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cath_local',
         'USER': 'postgres',
         'PASSWORD': '11235813post',
-        'HOST': '127.0.0.1',
+        'HOST': 'postgres',
         'PORT': '5432',
         'OPTIONS': {
             'client_encoding': 'UTF8',

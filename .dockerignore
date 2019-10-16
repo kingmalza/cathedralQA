@@ -1,0 +1,26 @@
+# Ignore
+.DS_Store
+.idea
+.venv2
+.git
+.gitignore
+__pycache__
+!manage.py
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.log
+docker-compose.yml
+Dockerfile
+log.html
+media
+docs
+examples
+out
+output.xml
+report.html
+startup.sh
+templates
+testlibs
+.dockerignore

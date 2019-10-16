@@ -13,7 +13,6 @@ from copy import deepcopy
 import simplejson
 import random
 import string
-import boto3
 import json
 import sys
 import schedule
@@ -87,7 +86,6 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, run_ty
     cli_id = None
     id_cli = 999
 
-    #client = boto3.client("lambda")
     #Time at the start
     dtime1 = str(datetime.datetime.now())
     # Start
