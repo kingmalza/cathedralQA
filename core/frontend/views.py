@@ -1161,6 +1161,46 @@ def one_time_startup():
                            lib_name='RequestsLibrary',
                            status='ACTIVE',
                            docs='http://bulkan.github.io/robotframework-requests/')
+        lib17 = suite_libs(name='ExcelLibrary',
+                           descr='Robot Framework library for working with Excel documents, based on openpyxl.',
+                           lib_name='ExcelLibrary',
+                           status='ACTIVE',
+                           docs='https://rawgit.com/peterservice-rnd/robotframework-excellib/master/docs/ExcelLibrary.html')
+        lib18 = suite_libs(name='JenkinsLibrary',
+                           descr='JenkinsLibrary is a Robot Framework test library which helps you to involve Jenkins in your tests.',
+                           lib_name='JenkinsLibrary',
+                           status='ACTIVE',
+                           docs='')
+        lib19 = suite_libs(name='JsonValidator',
+                           descr='Robot Framework library for JSON validation based on JSONSchema, JSONPath, JSONSelect.',
+                           lib_name='JsonValidator',
+                           status='ACTIVE',
+                           docs='https://github.com/peterservice-rnd/robotframework-jsonvalidator/tree/master/docs')
+        lib20 = suite_libs(name='OracleDB',
+                           descr='Robot Framework library for working with Oracle database, using cx_Oracle.',
+                           lib_name='OracleDB',
+                           status='ACTIVE',
+                           docs='https://github.com/peterservice-rnd/robotframework-oracledb/tree/master/docs')
+        lib21 = suite_libs(name='PostgreSQLDB',
+                           descr='Robot Framework library for working with PostgreSQL database, using psycopg2.',
+                           lib_name='PostgreSQLDB',
+                           status='ACTIVE',
+                           docs='https://github.com/peterservice-rnd/robotframework-postgresqldb/tree/master/docs')
+        lib22 = suite_libs(name='React Library',
+                           descr='ReactLibrary is a Robot Framework library for React.',
+                           lib_name='React Library',
+                           status='ACTIVE',
+                           docs='')
+        lib23 = suite_libs(name='SnmpLibrary',
+                           descr='SNMPLibrary is a Robot Framework test library for testing SNMP.',
+                           lib_name='SnmpLibrary',
+                           status='ACTIVE',
+                           docs='http://kontron.github.io/robotframework-snmplibrary/SnmpLibrary.html')
+        lib24 = suite_libs(name='winregistry.robot',
+                           descr='Minimalist library aimed at working with Windows Registry.',
+                           lib_name='winregistry.robot',
+                           status='ACTIVE',
+                           docs='https://github.com/shpaker/winregistry')
 
         lib1.save()
         lib2.save()
@@ -1178,6 +1218,14 @@ def one_time_startup():
         lib14.save()
         lib15.save()
         lib16.save()
+        lib17.save()
+        lib18.save()
+        lib19.save()
+        lib20.save()
+        lib21.save()
+        lib22.save()
+        lib23.save()
+        lib24.save()
 
     #Check if almeno a use exist otherwise create one
     us = User.objects.all().count()
