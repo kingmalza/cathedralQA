@@ -173,58 +173,6 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, run_ty
                                     thread_main=t, thread_stag=s_tag, thread_status="STARTED", thread_ttype=s_type, thread_runtype=run_type, thread_tgroup=tx_group, thread_stype=sc_type, thread_sval=sc_val)
             thread_save.save()
 
-            """
-            #LAMBDA CALL FOR LIC INSERTION
-            #1 Check customer id
-            #schema_name = str(settings.DATABASES['default']['SCHEMA'])
-            schema_name = settings_gen.objects.get(id=1).tenant_name
-
-            pay_c = {
-                "ev_type": "G",
-                "tenant": schema_name
-            }
-
-            cli_id = client.invoke(
-                FunctionName='aida_lic_get',
-                InvocationType='RequestResponse',
-                Payload=json.dumps(pay_c)
-            )
-
-
-            data1 = cli_id['Payload'].read().decode('utf-8')
-            l_data = json.loads(json.loads(data1,encoding='utf-8'))
-
-            id_cli = l_data[0]
-            data_act = l_data[4]
-
-            #Now check delta days from today and activate data
-            d0 = datetime.date.today().strftime("%Y-%m-%d")
-            d0 = datetime.datetime.strptime(d0, '%Y-%m-%d')
-            d1 = datetime.datetime.strptime(data_act, '%Y-%m-%d')
-            delta = (d0-d1)
-
-
-            if delta.days > 30:
-                #2 Insert data into usage table if activation data greater than 30gg
-                payload = {
-                    "key_cli": id_cli,
-                    "data_start": dtime1,
-                    "data_stop": dtime2,
-                    "elapsed_t": elapsed,
-                    "bk_tenant": schema_name
-                }
-
-                try:
-                    client.invoke(
-                        FunctionName='aida_usage_insert',
-                        InvocationType='RequestResponse',
-                        Payload=json.dumps(payload)
-                    )
-                except ClientError as er2: #if you see a ClientError, catch it as e
-                    print("Error use--> gotest156",er2) #print the client error info to console
-
-            """
-
     except Exception as e:
         print("Errore_gotest:", e.args)
 

@@ -1166,11 +1166,6 @@ def one_time_startup():
                            lib_name='ExcelLibrary',
                            status='ACTIVE',
                            docs='https://rawgit.com/peterservice-rnd/robotframework-excellib/master/docs/ExcelLibrary.html')
-        lib18 = suite_libs(name='JenkinsLibrary',
-                           descr='JenkinsLibrary is a Robot Framework test library which helps you to involve Jenkins in your tests.',
-                           lib_name='JenkinsLibrary',
-                           status='ACTIVE',
-                           docs='')
         lib19 = suite_libs(name='JsonValidator',
                            descr='Robot Framework library for JSON validation based on JSONSchema, JSONPath, JSONSelect.',
                            lib_name='JsonValidator',
@@ -1219,7 +1214,6 @@ def one_time_startup():
         lib15.save()
         lib16.save()
         lib17.save()
-        lib18.save()
         lib19.save()
         lib20.save()
         lib21.save()

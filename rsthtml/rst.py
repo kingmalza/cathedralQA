@@ -510,6 +510,10 @@ class MakeHtml(threading.Thread):
 
         # self.save_html('Test')
 
+    """
+    ###########################################
+    #10/10/2019 LEGACY METHOD FOR SAVE REPORT, NO SAVING ON DISK NEEDED NOW, REPORTS LL OPEN DINAMICALLY FROM DB
+    ###########################################
     # Save html file on disk and run it if
     # def saverun_html(self, idTest, runTest=False):
     def run(self):
@@ -552,7 +556,7 @@ class MakeHtml(threading.Thread):
         self.retval = rdict
         #run_test(filepath, outputdir=filedir)
         #return rdict
-
+    """
 
 def stop(self):
     self._stop_event.set()

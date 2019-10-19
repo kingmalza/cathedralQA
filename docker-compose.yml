@@ -21,6 +21,7 @@ services:
 
   web:
     build: .
+    image: cath2019/cathedral_studio  # goes to youruser DockerHub registry
     command: python /Code/core/manage.py runserver 0.0.0.0:8000
     networks:
       - mynetwork
@@ -31,6 +32,6 @@ services:
     depends_on:
       - postgres
 
-  pushcath:
-    build: .
-    image: cath2019/cathedral_studio  # goes to youruser DockerHub registry
+  #pushcath:
+  #  build: .
+  #  image: cath2019/cathedral_studio  # goes to youruser DockerHub registry
