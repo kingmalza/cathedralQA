@@ -1,6 +1,7 @@
 from rsthtml.rst import PrepareRst as pr
 from rsthtml.rst import MakeRst as mr
 from rsthtml.rst import MakeHtml as mh
+import logging
 from django.http import HttpResponse, HttpRequest
 from robot import run as run_test
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +25,6 @@ if sys.version_info[0] < 3:
 else:
     import queue as que
 import subprocess
-from botocore.exceptions import ClientError
 import re
 
 from tenant_schemas.utils import (get_tenant_model, remove_www,
@@ -124,7 +124,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, run_ty
 
         t_list[t_inst].join()  # wait till threads have finished.
         #run_test(t_list[t_inst].retval['fpath'], outputdir=t_list[t_inst].retval['fdir'], level='TRACE')
-        subprocess.call(['python', 'golog.py', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
+        subprocess.call(['python', 'core/golog.py', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
     # Try to store data into db
     try:
         # Cop content of xml in db
@@ -304,7 +304,7 @@ def startTest(request, i=[0]):
                             goProc(iid, xl, 1, stag, reqT, u_id, sset, sval, runT, gval)
                             time.sleep(2)
                         except Exception as e:
-                            print("Exception in goproc 306: ",e.args)
+                            logging.exception("Exception occurred in goproc 306")
             if sset != 'once':
                 ##IMPORTANT!##
                 ##If multiple value in variable execution is related to all value only for Once selection, in case of scheduled just first value is executed

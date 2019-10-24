@@ -11,8 +11,8 @@ __pycache__
 *.so
 .Python
 *.log
-docker-compose.yml
 Dockerfile
+docker-compose.yml
 log.html
 media
 docs

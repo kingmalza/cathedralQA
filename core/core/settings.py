@@ -24,7 +24,7 @@ SECRET_KEY = 'b)xb0#xtdg$-oq@il@48!@k6cpotcd0ku%f&39r^$y=8b(5o)o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*', '192.168.99.100:8000']
 
 # Application definition
 
@@ -58,9 +58,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            'templates',
-        ],
+        'DIRS': ['core/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,9 +93,9 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cath_local',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': '11235813post',
+        'PASSWORD': 'postgres',
         'HOST': 'postgres',
         'PORT': '5432',
         'OPTIONS': {
