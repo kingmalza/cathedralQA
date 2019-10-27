@@ -1,16 +1,15 @@
 # Ignore
+#**/*.pyc
+#/core/*.py
+#/ajaxfuncs/*.py
+#/rsthtml/*.py
+#!/core/manage.py
 .DS_Store
 .idea
 .venv2
 .git
 .gitignore
 __pycache__
-!manage.py
-*.py[cod]
-*$py.class
-*.so
-.Python
-*.log
 Dockerfile
 docker-compose.yml
 log.html
@@ -21,6 +20,5 @@ out
 output.xml
 report.html
 startup.sh
-templates
-testlibs
+/core/testlibs
 .dockerignore

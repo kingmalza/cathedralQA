@@ -7,7 +7,7 @@ def connect_db(cname, cuser, chost, cpassword, null=None):
         conn = psycopg2.connect("dbname = %s user=%s host=%s password=%s" % (cname, cuser, chost, cpassword))
     except:
         conn = null
-        print "I am unable to connect to the database"
+        print ("I am unable to connect to the database")
 
     return conn
 
