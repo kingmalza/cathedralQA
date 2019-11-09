@@ -48,6 +48,7 @@ ply==3.11
 prettytable==0.7.2
 psycopg2==2.7.5
 psycopg2-binary==2.7.6.1
+pyarmor==5.6.5
 pyasn1==0.4.4
 pycparser==2.18
 pycryptodomex==3.9.0
