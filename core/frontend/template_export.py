@@ -76,7 +76,7 @@ def start(request, internal=None):
                 'host': '127.0.0.1',
                 'database': d_base,
                 'user': 'postgres',
-                'password': '11235813post',
+                'password': 'postgres',
             }
 
             conn = psycopg2.connect(**connection_parameters)
