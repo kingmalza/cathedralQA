@@ -124,7 +124,7 @@ def goProc(mainId, varlist, t_inst, s_tag, s_type, u_id, sc_type, sc_val, run_ty
 
         t_list[t_inst].join()  # wait till threads have finished.
         #run_test(t_list[t_inst].retval['fpath'], outputdir=t_list[t_inst].retval['fdir'], level='TRACE')
-        subprocess.call(['python', 'core/golog.pyc', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
+        subprocess.call(['python', 'golog.py', t_list[t_inst].retval['fpath'], t_list[t_inst].retval['fdir']])
     # Try to store data into db
     try:
         # Cop content of xml in db
