@@ -182,6 +182,11 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATIC_ROOT = '/static/images/'
 
+STATICFILES_DIRS = [
+    '/var/www/core/frontend/static',
+    '/.venv/lib/python3.6/site-packages/django/contrib/admin/static',
+]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
