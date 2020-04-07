@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.8 on linux)" generated="20191122 05:07:12.059">
+<suite id="s1" name="139791156697464 TC" source="/home/kingmalza/BIGDATA/Project/helium/web/core/frontend/static/out/139791156697464/139791156697464_TC.html">
+<test id="s1-t1" name="noTest">
+<status status="FAIL" starttime="20191122 05:07:12.177" endtime="20191122 05:07:12.179" critical="yes">Test case contains no keywords.</status>
+</test>
+<status status="FAIL" starttime="20191122 05:07:12.061" endtime="20191122 05:07:12.181"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="139791156697464 TC">139791156697464 TC</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20191122 05:07:12.061" level="ERROR">Error in file '/home/kingmalza/BIGDATA/Project/helium/web/core/frontend/static/out/139791156697464/139791156697464_TC.html': Setting variable '$USERTEXT' failed: Invalid variable name '$USERTEXT'.</msg>
+</errors>
+</robot>
