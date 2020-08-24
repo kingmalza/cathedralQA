@@ -76,19 +76,19 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lyra1',
+        'NAME': 'helium_web',
         'USER': 'kingmalza',
         'PASSWORD': '11235813post',
-        'HOST': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+        'HOST': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
-"""
 
+"""
 #For local use only
 DATABASES = {
     'default': {
@@ -103,11 +103,11 @@ DATABASES = {
         },
     }
 }
-
+"""
 
 #Connection Parameters for aida_lic table and marketplace
 LIC_PARAM = {
-    'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
     'database': 'aida_lic',
     'user': 'kingmalza',
     'password': '11235813post',
@@ -124,7 +124,7 @@ SENDY_PARAM = {
 
 
 EXPORT_PARAM = {
-    'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
     'database': 'helium_ai',
     'user': 'kingmalza',
     'password': '11235813post',
