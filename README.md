@@ -9,3 +9,9 @@ Aida is based on a roboframework and selenium plaTorm, it
 uses a fast and intuiBve graphic interface for the creaBon of
 its own test models and allows the importaBon of any
 custom clilent libraries inside the suite.
+
+# Installation
+I use an ubuntu server machine for develop and test cathedral, with a postgresql db (mandatory because of use of different schemas related to tenants options) and nginx as webserver.
+For the srver installation follow these details:
+
+##Server setup
