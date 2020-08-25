@@ -125,7 +125,6 @@ For example if you whant use your cathedral installation for two different busin
 
 -Create schema and populate tables (**important**)
 ```
-
 python manage.py shell
 
 from frontend.webinit import create1
@@ -153,7 +152,7 @@ INSERT INTO public.a_lic(
 python manage.py sqlsequencereset frontend
 ```
 
-- Fill SETTINGS_GEN Ttable with new registration data
+-Fill SETTINGS_GEN Ttable with new registration data
 
 -If you whant use stripe for your marketplace income From stripe registration data get details and fill table (seting_gen stripe_id field)
 
