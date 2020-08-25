@@ -1,5 +1,5 @@
 # cathedralQA
-Repo for the open source Test Suite Cathedral (codename aida)
+Repo for the open source Test Suite Cathedral (codename aida) (https://cathedral.ai)
 
 Aida (Automation Test Suite) allows you to
 independently create, manage, plan and execute any type
