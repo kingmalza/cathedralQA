@@ -16,59 +16,64 @@ For the srver installation follow these details:
 
 ## Server setup
 -Create your ubuntu server machine
+
 -Install python3
 ```
 sudo apt-get install python3.6
 ```
 
 -Install python-pip
+```
 sudo apt-get install software-properties-common
 sudo apt-add-repository universe
 sudo apt-get update
 #sudo apt-get install python-pip
 sudo apt-get -y install python3-pip
+```
 
+-Install virtualenv for creating a new dedicate virtual enviroment (not mandatory but strongly suggested)
+```
 pip3 install virtualenv
+```
 
--Create .venv36 in home and install all requirements
-
-python -m virtualenv .venv36 --python=python3
-
+-Create .venv in home and install all requirements
+```
+python -m virtualenv .venv --python=python3
+```
 
 -Install nginx
-
+```
 sudo apt-get update
 sudo apt-get install nginx
 sudo service nginx restart
+```
 
-#Modify /etc/nginx permission, adding 775 and ubuntu group
+-Modify /etc/nginx permission, adding 775 and ubuntu group
+```
 sudo chmod -R 775 /etc/nginx
 sudo chgrp -R ubuntu /etc/nginx
-
-#Copy nginx.conf in /etc/nginx
-#change user in line5 of nginx.conf with ububtu
+```
+Start nginx service
+```
 sudo service nginx restart
-
+```
 
 -Create folder var/www and copy all web project
+```
 #change www folder permission
 sudo chmod -R 775 /var/www
 sudo chgrp -R ubuntu /var/www
+```
 
--Copy web folder (remove p.y file for standalone client)
-
-
--Register AWS key
-
-aws configure (file in drve path)
-
+-Copy all cathedral file in web folder (or use directly git repo)
 
 -Install Firefox
-
+```
 sudo apt-get install firefox
+```
 
---Set geckodriver
-https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu
+-Set geckodriver
+(https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu)
 
 
 sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
