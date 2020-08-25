@@ -157,10 +157,11 @@ python manage.py sqlsequencereset frontend
 -If you whant use stripe for your marketplace income From stripe registration data get details and fill table (seting_gen stripe_id field)
 
 ## Demo
-you can try a full verion of the sotware on my demo enviroment here:
+You can try a full verion of the sotware on my demo enviroment here:
 
 (https://helium.myaida.io)
 >User: demo
+
 >Password: Cathedral
 
 ## Documentation
