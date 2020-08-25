@@ -48,7 +48,7 @@ sudo apt-get install nginx
 sudo service nginx restart
 ```
 
--Modify /etc/nginx permission, adding 775 and ubuntu group
+-Modify /etc/nginx permission, adding 775 and ubuntu group (or for your server user)
 ```
 sudo chmod -R 775 /etc/nginx
 sudo chgrp -R ubuntu /etc/nginx
@@ -75,11 +75,14 @@ sudo apt-get install firefox
 -Set geckodriver
 (https://askubuntu.com/questions/870530/how-to-install-geckodriver-in-ubuntu)
 
-
+-Install these x component
+```
 sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
 sudo apt-get install xvfb
 sudo apt-get install xserver-xorg-core
+```
 
+```
 #For make path permanent:
 sudo nano ~/.profile
 #At the end
@@ -88,31 +91,28 @@ export PATH
 
 Xvfb :99 &
 export DISPLAY=:99
-
-
+```
 
 -Install Chrome
-
+```
 sudo apt-get install unzip
 /usr/local/lib$ wget https://chromedriver.storage.googleapis.com/2.42/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 sudo apt-get install -y chromium-browser
+```
 
--Update to python 3
-
+-Update to python 3 (if needed)
+```
 update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-
 sudo apt install python3-pip -y
-
 which pip3
 ln -s /usr/bin/pip3 /usr/bin/pip
-
 pip —version
+```
 
+-Install postgresql (important)
 
--Install postgresql
+(https://tecadmin.net/install-postgresql-server-on-ubuntu/)
 
-https://tecadmin.net/install-postgresql-server-on-ubuntu/
-
-(for set defautl password of postgres user to postgres see: https://serverfault.com/questions/110154/whats-the-default-superuser-username-password-for-postgres-after-a-new-install)
+[for set defautl password of postgres user to postgres](https://serverfault.com/questions/110154/whats-the-default-superuser-username-password-for-postgres-after-a-new-install)
 
