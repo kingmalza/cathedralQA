@@ -1,5 +1,5 @@
 # cathedralQA
-Repo for the open source Test Suite Cathedral project
+Repo for the open source Test Suite Cathedral (codename aida)
 
 Aida ATM (Automa-on Test Suite) allows you to
 independently create, manage, plan and execute any type
