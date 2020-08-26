@@ -43,7 +43,7 @@ from frontend.views import index, h_list, login_register, user_login, user_logou
 from frontend.template_export import ret_list, start, stop_templ
 from frontend.getdata import market_data
 
-one_time_startup()
+#one_time_startup()
 
 schema_view = get_schema_view(title='Aida API')
 

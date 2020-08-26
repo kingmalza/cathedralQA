@@ -24,11 +24,36 @@ SECRET_KEY = 'b)xb0#xtdg$-oq@il@48!@k6cpotcd0ku%f&39r^$y=8b(5o)o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*', '192.168.99.100:8000']
+ALLOWED_HOSTS = ['18.213.17.156', '54.72.119.195', 'localhost', '127.0.0.1', '.myaida.io']
 
 # Application definition
+SHARED_APPS = (
+    'tenant_schemas',  # mandatory, should always be before any django app
+    'frontend', # you must list the app where your tenant model resides in
+    'backend',
+    'django.contrib.contenttypes',
+
+    # everything below here is optional
+    'django.contrib.auth',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+)
+
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'rest_framework',
+    # your tenant-specific apps
+    'frontend',
+    'backend',
+)
+
 
 INSTALLED_APPS = [
+    'tenant_schemas',  # mandatory, should always be before any django app
     'dal',
     'dal_select2',
     'django.contrib.admin',
@@ -38,12 +63,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'adminsortable2',
     'frontend',
     'backend',
 ]
 
+TENANT_MODEL = "frontend.Client" # app.Model
+
+DEFAULT_FILE_STORAGE = "tenant_schemas.storage.TenantFileSystemStorage"
+
 MIDDLEWARE = [
+    'frontend.middleware.XHeaderTenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,10 +84,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+#APPEND_SLASH=False
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'apptemplates.Loader',
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': [
+            'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,7 +118,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'tenant_schemas.postgresql_backend',
         'NAME': 'helium_web',
         'USER': 'kingmalza',
         'PASSWORD': '11235813post',
@@ -88,22 +127,6 @@ DATABASES = {
     }
 }
 
-"""
-#For local use only
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'OPTIONS': {
-            'client_encoding': 'UTF8',
-        },
-    }
-}
-"""
 
 #Connection Parameters for aida_lic table and marketplace
 LIC_PARAM = {
@@ -113,6 +136,12 @@ LIC_PARAM = {
     'password': '11235813post',
 }
 
+EXPORT_PARAM = {
+    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'database': 'helium_ai',
+    'user': 'kingmalza',
+    'password': '11235813post',
+}
 
 #Connection parameters for sendy db
 SENDY_PARAM = {
@@ -122,13 +151,34 @@ SENDY_PARAM = {
     'db_host': "lavaprojectdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com"
 }
 
-
-EXPORT_PARAM = {
-    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-    'database': 'helium_ai',
-    'user': 'kingmalza',
-    'password': '11235813post',
+"""
+#For local use only (Poli)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lyraloc_inpeco',
+        'USER': 'postgres',
+        'PASSWORD': '11235813post',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
+
+#For tenant use
+DATABASES = {
+    'default': {
+        'ENGINE': 'tenant_schemas.postgresql_backend',
+        'NAME': 'lyraloc_inpeco',
+        'USER': 'postgres',
+        'PASSWORD': '11235813post',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+"""
+DATABASE_ROUTERS = (
+    'tenant_schemas.routers.TenantSyncRouter',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -182,11 +232,6 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATIC_ROOT = '/static/images/'
 
-STATICFILES_DIRS = [
-    '/var/www/core/frontend/static',
-    '/.venv/lib/python3.6/site-packages/django/contrib/admin/static',
-]
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -196,8 +241,10 @@ SESSION_COOKIE_AGE = 3000
 
 # Email setting
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
 EMAIL_PORT = 587
-EMAIL_FROM = 'kingmalza@comunicame.it'
-EMAIL_HOST_USER = 'AKIAJ6GB7RAIFEHEM3UA'
-EMAIL_HOST_PASSWORD = 'Av+Lqj9TxNhbDINCMFEhyUrBsuNIFlf+d88Gnww12nXe'
+EMAIL_FROM = 'account@myaida.io'
+DEFAULT_FROM_EMAIL='account@myaida.io'
+EMAIL_HOST_USER = 'AKIAJTZHNXNLRVCHPUSA'
+EMAIL_HOST_PASSWORD = 'An7TbcZeo0q5Xm+0p2qIFo/f1xn0B0GfC9WC9DunCkVt'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

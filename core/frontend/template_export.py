@@ -332,7 +332,7 @@ def ret_list(request, t_status="A"):
         pass
 
     connection_parameters = {
-        'host': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+        'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
         'database': 'helium_ai',
         'user': 'kingmalza',
         'password': '11235813post',

@@ -595,6 +595,7 @@ def user_login(request, log_err=None):
     schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
     global schemaname
     schemaname = schema_name
+    print("schema name-> ",schemaname)
     #Getting license number
     lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
 

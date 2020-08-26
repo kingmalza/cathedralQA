@@ -578,14 +578,16 @@ def login_register(request, **kwargs):
 def user_login(request, log_err=None):
     context = RequestContext(request)
     #For tenant use only
-    #schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
-    schema_name = 'public'
+    schema_name = request.META.get('HTTP_X_DTS_SCHEMA', get_public_schema_name())
+    #schema_name = 'public'
     global schemaname
     schemaname = schema_name
+    print("Schema: ",schemaname)
     #Getting license number
     try:
         lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
     except Exception as e:
+        print("Exception in licnu: ", e)
         lnum = None
 
     #check if iexplorer
@@ -676,15 +678,18 @@ def user_login(request, log_err=None):
         #Check if user in lic is active or if there is a connection
 
     else:
+        """
         #First check if a license is present, otherwise redirect to registration page
         if lnum:
             #Now check if license number is correct (not modification direcly from db)
             #code here
-
             return render(request, 'login.html', {'l_err': log_err})
         else:
+            #If you whnt to mamage auto registration in case of no license
             response = HttpResponseRedirect('/act_lic')
             return response
+        """
+        return render(request, 'login.html', {'l_err': log_err})
 
 @csrf_exempt
 def regoractivate(request, reg_status=None, **kwargs):
@@ -1086,7 +1091,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 #Execute this command before startup, method call in urls
 def one_time_startup():
     call_command('makemigrations')
-    call_command('migrate')
+    call_command('migrate_schemas')
     #Check if there are records in temp_keywords, otherwise insert
     ct = temp_keywords.objects.all().count()
     if ct == 0:
