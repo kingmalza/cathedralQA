@@ -200,7 +200,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-<<<<<<< HEAD
 #STRIPE SECRET KEY FOR TEST AND LIVE
 #Test
 STRIPE_KEY = 'sk_test_GTVLb2pY6oqhUghSl37OT3Fw'
@@ -210,18 +209,12 @@ PROD149_KEY = 'plan_E2zdkJ9EJvB7t4'
 #STRIPE_KEY = 'sk_live_275LYRsuUDymanIlvV9B0HJp'
 #PROD149_KEY = 'plan_E2papDJRjqTeWk'
 
-=======
->>>>>>> master
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-<<<<<<< HEAD
 STATIC_ROOT = '/static/images/'
-=======
-STATIC_ROOT = '/opt/lyra/static/images/'
->>>>>>> master
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -232,7 +225,6 @@ SESSION_COOKIE_AGE = 3000
 
 # Email setting
 EMAIL_USE_TLS = True
-<<<<<<< HEAD
 EMAIL_HOST = '<yourdata>'
 EMAIL_PORT = 587
 EMAIL_FROM = 'account@myaida.io'
@@ -240,10 +232,3 @@ DEFAULT_FROM_EMAIL='account@myaida.io'
 EMAIL_HOST_USER = '<yourdata>'
 EMAIL_HOST_PASSWORD = '<yourdata>'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-=======
-EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
-EMAIL_PORT = 587
-EMAIL_FROM = 'kingmalza@comunicame.it'
-EMAIL_HOST_USER = 'AKIAJ6GB7RAIFEHEM3UA'
-EMAIL_HOST_PASSWORD = 'Av+Lqj9TxNhbDINCMFEhyUrBsuNIFlf+d88Gnww12nXe'
->>>>>>> master

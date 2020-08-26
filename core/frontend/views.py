@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import os
 import shutil
-<<<<<<< HEAD
 import stripe
 import requests
 
@@ -21,14 +20,6 @@ from frontend.models import UserProfile, t_test, t_history, t_schedule, t_scheds
 from frontend.models import t_threads, t_tags, t_tags_route, settings_gen, jra_settings, jra_history
 from backend.models import temp_keywords, temp_main as tmt, temp_case as tct, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords, \
     suite_libs
-=======
-
-from django.shortcuts import render
-from frontend.forms import DocumentForm
-from frontend.models import UserProfile, t_test, t_history, t_schedule, t_schedsettings, t_group, t_group_test
-from frontend.models import temp_main, temp_case, temp_keywords, temp_library, temp_variables, temp_pers_keywords, \
-    temp_test_keywords, t_threads, t_tags, t_tags_route
->>>>>>> master
 from rest_framework import viewsets
 from frontend.serializers import t_testSerializer, temp_mainSerializer, UserSerializer, temp_caseSerializer, temp_keywordsSerializer, \
     temp_variablesSerializer, temp_pers_keywordsSerializer, temp_test_keywordsSerializer, temp_librarySerializer, t_scheduleSerializer, \
@@ -37,21 +28,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-<<<<<<< HEAD
 from django.conf import settings
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, date
-=======
-from django.template import RequestContext
->>>>>>> master
 from rest_framework import renderers
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from frontend.permissions import IsOwnerOrReadOnly
-<<<<<<< HEAD
 from frontend.getdata import get_lic
 from dal import autocomplete
 
@@ -83,41 +69,22 @@ def index(request, **kwargs):
 
     global test_main
     uCookie = request.COOKIES.get('demoF', '')
-=======
-
-
-test_main = temp_main.objects.all()
-test_case = temp_case.objects.all()
-test_var = temp_variables.objects.all()
-test_lib = temp_library.objects.all()
-
-
-@login_required
-def index(request, **kwargs):
-    global test_main
->>>>>>> master
     uGroup = request.user.groups.all()
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
     test_sched = t_schedsettings.objects.all()
 
-<<<<<<< HEAD
     context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup, 'uCookie':uCookie}
     #response = render(request, 'base_home.html', context_dict, context)
     #For IE compatibility remove context
 
     response = render(request, 'base_home.html', context_dict)
-=======
-    context_dict = {'all_test': test_main, 't_sched': test_sched, 'uGroup': uGroup}
-    response = render(request, 'base_home.html', context_dict, context)
->>>>>>> master
 
     return response
 
 
 @login_required
-<<<<<<< HEAD
 @csrf_exempt
 # Viev for history threads list
 def h_list(request, **kwargs):
@@ -199,17 +166,6 @@ def h_list(request, **kwargs):
     context = RequestContext(request)
     context_dict = {'all_test': test_main, 'uGroup': uGroup}
     response = render(request, 'base_history.html', context_dict)
-=======
-# Viev for history threads list
-def h_list(request, **kwargs):
-    global test_main
-    uGroup = request.user.groups.all()
-    # menu_list = kwargs['menu']
-    context = RequestContext(request)
-
-    context_dict = {'all_test': test_main, 'uGroup': uGroup}
-    response = render(request, 'base_history.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -224,11 +180,7 @@ def temp_main(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_test': test_main, 'uGroup': uGroup}
-<<<<<<< HEAD
     response = render(request, 'base_tmain.html', context_dict)
-=======
-    response = render(request, 'base_tmain.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -243,11 +195,7 @@ def temp_case(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'uGroup': uGroup}
-<<<<<<< HEAD
     response = render(request, 'base_tcase.html', context_dict)
-=======
-    response = render(request, 'base_tcase.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -257,20 +205,12 @@ def temp_group(request, **kwargs):
     global test_case
     uGroup = request.user.groups.all()
     # Back home if no Teatadmin group for that user
-<<<<<<< HEAD
     #if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
-=======
-    if not 1 in [i.id for i in uGroup]:return HttpResponseRedirect('/')
->>>>>>> master
     # menu_list = kwargs['menu']
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'uGroup': uGroup}
-<<<<<<< HEAD
     response = render(request, 'base_tgroup.html', context_dict)
-=======
-    response = render(request, 'base_tgroup.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -285,11 +225,7 @@ def temp_var(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_var': test_var, 'uGroup': uGroup}
-<<<<<<< HEAD
     response = render(request, 'base_tvar.html', context_dict)
-=======
-    response = render(request, 'base_tvar.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -304,11 +240,7 @@ def temp_lib(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_lib': test_lib, 'uGroup': uGroup}
-<<<<<<< HEAD
     response = render(request, 'base_tlib.html', context_dict)
-=======
-    response = render(request, 'base_tlib.html', context_dict, context)
->>>>>>> master
 
     return response
 
@@ -323,7 +255,6 @@ def temp_lib(request, **kwargs):
     context = RequestContext(request)
 
     context_dict = {'all_case': test_case, 'ugroup': ugroup}
-<<<<<<< HEAD
     response = render(request, 'base_tcase.html', context_dict)
 
     return response
@@ -379,15 +310,11 @@ def temp_publish(request, reg_status=None, **kwargs):
 
     context_dict = {'all_case': test_case, 'uGroup': uGroup, 'the_stat': con_stat}
     response = render(request, b_temp, context_dict)
-=======
-    response = render(request, 'base_tcase.html', context_dict, context)
->>>>>>> master
 
     return response
 
 
 @login_required
-<<<<<<< HEAD
 def temp_clone(request, t_id=None, **kwargs):
 
     try:
@@ -575,8 +502,6 @@ def ask_template(request, **kwargs):
 
 
 @login_required
-=======
->>>>>>> master
 def f_upload(request, **kwargs):
     current_user = request.user
     err_msg = ""
