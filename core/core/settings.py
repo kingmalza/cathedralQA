@@ -82,6 +82,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE_CLASSES = (
+    'tenant_schemas.middleware.TenantMiddleware',
+    # 'tenant_schemas.middleware.SuspiciousTenantMiddleware',
+    # 'tenant_schemas.middleware.DefaultTenantMiddleware',
+    # 'myproject.middleware.MyDefaultTenantMiddleware',
+    #...
+)
+
 ROOT_URLCONF = 'core.urls'
 
 #APPEND_SLASH=False
@@ -120,9 +128,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'tenant_schemas.postgresql_backend',
         'NAME': 'helium_web',
-        'USER': 'kingmalza',
-        'PASSWORD': '11235813post',
-        'HOST': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+        'USER': '<yourdata>',
+        'PASSWORD': '<yourdata>',
+        'HOST': '<yourdata>',
         'PORT': '5432',
     }
 }

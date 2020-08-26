@@ -588,7 +588,8 @@ def user_login(request, log_err=None):
         lnum = settings_gen.objects.values_list('lic_num',flat=True).get(id=1)
     except Exception as e:
         print("Exception in licnu: ", e)
-        lnum = None
+        #lnum = None
+        lnum = 'WEB99'
 
     #check if iexplorer
     user_agent = request.META['HTTP_USER_AGENT'].lower()

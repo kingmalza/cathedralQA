@@ -291,6 +291,8 @@ def tlinemgm(request):
         else:
             thread_list = t_threads.objects.filter(thread_stag=str(request.POST['tTag'])).select_related()[:20]
 
+        print("threads: ", thread_list)
+
         #Now check if there is in jira settings something or not
         jra_set = jra_settings.objects.all()
         j_set = None
