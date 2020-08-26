@@ -24,18 +24,28 @@ from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 from django.conf import settings
 from django.contrib import admin
-from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh
-from ajaxfuncs.history import histrefresh
+from django.urls import path
+from ajaxfuncs.ajax import mainoptions, tabrefresh, tstopper, tselect, ecount, tlinemgm, filerefresh, jpost, tsingle
+from ajaxfuncs.asktempl import askinsert
+from ajaxfuncs.history import histrefresh, retUser, assign_ticket, get_ticket, hfilter, hstartfilter
+from ajaxfuncs.template_import import import_templ
 from ajaxfuncs.group import mainTgroup, subTgroup
 from rsthtml.goTest import startTest
-from frontend.views import index, h_list, login_register, user_login, user_logout, temp_main, temp_case, temp_var, \
+from frontend.views import index, h_list, login_register, user_login, user_logout, temp_main, temp_case, temp_assist, temp_var, \
     temp_lib, temp_group, t_testViewSet, temp_mainViewSet, UserViewSet, temp_caseViewSet, temp_keywordsViewSet, \
     temp_variablesViewSet, \
     temp_pers_keywordsViewSet, temp_test_keywordsViewSet, temp_libraryViewSet, t_scheduleViewSet, t_groupViewSet, \
     t_group_testViewSet, \
-    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload
+    t_historyViewSet, t_threadsViewSet, t_tagsViewSet, t_tags_routeViewSet, f_upload, ext_lib, sys_usage, legal_terms, \
+    handler500, temp_clone, temp_publish, regoractivate, temp_test_keywordsAutocomplete, temp_test_keywords_tc_Autocomplete, \
+    one_time_startup, temp_libraryAutocomplete, temp_mainAutocomplete, ask_template
 
-schema_view = get_schema_view(title='Lyra API')
+from frontend.template_export import ret_list, start, stop_templ
+from frontend.getdata import market_data
+
+#one_time_startup()
+
+schema_view = get_schema_view(title='Aida API')
 
 router = routers.DefaultRouter()
 router.register(r't_testapi', t_testViewSet)
@@ -61,31 +71,69 @@ user_detail = UserViewSet.as_view({
     'get': 'retrieve'
 })
 
+handler500 = handler500
+
 urlpatterns = [
                   url(r'^admin/', admin.site.urls),
-                  url(r'^$', h_list, name='index'),
+                  url(r'^$', index, name='index'),
                   url(r'^', include(router.urls)),
                   url(r'^login/$', user_login),
+                  url(r'^login/(?P<log_err>\w+)/$', user_login),
                   url(r'^logout/$', user_logout),
-                  url(r'^active$', index),
+                    url(r'^history$', h_list),
+                  #url(r'^active$', index),
+                  url(r'^legal$', legal_terms),
                   url(r'^ajax$', mainoptions),
                   url(r'^trefresh$', tabrefresh),
                   url(r'^files/frefresh$', filerefresh),
                   url(r'^hrefresh$', histrefresh),
                   url(r'^elemcount$', ecount),
+                    url(r'^ask$', ask_template),
+                  url(r'^getuser$', retUser),
+                  url(r'^addtask$', assign_ticket),
+                  url(r'^getass$', get_ticket),
+                url(r'^ttk-autocomplete/$',temp_test_keywordsAutocomplete.as_view(), name='ttk-autocomplete'),
+                url(r'^tpk-autocomplete/$',temp_test_keywordsAutocomplete.as_view(), name='tpk-autocomplete'),
+                url(r'^ttk-tc-autocomplete/$',temp_test_keywords_tc_Autocomplete.as_view(), name='ttk-tc-autocomplete'),
+                url(r'^tl-autocomplete/$',temp_libraryAutocomplete.as_view(), name='tl-autocomplete'),
+                url(r'^tm-autocomplete/$',temp_mainAutocomplete.as_view(), name='tm-autocomplete'),
                   url(r'^tline_mgm$', tlinemgm),
+                url(r'^filter_data$', hfilter),
+                url(r'^startfilter$', hstartfilter),
                   url(r'^thread_stopper$', tstopper),
                   url(r'^test_type$', tselect),
+                url(r'^test_single', tsingle),
                   url(r'^start$', startTest),
                   url(r'^tmain$', temp_main),
                   url(r'^tcase$', temp_case),
+                url(r'^tassist$', temp_assist),
+                url(r'^mpdata$', market_data),
+                url(r'^ask_templ$', askinsert),
+                url(r'^tpublish$', temp_publish),
+                  url(r'^tpublish/(?P<reg_status>\w+)/$', temp_publish),
+                  url(r'^tassist/(?P<templ_id>\w+)/$', temp_assist),
+                url(r'^temp_clone/(?P<t_id>\w+)/$', temp_clone),
+                  #url(r'^register/$', lic_register),
+                  #url(r'^register/(?P<reg_status>\w+)/$', lic_register),
+                #url(r'^gocard/(?P<lic_num>\w+)/$', go_ccredit),
+                url(r'^act_lic/$', regoractivate),
+                url(r'^act_lic/(?P<reg_status>\w+)/$', regoractivate),
                   url(r'^tgroup', temp_group),
+                url(r'^import_templ/$', import_templ),
+                url(r'^export_templ$', start),
+                url(r'^end_templ$', stop_templ),
                   url(r'^groupmain', mainTgroup),
+                url(r'^getassist', ret_list),
                   url(r'^groupsub', subTgroup),
                   url(r'^tvar$', temp_var),
                   url(r'^tlib$', temp_lib),
+                  url(r'^jirapost$', jpost),
+                  url(r'^libs$', ext_lib),
+                  url(r'^usage', sys_usage),
                   url(r'^files', f_upload),
                   url(r'^schema/$', schema_view),
+                  path('accounts/', include('django.contrib.auth.urls')),
                   url(r'^users/$', user_list, name='user-list'),
                   url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

@@ -3,7 +3,12 @@ import os
 import simplejson
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+<<<<<<< HEAD
+from frontend.models import t_threads, t_history, t_group, t_group_test
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+=======
 from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test
+>>>>>>> master
 
 import django
 
@@ -18,13 +23,21 @@ def mainTgroup(request):
     if request.is_ajax():
 
         # Create First table from t_group_tet
+<<<<<<< HEAD
+        tmain = t_group.objects.select_related().all().select_related()
+=======
         tmain = t_group.objects.select_related().all()
+>>>>>>> master
 
         response = []
 
         for i in tmain:
             vallabel = {'t_ID': i.id, 't_ord': i.descr, 't_grp': i.g_prior, 't_temp': i.g_desc, 't_active': i.active,
+<<<<<<< HEAD
+                        't_user': str(i.owner_id)}
+=======
                         't_user': str(i.user_id)}
+>>>>>>> master
 
             response.append(vallabel)
 

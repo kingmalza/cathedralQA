@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}AidaTestSuite - Dashboard{% endblock %}
+{% load static %}
+{% block content %}
+<div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+        <section class="content-header" id="c_head">
+            <h1>
+                Marketplace Pubblication
+                <small>for yours Test Templates</small>
+            </h1>
+            <!--
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+            -->
+        </section>
+    <section class="content">
+        <div class="mycallout mycallout-warning">
+                    <h4>Welcome to the Cathedral publishing area.</h4>
+            <p>From this mask you can go to publish your templates on the Cathedral Test Store. In this way, every Cathedral user can import your template into his suite and use it for better implement his own testing strategy.<br><strong>Important:</strong> When publishing your template, remember that the associated variables are also exported, so make sure you have not entered sensitive data in the default variables such as passwords or credit card numbers.<br><br>To view all the details regarding the publication and use of the Cathedral marketplace you can consult our Terms of Use</p>
+                  </div>
+<!-- FIRST ROW CONTAINING FIELD FOR PUBLISH TEMPLATE-->
+<div id="p_main" class="row">
+   <!-- left column -->
+   <div class="col-md-6">
+      <div class="box box-primary">
+         <div class="box-header">
+            <h3 class="box-title">Publication Preferences</h3>
+         </div>
+         <!-- /.box-header -->
+         <!-- form start -->
+         <form method="POST" onsubmit="return isempty();" role="form">
+            {% csrf_token %}
+            <div class="box-body">
+               <div class="form-group">
+                  <label for="t_select" onmouseover="nhpup.popup('<strong>The template you want to publish.</strong><br><br>Select the template that you intend to publish on the store, if you want to publish more templates you will need to carry out the publication procedure for each template.',{'class': 'pup_class3'});">Select template <strong>(?)</strong></label>
+                  <select id="t_select" name="t_select" onChange="clicktemp(this.value);" class="form-control">
+                        <option>Please select...</option>
+                      </select>
+               </div>
+               <div class="form-group">
+                  <label for="t_descr" onmouseover="nhpup.popup('<strong>What other users will read in the store about your test.</strong><br><br><i>Single Template</i> Description of the template displayed in the store, it is important to summarize the main characteristics of the test.',{'class': 'pup_class3'});">Store description <strong>(?)</strong></label>
+                  <textarea id="t_descr" name="t_descr" class="form-control" rows="2" placeholder="Enter a short/title description of your template (min. 30 max. 200 chars)"></textarea>
+                  <label for="t_descr_l"></label>
+                   <textarea id="t_descr_l" name="t_descr_l" class="form-control" rows="5" placeholder="Enter a long description about the characteristics of the template (min. 200 max. 700 chars)"></textarea>
+               </div>
+               <div class="form-group">
+                  <label for="t_cover" onmouseover="nhpup.popup('<strong>The main coverage area of the template.</strong><br><br><i>Select the main coverage area of the template you want to publish on the store so that it is easier to find in relation to user\'s interest',{'class': 'pup_class3'});">Test coverage area <strong>(?)</strong></label>
+                  <select id="t_cover" name="t_cover" class="form-control">
+                        <option>API</option>
+                        <option>Architecture</option>
+                        <option>Database</option>
+                        <option>OS</option>
+                        <option>Web</option>
+                        <option>..Other</option>
+                      </select>
+               </div>
+                <div class="form-group">
+                    <label for="t_radio" onmouseover="nhpup.popup('For what kind of test your template is more suitable? This information is for internal use only and do not will be published on the store.',{'class': 'pup_class3'});">Additional information <strong>(?)</strong></label>
+                      <div class="radio" id="t_radio">
+                        <label>
+                          <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+                          This template is more suitable for functional tests
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                          This template is more suitable for NON-functional tests
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" checked="">
+                          It is possible to apply this template to any type of test
+                        </label>
+                      </div>
+                    </div>
+               <div class="checkbox">
+                  <label>
+                      <input id="t_terms" name="t_terms" type="checkbox"><strong> I agree the <a href="">Terms of Services</a></strong>
+                  </label>
+               </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+               <button type="submit" class="btn btn-block btn-primary btn-lg">PUBLISH TEMPLATE</button>
+            </div>
+         </form>
+      </div>
+   </div>
+
+<!-- RIGHT AREA DISPLAYNG TEMPLATE SELECTION DETAILS (FILL DATA AFTER TEMPLATE SELECTION FROM COMBO t_select IN LEFT AREA)-->
+<div id="t_details" style="visibility:hidden" class="col-md-6">
+    <div class="box box-primary">
+         <div class="box-header">
+            <h3 class="box-title">Template Details (internal)</h3>
+         </div>
+        <form role="form">
+            <div class="box-body">
+        <div class="form-group">
+            <label>Template Description</label>
+            <textarea id="det_descr" class="form-control" rows="3" disabled=""></textarea>
+        </div>
+                <div class="form-group">
+            <label>Creation Date</label>
+            <input id="det_dt" type="text" class="form-control" disabled="">
+        </div>
+        <div class="box box-solid box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Template Notes</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <p id="det_notes"></p>
+                </div><!-- /.box-body -->
+        </div>
+        <div class="form-group">
+            <label>Test Type</label>
+            <input id="det_type" type="text" class="form-control" disabled="">
+        </div>
+                <!--Part for adv pubblication-->
+                <div class="form-group">
+            <label onmouseover="nhpup.popup('<strong>Add credits for your company.</strong><br><br>Thank you for wanting to contribute to the growth of the Cathedral marketplace.<br><br>In this section you will be able to insert the credits related to your company that will be published in the detail pages of your template once approved and will be visible to all users of the store.',{'class': 'pup_class3'});">Publication Credit<strong>(?)</strong></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="far fa-image"></i></span>
+                    <input type="text" id="ads_img" class="form-control" placeholder="Add your logo url (50x50px)">
+                </div>
+                    <br>
+                    <textarea class="form-control" id="ads_desc" rows="3" placeholder="Enter a short description of your company (max. 300 chars)" style="width: 100%;"></textarea>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-globe-americas"></i></span>
+                        <input type="text" id="ads_url" class="form-control" placeholder="Insert the url for your company website">
+                  </div>
+        </div>
+                <!-- End ads pubblication -->
+                <div class="form-group" style="display: none">
+            <input id="id_test" type="text" class="form-control" disabled="">
+        </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<!-- SECOND ROW CONTAINING TABLE ABOUT PUBLISHED TEMPLATES-->
+<div id="p_tab" class="row">
+   <div class="col-xs-12">
+      <div class="box">
+         <div class="box-header">
+            <h3 class="box-title">Publication requests status</h3>
+         </div>
+         <!-- /.box-header -->
+         <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+               <div class="row">
+                  <div class="col-xs-6"></div>
+                  <div class="col-xs-
+                     6"></div>
+               </div>
+               <table id="tab_export" class="table table-bordered table-hover dataTable" aria-describedby="example2_info">
+                  <thead>
+                     <tr role="row">
+                        <th>Store ID</th>
+                        <th>Test Name</th>
+                        <th>Publish Data</th>
+                         <th>End Data</th>
+                        <th>Status</th>
+                         <th>Description</th>
+                         <th>Coverage</th>
+                     </tr>
+                  </thead>
+                  <!--
+                   <tfoot>
+                     <tr>
+                        <th rowspan="1" colspan="1">Rendering engine</th>
+                        <th rowspan="1" colspan="1">Browser</th>
+                        <th rowspan="1" colspan="1">Platform(s)</th>
+                        <th rowspan="1" colspan="1">Engine version</th>
+                        <th rowspan="1" colspan="1">CSS grade</th>
+                     </tr>
+                  </tfoot>
+                  -->
+                  <tbody id="tab_body" role="alert" aria-live="polite" aria-relevant="all">
+                     <!--Ajax in t_publish.js get_tab-->
+                  </tbody>
+               </table>
+                <!--
+               <div class="row">
+                  <div class="col-xs-6">
+                     <div class="dataTables_info" id="example2_info">Showing 1 to 10 of 57
+                        entries
+                     </div>
+                  </div>
+                  <div class="col-xs-6">
+                     <div class="dataTables_paginate paging_bootstrap">
+                        <ul class="pagination">
+                           <li class="prev disabled"><a href="#">← Previous</a></li>
+                           <li
+                              class="active"><a href="#">1</a></li>
+                           <li><a href="#">2</a></li>
+                           <li><a href="#">3</a></li>
+                           <li><a href="#">4</a></li>
+                           <li><a href="#">5</a></li>
+                           <li class="next"><a href="#">Next
+                              → </a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+                -->
+            </div>
+         </div>
+         <!-- /.box-body -->
+      </div>
+   </div>
+</div>
+
+<!-- THIRDTH ROW CONTAINING DETAILS ABOUT SELECTED FIELD IN TABLE AND DELETE OPTION (DEFAULT HIDDEN)-->
+<div id="p_det" style="display: none;" class="row">
+   <div class="col-xs-12">
+      <div class="box box-success">
+         <div class="box-header">
+            <h3 class="box-title">Template publication management ID <span id="t_det" class="label label-default"></span></h3>
+         </div>
+         <div class="box-body">
+            <div class="form-group">
+                <label>Store Description</label>
+                <textarea id="t_det_e" class="form-control" rows="3" ></textarea>
+            </div>
+             <div class="form-group">
+                 <label>Test coverage</label>
+                 <select id="t_cov_e" class="form-control">
+                        <option>API</option>
+                        <option>Architecture</option>
+                        <option>Database</option>
+                        <option>OS</option>
+                        <option>Web</option>
+                        <option>Other</option>
+                 </select>
+             </div>
+             <!-- ADV area -->
+             <div class="form-group">
+                 <label onmouseover="nhpup.popup('<strong>Replace your company credits for the selected template.</strong><br><br>In this mask you can decide to modify the data related to the credits you want to associate with the published template, once inserted the new data these will overwrite the previous ones and the template will come back in the approval phase.',{'class': 'pup_class3'});"><strong>NEW</strong>NEW Publication Credit<strong>(?)</strong></label>
+                 <div class="input-group">
+                    <span class="input-group-addon"><i class="far fa-image"></i></span>
+                    <input type="text" id="t_adv_img" class="form-control" placeholder="Add your logo url (50x50px)">
+                </div>
+                    <br>
+                    <textarea class="form-control" id="t_adv_desc" rows="3" placeholder="Enter a short description of your company (max. 300 chars)" style="width: 100%;"></textarea>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fas fa-globe-americas"></i></span>
+                        <input type="text" id="t_adv_url" class="form-control" placeholder="Insert the url for your company website">
+                  </div>
+             </div>
+             <!-- end ADV area -->
+             <div id="pub_msg" class="mycallout mycallout-info">
+                <!--Ajax-->
+             </div>
+         </div>
+          <div id="t_mod_but" class="box-body">
+                  <div class="row">
+                    <div class="col-xs-3">
+                      <button class="btn btn-block btn-success btn-lg" onclick="pend('upd')">UPDATE</button>
+                    </div>
+                    <div class="col-xs-3">
+                      <button class="btn btn-block btn-danger btn-lg" onclick="pend('end')">END PUBLICATION</button>
+                    </div>
+                  </div>
+          </div>
+         <!-- /.box-body -->
+      </div>
+   </div>
+</div>
+</div>
+</section>
+{% endblock %}
+{% block script %}
+    <!-- jQuery 2.1.3 -->
+    <script src="{% static "plugins/jQuery/jQuery-2.1.3.min.js" %}"></script>
+    <script src="{% static "dist/js/nhpup_1.1.js" %}" type="text/javascript"></script>
+    <!-- My js for ajax automatic template render -->
+    <script src="{% static "js/t_publish.js" %}" type="text/javascript"></script>
+    <link href="{% static "dist/css/Custom.css" %}" rel="stylesheet" type="text/css"/>
+    <script>
+        document.body.onload = function () {
+            seltemp();
+            get_tab();
+        };
+    </script>
+{% endblock %}
+        

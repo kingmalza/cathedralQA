@@ -3,6 +3,18 @@ import os
 import functools
 import django
 import errno
+<<<<<<< HEAD
+import logging
+from functools import reduce
+from itertools import chain
+from docutils.core import publish_string
+from robot import run as run_test
+#from robot import run_cli
+import threading
+from django.db.models import Count
+from django.db.models import Q
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+=======
 from functools import reduce
 from itertools import chain
 from docutils.core import publish_string
@@ -11,6 +23,7 @@ import threading
 from django.db.models import Count
 from django.db.models import Q
 from frontend.models import temp_test_keywords, temp_pers_keywords, temp_library, temp_variables
+>>>>>>> master
 
 sys.path.append('core')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
@@ -68,6 +81,124 @@ class PrepareRst:
 
     # TestCase rst prep method
     def tc_prep(self, test_id):
+<<<<<<< HEAD
+        try:
+            maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
+            maxMax = maxpar['total'] + 1
+
+            # Part1 list creation
+            count = 0
+            ltouple = ()
+            l1 = ["Test Case"]
+            while count < maxMax:
+                l1.append("")
+                count += 1
+            ltouple += (l1,)
+
+            # Query for extract keywords, values
+            kv = temp_test_keywords.objects.filter(main_id=test_id).order_by('my_order', 'id').select_related()
+
+            vkey = ""
+            skey = ""
+            vcont = ""
+            l = []
+            for r in kv.iterator():
+                # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
+                # visualization
+
+                if vkey != repr(r.test_id):
+                    if l:
+                        # Modified for empty spaces
+                        for i in range(maxMax - len(l) + 1):
+                            l.append("")
+                        ltouple += (l,)
+                        l = []
+                    l.append(repr(r.test_id))
+
+                    if r.key_group is not None:
+                        l.append(str(r.key_group)+str(r.key_id))
+                    else:
+                        l.append(str(r.key_id))
+                    vvar = self.notNone(str(r.key_val))
+                    l.append(vvar)
+
+                else:
+                    # check if standard_id is the same or diff for create another row"
+                    if r.key_group is not None:
+                        vcont = str(r.key_group) + str(r.key_id)
+                    else:
+                        vcont = str(r.key_id)
+                    if skey != vcont:
+                        if l:
+                            # Modified for empty spaces
+                            for i in range(maxMax - len(l) + 1):
+                                l.append("")
+                            ltouple += (l,)
+                            l = []
+                        l.append("")
+                        if r.key_group is not None:
+                            l.append(str(r.key_group) + str(r.key_id))
+                        else:
+                            l.append(str(r.key_id))
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                    else:
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                vkey = repr(r.test_id)
+                if r.key_group is not None:
+                    skey = str(r.key_group) + str(r.key_id)
+                else:
+                    skey = str(r.key_id)
+
+            # Last check after for cycle finished if l is not null (difference in last loop)
+            if l:
+                # Modified for empty spaces
+                for i in range(maxMax - len(l) + 1):
+                    l.append("")
+                ltouple += (l,)
+
+                tclist = [x for x in ltouple]
+                #Normalize the list
+                for i in range(0,len(tclist)):
+                    tclist[i][1] = self.tc_clean(tclist[i][1])
+        except Exception as e:
+            tclist = [['Test Case', '', ''], ['noTest', '', '']]
+
+        return tclist
+
+
+
+    # Keywords rst prep method
+    def tk_prep(self, test_id):
+        try:
+            maxpar = temp_pers_keywords.objects.filter(main_id=test_id).values('key_id','key_group').annotate(total=Count('key_id')).order_by('-total').first()
+            maxMax = maxpar['total'] + 1
+
+            # Part1 list creation
+            count = 0
+            ltouple = ()
+            l1 = ["Keywords"]
+            while count < maxMax:
+                l1.append("")
+                count += 1
+            ltouple += (l1,)
+
+            # Query for extract keywords, values
+            kv = temp_pers_keywords.objects.filter(main_id=test_id).order_by('my_order', 'id').select_related()
+
+            vkey = ""
+            skey = ""
+            vcont = ""
+            l = []
+            for r in kv.iterator():
+                # IMPORTANT: Here use __repr__ instead of __str__ because of the formattation in models for admin panel
+                # visualization
+
+                if vkey != repr(r.key_descr):
+=======
         maxpar = temp_test_keywords.objects.filter(main_id=test_id).values('key_id').annotate(
             total=Count('key_id')).order_by('-total').first()
         print("internat test_id ", maxpar)
@@ -115,21 +246,81 @@ class PrepareRst:
                 else:
                     vcont = str(r.key_id)
                 if skey != vcont:
+>>>>>>> master
                     if l:
                         # Modified for empty spaces
                         for i in range(maxMax - len(l) + 1):
                             l.append("")
                         ltouple += (l,)
                         l = []
+<<<<<<< HEAD
+                    l.append(str(r.key_descr))
+
+                    if r.key_group is not None:
+                        l.append(str(r.key_group)+str(r.key_id))
+=======
                     l.append("")
                     if r.key_group is not None:
                         l.append(str(r.key_group) + str(r.key_id))
+>>>>>>> master
                     else:
                         l.append(str(r.key_id))
                     vvar = self.notNone(str(r.key_val))
                     l.append(vvar)
 
                 else:
+<<<<<<< HEAD
+                    # check if standard_id is the same or diff for create another row"
+                    if r.key_group is not None:
+                        vcont = str(r.key_group) + str(r.key_id)
+                    else:
+                        vcont = str(r.key_id)
+                    if skey != vcont:
+                        if l:
+                            # Modified for empty spaces
+                            for i in range(maxMax - len(l) + 1):
+                                l.append("")
+                            ltouple += (l,)
+                            l = []
+                        l.append("")
+                        if r.key_group is not None:
+                            l.append(str(r.key_group) + str(r.key_id))
+                        else:
+                            l.append(str(r.key_id))
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                    else:
+                        vvar = self.notNone(str(r.key_val))
+                        l.append(vvar)
+
+                vkey = repr(r.key_descr)
+                if r.key_group is not None:
+                    skey = str(r.key_group) + str(r.key_id)
+                else:
+                    skey = str(r.key_id)
+
+            # Last check after for cycle finished if l is not null (difference in last loop)
+            if l:
+                # Modified for empty spaces
+                for i in range(maxMax - len(l) + 1):
+                    l.append("")
+                ltouple += (l,)
+
+                tklist = [x for x in ltouple]
+                #Normalize the list
+                for i in range(0,len(tklist)):
+                    tklist[i][1] = self.tc_clean(tklist[i][1])
+        except Exception as e:
+            logging.exception("Exception occurred")
+            tklist = [['Keywords', '', ''], ['', '', '']]
+
+        return tklist
+
+    """
+    -->OLD METHOD FOR OLS tmp_pers_keyords MODEL<--
+    # Keywords rst prep method
+=======
                     print('r_kry->->->', r.key_val,r.key_group)
                     vvar = self.notNone(str(r.key_val))
                     l.append(vvar)
@@ -157,6 +348,7 @@ class PrepareRst:
 
     # Keywords rst prep method
 
+>>>>>>> master
     def tk_prep(self, test_id):
         # Define max variable for pers and standard keywords
         maxper = temp_pers_keywords.objects.filter(Q(main_id=test_id) & Q(pers_id__isnull=False)).values(
@@ -242,6 +434,113 @@ class PrepareRst:
                 l.append("")
             ltouple += (l,)
 
+<<<<<<< HEAD
+        tklist = [[x if x != 'None' else '' for x in group] for group in ltouple]
+        #If no one insert data into table 6, generate a blank list
+        if not l:
+            tklist = [['Keywords', '', ''], ['', '', '']]
+
+        return tklist
+    """
+
+    # Setting rst prep method
+    def ts_prep(self, test_id):
+        maxpar = temp_library.objects.filter(l_group__isnull=False).filter(main_id=test_id).values('l_group').annotate(total=Count('l_group')).order_by('-l_group').first()
+        count = 0
+        maxMax = 1
+        g_id = None
+        
+        if maxpar:
+            maxMax = maxpar['total']
+            
+        ltouple = ()
+        l1 = ["Settings"]
+        while count < maxMax:
+            l1.append("")
+            count += 1
+        ltouple += (l1,)
+
+        
+        tab_lib = temp_library.objects.filter(main_id=test_id).order_by("id")
+
+        #Now extract setup, teardown and documentation in present
+        set_test = temp_main.objects.filter(id=test_id).select_related()
+        for y in set_test:
+            ret_setup = y.t_setup
+            ret_teardown = y.t_teardown
+            ret_doc = y.t_doc
+            ret_vfile = y.t_varfile
+            ret_rfile = y.t_resfile
+
+
+        l=[]
+        
+        #tslist = [["Settings", ""]]
+        
+        if tab_lib.count() == 0:
+            #tslist.append(["", ""])
+            l.append("")
+            l.append("")
+        else:
+            for r in tab_lib.iterator():
+                #tslist.append([str(r.l_type), str(r.l_val)])
+                if r.l_group:
+                    if r.l_group == g_id:
+                        #l.append(str(r.l_val))
+                        if str(r.l_param) != 'None':l.append(str(r.l_param))
+                        g_id = str(r.l_group)
+                    else:
+                        if l:
+                            #Check for l len and add white space if lower than maxMax
+                            if len(l) < maxMax+1:
+                                len_dif = maxMax-len(l)
+                                for x in range(0,len_dif+1): l.append('')
+                            ltouple += (l,)
+                            l = []
+                        l.append('Library')
+                        l.append(str(r.l_val))
+                        if str(r.l_param) != 'None':l.append(str(r.l_param))
+                        g_id = str(r.l_group)
+                else:
+
+                    if l:
+                        ltouple += (l,)
+                        l = []
+
+                    l.append('Library')
+                    l.append(str(r.l_val))
+                    if str(r.l_param) != 'None': l.append(str(r.l_param))
+                    if len(l) < maxMax+1:
+                                len_dif = maxMax-len(l)
+                                for x in range(0,len_dif+1): l.append('')
+                    ltouple += (l,)
+                    l = []
+
+        if l:
+
+            if len(l) < maxMax+1:
+                len_dif = maxMax-len(l)
+                for x in range(0,len_dif+1): l.append('')
+            ltouple += (l,)
+            l = []
+        tslist = [x for x in ltouple]
+
+
+        if ret_setup:
+            tslist.append(['Setup', str(ret_setup)])
+
+        if ret_teardown:
+            tslist.append(['Teardown', str(ret_teardown)])
+
+        if ret_doc:
+            tslist.append(['Documentation', str(ret_doc)])
+
+        if ret_vfile:
+            tslist.append(['Variables', str(ret_vfile)])
+
+        if ret_rfile:
+            tslist.append(['Resource', str(ret_rfile)])
+=======
         tklist = [x for x in ltouple]
         return tklist
 
@@ -253,6 +552,7 @@ class PrepareRst:
             tslist.append(["", ""])
         for r in tab_lib.iterator():
             tslist.append([str(r.l_type), str(r.l_val)])
+>>>>>>> master
 
         return tslist
 
@@ -270,6 +570,10 @@ class PrepareRst:
             l = []
 
         tvlist = [x for x in ltouple]
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
         return tvlist
 
 
@@ -278,7 +582,10 @@ class MakeRst:
         self.rstab = self.make_table(table)
 
     def make_table(self, grid):
+<<<<<<< HEAD
+=======
         print(grid)
+>>>>>>> master
         try:
             cell_width = 2 + max(reduce(lambda x, y: x + y, [[len(item) for item in row] for row in grid], []))
         except Exception:
@@ -293,6 +600,10 @@ class MakeRst:
                 header_flag = 0
             except Exception:
                 pass
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
         return rst
 
     @staticmethod
@@ -320,6 +631,13 @@ class MakeHtml(threading.Thread):
 
         # self.save_html('Test')
 
+<<<<<<< HEAD
+
+    ###########################################
+    #10/10/2019 LEGACY METHOD FOR SAVE REPORT, NO SAVING ON DISK NEEDED NOW, REPORTS LL OPEN DINAMICALLY FROM DB
+    ###########################################
+=======
+>>>>>>> master
     # Save html file on disk and run it if
     # def saverun_html(self, idTest, runTest=False):
     def run(self):
@@ -343,7 +661,12 @@ class MakeHtml(threading.Thread):
         with open(filepath, 'wb') as file:
             try:
                 for x in self.outhtml:
+<<<<<<< HEAD
+                    print("SELF---->",self.outhtml)
+                    file.write(publish_string(x.rstab.encode('utf-8'), writer_name='html'))
+=======
                     file.write(publish_string(x.rstab, writer_name='html'))
+>>>>>>> master
 
                     # run test
                     # rc = run_cli([filepath], exit=False)

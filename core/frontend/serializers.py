@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+from frontend.models import t_test, t_schedule, t_group, t_group_test, t_history, t_threads, t_tags, t_tags_route
+from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+=======
 from frontend.models import t_test, temp_main, temp_case, temp_keywords, temp_variables, temp_pers_keywords, \
     temp_test_keywords, temp_library, t_schedule, t_group, t_group_test, t_history, t_threads, t_tags, t_tags_route
+>>>>>>> master
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
@@ -34,6 +39,10 @@ class temp_caseSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'main_id', 'descr', 'owner')
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 class temp_keywordsSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     #highlight = serializers.HyperlinkedIdentityField(view_name='request-highlight', format='html')
@@ -61,7 +70,11 @@ class temp_pers_keywordsSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = temp_pers_keywords
+<<<<<<< HEAD
+        fields = ('id', 'main_id', 'pers_id', 'standard_id', 'variable_val', 'owner')
+=======
         fields = ('id', 'main_id', 'pers_id', 'standard_id', 'variable_id', 'owner')
+>>>>>>> master
 
 
 class temp_test_keywordsSerializer(serializers.HyperlinkedModelSerializer):

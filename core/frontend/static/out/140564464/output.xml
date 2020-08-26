@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.6 on win32)" generated="20180920 10:29:44.990">
+<suite id="s1" name="140564464 TC" source="E:\Code\helium\web\core\frontend\static\out\140564464\140564464_TC.html">
+<test id="s1-t1" name="case1">
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>Log number 1</arg>
+</arguments>
+<msg timestamp="20180920 10:29:46.393" level="INFO">Log number 1</msg>
+<status status="PASS" starttime="20180920 10:29:46.393" endtime="20180920 10:29:46.393"></status>
+</kw>
+<kw name="${INDEX} IN [ 3 | 7 ]" type="for">
+<kw name="${INDEX} = 3" type="foritem">
+<kw>
+<assign>
+<var>${INDEX}</var>
+</assign>
+<msg timestamp="20180920 10:29:46.394" level="FAIL">Keyword name cannot be empty.</msg>
+<status status="FAIL" starttime="20180920 10:29:46.394" endtime="20180920 10:29:46.394"></status>
+</kw>
+<status status="FAIL" starttime="20180920 10:29:46.394" endtime="20180920 10:29:46.394"></status>
+</kw>
+<status status="FAIL" starttime="20180920 10:29:46.394" endtime="20180920 10:29:46.394"></status>
+</kw>
+<status status="FAIL" starttime="20180920 10:29:46.392" endtime="20180920 10:29:46.394" critical="yes">Keyword name cannot be empty.</status>
+</test>
+<status status="FAIL" starttime="20180920 10:29:45.007" endtime="20180920 10:29:46.398"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="140564464 TC">140564464 TC</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20180920 10:29:45.008" level="ERROR">Error in test case file 'E:\Code\helium\web\core\frontend\static\out\140564464\140564464_TC.html': Creating keyword 'pers one' failed: Keyword with same name defined multiple times.</msg>
+</errors>
+</robot>

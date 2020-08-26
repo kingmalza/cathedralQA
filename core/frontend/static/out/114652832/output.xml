@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.6 on win32)" generated="20180904 11:02:24.034">
+<suite id="s1" name="114652832 TC" source="E:\Code\helium\web\core\frontend\static\out\114652832\114652832_TC.html">
+<test id="s1-t1" name="Test case 1 temp 1">
+<kw name="0\">
+<arguments>
+<arg>ciaone</arg>
+</arguments>
+<msg timestamp="20180904 11:02:25.198" level="FAIL">No keyword with name '0\' found.</msg>
+<status status="FAIL" starttime="20180904 11:02:25.198" endtime="20180904 11:02:25.198"></status>
+</kw>
+<status status="FAIL" starttime="20180904 11:02:25.195" endtime="20180904 11:02:25.199" critical="yes">No keyword with name '0\' found.</status>
+</test>
+<status status="FAIL" starttime="20180904 11:02:24.046" endtime="20180904 11:02:25.201"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="114652832 TC">114652832 TC</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+services:
+
+  postgres:
+    restart: always
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5432"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    image: cath2019/cathedral_studio  # goes to youruser DockerHub registry
+    command: python /Code/core/manage.py runserver 0.0.0.0:8000
+    networks:
+      - mynetwork
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - postgres
+
+  #pushcath:
+  #  build: .
+  #  image: cath2019/cathedral_studio  # goes to youruser DockerHub registry

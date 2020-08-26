@@ -1,0 +1,24 @@
+# Ignore
+#**/*.pyc
+#/core/*.py
+/ajaxfuncs/*.pyc
+#/rsthtml/*.py
+#!/core/manage.py
+.DS_Store
+.idea
+.venv2
+.git
+.gitignore
+__pycache__
+Dockerfile
+docker-compose.yml
+log.html
+media
+docs
+examples
+out
+output.xml
+report.html
+startup.sh
+/core/testlibs
+.dockerignore
