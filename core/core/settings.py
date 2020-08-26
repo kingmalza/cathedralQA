@@ -127,7 +127,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'tenant_schemas.postgresql_backend',
-        'NAME': 'helium_web',
+        'NAME': '<yourdata>',
         'USER': '<yourdata>',
         'PASSWORD': '<yourdata>',
         'HOST': '<yourdata>',
@@ -138,52 +138,28 @@ DATABASES = {
 
 #Connection Parameters for aida_lic table and marketplace
 LIC_PARAM = {
-    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
+    'host': '<yourdata>',
     'database': 'aida_lic',
-    'user': 'kingmalza',
-    'password': '11235813post',
+    'user': '<yourdata>',
+    'password': '<yourdata>',
 }
 
 EXPORT_PARAM = {
-    'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-    'database': 'helium_ai',
-    'user': 'kingmalza',
-    'password': '11235813post',
+    'host': '<yourdata>',
+    'database': '<yourdata>',
+    'user': '<yourdata>',
+    'password': '<yourdata>',
 }
 
 #Connection parameters for sendy db
 SENDY_PARAM = {
-    'db_username': "ytyNyqa",
-    'db_password': "241cbfd1ad",
-    'db_name': "sendy_db",
-    'db_host': "lavaprojectdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com"
+    'db_username': "<yourdata>",
+    'db_password': "<yourdata>",
+    'db_name': "<yourdata>",
+    'db_host': "<yourdata>"
 }
 
-"""
-#For local use only (Poli)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lyraloc_inpeco',
-        'USER': 'postgres',
-        'PASSWORD': '11235813post',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
 
-#For tenant use
-DATABASES = {
-    'default': {
-        'ENGINE': 'tenant_schemas.postgresql_backend',
-        'NAME': 'lyraloc_inpeco',
-        'USER': 'postgres',
-        'PASSWORD': '11235813post',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-"""
 DATABASE_ROUTERS = (
     'tenant_schemas.routers.TenantSyncRouter',
 )
@@ -249,10 +225,10 @@ SESSION_COOKIE_AGE = 3000
 
 # Email setting
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
+EMAIL_HOST = '<yourdata>'
 EMAIL_PORT = 587
 EMAIL_FROM = 'account@myaida.io'
 DEFAULT_FROM_EMAIL='account@myaida.io'
-EMAIL_HOST_USER = 'AKIAJTZHNXNLRVCHPUSA'
-EMAIL_HOST_PASSWORD = 'An7TbcZeo0q5Xm+0p2qIFo/f1xn0B0GfC9WC9DunCkVt'
+EMAIL_HOST_USER = '<yourdata>'
+EMAIL_HOST_PASSWORD = '<yourdata>'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

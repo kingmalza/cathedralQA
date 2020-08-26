@@ -22,10 +22,10 @@ glob_amount=0
 def start():
 
     connection_parameters = {
-        'host': 'heliumdb.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-        'database': 'helium_web',
-        'user': 'kingmalza',
-        'password': '11235813post',
+        'host': '<yourdata>',
+        'database': '<yourdata>',
+        'user': '<yourdata>',
+        'password': '<yourdata>',
     }
   
     conn = psycopg2.connect(**connection_parameters)
