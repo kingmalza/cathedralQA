@@ -24,7 +24,6 @@ SECRET_KEY = 'b)xb0#xtdg$-oq@il@48!@k6cpotcd0ku%f&39r^$y=8b(5o)o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
 ALLOWED_HOSTS = ['18.213.17.156', '54.72.119.195', 'localhost', '127.0.0.1', '.myaida.io']
 
 # Application definition
@@ -57,13 +56,6 @@ INSTALLED_APPS = [
     'tenant_schemas',  # mandatory, should always be before any django app
     'dal',
     'dal_select2',
-=======
-ALLOWED_HOSTS = []
-
-# Application definition
-
-INSTALLED_APPS = [
->>>>>>> master
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,16 +67,12 @@ INSTALLED_APPS = [
     'backend',
 ]
 
-<<<<<<< HEAD
 TENANT_MODEL = "frontend.Client" # app.Model
 
 DEFAULT_FILE_STORAGE = "tenant_schemas.storage.TenantFileSystemStorage"
 
 MIDDLEWARE = [
     'frontend.middleware.XHeaderTenantMiddleware',
-=======
-MIDDLEWARE = [
->>>>>>> master
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -94,7 +82,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-<<<<<<< HEAD
 MIDDLEWARE_CLASSES = (
     'tenant_schemas.middleware.TenantMiddleware',
     # 'tenant_schemas.middleware.SuspiciousTenantMiddleware',
@@ -113,10 +100,6 @@ TEMPLATE_LOADERS = (
     'apptemplates.Loader',
 )
 
-=======
-ROOT_URLCONF = 'core.urls'
-
->>>>>>> master
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -140,7 +123,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-<<<<<<< HEAD
 
 DATABASES = {
     'default': {
@@ -182,34 +164,6 @@ DATABASE_ROUTERS = (
     'tenant_schemas.routers.TenantSyncRouter',
 )
 
-=======
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lyra1',
-        'USER': 'kingmalza',
-        'PASSWORD': '11235813post',
-        'HOST': 'lyrards.cre2avmtskuc.eu-west-1.rds.amazonaws.com',
-        'PORT': '5432',
-    }
-}
-"""
-
-#For local use only (Poli)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lyraloc_inpeco',
-        'USER': 'postgres',
-        'PASSWORD': '11235813post',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-
-
->>>>>>> master
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
