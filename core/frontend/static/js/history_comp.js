@@ -8,6 +8,7 @@ function GetElementInsideContainer(containerID, childID) {
 }
 
 
+<<<<<<< HEAD
   $(document).ajaxStop(function () {
       //alert('STOP');
       document.getElementById("overlay").style.display = "none";
@@ -424,6 +425,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
     var stat_h = document.getElementById("stat_load");
     //j_search = document.getElementById("txthis").value;
     j_search = null;
+=======
+function refHistory(j_ord, j_sign, j_search, is_search) {
+    j_search = document.getElementById("txthis").value;
+>>>>>>> master
     if (j_ord == null){
         j_ord = '-id';
     }
@@ -462,26 +467,38 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
     t_line = document.getElementById("tline");
     t_lineH1 = GetElementInsideContainer("tl_tit", "tl_h4");
 
+<<<<<<< HEAD
     //SET WARNING FOR LOADING VISIBLE
     //stat_h.style.visibility = 'visible';
+=======
+>>>>>>> master
 
     $.ajax({
         type: "POST",
         url: "hrefresh",
         data: {tab_slice: t_sect, tab_ord: j_ord, tab_search: j_search, isearch: is_search},
         success: function (data) {
+<<<<<<< HEAD
             //Var for check if a row is double or not
             var noDouble = "";
             t_body.innerHTML = "";
             //stat_h.style.visibility = 'hidden';
+=======
+            t_body.innerHTML = "";
+>>>>>>> master
             if (data) {
                 t_group.innerHTML = "";
                 //dlen = (data + '').length;
                 dlen = data[data.length-1];
+<<<<<<< HEAD
                 //dlen = data[index].OptionNumT;
                 //Create footer elements for multiple of 20
 
                 //var multipler = dlen.size / 20;
+=======
+                //Create footer elements for multiple of 20
+                
+>>>>>>> master
                 var multipler = dlen / 20;
                 console.log('len->'+dlen+'-data->'+data+'-mul-->'+multipler);
                 for (i = 0; i < multipler; i++) {
@@ -558,7 +575,10 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     };
                     var t_td12 = document.createElement("TD");
                     t_td12.innerHTML = 'Schedule Value'.bold();
+<<<<<<< HEAD
                     t_td12.setAttribute('class', 'sorting');
+=======
+>>>>>>> master
                     t_td12.onclick = function() {
                         if(j_sign == '-') {
                             refHistory('-thread_sval','+');
@@ -575,6 +595,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('thread_main','-');
                         };
                     };
+<<<<<<< HEAD
                     var t_td13_run = document.createElement("TD");
                     t_td13_run.innerHTML = 'Run Type'.bold();
                     t_td13_run.onclick = function() {
@@ -584,6 +605,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('thread_runtype','-');
                         };
                     };
+=======
+>>>>>>> master
                     var t_td3 = document.createElement("TD");
                     t_td3.innerHTML = 'Start'.bold();
                     t_td3.onclick = function() {
@@ -602,6 +625,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('thread_stopd','-');
                         };
                     };
+<<<<<<< HEAD
                     var t_td4time = document.createElement("TD");
                     t_td4time.innerHTML = 'Elapsed'.bold();
                     t_td4time.onclick = function() {
@@ -611,6 +635,8 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                             refHistory('id_time__elapsed_t','-');
                         };
                     };
+=======
+>>>>>>> master
                     var t_td5 = document.createElement("TD");
                     t_td5.innerHTML = 'User'.bold();
                     t_td5.onclick = function() {
@@ -639,10 +665,15 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     t_tr0.appendChild(t_td11);
                     t_tr0.appendChild(t_td12);
                     t_tr0.appendChild(t_td13);
+<<<<<<< HEAD
                     t_tr0.appendChild(t_td13_run);
                     t_tr0.appendChild(t_td3);
                     t_tr0.appendChild(t_td4);
                     t_tr0.appendChild(t_td4time);
+=======
+                    t_tr0.appendChild(t_td3);
+                    t_tr0.appendChild(t_td4);
+>>>>>>> master
                     t_tr0.appendChild(t_td5);
                     //t_tr0.appendChild(t_td6);
                     t_tr0.appendChild(t_td7);
@@ -656,6 +687,7 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
 
                 }
                 if (data[index].tID != undefined) {
+<<<<<<< HEAD
                     //FIRST CHECK IF THERE ARE DOUBLE VALUES AND DISPLAY JUST UNIQUE
                     //if (noDouble.trim() != data[index].OptionMain.trim()) {
                         //label for test type
@@ -904,20 +936,140 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                     }
 
 
+=======
+                    //label for test type
+                console.log('OptionType-->'+data[index].OptionType);
+                if (data[index].OptionType == '') {
+                    l_ttype = 'NODATA';
+                } else {
+                    l_ttype = data[index].OptionType;
+                }
+                /*
+                switch (data[index].OptionType) {
+                    case 'ST':
+                        l_ttype = "SINGLE";
+                        break;
+                    case 'TA':
+                        l_ttype = "TAG";
+                        break;
+                    case 'PA':
+                        l_ttype = "PROJECT";
+                        break;
+                    case 'TG':
+                        l_ttype = "TEST GROUP";
+                        break;
+                    default:
+                        l_ttype = 'NODATA';
+                }
+                */
+                //Create head and data table
+                var t_tr0 = document.createElement("TR");
+                var t_td0 = document.createElement("TD");
+                t_td0.innerHTML = data[index].tID;
+                var t_td1 = document.createElement("TD");
+                var td1_span = document.createElement("SPAN")
+                if (data[index].OptionGroup == "NoGroup") {
+                    td1_span.setAttribute('class', 'label label-default');
+                } else {
+                    td1_span.setAttribute('class', 'label label-primary');
+                }
+                td1_span.innerHTML = data[index].OptionGroup;
+                t_td1.appendChild(td1_span);
+                var t_td2 = document.createElement("TD");
+                var td2_span = document.createElement("SPAN");
+                if (l_ttype != 'NODATA') {
+                    td2_span.setAttribute('class', 'label label-warning');
+                } else {
+                    td2_span.setAttribute('class', 'label pull-right bg-red');
+                }
+                td2_span.innerHTML = l_ttype;
+                t_td2.appendChild(td2_span);
+                var t_td11 = document.createElement("TD");
+                t_td11.innerHTML = data[index].OptionStype;
+                var t_td12 = document.createElement("TD");
+                t_td12.innerHTML = data[index].OptionSval;
+                var t_td13 = document.createElement("TD");
+                t_td13.innerHTML = data[index].OptionMain;
+                var t_td10 = document.createElement("TD");
+                t_td10.innerHTML = data[index].tTest;
+                var t_td3 = document.createElement("TD");
+                t_td3.innerHTML = data[index].OptionSdate;
+                var t_td4 = document.createElement("TD");
+                if (data[index].OptionStopdate == "None") {
+                    var td4_span = document.createElement("SPAN");
+                    td4_span.setAttribute('class', 'label label-warning');
+                    td4_span.innerHTML = "SCHEDULED TERMINATION";
+                    t_td4.appendChild(td4_span);
+                } else {
+                    t_td4.innerHTML = data[index].OptionStopdate;
+                }
+                var t_td5 = document.createElement("TD");
+                t_td5.innerHTML = data[index].OptionUser;
+                var t_td6 = document.createElement("TD");
+                t_td6.innerHTML = data[index].OptionTest;
+                var t_td7 = document.createElement("TD");
+                //Calculate the success percentage data
+                if (data[index].OptionPass + data[index].OptionFail != 0) {
+                    var ssuc = ((data[index].OptionPass) * 100) / (data[index].OptionPass + data[index].OptionFail);
+                    var sfail = ((data[index].OptionFail) * 100) / (data[index].OptionPass + data[index].OptionFail);
+                } else {
+                    var ssuc = 0;
+                    var sfail = 0;
+                }
+
+                var td7_span = document.createElement("SPAN");
+                td7_span.setAttribute('class', 'badge bg-green');
+                td7_span.innerHTML = ssuc+"%";
+                t_td7.appendChild(td7_span);
+                var t_td8 = document.createElement("TD");
+                var td8_span = document.createElement("SPAN");
+                td8_span.setAttribute('class', 'badge bg-red');
+                td8_span.innerHTML = sfail+"%";
+                t_td8.appendChild(td8_span);
+                var t_td9 = document.createElement("TD");
+                var td9_span = document.createElement("SPAN");
+                td9_span.setAttribute('class', 'badge bg-light-blue');
+                td9_span.innerHTML = data[index].OptionNumT;
+                t_td9.appendChild(td9_span);
+                var t_td14 = document.createElement("TD");
+                t_td14.innerHTML = data[index].OptionUUID;
+                t_td14.setAttribute('style', 'display: none');
+
+                t_tr0.appendChild(t_td0);
+                t_tr0.appendChild(t_td10);
+                t_tr0.appendChild(t_td2);
+                t_tr0.appendChild(t_td1);
+                t_tr0.appendChild(t_td11);
+                t_tr0.appendChild(t_td12);
+                t_tr0.appendChild(t_td13);
+                t_tr0.appendChild(t_td3);
+                t_tr0.appendChild(t_td4);
+                t_tr0.appendChild(t_td5);
+                //t_tr0.appendChild(t_td6);
+                t_tr0.appendChild(t_td7);
+                t_tr0.appendChild(t_td8);
+                t_tr0.appendChild(t_td9);
+                t_tr0.appendChild(t_td14);
+                t_body.appendChild(t_tr0);
+>>>>>>> master
                 }
 
 
            });
 
             var rows = t_body.rows; // or table.getElementsByTagName("tr");
+<<<<<<< HEAD
             lab_proc = document.createElement("SPAN");
             lab_proc.setAttribute("id", "id_lproc");
             lab_proc.setAttribute("class", "label label-default");
+=======
+>>>>>>> master
             for (var i = 0; i < rows.length; i++) {
                 rows[i].onclick = (function () { // closure
                     var cnt = i; // save the counter to use in the function
                     return function () {
                         t_line.style.visibility = 'visible';
+<<<<<<< HEAD
                         lab_proc.innerHTML = this.cells[15].innerHTML;
                         t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " //+ this.cells[0].innerHTML;
                         t_lineH1.appendChild(lab_proc);
@@ -972,6 +1124,11 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
                         document.getElementById("overlay_proc").style.display = "block";
                         window.location.href = '/history#tl_tit';
                         getTlineHist(c_hold, 'history');
+=======
+                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
+                        c_hold = this.cells[13].innerHTML;
+                        getTlineHist(c_hold);
+>>>>>>> master
                     }
                 })(i);
             }
@@ -980,8 +1137,11 @@ function refHistory(j_ord, j_sign, j_search, is_search) {
             for (var i = 0; i < alink.length; i++) {
                 alink[i].onclick = function fun() {
                     t_sect = this.innerHTML;
+<<<<<<< HEAD
                     document.getElementById("overlay_proc").style.display = "block";
                     window.location.href = '/history#c_head';
+=======
+>>>>>>> master
                     refHistory(j_ord,j_sign,j_search);
 
                 }
@@ -1117,6 +1277,7 @@ function refFile() {
 
 }
 
+<<<<<<< HEAD
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -1399,15 +1560,28 @@ function startFilter(f1,f2,f3,f4,f5,f6) {
 
 //Function for create an populate timeline
 function getTlineHist(t_stag, f_view) {
+=======
+
+//Function for create an populate timeline
+function getTlineHist(t_stag) {
+>>>>>>> master
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
     t_btn = document.getElementById("btngrp");
 
+<<<<<<< HEAD
   $.ajax({
         type: "POST",
         url: "tline_mgm",
         data: {tTag: t_stag, fView: f_view},
+=======
+
+  $.ajax({
+        type: "POST",
+        url: "tline_mgm",
+        data: {tTag: t_stag},
+>>>>>>> master
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();
@@ -1480,8 +1654,13 @@ function getTlineHist(t_stag, f_view) {
                 var span4 = document.createElement("SPAN");
                 span4.setAttribute("class", "time");
                 var i42 = document.createElement("I");
+<<<<<<< HEAD
                 //i42.setAttribute("class", "fa fa-clock-o");
                 span4.innerHTML = data[index].th_id;
+=======
+                i42.setAttribute("class", "fa fa-clock-o");
+                span4.innerHTML = "12:20";
+>>>>>>> master
                 span4.appendChild(i42);
                 var h34 = document.createElement("H3")
                 h34.setAttribute("class", "timeline-header");
@@ -1494,6 +1673,7 @@ function getTlineHist(t_stag, f_view) {
                 var div42 = document.createElement("div");
                 div42.setAttribute("class", "timeline-footer");
                 var a4 = document.createElement("A");
+<<<<<<< HEAD
                 a4.setAttribute("class", "btn btn-log btn-flat btn-xs");
                 a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
                 a4.innerHTML = "Log details";
@@ -1656,27 +1836,40 @@ function getTlineHist(t_stag, f_view) {
                 }
                 div42.appendChild(a4);
                 div42.appendChild(a5);
+=======
+                a4.setAttribute("class", "btn btn-warning btn-flat btn-xs");
+                a4.setAttribute("href", "javascript:window.open('/static/out/"+data[index].t_pid+"/log.html')");
+                a4.innerHTML = "Log details";
+                div42.appendChild(a4);
+>>>>>>> master
                 div4.appendChild(span4);
                 div4.appendChild(h34);
                 div4.appendChild(div41);
                 div4.appendChild(div42);
                 li4.appendChild(i4);
                 li4.appendChild(div4);
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
                 //End Third item
                 t_ultl.appendChild(li1);
                 //t_ultl.appendChild(li2);
                 t_ultl.appendChild(li3);
                 t_ultl.appendChild(li4);
+<<<<<<< HEAD
                 if (data[index].t_jira) {
                     lij1.appendChild(ij1);
                     lij1.appendChild(divj1);
                     t_ultl.appendChild(lij1);
                 }
+=======
+>>>>>>> master
                 //alert(data[index].t_exec);
                 p_proc = data[index].t_pid;
             });
         //Create the buttons in tline head for raw html and other
+<<<<<<< HEAD
             try {
             $('#btngrp').empty();
         var btnLeft2 = document.createElement("A");
@@ -1692,3 +1885,17 @@ function getTlineHist(t_stag, f_view) {
     });
 
 }
+=======
+        $('#btngrp').empty();
+        var btnLeft2 = document.createElement("A");
+        btnLeft2.setAttribute("class", "btn btn-warning btn-flat btn-xs");
+        btnLeft2.setAttribute("href", "javascript:window.open('/static/out/"+p_proc+"/"+p_proc+"_TC.html')");
+        btnLeft2.innerHTML = "RAW Html";
+        t_btn.appendChild(btnLeft2);
+        }
+    });
+
+}
+
+
+>>>>>>> master

@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+<<<<<<< HEAD
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 
@@ -268,3 +269,7 @@ class temp_pers_keywords(models.Model):
         return '%s -> %s -> %s (%s)' % (str(self.main_id), str(self.pers_id), str(self.standard_id), str(self.variable_val))
 
 """
+=======
+
+# Create your models here.
+>>>>>>> master

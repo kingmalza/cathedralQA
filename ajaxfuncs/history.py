@@ -2,6 +2,7 @@ import sys
 import os
 import simplejson
 import threading
+<<<<<<< HEAD
 import datetime
 from django.http import HttpResponse
 from django.db.models import Count
@@ -12,6 +13,13 @@ from django.core.mail import EmailMessage
 from frontend.models import t_threads, t_history, t_group, t_group_test, t_assign
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
 from django.contrib.auth.models import User
+=======
+from django.http import HttpResponse
+from django.db.models import Count
+from django.db.models import Sum
+from django.views.decorators.csrf import csrf_exempt
+from frontend.models import temp_main, temp_case, temp_variables, t_threads, t_history, t_group, t_group_test
+>>>>>>> master
 
 import django
 
@@ -29,8 +37,15 @@ def histrefresh(request, lorder='-id'):
         # l.setLevel(logging.DEBUG)
         # l.addHandler(logging.StreamHandler())
         if request.POST['tab_ord'] is not None: lorder = request.POST['tab_ord']
+<<<<<<< HEAD
 
         if request.POST['tab_slice'] == 1 or int(request.POST['isearch']) == 1:
+=======
+        print('TABSEARCH-->>>', request.POST['isearch'])
+
+        if request.POST['tab_slice'] == 1 or int(request.POST['isearch']) == 1:
+            print("Dentrooo")
+>>>>>>> master
             x, y = 0, 20
         else:
             x = (int(request.POST['tab_slice']) - 1) * 20
@@ -43,6 +58,7 @@ def histrefresh(request, lorder='-id'):
         of = t_history.objects.aggregate(Sum('fail_num'))
         pnum = op['pass_num__sum']
         fnum = of['fail_num__sum']
+<<<<<<< HEAD
         # First check if is typed a search term
         if request.POST['tab_search'] == 'noSearch':
 
@@ -90,6 +106,12 @@ def histrefresh(request, lorder='-id'):
             dis_thread = []
             for s in a: dis_thread.append(s[0])
             #dis_thread = list(a)
+=======
+        print("X-Y:", x, y)
+        # First check if is typed a search term
+        if request.POST['tab_search'] == 'noSearch':
+            ordered = t_threads.objects.filter(thread_status='DEAD').select_related().order_by(lorder)[x:y]
+>>>>>>> master
             oCount = t_threads.objects.filter(thread_status='DEAD').count()
             twarnings = t_threads.objects.filter(thread_status='DEAD',thread_stopd__isnull=True).count()
         # if is typed check if is a correct name of columns, otherwise make generic standard query
@@ -109,14 +131,18 @@ def histrefresh(request, lorder='-id'):
                     strfin = strfin + ',thread_tgroup__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'SCHEDULE':
                     strfin = strfin + ',thread_stype__contains=' + "'"+b[1].strip()+"'"
+<<<<<<< HEAD
                 elif b[0].upper() == 'RUN TYPE':
                     strfin = strfin + ',thread_runtype__contains=' + "'"+b[1].strip()+"'"
+=======
+>>>>>>> master
                 elif b[0].upper() == 'THREAD NAME':
                     strfin = strfin + ',thread_main__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'START':
                     strfin = strfin + ',thread_startd__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'STOP':
                     strfin = strfin + ',thread_stopd__contains=' + "'"+b[1].strip()+"'"
+<<<<<<< HEAD
                 elif b[0].upper() == 'ELAPSED':
                     strfin = strfin + ',id_time__elapsed_t__contains=' + "'"+b[1].strip()+"'"
                 elif b[0].upper() == 'USER':
@@ -124,6 +150,13 @@ def histrefresh(request, lorder='-id'):
 
             strexec1 = "%s%s%s" % ("ordered = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").distinct().select_related().values('thread_stag').order_by(lorder)[x:y]")
             #strexec1 = "%s%s%s" % ("ordered = t_threads.objects.values('thread_stag').filter(thread_status='DEAD',",strfin[1:],").distinct().order_by(lorder)[x:y]")
+=======
+                elif b[0].upper() == 'USER':
+                    strfin, strperc = strfin + ',id_test__user_id__contains=' + "'"+b[1].strip()+"'"
+
+
+            strexec1 = "%s%s%s" % ("ordered = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").select_related().order_by(lorder)[x:y]")
+>>>>>>> master
             strexec2 = "%s%s%s" % ("oCount = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],").count()")
             strexec3 = "%s%s%s" % ("twarnings = t_threads.objects.filter(thread_status='DEAD',",strfin[1:],",thread_stopd__isnull=True).count()")
 
@@ -148,6 +181,10 @@ def histrefresh(request, lorder='-id'):
         # ordered = sorted(allThreadsF, key=operator.attrgetter('id'), reverse=True)
 
         # All pass and fail
+<<<<<<< HEAD
+=======
+        print('PNUM--FNUM-->',pnum,'-',fnum)
+>>>>>>> master
         try:
             percp = (pnum * 100) / (pnum + fnum)
             percf = (fnum * 100) / (pnum + fnum)
@@ -158,6 +195,7 @@ def histrefresh(request, lorder='-id'):
         response = []
 
         for i in ordered:
+<<<<<<< HEAD
             #print(i.thread_stag,' <->', len(dis_thread))
             if i.thread_stag in dis_thread:
                 valsth = dict()
@@ -329,6 +367,32 @@ def get_ticket(request):
             else:
                 vallabel['uclass'] = "online"
             response.append(vallabel)
+=======
+            print("ID->>", i.id)
+            vallabel = {'tID': i.id, 'tTest': str(i.id_test.test_main), 'OptionID': i.thread_id,
+                        'OptionUUID': i.thread_stag, 'OptionMain': i.thread_main,
+                        'OptionSdate': str(i.thread_startd)[:19], 'OptionStopdate': str(i.thread_stopd)[:19],
+                        'OptionUser': str(i.id_test.user_id), 'OptionTest': i.id_test.id, 'OptionType': i.thread_ttype,
+                        'OptionGroup': i.thread_tgroup,
+                        'OptionStype': i.thread_stype, 'OptionSval': i.thread_sval}
+            # Create inline data for pass/fail
+            p = ['1' for x in range(i.id_test.pass_num)]
+            f = ['-1' for x in range(i.id_test.fail_num)]
+            vallabel['OptionPass'] = len(p)
+            vallabel['OptionFail'] = len(f)
+            # Now i find number of total cycle groupping by thread_stag
+            tn = t_threads.objects.filter(thread_stag=str(i.thread_stag)).aggregate(tcount=Count('thread_stag'))
+            vallabel['OptionNumT'] = tn['tcount']
+
+            vallabel['TotData'] = oCount
+            vallabel['wData'] = twarnings
+            vallabel['PercPass'] = percp
+            vallabel['PercFail'] = percf
+
+            response.append(vallabel)
+
+        response.append(oCount)
+>>>>>>> master
 
         json = simplejson.dumps(response)
 

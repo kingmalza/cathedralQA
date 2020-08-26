@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+<<<<<<< HEAD
 from adminsortable2.admin import SortableAdminMixin
 from django.forms import Select
 from datetime import datetime, timezone
@@ -411,3 +412,7 @@ admin.site.register(temp_library, temp_libraryAdmin, )
 admin.site.register(temp_pers_keywords, tpk, )
 admin.site.register(temp_test_keywords, ttkAdmin, )
 admin.site.register(suite_libs, suite_libsAdmin, )
+=======
+
+# Register your models here.
+>>>>>>> master

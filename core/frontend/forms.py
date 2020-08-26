@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 from django.forms import ModelForm, PasswordInput
 from django import forms
 from dal import autocomplete
 from frontend.models import Document, jra_settings, settings_gen
 from backend.models import temp_keywords, temp_main, temp_case, temp_variables, temp_library, temp_test_keywords, temp_pers_keywords
+=======
+from django.forms import ModelForm
+from django import forms
+from .models import temp_pers_keywords, temp_keywords, temp_main, Document
+>>>>>>> master
 
 
 class SelectMain(ModelForm):
@@ -33,6 +39,7 @@ class CustomBarModelForm(ModelForm):
     class Meta:
         model = temp_pers_keywords
         fields = '__all__'
+<<<<<<< HEAD
         widgets = {
             'main_id': autocomplete.ModelSelect2(url='tm-autocomplete'),
             'key_id': autocomplete.ModelSelect2(url='tpk-autocomplete')
@@ -174,3 +181,10 @@ class TtkForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TtkForm, self).__init__(*args, **kwargs)
         self.fields['key_val'].strip = False
+=======
+
+    def __init__(self, *args, **kwargs):
+        super(CustomBarModelForm, self).__init__(*args, **kwargs)
+        self.fields['pers_id'].queryset = temp_keywords.objects.filter(personal=1)
+        self.fields['standard_id'].queryset = temp_keywords.objects.filter(personal=0)
+>>>>>>> master

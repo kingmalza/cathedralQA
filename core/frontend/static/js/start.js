@@ -1,17 +1,24 @@
 function seltype(varID) {
     oCssSet = document.getElementById("sel_opt");
     oTest = document.getElementById("tab_div1");
+<<<<<<< HEAD
     oTestsel = document.getElementById("test_sel");
+=======
+>>>>>>> master
     oVal = document.getElementById("div_val");
     oCssSet.innerHTML = "";
     $("#div_val").hide();
     $("#tab_div1").hide();
+<<<<<<< HEAD
     $("#div_tt").hide();
+=======
+>>>>>>> master
     //oTest.innerHTML = "";
     //Reset the test_set
     /*while (oTest.firstChild) {
         oTest.removeChild(oTest.firstChild);
     }*/
+<<<<<<< HEAD
 
     //Try to remove comment if there are
     try {
@@ -22,6 +29,8 @@ function seltype(varID) {
         console.log(err);
     }
 
+=======
+>>>>>>> master
     $.ajax({
         type: "POST",
         url: "test_type",
@@ -30,6 +39,7 @@ function seltype(varID) {
             oCssSet.disabled = false;
 
             $.each(data, function (index) {
+<<<<<<< HEAD
 
                 if (index == 0) {
                     var opt1 = document.createElement("option");
@@ -39,6 +49,8 @@ function seltype(varID) {
                     oCssSet.appendChild(opt1);
                 }
 
+=======
+>>>>>>> master
                 var opt = document.createElement("option");
                 opt.value = data[index].selID;
                 opt.innerHTML = data[index].selDescr;
@@ -54,7 +66,10 @@ function seltype(varID) {
 function AddOptions(VarID) {
 
     oType = document.getElementById("sel_type");
+<<<<<<< HEAD
     oRun = document.getElementById("sel_ttype");
+=======
+>>>>>>> master
     oType.insertBefore(new Option('', ''), oType.firstChild);
     oTsel = document.getElementById("test_sel");
     oTtabs = document.getElementById("test_tabs");
@@ -62,6 +77,7 @@ function AddOptions(VarID) {
     oCss2 = GetElementInsideContainer("div_val", "div_sched");
     //oCssBtn = GetElementInsideContainer("div_val", "div_btn");
     oCssBtn = document.getElementById("div_btn");
+<<<<<<< HEAD
     oCssSet = document.getElementById("sel_opt");
     tmain = document.getElementById("tab_div1");
     tdata = document.getElementById("tab_div2");
@@ -69,6 +85,10 @@ function AddOptions(VarID) {
     trst1 = document.getElementById("rst1");
     trst2 = document.getElementById("rst2");
     trst3 = document.getElementById("rst3");
+=======
+    tmain = document.getElementById("tab_div1");
+    tdata = document.getElementById("tab_div2");
+>>>>>>> master
     if (tdata == null) {
                 location.reload();
     }
@@ -80,7 +100,11 @@ function AddOptions(VarID) {
     buttonMgm.value = "START";
     buttonMgm.className = "btn btn-primary";
     buttonMgm.onclick = function () {
+<<<<<<< HEAD
         testBtn(VarID, oType.value, oRun.value);
+=======
+        testBtn(VarID, oType.value);
+>>>>>>> master
     }
     /*//Button for see html tab after start test
     var buttonHtml = document.createElement("input");
@@ -90,7 +114,10 @@ function AddOptions(VarID) {
     buttonHtml.onclick = function () {
         inspectHTML(VarID);
     }*/
+<<<<<<< HEAD
     document.getElementById("overlay_get").style.display = "block";
+=======
+>>>>>>> master
     console.log('varid is:'+VarID.value);
     $.ajax({
         type: "POST",
@@ -118,13 +145,17 @@ function AddOptions(VarID) {
             var liclass = "active";
             $("#div_val").show();
             $("#tab_div1").show();
+<<<<<<< HEAD
             $("#div_tt").show();
+=======
+>>>>>>> master
             if (oType.value == "ST") {
                 $("#div_sched").show();
             } else {
                 $("#div_sched").hide();
             }
 
+<<<<<<< HEAD
             //First if there is a testset description delete it
             try {
                 oTsel.removeChild(optNotes);
@@ -132,6 +163,8 @@ function AddOptions(VarID) {
             catch(err) {
                 console.log(err);
             }
+=======
+>>>>>>> master
 
             $.each(data, function (index) {
 
@@ -163,6 +196,7 @@ function AddOptions(VarID) {
                     isgroup = data[index].OptionMain;
                     tabpane = "tab-pane";
                     liclass = "";
+<<<<<<< HEAD
 
 
                     if (oType.value == "ST") {
@@ -274,6 +308,29 @@ function AddOptions(VarID) {
                     }
                 }
 
+=======
+                }
+
+
+                tart11 = document.createElement('input', '', 'form-control');
+                tart11.setAttribute('type', 'text');
+                tart11.id = data[index].OptionKey;
+                tart11.value = data[index].OptionVal;
+                var createVarText = document.createElement("SPAN");
+                createVarText.setAttribute('class', 'label label-warning');
+                createVarText.innerHTML = data[index].OptionDescr+" - "+data[index].OptionKey;
+                //var createVarText = document.createTextNode(data[index].OptionDescr+"-> "+data[index].OptionKey+"-> ");
+                var createSpace = document.createTextNode("  ");
+                var br = document.createElement("BR");
+                tart11.defaultValue = data[index].OptionVal;
+                vard = document.getElementById("tab_" + data[index].OptionMain);
+                vard = document.getElementById("tab_1");
+                vard.appendChild(createVarText);
+                vard.appendChild(createSpace);
+                vard.appendChild(tart11);
+                vard.appendChild(br);
+                opdescr = document.createTextNode(data[index].OptionDescr);
+>>>>>>> master
 
             });
 
@@ -291,6 +348,7 @@ function inspectHTML(objID) {
     alert(objID.value);
 }
 
+<<<<<<< HEAD
 
 $(document).ajaxStop(function () {
     //alert('STOP');
@@ -301,6 +359,10 @@ $(document).ajaxStop(function () {
 function testBtn(VarID, t_type, run_type) {
 
     document.getElementById("overlay").style.display = "block";
+=======
+function testBtn(VarID, t_type) {
+
+>>>>>>> master
     //var divScan = GetElementInsideContainer("tab_div1","tab_div2");
     var divScan = document.getElementById("tab_div2");
     var ancestor = divScan,
@@ -308,10 +370,13 @@ function testBtn(VarID, t_type, run_type) {
     oCssSet = document.getElementById("sel_opt");
     console.log("Ocss.val--->"+oCssSet.value);
 
+<<<<<<< HEAD
     ckrst1 = document.getElementById("rst1").innerText.toUpperCase();
     ckrst2 = document.getElementById("rst2").innerText.toUpperCase();
     ckrst3 = document.getElementById("rst3").innerText.toUpperCase();
 
+=======
+>>>>>>> master
     var row = [];
     var col = [];
     var uuid = guid();
@@ -324,7 +389,11 @@ function testBtn(VarID, t_type, run_type) {
         Schedval = "";
     }
 
+<<<<<<< HEAD
     console.log(" Sched: " + Schedsel.value + " Run: " + run_type)
+=======
+    console.log(" Sched: " + Schedsel.value + " val: " + Schedval.value)
+>>>>>>> master
 
     for (i = 0; i < descendents.length; i++) {
         e = descendents[i];
@@ -344,6 +413,7 @@ function testBtn(VarID, t_type, run_type) {
             //res.splice(index,1);
         }
     });*/
+<<<<<<< HEAD
     var rsterror = 'MALFORMED TABLE';
     if (ckrst1.includes(rsterror) || ckrst2.includes(rsterror) || ckrst3.includes(rsterror)) {
         document.getElementById("overlay").style.display = "none";
@@ -383,6 +453,28 @@ function testBtn(VarID, t_type, run_type) {
             }
         });
     }
+=======
+
+    //Stringhify the array for pass to python and then decode it
+    var json_string = JSON.stringify(res);
+
+    $.ajax({
+        type: "POST",
+        url: "start",
+        data: {
+            mainID: VarID.value,
+            ttype: t_type,
+            des: json_string,
+            sched_sel: Schedsel.value,
+            sched_val: Schedval.value,
+            group_val: oCssSet.value,
+            t_id: uuid
+        },
+        success: function (data) {
+
+        }
+    });
+>>>>>>> master
 }
 
 

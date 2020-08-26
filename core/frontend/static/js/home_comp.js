@@ -11,7 +11,11 @@ document.head.appendChild(imported);*/
 function selSched(selVal) {
 
     sVal = document.getElementById("sched_val");
+<<<<<<< HEAD
     sVal.value = '';
+=======
+    sVal.innerHTML = "";
+>>>>>>> master
     sVal.style.backgroundColor = "";
     sVal.placeholder = "Schedule data input";
     sVal.disabled = true;
@@ -41,6 +45,7 @@ function GetElementInsideContainer(containerID, childID) {
 }
 
 
+<<<<<<< HEAD
 $(document).ajaxStop(function () {
     //alert('STOP');
     try {
@@ -56,6 +61,10 @@ $(document).ajaxStop(function () {
 function refTable() {
     //j_search = document.getElementById("txthish").value;
     j_search = null;
+=======
+function refTable() {
+    j_search = document.getElementById("txthish").value;
+>>>>>>> master
     j_sord = document.getElementById("txtsord").value;
     issearch = document.getElementById("txtsign").value;
 
@@ -68,7 +77,11 @@ function refTable() {
     if (issearch == null) {
         issearch = '-';
     }
+<<<<<<< HEAD
     //console.log(j_sord);
+=======
+    console.log(j_sord);
+>>>>>>> master
 
     //alert(j_search+"--"+j_sord+"--"+issearch);
 
@@ -91,7 +104,10 @@ function refTable() {
                 if (index == 0) {
                     var t_tr0 = document.createElement("TR");
                     var t_td0 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td0.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td0.innerHTML = 'ID'.bold();
                     t_td0.onclick = function () {
                         if (issearch == '-') {
@@ -106,7 +122,10 @@ function refTable() {
                         ;
                     };
                     var t_td9 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td9.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td9.innerHTML = 'Test Name'.bold();
                     t_td9.onclick = function () {
                         if (issearch == '-') {
@@ -121,7 +140,10 @@ function refTable() {
                         ;
                     };
                     var t_td10 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td10.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td10.innerHTML = 'Test Type'.bold();
                     t_td10.onclick = function () {
                         if (issearch == '-') {
@@ -136,7 +158,10 @@ function refTable() {
                         ;
                     };
                     var t_td11 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td11.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td11.innerHTML = 'Test Group'.bold();
                     t_td11.onclick = function () {
                         if (issearch == '-') {
@@ -151,7 +176,10 @@ function refTable() {
                         ;
                     };
                     var t_td12 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td12.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td12.innerHTML = 'Schedule Type'.bold();
                     t_td12.onclick = function () {
                         if (issearch == '-') {
@@ -166,7 +194,10 @@ function refTable() {
                         ;
                     };
                     var t_td13 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td13.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td13.innerHTML = 'Schedule Value'.bold();
                     t_td13.onclick = function () {
                         if (issearch == '-') {
@@ -180,6 +211,7 @@ function refTable() {
                         }
                         ;
                     };
+<<<<<<< HEAD
                     var t_td13_run = document.createElement("TD");
                     t_td13_run.setAttribute("style", "padding-left: 8px");
                     t_td13_run.innerHTML = 'Run type'.bold();
@@ -197,6 +229,9 @@ function refTable() {
                     };
                     var t_td1 = document.createElement("TD");
                     t_td1.setAttribute("style", "padding-left: 8px");
+=======
+                    var t_td1 = document.createElement("TD");
+>>>>>>> master
                     t_td1.innerHTML = 'Thread'.bold();
                     t_td1.onclick = function () {
                         if (issearch == '-') {
@@ -211,7 +246,10 @@ function refTable() {
                         ;
                     };
                     var t_td2 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td2.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td2.innerHTML = 'Status'.bold();
                     t_td2.onclick = function () {
                         if (issearch == '-') {
@@ -226,7 +264,10 @@ function refTable() {
                         ;
                     };
                     var t_td3 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td3.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td3.innerHTML = 'TAG'.bold();
                     t_td3.setAttribute('id', 'tag_h');
                     t_td3.onclick = function () {
@@ -242,7 +283,10 @@ function refTable() {
                         ;
                     };
                     var t_td4 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td4.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td4.innerHTML = 'Start'.bold();
                     t_td4.onclick = function () {
                         if (issearch == '-') {
@@ -257,7 +301,10 @@ function refTable() {
                         ;
                     };
                     var t_td5 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td5.setAttribute("style", "padding-left: 8px");
+=======
+>>>>>>> master
                     t_td5.innerHTML = 'User'.bold();
                     t_td5.onclick = function () {
                         if (issearch == '-') {
@@ -272,6 +319,7 @@ function refTable() {
                         ;
                     };
                     var t_td6 = document.createElement("TD");
+<<<<<<< HEAD
                     t_td6.setAttribute("style", "padding-left: 8px");
                     t_td6.innerHTML = 'Pid';
                     var t_td7 = document.createElement("TD");
@@ -279,6 +327,12 @@ function refTable() {
                     t_td7.innerHTML = 'Cycles';
                     var t_td8 = document.createElement("TD");
                     t_td8.setAttribute("style", "padding-left: 8px");
+=======
+                    t_td6.innerHTML = 'Pid';
+                    var t_td7 = document.createElement("TD");
+                    t_td7.innerHTML = 'Cycles';
+                    var t_td8 = document.createElement("TD");
+>>>>>>> master
                     t_td8.innerHTML = 'Going';
 
                     t_tr0.appendChild(t_td0);
@@ -287,7 +341,10 @@ function refTable() {
                     t_tr0.appendChild(t_td11);
                     t_tr0.appendChild(t_td12);
                     t_tr0.appendChild(t_td13);
+<<<<<<< HEAD
                     t_tr0.appendChild(t_td13_run);
+=======
+>>>>>>> master
                     t_tr0.appendChild(t_td1);
                     t_tr0.appendChild(t_td2);
                     t_tr0.appendChild(t_td3);
@@ -320,8 +377,11 @@ function refTable() {
                 t_td12.innerHTML = data[index].OptionSched;
                 var t_td13 = document.createElement("TD");
                 t_td13.innerHTML = data[index].OptionSchedVal;
+<<<<<<< HEAD
                 var t_td13_run = document.createElement("TD");
                 t_td13_run.innerHTML = data[index].OptionRuntype;
+=======
+>>>>>>> master
                 var t_td1 = document.createElement("TD");
                 t_td1.innerHTML = data[index].OptionID;
                 var t_td2 = document.createElement("TD");
@@ -356,7 +416,10 @@ function refTable() {
                 t_tr.appendChild(t_td11);
                 t_tr.appendChild(t_td12);
                 t_tr.appendChild(t_td13);
+<<<<<<< HEAD
                 t_tr.appendChild(t_td13_run);
+=======
+>>>>>>> master
                 t_tr.appendChild(t_td1);
                 t_tr.appendChild(t_td5);
                 t_tr.appendChild(t_td2);
@@ -398,12 +461,20 @@ function refTable() {
                 rows[i].onclick = (function () { // closure
                     var cnt = i; // save the counter to use in the function
                     return function () {
+<<<<<<< HEAD
                         task_det(this.cells[0].innerHTML, this.cells[9].innerHTML);
                         t_line.style.visibility = 'visible';
                         t_lineH1.innerHTML = "LAST FIVE TIMELINE EVENTS FOR PROC. ID: " + this.cells[0].innerHTML;
                         c_hold = this.cells[9].innerHTML;
                         document.getElementById("overlay_proc").style.display = "block";
                         getTline(c_hold,'active');
+=======
+                        task_det(this.cells[0].innerHTML, this.cells[8].innerHTML);
+                        t_line.style.visibility = 'visible';
+                        t_lineH1.innerHTML = "TIMELINE FOR PROC. ID: " + this.cells[0].innerHTML;
+                        c_hold = this.cells[8].innerHTML;
+                        getTline(c_hold);
+>>>>>>> master
                     }
                 })(i);
             }
@@ -414,7 +485,11 @@ function refTable() {
 
     //If someone click the table c_old populate and the tree func is called every tab refresh time
     if (c_hold) {
+<<<<<<< HEAD
         getTline(c_hold,'active');
+=======
+        getTline(c_hold);
+>>>>>>> master
     }
 
     setTimeout(refTable, 5000)
@@ -522,7 +597,11 @@ function goInteractive() {
 
 
 //Function for create an populate timeline
+<<<<<<< HEAD
 function getTline(t_stag, f_view) {
+=======
+function getTline(t_stag) {
+>>>>>>> master
     //main ul for contain dynamic constructors
     //t_ultl = GetElementInsideContainer("divtl", "ultl");
     t_ultl = document.getElementById("ultl");
@@ -532,7 +611,11 @@ function getTline(t_stag, f_view) {
     $.ajax({
         type: "POST",
         url: "tline_mgm",
+<<<<<<< HEAD
         data: {tTag: t_stag, fView: f_view},
+=======
+        data: {tTag: t_stag},
+>>>>>>> master
         success: function (data) {
             //First clear the displayed timeline
             $('#ultl').empty();
@@ -606,7 +689,11 @@ function getTline(t_stag, f_view) {
                 span4.setAttribute("class", "time");
                 var i42 = document.createElement("I");
                 i42.setAttribute("class", "fa fa-clock-o");
+<<<<<<< HEAD
                 span4.innerHTML = "";
+=======
+                span4.innerHTML = "12:20";
+>>>>>>> master
                 span4.appendChild(i42);
                 var h34 = document.createElement("H3")
                 h34.setAttribute("class", "timeline-header");
@@ -688,10 +775,15 @@ function task_det(dataID, threadUUid) {
 }
 
 function stopThread(tDet) {
+<<<<<<< HEAD
     document.getElementById("overlay_stop").style.display = "block";
     //DeActivate timeline for specific thread on active thread onclick in table
     t_line = document.getElementById("tline");
     console.log("TDET: "+tDet)
+=======
+    //DeActivate timeline for specific thread on active thread onclick in table
+    t_line = document.getElementById("tline");
+>>>>>>> master
 
     $.ajax({
         type: "POST",
@@ -706,6 +798,7 @@ function stopThread(tDet) {
                 }
             });
 
+<<<<<<< HEAD
         },
         complete: function (data) {
             t_line.style.visibility = 'hidden';
@@ -713,3 +806,13 @@ function stopThread(tDet) {
         }
     });
 }
+=======
+            t_line.style.visibility = 'hidden';
+        }
+    });
+}
+
+
+        
+  
+>>>>>>> master
